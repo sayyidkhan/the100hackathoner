@@ -1,0 +1,137 @@
+---
+import { getCollection } from "astro:content";
+import PageShell from "../components/PageShell.astro";
+
+const principles = (await getCollection("principles"))
+  .filter((principle) => !principle.data.draft)
+  .sort((a, b) => a.data.number - b.data.number);
+---
+
+<PageShell title="Principles | The 100 Hackathoner">
+  <section class="archive-hero container">
+    <h1>Principles</h1>
+    <p>
+      The evolving operating system behind the 100-hackathon journey: lessons
+      tested under deadline pressure, sharpened by repetition, and revised as
+      the journey compounds.
+    </p>
+  </section>
+
+  <section class="section container">
+    {
+      principles.length ? (
+        <div class="principle-grid">
+          {principles.map((principle) => (
+            <a class="principle-card" href={`/principles/${principle.slug}/`}>
+              <span>#{String(principle.data.number).padStart(3, "0")}</span>
+              <p class="meta">{principle.data.theme}</p>
+              <h2>{principle.data.title}</h2>
+              <p>{principle.data.statement}</p>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="empty-state">
+          <p class="meta">No Principles Yet</p>
+          <h2>Start the operating system.</h2>
+          <p>
+            Create a Markdown file in <code>src/content/principles/</code> for
+            each principle you want to develop across the 100-hackathon journey.
+          </p>
+        </div>
+      )
+    }
+  </section>
+</PageShell>
+
+<style>
+  .archive-hero {
+    padding: 82px 0 30px;
+  }
+
+  h1 {
+    max-width: 980px;
+    margin: 0;
+    color: var(--ink);
+    font-size: clamp(4rem, 10vw, 10rem);
+    font-weight: 950;
+    letter-spacing: -0.08em;
+    line-height: 0.82;
+  }
+
+  .archive-hero p {
+    max-width: 800px;
+    margin: 24px 0 0;
+    color: var(--muted);
+    font-size: 1.12rem;
+    line-height: 1.75;
+  }
+
+  .principle-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .principle-card {
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    border-top: 5px solid var(--red);
+    background: var(--surface);
+    padding: 22px;
+  }
+
+  .principle-card:nth-child(4n + 2) {
+    border-top-color: var(--blue);
+  }
+
+  .principle-card:nth-child(4n + 3) {
+    border-top-color: var(--teal);
+  }
+
+  .principle-card:nth-child(4n + 4) {
+    border-top-color: var(--yellow);
+  }
+
+  .principle-card > span {
+    color: var(--faint);
+    font-size: 0.82rem;
+    font-weight: 950;
+  }
+
+  h2 {
+    margin: 44px 0 12px;
+    color: var(--ink);
+    font-size: clamp(1.55rem, 2.5vw, 2.4rem);
+    font-weight: 950;
+    letter-spacing: -0.06em;
+    line-height: 0.96;
+  }
+
+  p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.62;
+  }
+
+  .empty-state {
+    max-width: 720px;
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    padding: 28px;
+  }
+
+  code {
+    color: var(--ink);
+    font-weight: 850;
+  }
+
+  @media (max-width: 920px) {
+    .principle-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

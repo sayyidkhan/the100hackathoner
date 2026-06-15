@@ -1,9 +1,6 @@
 ---
 import { getCollection } from "astro:content";
 import PageShell from "../components/PageShell.astro";
-import HackathonTimeline from "../components/HackathonTimeline.astro";
-import BuildGrid from "../components/BuildGrid.astro";
-import EssayList from "../components/EssayList.astro";
 
 const hackathons = (await getCollection("hackathons")).sort(
   (a, b) => b.data.number - a.data.number,
@@ -11,344 +8,1019 @@ const hackathons = (await getCollection("hackathons")).sort(
 const essays = (await getCollection("essays")).sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
 );
+
+const completed = hackathons[0]?.data.number ?? 64;
+const total = 100;
+const remaining = total - completed;
 const featured = hackathons[0];
+const latest = hackathons.slice(0, 3);
+const progressPercent = Math.round((completed / total) * 100);
+
+const checkpoints = Array.from({ length: total }, (_, index) => {
+  const number = index + 1;
+  const known = hackathons.find((item) => item.data.number === number);
+  return {
+    number,
+    title: known?.data.project ?? "",
+    status:
+      number < completed
+        ? "complete"
+        : number === completed
+          ? "current"
+          : number % 10 === 0
+            ? "milestone"
+            : "future",
+  };
+});
+
+const lessonPatterns = [
+  {
+    title: "Ship the smallest complete loop",
+    body: "The demo only matters when someone can touch the core behavior without a long explanation.",
+    accent: "red",
+  },
+  {
+    title: "Judgement beats more tools",
+    body: "Agent products need boundaries, handoffs, and restraint before they need another integration.",
+    accent: "blue",
+  },
+  {
+    title: "Clarity is a safety feature",
+    body: "In serious domains, simple flows and visible next steps earn trust before action.",
+    accent: "teal",
+  },
+  {
+    title: "Volume turns lessons into instinct",
+    body: "Repeated deadlines convert abstract advice into pattern recognition under pressure.",
+    accent: "yellow",
+  },
+];
+
+const stats = [
+  ["Completed", `${completed}`],
+  ["Remaining", `${remaining}`],
+  ["Current", `#${String(completed).padStart(3, "0")}`],
+  ["Target", "100"],
+];
 ---
 
-<PageShell>
+<PageShell
+  title="The 100 Hackathoner"
+  description="A public record of Sayyid Khan's journey to complete 100 hackathons by building, shipping, failing, winning, and learning in public."
+>
   <section class="hero">
     <div class="container hero-grid">
       <div class="hero-copy">
-        <h1 class="serif">The Things We Build in 48 Hours</h1>
-        <p>
-          A memoir documenting the journey of a builder seeking purpose through
-          one hundred hackathons.
+        <h1><span>The 100</span><span>Hackathoner</span></h1>
+        <p class="mission">
+          A public record of learning by shipping: ideas, teams, chaos, demos,
+          failures, wins, and the operating lessons behind one hundred
+          hackathons.
         </p>
         <div class="hero-actions">
-          <a class="button primary" href="/essays/">Read the Memoir</a>
-          <a class="button" href="/hackathons/">View Hackathon Archive</a>
+          <a class="button primary" href="/hackathons/">Explore the Journey</a>
+          <a class="button" href="/essays/">Read Field Notes</a>
+        </div>
+        <dl class="quick-stats">
+          {
+            stats.map(([label, value]) => (
+              <div>
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+
+      <div class="progress-board" aria-label={`${completed} of ${total} hackathons completed`}>
+        <div class="progress-topline">
+          <span>Journey status</span>
+          <strong>{progressPercent}%</strong>
+        </div>
+        <div class="big-count">
+          <span>{completed}</span>
+          <em>/ {total}</em>
+        </div>
+        <p>{remaining} to go</p>
+        <div class="meter" aria-hidden="true">
+          <span style={`width: ${progressPercent}%`}></span>
+        </div>
+        <div class="signal-row" aria-hidden="true">
+          <span class="signal red"></span>
+          <span class="signal blue"></span>
+          <span class="signal teal"></span>
+          <span class="signal yellow"></span>
         </div>
       </div>
-      <div class="hero-frame" aria-hidden="true">
-        <div class="projector"></div>
-        <div class="screen">
-          <span>demo day</span>
-          <strong>64 / 100</strong>
+
+    </div>
+  </section>
+
+  <section class="journey-map section" id="journey">
+    <div class="container">
+      <div class="section-heading">
+        <h2 class="serif">Journey Map</h2>
+        <p>
+          One hundred numbered attempts. Each checkpoint records what was built,
+          what broke, who showed up, and what became sharper after demo day.
+        </p>
+      </div>
+
+      <div class="map-panel">
+        <div class="map-legend">
+          <span><i class="complete"></i> Completed</span>
+          <span><i class="current"></i> Current</span>
+          <span><i class="milestone"></i> Milestone</span>
+          <span><i class="future"></i> Ahead</span>
         </div>
-        <div class="laptop">
-          <span></span>
-          <span></span>
-          <span></span>
+        <div class="checkpoint-grid" aria-label="One hundred hackathon checkpoints">
+          {
+            checkpoints.map((checkpoint) => (
+              <a
+                class={`checkpoint ${checkpoint.status}`}
+                href={
+                  checkpoint.title
+                    ? `/hackathons/${hackathons.find((item) => item.data.number === checkpoint.number)?.slug}/`
+                    : "/hackathons/"
+                }
+                title={checkpoint.title || `Hackathon ${checkpoint.number}`}
+              >
+                {String(checkpoint.number).padStart(2, "0")}
+              </a>
+            ))
+          }
+        </div>
+        <div class="map-note">
+          <strong>Current checkpoint</strong>
+          <span>
+            #{String(completed).padStart(3, "0")} {featured?.data.project}
+          </span>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="progress rail">
-    <div class="container progress-grid">
-      <div>
-        <strong>64 / 100</strong>
-        <span>Hackathons Completed</span>
-      </div>
-      <div>
-        <strong>Wins</strong>
-        <span>Tracked across the archive</span>
-      </div>
-      <div>
-        <strong>3</strong>
-        <span>Featured Builds</span>
-      </div>
-      <div>
-        <strong>Current Milestone</strong>
-        <span>Building the public memoir</span>
-      </div>
-    </div>
-  </section>
+  {
+    featured && (
+      <section class="field-report section">
+        <div class="container report-grid">
+          <div class="report-visual" aria-hidden="true">
+            <div class="game-card">
+              <div class="game-header">
+                <span>AI Game Jam</span>
+                <strong>#{String(featured.data.number).padStart(3, "0")}</strong>
+              </div>
+              <div class="game-grid">
+                {Array.from({ length: 56 }, (_, index) => (
+                  <span class={index % 9 === 0 ? "hot" : index % 7 === 0 ? "cool" : ""} />
+                ))}
+              </div>
+              <div class="game-footer">
+                <span>Deploy</span>
+                <span>Demo</span>
+                <span>Learn</span>
+              </div>
+            </div>
+          </div>
+          <div class="report-copy">
+            <p class="meta">Latest Field Report</p>
+            <h2 class="serif">
+              #{String(featured.data.number).padStart(3, "0")} {featured.data.project}
+            </h2>
+            <p class="lesson">"{featured.data.lesson}"</p>
+            <p>
+              The latest chapter captures the useful pressure of every
+              hackathon: what can be made real, understandable, and demo-ready
+              before time runs out?
+            </p>
+            <div class="stack-row" aria-label={`${featured.data.project} stack`}>
+              {featured.data.stack.map((tech) => <span>{tech}</span>)}
+            </div>
+            <a class="button blue" href={`/hackathons/${featured.slug}/`}>Read the Report</a>
+          </div>
+        </div>
+      </section>
+    )
+  }
 
-  <section class="section featured">
-    <div class="container featured-grid">
-      <div>
-        <p class="meta">Featured Chapter</p>
-        <h2 class="serif">{featured.data.title}</h2>
-      </div>
-      <div>
-        <p>
-          {featured.data.lesson} This chapter opens the archive with the useful
-          tension every hackathon creates: what can be made real before the clock
-          runs out?
-        </p>
-        <a class="button" href={`/hackathons/${featured.slug}/`}>Read Chapter</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
+  <section class="lessons section">
     <div class="container">
       <div class="section-heading">
-        <h2>Hackathon Timeline</h2>
+        <h2 class="serif">Lessons That Compound</h2>
         <p>
-          A chronological record of ideas, teams, prototypes, failures, wins, and
-          the lessons that stay after demo day.
+          The point is not to collect trophies. The point is to turn repeated
+          deadlines into sharper product judgement, stronger taste, and better
+          founder instincts.
         </p>
       </div>
-      <HackathonTimeline items={hackathons} limit={3} />
+      <div class="lesson-grid">
+        {
+          lessonPatterns.map((lesson, index) => (
+            <article class={`lesson-card ${lesson.accent}`}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <h3>{lesson.title}</h3>
+              <p>{lesson.body}</p>
+            </article>
+          ))
+        }
+      </div>
     </div>
   </section>
 
-  <section class="section builds-section">
+  <section class="archive-strip section">
     <div class="container">
       <div class="section-heading">
-        <h2>Builds From the Archive</h2>
+        <h2 class="serif">Build Archive</h2>
         <p>
-          Each hackathon entry is also the project record: the product, the
-          stack, the pressure, and the lesson kept in one place.
+          Compact evidence from the latest prototypes: project, event, outcome,
+          stack, and the lesson worth carrying forward.
         </p>
       </div>
-      <BuildGrid items={hackathons} limit={3} />
+      <div class="build-table" role="table" aria-label="Latest hackathon builds">
+        <div class="build-row table-head" role="row">
+          <span>#</span>
+          <span>Project</span>
+          <span>Event</span>
+          <span>Outcome</span>
+          <span>Stack</span>
+        </div>
+        {
+          latest.map((item) => (
+            <a class="build-row" role="row" href={`/hackathons/${item.slug}/`}>
+              <span>#{String(item.data.number).padStart(3, "0")}</span>
+              <strong>{item.data.project}</strong>
+              <span>{item.data.event}</span>
+              <span class="status">{item.data.result}</span>
+              <span>{item.data.stack.slice(0, 3).join(" / ")}</span>
+            </a>
+          ))
+        }
+      </div>
     </div>
   </section>
 
-  <section class="section">
+  <section class="notes section">
     <div class="container">
       <div class="section-heading">
-        <h2>Memoir Notes</h2>
+        <h2 class="serif">Field Notes</h2>
         <p>
-          Essays about identity, ambition, shipping, loneliness, and learning to
-          build in the age of AI.
+          Memoir notes on identity, ambition, AI-assisted creation, failure,
+          and the kind of work worth repeating.
         </p>
       </div>
-      <EssayList items={essays} limit={3} />
+      <div class="notes-list">
+        {
+          essays.slice(0, 3).map((essay) => (
+            <a class="note-row" href={`/essays/${essay.slug}/`}>
+              <time datetime={essay.data.date}>{essay.data.date}</time>
+              <strong>{essay.data.title}</strong>
+              <span>{essay.data.description}</span>
+            </a>
+          ))
+        }
+      </div>
     </div>
   </section>
 
-  <section class="section about-band">
-    <div class="container about-grid">
-      <h2 class="serif">About the Builder</h2>
-      <p>
-        Sayyid Khan is a Singapore-based AI builder and software engineer
-        documenting his journey to complete one hundred hackathons while
-        searching for purpose through the things he builds.
-      </p>
+  <section class="builder-band section">
+    <div class="container builder-grid">
+      <div>
+        <p class="meta">About the Builder</p>
+        <h2 class="serif">Builder. Operator in progress.</h2>
+      </div>
+      <div>
+        <p>
+          Sayyid Khan is a Singapore-based AI builder and software engineer
+          using hackathons to test ideas, sharpen execution, explore business
+          opportunities, and document the journey from builder mindset to
+          founder/operator mindset.
+        </p>
+        <ul>
+          <li>AI agents</li>
+          <li>SaaS</li>
+          <li>Automation</li>
+          <li>Developer tooling</li>
+          <li>Sustainability</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="invite-band">
+    <div class="container invite-grid">
+      <div>
+        <h2>Invite me to speak, judge, mentor, or build.</h2>
+        <p>
+          Workshops, hackathon judging, founder conversations, AI prototyping,
+          and sessions for builders learning through execution.
+        </p>
+      </div>
+      <a class="button primary" href="/contact/">Start a Conversation</a>
     </div>
   </section>
 </PageShell>
 
 <style>
   .hero {
-    padding: 70px 0 58px;
+    border-bottom: 1px solid var(--line);
+    padding: 70px 0 54px;
   }
 
   .hero-grid {
     display: grid;
-    grid-template-columns: minmax(0, 0.95fr) minmax(360px, 0.75fr);
-    gap: 48px;
+    grid-template-columns: minmax(0, 0.92fr) minmax(360px, 0.62fr);
+    gap: 56px;
     align-items: center;
   }
 
   h1 {
-    max-width: 850px;
+    max-width: 760px;
     margin: 0;
-    font-size: clamp(4rem, 9vw, 9.8rem);
-    line-height: 0.88;
+    color: var(--ink);
+    font-size: clamp(3.8rem, 5.1vw, 4.9rem);
+    font-weight: 950;
+    letter-spacing: -0.06em;
+    line-height: 0.82;
   }
 
-  .hero-copy p {
-    max-width: 610px;
+  h1 span {
+    display: block;
+  }
+
+  .mission {
+    max-width: 520px;
     margin: 28px 0 0;
     color: var(--muted);
-    font-size: clamp(1.05rem, 2vw, 1.35rem);
-    line-height: 1.7;
+    font-size: clamp(1.06rem, 1.8vw, 1.3rem);
+    line-height: 1.65;
   }
 
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    margin-top: 34px;
+    margin-top: 32px;
   }
 
-  .hero-frame {
-    position: relative;
-    min-height: 520px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    overflow: hidden;
-    background:
-      linear-gradient(145deg, rgba(215, 168, 91, 0.2), transparent 34%),
-      linear-gradient(180deg, #28231d, #100f0d);
-  }
-
-  .hero-frame::before {
-    position: absolute;
-    inset: 0;
-    content: "";
-    background:
-      linear-gradient(115deg, transparent 0 42%, rgba(255, 255, 255, 0.08) 43%, transparent 48%),
-      radial-gradient(circle at 52% 18%, rgba(240, 197, 109, 0.34), transparent 12rem);
-  }
-
-  .screen {
-    position: absolute;
-    top: 11%;
-    right: 8%;
-    left: 8%;
+  .quick-stats {
     display: grid;
-    min-height: 210px;
-    place-content: center;
-    border: 1px solid rgba(242, 238, 229, 0.18);
-    background: rgba(8, 8, 7, 0.64);
-    text-align: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 420px;
+    margin: 34px 0 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
   }
 
-  .screen span {
-    color: var(--faint);
-    font-size: 0.8rem;
-    font-weight: 900;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .screen strong {
-    margin-top: 10px;
-    color: var(--accent-strong);
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 5rem;
-    font-weight: 500;
-  }
-
-  .laptop {
-    position: absolute;
-    right: 11%;
-    bottom: 10%;
-    left: 11%;
-    height: 178px;
-    border: 1px solid rgba(242, 238, 229, 0.16);
-    border-bottom-width: 14px;
-    border-radius: 8px 8px 4px 4px;
-    background: #12110f;
-    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.38);
-  }
-
-  .laptop span {
-    display: block;
-    width: 72%;
-    height: 9px;
-    margin: 24px 0 0 24px;
-    background: rgba(242, 238, 229, 0.1);
-  }
-
-  .laptop span:nth-child(2) {
-    width: 48%;
-    background: rgba(215, 168, 91, 0.42);
-  }
-
-  .laptop span:nth-child(3) {
-    width: 62%;
-  }
-
-  .progress {
-    background: rgba(13, 12, 10, 0.58);
-  }
-
-  .progress-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .progress-grid div {
-    min-height: 132px;
-    padding: 26px 22px;
+  .quick-stats div {
+    padding: 16px 14px;
     border-right: 1px solid var(--line);
   }
 
-  .progress-grid div:first-child {
+  .quick-stats div:first-child {
     border-left: 1px solid var(--line);
   }
 
-  .progress-grid strong {
-    display: block;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: clamp(1.8rem, 3vw, 3.2rem);
-    font-weight: 500;
-    line-height: 1;
+  .quick-stats dt {
+    color: var(--faint);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
-  .progress-grid span {
-    display: block;
-    margin-top: 14px;
+  .quick-stats dd {
+    margin: 6px 0 0;
+    color: var(--ink);
+    font-size: 1.45rem;
+    font-weight: 950;
+    letter-spacing: -0.04em;
+  }
+
+  .progress-board {
+    position: relative;
+    min-height: 430px;
+    padding: 28px;
+    border: 1px solid var(--line-strong);
+    background:
+      linear-gradient(rgba(5, 5, 5, 0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(5, 5, 5, 0.05) 1px, transparent 1px),
+      var(--surface);
+    background-size: 36px 36px;
+    box-shadow: var(--shadow);
+  }
+
+  .progress-board::after {
+    position: absolute;
+    right: 34px;
+    bottom: 28px;
+    width: 125px;
+    height: 125px;
+    border: 1px dashed rgba(5, 5, 5, 0.3);
+    border-radius: 50%;
+    content: "";
+  }
+
+  .progress-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     color: var(--muted);
-    line-height: 1.5;
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
   }
 
-  .featured {
-    background: var(--bg-soft);
+  .progress-topline strong {
+    color: var(--green);
   }
 
-  .featured-grid,
-  .about-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(300px, 0.7fr);
-    gap: 44px;
+  .big-count {
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    margin-top: 54px;
+    color: var(--ink);
+  }
+
+  .big-count span {
+    color: var(--red);
+    font-size: clamp(7rem, 12vw, 11rem);
+    font-weight: 950;
+    letter-spacing: -0.1em;
+    line-height: 0.72;
+  }
+
+  .big-count em {
+    font-size: clamp(2.5rem, 5vw, 4.6rem);
+    font-style: normal;
+    font-weight: 950;
+    letter-spacing: -0.08em;
+  }
+
+  .progress-board p {
+    margin: 30px 0 22px;
+    color: var(--ink);
+    font-size: 1.6rem;
+    font-weight: 900;
+  }
+
+  .meter {
+    height: 14px;
+    border: 1px solid var(--line);
+    background: #ece8dc;
+  }
+
+  .meter span {
+    display: block;
+    height: 100%;
+    background: linear-gradient(90deg, var(--red), var(--blue), var(--teal));
+  }
+
+  .signal-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 26px;
+  }
+
+  .signal {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+  }
+
+  .signal.red {
+    background: var(--red);
+  }
+
+  .signal.blue {
+    background: var(--blue);
+  }
+
+  .signal.teal {
+    background: var(--teal);
+  }
+
+  .signal.yellow {
+    background: var(--yellow);
+  }
+
+  .journey-map {
+    background: var(--bg-paper);
+  }
+
+  .map-panel {
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+
+  .map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    align-items: center;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 850;
+  }
+
+  .map-legend span {
+    display: inline-flex;
+    gap: 8px;
     align-items: center;
   }
 
-  .featured h2,
-  .about-band h2 {
-    margin: 10px 0 0;
-    font-size: clamp(3rem, 7vw, 7rem);
-    line-height: 0.9;
+  .map-legend i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
   }
 
-  .featured p:not(.meta),
-  .about-band p {
-    margin: 0 0 24px;
-    color: var(--muted);
-    font-size: 1.1rem;
-    line-height: 1.8;
+  .map-legend .complete {
+    background: var(--teal);
   }
 
-  .builds-section {
-    background: rgba(31, 28, 24, 0.38);
+  .map-legend .current {
+    background: var(--red);
   }
 
-  .about-band {
+  .map-legend .milestone {
+    background: var(--yellow);
+  }
+
+  .map-legend .future {
+    border: 1px solid var(--line-strong);
+    background: white;
+  }
+
+  .checkpoint-grid {
+    display: grid;
+    grid-template-columns: repeat(20, minmax(0, 1fr));
+    gap: 0;
+    padding: 22px;
+  }
+
+  .checkpoint {
+    display: grid;
+    min-height: 48px;
+    place-items: center;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    color: var(--faint);
+    font-size: 0.72rem;
+    font-weight: 900;
+    transition:
+      background 140ms ease,
+      color 140ms ease,
+      transform 140ms ease;
+  }
+
+  .checkpoint:hover {
+    position: relative;
+    z-index: 2;
+    transform: scale(1.08);
+  }
+
+  .checkpoint.complete {
+    border-color: rgba(7, 155, 145, 0.5);
+    background: rgba(7, 155, 145, 0.18);
+    color: #05635d;
+  }
+
+  .checkpoint.current {
+    background: var(--red);
+    color: white;
+  }
+
+  .checkpoint.milestone {
+    background: rgba(245, 181, 27, 0.22);
+    color: #8a5f00;
+  }
+
+  .map-note {
+    display: flex;
+    gap: 18px;
+    justify-content: space-between;
+    padding: 18px 20px;
     border-top: 1px solid var(--line);
-    background: #0d0c0a;
+    background: var(--black);
+    color: white;
   }
 
-  @media (max-width: 900px) {
-    .hero {
-      padding-top: 50px;
-    }
+  .map-note strong {
+    color: var(--yellow);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
 
+  .field-report {
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .report-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.82fr) minmax(340px, 0.72fr);
+    gap: 52px;
+    align-items: center;
+  }
+
+  .report-visual {
+    padding: 20px;
+    border: 1px solid var(--line-strong);
+    background: var(--black);
+  }
+
+  .game-card {
+    min-height: 420px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background:
+      linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px),
+      #06130f;
+    background-size: 38px 38px;
+    color: white;
+  }
+
+  .game-header,
+  .game-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    color: var(--yellow);
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .game-grid {
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 8px;
+    padding: 18px;
+  }
+
+  .game-grid span {
+    min-height: 36px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  .game-grid .hot {
+    background: rgba(237, 28, 36, 0.78);
+  }
+
+  .game-grid .cool {
+    background: rgba(7, 155, 145, 0.82);
+  }
+
+  .report-copy h2 {
+    margin: 12px 0 0;
+    color: var(--ink);
+    font-size: clamp(3rem, 6vw, 6.6rem);
+    line-height: 0.88;
+  }
+
+  .report-copy p {
+    color: var(--muted);
+    font-size: 1.06rem;
+    line-height: 1.75;
+  }
+
+  .report-copy .lesson {
+    color: var(--ink);
+    font-size: 1.35rem;
+    font-weight: 850;
+    line-height: 1.35;
+  }
+
+  .stack-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 26px 0;
+  }
+
+  .stack-row span {
+    border-top: 2px solid var(--line-strong);
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 900;
+    padding-top: 8px;
+  }
+
+  .lesson-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .lesson-card {
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    padding: 22px;
+  }
+
+  .lesson-card span {
+    font-size: 0.82rem;
+    font-weight: 950;
+  }
+
+  .lesson-card h3 {
+    margin: 54px 0 12px;
+    color: var(--ink);
+    font-size: clamp(1.28rem, 2vw, 1.9rem);
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .lesson-card p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .lesson-card.red {
+    border-top: 5px solid var(--red);
+  }
+
+  .lesson-card.blue {
+    border-top: 5px solid var(--blue);
+  }
+
+  .lesson-card.teal {
+    border-top: 5px solid var(--teal);
+  }
+
+  .lesson-card.yellow {
+    border-top: 5px solid var(--yellow);
+  }
+
+  .archive-strip {
+    background: var(--bg-paper);
+  }
+
+  .build-table {
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .build-row {
+    display: grid;
+    grid-template-columns: 90px 1.2fr 1fr 0.9fr 1.1fr;
+    gap: 18px;
+    align-items: center;
+    min-height: 68px;
+    border-bottom: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.88rem;
+  }
+
+  .build-row strong {
+    color: var(--ink);
+    font-size: 1rem;
+  }
+
+  .table-head {
+    min-height: 42px;
+    color: var(--faint);
+    font-size: 0.68rem;
+    font-weight: 950;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .status {
+    display: inline-flex;
+    width: fit-content;
+    padding: 6px 9px;
+    background: rgba(31, 157, 85, 0.12);
+    color: #116437;
+    font-size: 0.74rem;
+    font-weight: 900;
+  }
+
+  .notes-list {
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .note-row {
+    display: grid;
+    grid-template-columns: 150px minmax(220px, 0.75fr) minmax(260px, 1fr);
+    gap: 24px;
+    align-items: start;
+    padding: 24px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .note-row time {
+    color: var(--faint);
+    font-size: 0.8rem;
+    font-weight: 850;
+  }
+
+  .note-row strong {
+    color: var(--ink);
+    font-size: 1.28rem;
+    letter-spacing: -0.04em;
+    line-height: 1.05;
+  }
+
+  .note-row span {
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .builder-band {
+    background: var(--surface-warm);
+  }
+
+  .builder-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.7fr) minmax(320px, 0.8fr);
+    gap: 54px;
+    align-items: start;
+  }
+
+  .builder-grid h2 {
+    max-width: 560px;
+    margin: 12px 0 0;
+    color: var(--ink);
+    font-size: clamp(3rem, 7vw, 7rem);
+    line-height: 0.88;
+  }
+
+  .builder-grid p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 1.08rem;
+    line-height: 1.75;
+  }
+
+  .builder-grid ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 28px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .builder-grid li {
+    padding: 9px 12px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    font-size: 0.78rem;
+    font-weight: 900;
+  }
+
+  .invite-band {
+    padding: 44px 0;
+    background: var(--black);
+    color: white;
+  }
+
+  .invite-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 28px;
+    align-items: center;
+  }
+
+  .invite-grid h2 {
+    max-width: 760px;
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 4.8rem);
+    letter-spacing: -0.065em;
+    line-height: 0.95;
+  }
+
+  .invite-grid p {
+    max-width: 680px;
+    margin: 14px 0 0;
+    color: rgba(255, 255, 255, 0.68);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 980px) {
     .hero-grid,
-    .featured-grid,
-    .about-grid {
+    .report-grid,
+    .builder-grid {
       grid-template-columns: 1fr;
     }
 
-    .hero-frame {
-      min-height: 390px;
+    .progress-board {
+      min-height: 430px;
     }
 
-    .progress-grid {
+    .checkpoint-grid {
+      grid-template-columns: repeat(10, minmax(0, 1fr));
+    }
+
+    .lesson-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-  }
 
-  @media (max-width: 560px) {
-    h1 {
-      font-size: clamp(3.2rem, 18vw, 5rem);
+    .build-row {
+      grid-template-columns: 70px 1.2fr 1fr;
     }
 
-    .progress-grid {
+    .build-row span:nth-child(4),
+    .build-row span:nth-child(5) {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      padding: 48px 0;
+    }
+
+    h1 {
+      font-size: clamp(3rem, 14vw, 3.5rem);
+      line-height: 0.86;
+    }
+
+    .quick-stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .quick-stats div:nth-child(2) {
+      border-right: 1px solid var(--line);
+    }
+
+    .progress-board {
+      min-height: 360px;
+      padding: 22px;
+    }
+
+    .progress-board::after {
+      width: 110px;
+      height: 110px;
+    }
+
+    .big-count {
+      margin-top: 48px;
+    }
+
+    .checkpoint-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      padding: 14px;
+    }
+
+    .checkpoint {
+      min-height: 42px;
+    }
+
+    .map-note,
+    .invite-grid {
+      grid-template-columns: 1fr;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .game-card {
+      min-height: 300px;
+    }
+
+    .game-grid {
+      gap: 5px;
+      padding: 12px;
+    }
+
+    .game-grid span {
+      min-height: 25px;
+    }
+
+    .lesson-grid,
+    .note-row {
       grid-template-columns: 1fr;
     }
 
-    .progress-grid div,
-    .progress-grid div:first-child {
-      border-right: 1px solid var(--line);
-      border-left: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
+    .build-row {
+      grid-template-columns: 64px 1fr;
+      gap: 12px;
+      padding: 14px 0;
+    }
+
+    .build-row span:nth-child(3) {
+      display: none;
+    }
+
+    .table-head {
+      display: none;
     }
   }
 </style>

@@ -2,13 +2,13 @@
 import PageShell from "../components/PageShell.astro";
 ---
 
-<PageShell title="Contact | The Things We Build in 48 Hours">
+<PageShell title="Contact | The 100 Hackathoner">
   <section class="contact container">
     <div>
-      <h1 class="serif">Invite me into the room where builders gather.</h1>
+      <h1>Invite me into the room where builders gather.</h1>
       <p>
         Speaking, mentoring, judging, AI workshops, hackathon programming, and
-        collaborations around fast prototyping and builder culture.
+        collaborations around fast prototyping, AI agents, and builder culture.
       </p>
     </div>
     <form action="mailto:hello@example.com" method="post" enctype="text/plain">
@@ -35,29 +35,32 @@ import PageShell from "../components/PageShell.astro";
     grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.65fr);
     gap: 54px;
     align-items: start;
-    padding: 82px 0 110px;
+    padding: 86px 0 112px;
   }
 
   h1 {
     margin: 0;
-    font-size: clamp(3.3rem, 8vw, 8.8rem);
-    line-height: 0.9;
+    color: var(--ink);
+    font-size: clamp(4rem, 9vw, 9rem);
+    font-weight: 950;
+    letter-spacing: -0.075em;
+    line-height: 0.84;
   }
 
   p {
-    max-width: 690px;
+    max-width: 700px;
     margin: 28px 0 0;
     color: var(--muted);
     font-size: 1.12rem;
-    line-height: 1.8;
+    line-height: 1.75;
   }
 
   form {
     display: grid;
     gap: 16px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: rgba(31, 28, 24, 0.74);
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    box-shadow: var(--shadow);
     padding: 24px;
   }
 
@@ -65,18 +68,19 @@ import PageShell from "../components/PageShell.astro";
     display: grid;
     gap: 8px;
     color: var(--muted);
-    font-size: 0.84rem;
-    font-weight: 800;
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   input,
   textarea {
     width: 100%;
     border: 1px solid var(--line);
-    border-radius: 6px;
-    background: #12110f;
+    border-radius: 0;
+    background: var(--bg-paper);
     color: var(--text);
-    font: inherit;
     padding: 13px 12px;
   }
 

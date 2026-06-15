@@ -1,10 +1,10 @@
 ---
-title: "What 48 Hours Can Teach You"
+title: "What Deadline Pressure Teaches You"
 date: "2026-05-10"
-description: "The small lessons that only appear when the deadline is close and the prototype is still unfinished."
+description: "The small lessons that only appear when judging is close and the prototype is still unfinished."
 ---
 
-## What 48 Hours Can Teach You
+## What Deadline Pressure Teaches You
 
 Forty-eight hours is long enough to make something real and short enough to remove excuses.
 

@@ -1,0 +1,88 @@
+---
+import { getCollection, render } from "astro:content";
+import PageShell from "../../components/PageShell.astro";
+import Prose from "../../components/Prose.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("principles");
+  return entries
+    .filter((entry) => !entry.data.draft)
+    .map((entry) => ({
+      params: { slug: entry.slug },
+      props: { entry },
+    }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<PageShell title={`${entry.data.title} | Principles`}>
+  <Prose>
+    <p class="meta">Principle #{String(entry.data.number).padStart(3, "0")} · {entry.data.theme}</p>
+    <h1>{entry.data.title}</h1>
+    <p>{entry.data.statement}</p>
+    <div class="entry-summary">
+      <div>
+        <span class="meta">Captured</span>
+        <strong>{entry.data.date}</strong>
+      </div>
+      {
+        entry.data.evidence && (
+          <div>
+            <span class="meta">Evidence</span>
+            <strong>{entry.data.evidence}</strong>
+          </div>
+        )
+      }
+      {
+        entry.data.relatedHackathons?.length && (
+          <div>
+            <span class="meta">Related</span>
+            <strong>
+              {entry.data.relatedHackathons
+                .map((number) => `#${String(number).padStart(3, "0")}`)
+                .join(" · ")}
+            </strong>
+          </div>
+        )
+      }
+    </div>
+    <Content />
+  </Prose>
+</PageShell>
+
+<style>
+  .entry-summary {
+    display: grid;
+    gap: 0;
+    margin: 32px 0 18px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .entry-summary div {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr);
+    gap: 18px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .entry-summary div:last-child {
+    border-bottom: 0;
+  }
+
+  strong {
+    color: var(--ink);
+    font-weight: 850;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 620px) {
+    .entry-summary div {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+  }
+</style>

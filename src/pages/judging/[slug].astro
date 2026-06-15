@@ -4,34 +4,36 @@ import PageShell from "../../components/PageShell.astro";
 import Prose from "../../components/Prose.astro";
 
 export async function getStaticPaths() {
-  const entries = await getCollection("hackathons");
-  return entries.map((entry) => ({
-    params: { slug: entry.slug },
-    props: { entry },
-  }));
+  const entries = await getCollection("judging");
+  return entries
+    .filter((entry) => !entry.data.draft)
+    .map((entry) => ({
+      params: { slug: entry.slug },
+      props: { entry },
+    }));
 }
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
 
-<PageShell title={`${entry.data.title} | The 100 Hackathoner`}>
+<PageShell title={`${entry.data.event} | Judging Log`}>
   <Prose>
-    <p class="meta">Hackathon #{entry.data.number} · {entry.data.event}</p>
-    <h1>{entry.data.title}</h1>
+    <p class="meta">{entry.data.date} · {entry.data.role}</p>
+    <h1>{entry.data.event}</h1>
     <p>{entry.data.lesson}</p>
-    <div class="build-summary">
+    <div class="entry-summary">
       <div>
-        <span class="meta">Build</span>
-        <strong>{entry.data.project}</strong>
+        <span class="meta">Domain</span>
+        <strong>{entry.data.domain}</strong>
       </div>
       <div>
-        <span class="meta">Result</span>
-        <strong>{entry.data.result}</strong>
+        <span class="meta">Criteria</span>
+        <strong>{entry.data.criteria.join(" · ")}</strong>
       </div>
       <div>
-        <span class="meta">Stack</span>
-        <strong>{entry.data.stack.join(" · ")}</strong>
+        <span class="meta">Patterns</span>
+        <strong>{entry.data.patterns.join(" · ")}</strong>
       </div>
     </div>
     <Content />
@@ -39,7 +41,7 @@ const { Content } = await render(entry);
 </PageShell>
 
 <style>
-  .build-summary {
+  .entry-summary {
     display: grid;
     gap: 0;
     margin: 32px 0 18px;
@@ -47,7 +49,7 @@ const { Content } = await render(entry);
     border-bottom: 1px solid var(--line);
   }
 
-  .build-summary div {
+  .entry-summary div {
     display: grid;
     grid-template-columns: 120px minmax(0, 1fr);
     gap: 18px;
@@ -55,7 +57,7 @@ const { Content } = await render(entry);
     border-bottom: 1px solid var(--line);
   }
 
-  .build-summary div:last-child {
+  .entry-summary div:last-child {
     border-bottom: 0;
   }
 
@@ -66,7 +68,7 @@ const { Content } = await render(entry);
   }
 
   @media (max-width: 620px) {
-    .build-summary div {
+    .entry-summary div {
       grid-template-columns: 1fr;
       gap: 6px;
     }

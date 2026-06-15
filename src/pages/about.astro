@@ -2,28 +2,29 @@
 import PageShell from "../components/PageShell.astro";
 ---
 
-<PageShell title="About | The Things We Build in 48 Hours">
+<PageShell title="About | The 100 Hackathoner">
   <section class="page-hero container">
-    <h1 class="serif">A builder learning in public, one deadline at a time.</h1>
+    <h1>Learning in public, one hackathon at a time.</h1>
     <p>
-      Sayyid Khan is a Singapore-based AI builder and software engineer
-      documenting his journey to complete one hundred hackathons while searching
-      for purpose through the things he builds.
+      Sayyid Khan is a Singapore-based AI builder documenting the road to 100
+      hackathons while moving from builder mindset toward founder/operator
+      judgement.
     </p>
   </section>
 
   <section class="section rail">
     <div class="container split">
-      <h2 class="serif">Why hackathons?</h2>
+      <h2 class="serif">Why this exists</h2>
       <div>
         <p>
-          Hackathons make ambition visible. They turn vague interests into
-          prototypes, teams into pressure systems, and ideas into moments where
-          someone else can finally react.
+          Most portfolios show outcomes. This site keeps the whole record: the
+          idea, the people, the chaos, the build, the failure, the win, and the
+          lesson.
         </p>
         <p>
-          This site exists to keep the full record: the idea, the people, the
-          chaos, the build, the failure, the win, and the lesson.
+          Hackathons compress ambition into a deadline. They reveal whether a
+          problem matters, whether the prototype works, whether the story lands,
+          and whether the builder is becoming sharper.
         </p>
       </div>
     </div>
@@ -43,41 +44,45 @@ import PageShell from "../components/PageShell.astro";
 
 <style>
   .page-hero {
-    padding: 78px 0 90px;
+    padding: 86px 0 92px;
   }
 
   h1 {
     max-width: 980px;
     margin: 0;
-    font-size: clamp(3.3rem, 8vw, 8.5rem);
-    line-height: 0.9;
+    color: var(--ink);
+    font-size: clamp(4rem, 9vw, 9rem);
+    font-weight: 950;
+    letter-spacing: -0.075em;
+    line-height: 0.84;
   }
 
   .page-hero p {
-    max-width: 720px;
+    max-width: 760px;
     margin: 28px 0 0;
     color: var(--muted);
-    font-size: 1.15rem;
-    line-height: 1.8;
+    font-size: 1.16rem;
+    line-height: 1.75;
   }
 
   .split {
     display: grid;
     grid-template-columns: minmax(0, 0.7fr) minmax(300px, 0.85fr);
-    gap: 42px;
+    gap: 48px;
   }
 
   h2 {
     margin: 0;
-    font-size: clamp(2.4rem, 5vw, 5.4rem);
-    line-height: 0.95;
+    color: var(--ink);
+    font-size: clamp(2.6rem, 5vw, 5.6rem);
+    line-height: 0.92;
   }
 
   p {
     margin: 0 0 18px;
     color: var(--muted);
     font-size: 1.05rem;
-    line-height: 1.8;
+    line-height: 1.75;
   }
 
   .beliefs ul {
@@ -91,10 +96,27 @@ import PageShell from "../components/PageShell.astro";
 
   li {
     min-height: 150px;
-    border-top: 1px solid var(--line);
+    border-top: 5px solid var(--red);
+    background: var(--surface);
     color: var(--muted);
     line-height: 1.55;
-    padding-top: 18px;
+    padding: 18px;
+  }
+
+  li:nth-child(2) {
+    border-color: var(--blue);
+  }
+
+  li:nth-child(3) {
+    border-color: var(--teal);
+  }
+
+  li:nth-child(4) {
+    border-color: var(--yellow);
+  }
+
+  li:nth-child(5) {
+    border-color: var(--black);
   }
 
   @media (max-width: 900px) {

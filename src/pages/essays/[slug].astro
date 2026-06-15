@@ -15,7 +15,7 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
 
-<PageShell title={`${entry.data.title} | Essays`}>
+<PageShell title={`${entry.data.title} | The 100 Hackathoner`}>
   <Prose>
     <p class="meta">{entry.data.date}</p>
     <h1>{entry.data.title}</h1>

@@ -8,12 +8,12 @@ const hackathons = (await getCollection("hackathons")).sort(
 );
 ---
 
-<PageShell title="Hackathons | The Things We Build in 48 Hours">
+<PageShell title="Journey Map | The 100 Hackathoner">
   <section class="archive-hero container">
-    <h1 class="serif">Hackathon Archive</h1>
+    <h1>Journey Map</h1>
     <p>
-      A running record of the one hundred hackathon journey: what was built,
-      lessons, outcomes, stacks, and the pressure that shaped them.
+      A running record of the 100-hackathon journey: what was built, what broke,
+      what shipped, and the lesson that stayed after demo day.
     </p>
   </section>
   <section class="section container">
@@ -23,20 +23,23 @@ const hackathons = (await getCollection("hackathons")).sort(
 
 <style>
   .archive-hero {
-    padding: 76px 0 26px;
+    padding: 82px 0 30px;
   }
 
   h1 {
     margin: 0;
-    font-size: clamp(3.5rem, 9vw, 9rem);
-    line-height: 0.9;
+    color: var(--ink);
+    font-size: clamp(4rem, 10vw, 10rem);
+    font-weight: 950;
+    letter-spacing: -0.08em;
+    line-height: 0.82;
   }
 
   p {
-    max-width: 700px;
+    max-width: 760px;
     margin: 24px 0 0;
     color: var(--muted);
-    font-size: 1.1rem;
+    font-size: 1.12rem;
     line-height: 1.75;
   }
 </style>
