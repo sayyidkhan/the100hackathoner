@@ -12,6 +12,15 @@ const pathname = Astro.url.pathname;
 ---
 
 <header class="site-header">
+  <div class="beta-banner" aria-label="Site status">
+    <div class="container beta-inner">
+      <span>Open beta</span>
+      <p>
+        This site is still a work in progress. More notes and context are being
+        documented over the coming weeks.
+      </p>
+    </div>
+  </div>
   <div class="container header-inner">
     <a class="brand" href="/" aria-label="The 100 Hackathoner">
       <span>100</span>
@@ -38,6 +47,42 @@ const pathname = Astro.url.pathname;
     border-bottom: 1px solid var(--line);
     background: rgba(247, 245, 239, 0.9);
     backdrop-filter: blur(18px);
+  }
+
+  .beta-banner {
+    border-bottom: 1px solid rgba(14, 18, 18, 0.1);
+    background: var(--yellow);
+    color: var(--black);
+  }
+
+  .beta-inner {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding-block: 7px;
+    text-align: center;
+  }
+
+  .beta-inner span {
+    flex: 0 0 auto;
+    padding: 3px 7px;
+    border: 1px solid var(--black);
+    border-radius: 3px;
+    background: var(--black);
+    color: white;
+    font-size: 0.68rem;
+    font-weight: 950;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .beta-inner p {
+    margin: 0;
+    font-size: 0.82rem;
+    font-weight: 750;
+    line-height: 1.35;
   }
 
   .header-inner {
@@ -128,6 +173,11 @@ const pathname = Astro.url.pathname;
   }
 
   @media (max-width: 860px) {
+    .beta-inner {
+      justify-content: flex-start;
+      text-align: left;
+    }
+
     .header-inner {
       grid-template-columns: 1fr auto;
       gap: 12px;
@@ -146,6 +196,16 @@ const pathname = Astro.url.pathname;
   }
 
   @media (max-width: 480px) {
+    .beta-inner {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .beta-inner p {
+      font-size: 0.76rem;
+    }
+
     .brand strong {
       max-width: 180px;
     }
