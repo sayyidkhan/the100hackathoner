@@ -1,0 +1,355 @@
+---
+import type { Hackathon } from "../lib/hackathons";
+import {
+  buildAwards,
+  buildCountryStats,
+  buildGrid,
+  buildMonthStats,
+  buildPeopleStats,
+  buildTagStats,
+  buildTotals,
+  buildVenueStats,
+  buildYearStats,
+} from "../lib/insights";
+import HundredGrid from "./infographic/HundredGrid.astro";
+import YearCadence from "./infographic/YearCadence.astro";
+import MomentumChart from "./infographic/MomentumChart.astro";
+import MonthPulse from "./infographic/MonthPulse.astro";
+import AwardWall from "./infographic/AwardWall.astro";
+import BarRanking from "./infographic/BarRanking.astro";
+
+interface Props {
+  items: Hackathon[];
+  goal?: number;
+}
+
+const { items, goal = 100 } = Astro.props;
+
+const totals = buildTotals(items, goal);
+const yearStats = buildYearStats(items);
+const monthStats = buildMonthStats(items);
+const grid = buildGrid(items, goal);
+const awards = buildAwards(items);
+const tags = buildTagStats(items, 10);
+const people = buildPeopleStats(items, 8);
+const venues = buildVenueStats(items, 8);
+const countries = buildCountryStats(items);
+
+const activeYears = yearStats.filter((stat) => !stat.dormant);
+const peakYear = activeYears.reduce(
+  (best, stat) => (stat.total > best.total ? stat : best),
+  activeYears[0],
+);
+const peakMonth = monthStats.reduce(
+  (best, stat) => (stat.count > best.count ? stat : best),
+  monthStats[0],
+);
+const dormantYears = yearStats.filter((stat) => stat.dormant);
+const topVenue = venues[0];
+const awardRate = Math.round((totals.awarded / totals.logged) * 100);
+const avgDays = Math.round((totals.days / totals.logged) * 10) / 10;
+
+const headline = [
+  { value: String(totals.days), label: "Days spent building", note: `≈ ${totals.months} months` },
+  { value: String(avgDays), label: "Avg days per build", note: "start to demo" },
+  { value: String(totals.events), label: "Distinct events", note: `${totals.venues} venues` },
+  { value: `${awardRate}%`, label: "Award rate", note: `${totals.awarded} of ${totals.logged}` },
+];
+
+const panels = [
+  {
+    id: "grid",
+    title: "The board",
+    copy: `${totals.logged} of ${goal} squares filled, ${totals.remaining} to go. Every filled square links to the build; gold marks a podium finish or prize.`,
+  },
+  {
+    id: "cadence",
+    title: "Cadence",
+    copy: `Builds per year since ${totals.firstYear}. ${peakYear.year} is the peak at ${peakYear.total}, and ${dormantYears.length} dormant years sit in the middle of the run.`,
+  },
+  {
+    id: "momentum",
+    title: "Momentum",
+    copy: `The climb toward ${goal}. Over half the total was logged in the last two years alone.`,
+  },
+  {
+    id: "season",
+    title: "Seasonality",
+    copy: `Which months the starting guns go off. ${peakMonth.name} is busiest with ${peakMonth.count} builds.`,
+  },
+  {
+    id: "trophies",
+    title: "Trophy case",
+    copy: `${totals.awarded} builds finished with something to show for them — ${totals.podium} on a podium, ${totals.wins} outright wins.`,
+  },
+  {
+    id: "themes",
+    title: "What gets built",
+    copy: `Recurring themes across ${totals.events} events, from data analytics in the early years to agentic AI now.`,
+  },
+  {
+    id: "crew",
+    title: "Who builds it",
+    copy: `${totals.soloBuilds} solo runs, ${totals.teamBuilds} with a team, and ${totals.collaborators} people who have shared a table along the way.`,
+  },
+  {
+    id: "places",
+    title: "Where it happens",
+    copy: `${totals.venues} venues across ${totals.countries} countries.${topVenue ? ` ${topVenue.label} has hosted ${topVenue.count}.` : ""}`,
+  },
+];
+
+const panelIndex = (id: string) =>
+  String(panels.findIndex((panel) => panel.id === id) + 1).padStart(2, "0");
+const panelFor = (id: string) => panels.find((panel) => panel.id === id)!;
+---
+
+<div class="infographic">
+  <dl class="headline">
+    {
+      headline.map((stat) => (
+        <div>
+          <dd>{stat.value}</dd>
+          <dt>{stat.label}</dt>
+          <p>{stat.note}</p>
+        </div>
+      ))
+    }
+  </dl>
+
+  {
+    panels.map((panel) => (
+      <section class="panel" id={`panel-${panel.id}`}>
+        <header>
+          <span class="index">{panelIndex(panel.id)}</span>
+          <h2>{panel.title}</h2>
+          <p>{panel.copy}</p>
+        </header>
+
+        <div class="plot">
+          {panel.id === "grid" && <HundredGrid cells={grid} />}
+          {panel.id === "cadence" && <YearCadence stats={yearStats} />}
+          {panel.id === "momentum" && <MomentumChart stats={yearStats} goal={goal} />}
+          {panel.id === "season" && <MonthPulse months={monthStats} />}
+          {panel.id === "trophies" && <AwardWall awards={awards} />}
+          {panel.id === "themes" && <BarRanking items={tags} accent="blue" labelWidth="minmax(0, 190px)" />}
+
+          {panel.id === "crew" && (
+            <div class="crew">
+              <div class="split">
+                <span
+                  class="solo"
+                  style={`--share:${totals.soloBuilds / totals.logged}`}
+                >
+                  <b>{totals.soloBuilds}</b> solo
+                </span>
+                <span
+                  class="team"
+                  style={`--share:${totals.teamBuilds / totals.logged}`}
+                >
+                  <b>{totals.teamBuilds}</b> with a team
+                </span>
+              </div>
+              <p class="plot-note">Most frequent teammates</p>
+              <BarRanking items={people} accent="teal" labelWidth="minmax(0, 150px)" />
+            </div>
+          )}
+
+          {panel.id === "places" && (
+            <div class="places">
+              <div>
+                <p class="plot-note">Top venues</p>
+                <BarRanking items={venues} labelWidth="minmax(0, 210px)" />
+              </div>
+              <div>
+                <p class="plot-note">By country</p>
+                <BarRanking items={countries} accent="gold" labelWidth="minmax(0, 110px)" />
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+    ))
+  }
+</div>
+
+<style>
+  /* Headline numbers ---------------------------------------------------- */
+
+  .headline {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    margin: 0 0 8px;
+    background: var(--line);
+  }
+
+  .headline > div {
+    padding: 20px 20px 22px;
+    background: var(--bg);
+  }
+
+  .headline dd {
+    margin: 0;
+    color: var(--ink);
+    font-size: clamp(2.1rem, 4vw, 3.1rem);
+    font-weight: 950;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.06em;
+    line-height: 0.92;
+  }
+
+  .headline dt {
+    margin-top: 10px;
+    color: var(--ink);
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .headline p {
+    margin: 5px 0 0;
+    color: var(--faint);
+    font-size: 0.76rem;
+    font-weight: 750;
+  }
+
+  /* Panels -------------------------------------------------------------- */
+
+  .panel {
+    display: grid;
+    grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+    gap: 46px;
+    padding: 46px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .panel header {
+    position: sticky;
+    top: calc(var(--header-h) + 26px);
+    align-self: start;
+  }
+
+  .index {
+    display: block;
+    color: var(--red);
+    font-size: 0.78rem;
+    font-weight: 950;
+    letter-spacing: 0.14em;
+  }
+
+  .panel h2 {
+    margin: 10px 0 0;
+    color: var(--ink);
+    font-size: clamp(1.7rem, 3.2vw, 2.5rem);
+    font-weight: 950;
+    letter-spacing: -0.05em;
+    line-height: 0.98;
+  }
+
+  .panel header p {
+    max-width: 40ch;
+    margin: 14px 0 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.65;
+  }
+
+  .plot {
+    min-width: 0;
+  }
+
+  .plot-note {
+    margin: 0 0 14px;
+    color: var(--faint);
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* Crew ---------------------------------------------------------------- */
+
+  .crew .split {
+    display: flex;
+    overflow: hidden;
+    margin-bottom: 34px;
+    border-radius: 4px;
+  }
+
+  .split span {
+    display: flex;
+    gap: 7px;
+    align-items: baseline;
+    padding: 15px 16px;
+    font-size: 0.8rem;
+    font-weight: 850;
+    white-space: nowrap;
+  }
+
+  .split b {
+    font-size: 1.25rem;
+    font-weight: 950;
+    letter-spacing: -0.04em;
+  }
+
+  .split .solo {
+    width: calc(var(--share) * 100%);
+    background: var(--ink);
+    color: rgba(255, 255, 255, 0.88);
+  }
+
+  .split .team {
+    width: calc(var(--share) * 100%);
+    background: var(--teal);
+    color: rgba(255, 255, 255, 0.94);
+  }
+
+  /* Places -------------------------------------------------------------- */
+
+  .places {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: 40px;
+  }
+
+  @media (max-width: 1000px) {
+    .panel {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 28px;
+    }
+
+    .panel header {
+      position: static;
+    }
+
+    .panel header p {
+      max-width: 62ch;
+    }
+
+    .places {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 30px;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .headline {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .panel {
+      padding: 34px 0;
+    }
+
+    .split span {
+      padding: 12px 11px;
+      font-size: 0.7rem;
+    }
+
+    .split b {
+      font-size: 1rem;
+    }
+  }
+</style>

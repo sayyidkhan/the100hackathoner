@@ -1,0 +1,236 @@
+---
+import type { YearStat } from "../../lib/insights";
+
+interface Props {
+  stats: YearStat[];
+  goal?: number;
+}
+
+const { stats, goal = 100 } = Astro.props;
+
+const W = 1000;
+const H = 340;
+const PAD = { top: 26, right: 58, bottom: 46, left: 46 };
+const innerW = W - PAD.left - PAD.right;
+const innerH = H - PAD.top - PAD.bottom;
+
+const x = (index: number) =>
+  stats.length < 2
+    ? PAD.left + innerW / 2
+    : PAD.left + (index / (stats.length - 1)) * innerW;
+
+const y = (value: number) => PAD.top + innerH - (value / goal) * innerH;
+
+const points = stats.map((stat, index) => ({
+  ...stat,
+  cx: x(index),
+  cy: y(stat.cumulative),
+}));
+
+const line = points.map((point) => `${point.cx},${point.cy}`).join(" ");
+const area = `${PAD.left},${y(0)} ${line} ${points.at(-1)!.cx},${y(0)}`;
+const gridValues = [25, 50, 75];
+const finalPoint = points.at(-1)!;
+
+// Contiguous runs of dormant years, used to shade and annotate the hiatus.
+const dormantRuns: { start: number; end: number }[] = [];
+stats.forEach((stat, index) => {
+  if (!stat.dormant) return;
+  const last = dormantRuns.at(-1);
+  if (last && last.end === index - 1) last.end = index;
+  else dormantRuns.push({ start: index, end: index });
+});
+
+const longestRun = dormantRuns
+  .slice()
+  .sort((a, b) => b.end - b.start - (a.end - a.start))
+  .at(0);
+const halfStep = stats.length > 1 ? innerW / (stats.length - 1) / 2 : 0;
+---
+
+<figure class="momentum">
+  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="momentum-caption">
+    {
+      dormantRuns.map((run) => (
+        <rect
+          class="dormant-band"
+          x={x(run.start) - halfStep}
+          y={PAD.top}
+          width={x(run.end) - x(run.start) + halfStep * 2}
+          height={innerH}
+        />
+      ))
+    }
+
+    {
+      gridValues.map((value) => (
+        <>
+          <line class="grid" x1={PAD.left} x2={W - PAD.right} y1={y(value)} y2={y(value)} />
+          <text class="axis" x={W - PAD.right + 8} y={y(value) + 5}>
+            {value}
+          </text>
+        </>
+      ))
+    }
+
+    <line class="goal" x1={PAD.left} x2={W - PAD.right} y1={y(goal)} y2={y(goal)} />
+    <text class="goal-label" x={W - PAD.right + 8} y={y(goal) + 5}>{goal}</text>
+
+    <line class="base" x1={PAD.left} x2={W - PAD.right} y1={y(0)} y2={y(0)} />
+
+    <polygon class="area" points={area} />
+    <polyline class="line" points={line} />
+
+    {
+      points.map((point) => (
+        <>
+          <circle
+            class:list={["dot", { dormant: point.dormant }]}
+            cx={point.cx}
+            cy={point.cy}
+            r={point.dormant ? 4 : 6}
+          />
+          <text class="year" x={point.cx} y={H - 16}>
+            {point.year}
+          </text>
+        </>
+      ))
+    }
+
+    <text class="total" x={finalPoint.cx - 16} y={finalPoint.cy - 16}>
+      {finalPoint.cumulative}
+    </text>
+
+    {
+      longestRun && (
+        <text
+          class="annotation"
+          x={(x(longestRun.start) + x(longestRun.end)) / 2}
+          y={y(0) - 18}
+        >
+          {longestRun.end - longestRun.start + 1} years dormant
+        </text>
+      )
+    }
+  </svg>
+
+  <figcaption id="momentum-caption">
+    Cumulative hackathons completed by the end of each year, against the target
+    of {goal}.
+  </figcaption>
+</figure>
+
+<style>
+  svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .dormant-band {
+    fill: rgba(14, 18, 18, 0.04);
+  }
+
+  .grid {
+    stroke: var(--line);
+    stroke-dasharray: 3 6;
+    stroke-width: 1;
+  }
+
+  .base {
+    stroke: var(--line-strong);
+    stroke-width: 2;
+  }
+
+  .goal {
+    stroke: var(--red);
+    stroke-dasharray: 8 6;
+    stroke-width: 2;
+  }
+
+  .area {
+    fill: rgba(237, 28, 36, 0.09);
+  }
+
+  .line {
+    fill: none;
+    stroke: var(--red);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 3.5;
+  }
+
+  .dot {
+    fill: var(--red);
+    stroke: var(--bg-paper);
+    stroke-width: 2.5;
+  }
+
+  .dot.dormant {
+    fill: var(--faint);
+  }
+
+  .axis,
+  .year,
+  .goal-label,
+  .annotation,
+  .total {
+    font-family: inherit;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .axis {
+    fill: var(--faint);
+    font-size: 15px;
+    font-weight: 800;
+  }
+
+  .goal-label {
+    fill: var(--red);
+    font-size: 17px;
+    font-weight: 950;
+  }
+
+  .year {
+    fill: var(--muted);
+    font-size: 16px;
+    font-weight: 850;
+    text-anchor: middle;
+  }
+
+  .total {
+    fill: var(--ink);
+    font-size: 30px;
+    font-weight: 950;
+    letter-spacing: -0.04em;
+    text-anchor: end;
+  }
+
+  .annotation {
+    fill: var(--faint);
+    font-size: 15px;
+    font-weight: 850;
+    letter-spacing: 0.06em;
+    text-anchor: middle;
+    text-transform: uppercase;
+  }
+
+  figcaption {
+    margin-top: 18px;
+    color: var(--faint);
+    font-size: 0.78rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 620px) {
+    .year {
+      font-size: 21px;
+    }
+
+    .axis,
+    .goal-label,
+    .annotation {
+      font-size: 19px;
+    }
+  }
+</style>

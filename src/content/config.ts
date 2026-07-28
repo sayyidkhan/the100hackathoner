@@ -21,6 +21,17 @@ const judging = defineCollection({
     criteria: z.array(z.string()),
     patterns: z.array(z.string()),
     lesson: z.string(),
+    images: z
+      .array(
+        z.object({
+          src: z.string(),
+          alt: z.string(),
+          fit: z.enum(["contain", "cover"]).optional(),
+          position: z.string().optional(),
+          translateY: z.number().optional(),
+        }),
+      )
+      .optional(),
     links: z
       .array(
         z.object({

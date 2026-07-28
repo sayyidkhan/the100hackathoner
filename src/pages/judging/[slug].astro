@@ -15,6 +15,8 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const galleryId = `gallery-${entry.slug}`;
+const galleryImages = entry.data.images ?? [];
 ---
 
 <PageShell title={`${entry.data.event} | Judging Log`}>
@@ -22,6 +24,52 @@ const { Content } = await render(entry);
     <p class="meta">{entry.data.date} · {entry.data.role}</p>
     <h1>{entry.data.event}</h1>
     <p>{entry.data.lesson}</p>
+    {
+      galleryImages.length > 0 && (
+        <section class="entry-gallery" aria-label={`${entry.data.event} photo gallery`} data-gallery>
+          <div class="gallery-stage">
+            {
+              galleryImages.map((image, index) => {
+                const previousIndex = (index - 1 + galleryImages.length) % galleryImages.length;
+                const nextIndex = (index + 1) % galleryImages.length;
+
+                return (
+                  <div class="gallery-item">
+                    <input
+                      class="gallery-toggle"
+                      id={`${galleryId}-${index}`}
+                      name={galleryId}
+                      type="radio"
+                      checked={index === 0}
+                      aria-label={`Show photo ${index + 1}`}
+                    />
+                    <figure class="gallery-slide">
+                      <img
+                        class:list={{ "gallery-image--cover": image.fit === "cover" }}
+                        src={image.src}
+                        alt={image.alt}
+                        loading={index === 0 ? "eager" : "lazy"}
+                        style={[
+                          image.position && `object-position: ${image.position}`,
+                          image.translateY && `transform: translateY(${image.translateY}%)`,
+                        ]
+                          .filter(Boolean)
+                          .join("; ")}
+                      />
+                      <div class="gallery-controls">
+                        <label for={`${galleryId}-${previousIndex}`}>Previous</label>
+                        <span class="gallery-count">{index + 1} / {galleryImages.length}</span>
+                        <label for={`${galleryId}-${nextIndex}`}>Next</label>
+                      </div>
+                    </figure>
+                  </div>
+                );
+              })
+            }
+          </div>
+        </section>
+      )
+    }
     <div class="entry-summary">
       <div>
         <span class="meta">Domain</span>
@@ -31,10 +79,14 @@ const { Content } = await render(entry);
         <span class="meta">Criteria</span>
         <strong>{entry.data.criteria.join(" · ")}</strong>
       </div>
-      <div>
-        <span class="meta">Patterns</span>
-        <strong>{entry.data.patterns.join(" · ")}</strong>
-      </div>
+      {
+        entry.data.patterns.length > 0 && (
+          <div>
+            <span class="meta">Patterns</span>
+            <strong>{entry.data.patterns.join(" · ")}</strong>
+          </div>
+        )
+      }
     </div>
     <Content />
   </Prose>
@@ -47,6 +99,97 @@ const { Content } = await render(entry);
     margin: 32px 0 18px;
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
+  }
+
+  .entry-gallery {
+    margin: 32px 0;
+  }
+
+  .gallery-stage {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--black);
+  }
+
+  .gallery-stage figure {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+  }
+
+  .gallery-toggle {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .gallery-slide {
+    display: none;
+  }
+
+  .gallery-toggle:checked + .gallery-slide {
+    display: grid;
+    place-items: center;
+  }
+
+  .gallery-stage img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .gallery-stage img.gallery-image--cover {
+    object-fit: cover;
+  }
+
+  .gallery-controls {
+    display: grid;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 12px;
+    align-items: center;
+    padding: 12px;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.82));
+  }
+
+  .gallery-controls label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    padding: 0 12px;
+    border: 1px solid rgba(255, 255, 255, 0.72);
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.26);
+    color: white;
+    font-size: 0.76rem;
+    font-weight: 850;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .gallery-controls label:last-child {
+    grid-column: 3;
+  }
+
+  .gallery-controls label:hover {
+    background: white;
+    color: var(--ink);
+  }
+
+  .gallery-count {
+    margin: 0;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
   }
 
   .entry-summary div {
@@ -68,6 +211,15 @@ const { Content } = await render(entry);
   }
 
   @media (max-width: 620px) {
+    .gallery-stage {
+      aspect-ratio: 1 / 1;
+    }
+
+    .gallery-controls {
+      gap: 8px;
+      padding: 8px;
+    }
+
     .entry-summary div {
       grid-template-columns: 1fr;
       gap: 6px;

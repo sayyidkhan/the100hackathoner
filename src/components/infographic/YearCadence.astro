@@ -1,0 +1,224 @@
+---
+import type { YearStat } from "../../lib/insights";
+
+interface Props {
+  stats: YearStat[];
+}
+
+const { stats } = Astro.props;
+const peak = Math.max(...stats.map((stat) => stat.total), 1);
+---
+
+<div class="cadence">
+  <ol class="cols" style={`--peak:${peak}`}>
+    {
+      stats.map((stat) => (
+        <li class:list={["col", { dormant: stat.dormant }]}>
+          <span class="count">{stat.total}</span>
+
+          <div class="track">
+            <div
+              class="bar"
+              style={`--ratio:${stat.total / peak}`}
+              role="img"
+              aria-label={`${stat.year}: ${stat.total} builds, ${stat.awarded} awarded, ${stat.days} days`}
+            >
+              {stat.awarded > 0 && (
+                <span
+                  class="awarded"
+                  style={`--share:${stat.awarded / stat.total}`}
+                />
+              )}
+            </div>
+          </div>
+
+          <span class="year">{stat.year}</span>
+          <span class="days">{stat.dormant ? "—" : `${stat.days}d`}</span>
+        </li>
+      ))
+    }
+  </ol>
+
+  <ul class="legend">
+    <li><span class="swatch shipped" />Shipped</li>
+    <li><span class="swatch awarded" />Awarded</li>
+    <li><span class="swatch dormant" />Dormant year</li>
+    <li class="note">Sub-label = days spent building that year</li>
+  </ul>
+</div>
+
+<style>
+  .cadence {
+    --chart-h: 260px;
+  }
+
+  .cols {
+    display: grid;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .col {
+    display: grid;
+    grid-template-rows: auto var(--chart-h) auto auto;
+    gap: 8px;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .count {
+    color: var(--ink);
+    font-size: 1.05rem;
+    font-weight: 950;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.04em;
+  }
+
+  .col.dormant .count {
+    color: var(--faint);
+  }
+
+  .track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: flex-end;
+    justify-content: center;
+    border-bottom: 2px solid var(--line-strong);
+  }
+
+  .bar {
+    position: relative;
+    width: 100%;
+    max-width: 74px;
+    height: calc(var(--ratio) * 100%);
+    min-height: 2px;
+    background: var(--ink);
+    transform-origin: bottom;
+    animation: grow 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .col.dormant .bar {
+    min-height: 3px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--line-strong) 0 3px,
+      transparent 3px 7px
+    );
+  }
+
+  .awarded {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: calc(var(--share) * 100%);
+    background: var(--gold);
+  }
+
+  .year {
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .days {
+    color: var(--faint);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    margin: 26px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .legend li {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .swatch {
+    width: 13px;
+    height: 13px;
+    border-radius: 2px;
+  }
+
+  .swatch.shipped {
+    background: var(--ink);
+  }
+
+  .swatch.awarded {
+    background: var(--gold);
+  }
+
+  .swatch.days {
+    border: 1px dashed var(--faint);
+  }
+
+  .swatch.dormant {
+    border: 1px dashed var(--faint);
+  }
+
+  .legend .note {
+    color: var(--faint);
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: none;
+  }
+
+  @keyframes grow {
+    from {
+      transform: scaleY(0);
+    }
+
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .cadence {
+      --chart-h: 190px;
+    }
+
+    .cols {
+      gap: 5px;
+    }
+
+    .count {
+      font-size: 0.8rem;
+    }
+
+    .year {
+      font-size: 0.62rem;
+      writing-mode: vertical-rl;
+    }
+
+    .days {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bar {
+      animation: none;
+    }
+  }
+</style>

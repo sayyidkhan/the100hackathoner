@@ -1,0 +1,175 @@
+---
+import type { AwardEntry } from "../../lib/insights";
+
+interface Props {
+  awards: AwardEntry[];
+}
+
+const { awards } = Astro.props;
+---
+
+<ol class="wall">
+  {
+    awards.map((entry) => (
+      <li class:list={["medal", entry.tier, { win: entry.win }]}>
+        <a href={`/hackathons/${entry.number}/`}>
+          <span class="top">
+            <span class="badge">{entry.win ? "★ Win" : entry.tier === "podium" ? "Podium" : "Award"}</span>
+            <span class="num">#{String(entry.number).padStart(3, "0")}</span>
+          </span>
+          <span class="title">{entry.title}</span>
+          <span class="award">{entry.award}</span>
+          <span class="foot">
+            <span class="event">{entry.event}</span>
+            {entry.year && <span class="year">{entry.year}</span>}
+          </span>
+        </a>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .wall {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(258px, 1fr));
+    gap: 14px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  a {
+    display: grid;
+    gap: 10px;
+    height: 100%;
+    min-width: 0;
+    padding: 16px 17px 15px;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: var(--bg-paper);
+    transition:
+      transform 170ms ease,
+      box-shadow 170ms ease,
+      border-color 170ms ease;
+  }
+
+  a:hover,
+  a:focus-visible {
+    border-color: var(--ink);
+    box-shadow: 0 14px 30px rgba(14, 18, 18, 0.12);
+    outline: none;
+    transform: translateY(-3px);
+  }
+
+  .medal.podium a {
+    border-left: 4px solid var(--gold);
+  }
+
+  .medal.recognised a {
+    border-left: 4px solid var(--teal);
+  }
+
+  .medal.win a {
+    background: linear-gradient(
+      180deg,
+      var(--gold-soft),
+      var(--bg-paper) 62%
+    );
+  }
+
+  a > * {
+    min-width: 0;
+  }
+
+  .top {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .badge {
+    padding: 4px 8px;
+    border-radius: 3px;
+    background: rgba(14, 18, 18, 0.07);
+    color: var(--muted);
+    font-size: 0.64rem;
+    font-weight: 950;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .medal.podium .badge {
+    background: var(--gold);
+    color: var(--gold-ink);
+  }
+
+  .medal.recognised .badge {
+    background: rgba(7, 155, 145, 0.14);
+    color: #06635d;
+  }
+
+  .num {
+    color: var(--faint);
+    font-size: 0.72rem;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .title {
+    color: var(--ink);
+    font-size: 1.18rem;
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 1.12;
+  }
+
+  .award {
+    color: var(--text);
+    font-size: 0.85rem;
+    font-weight: 750;
+    line-height: 1.45;
+  }
+
+  .foot {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 4px;
+    border-top: 1px solid var(--line);
+  }
+
+  .event {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--faint);
+    font-size: 0.68rem;
+    font-weight: 850;
+    letter-spacing: 0.04em;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .year {
+    flex: 0 0 auto;
+    color: var(--red);
+    font-size: 0.72rem;
+    font-weight: 950;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    a {
+      transition: none;
+    }
+
+    a:hover,
+    a:focus-visible {
+      transform: none;
+    }
+  }
+</style>

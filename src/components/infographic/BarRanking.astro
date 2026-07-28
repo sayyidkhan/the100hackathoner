@@ -1,0 +1,126 @@
+---
+import type { Ranked } from "../../lib/insights";
+
+interface Props {
+  items: Ranked[];
+  accent?: "ink" | "blue" | "teal" | "gold";
+  labelWidth?: string;
+}
+
+const { items, accent = "ink", labelWidth = "minmax(0, 148px)" } = Astro.props;
+const peak = Math.max(...items.map((item) => item.count), 1);
+---
+
+<ol
+  class:list={["ranking", accent]}
+  style={`--label-w:${labelWidth}`}
+>
+  {
+    items.map((item) => (
+      <li>
+        <span class="label">{item.label}</span>
+        <span class="track">
+          <span class="bar" style={`--ratio:${item.count / peak}`} />
+        </span>
+        <span class="count">{item.count}</span>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .ranking {
+    display: grid;
+    gap: 11px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: var(--label-w) minmax(0, 1fr) 34px;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .label {
+    overflow: hidden;
+    color: var(--ink);
+    font-size: 0.82rem;
+    font-weight: 850;
+    letter-spacing: -0.01em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .track {
+    display: block;
+    height: 18px;
+    border-radius: 2px;
+    background: rgba(14, 18, 18, 0.06);
+  }
+
+  .bar {
+    display: block;
+    width: calc(var(--ratio) * 100%);
+    min-width: 3px;
+    height: 100%;
+    border-radius: 2px;
+    background: var(--ink);
+    transform-origin: left;
+    animation: stretch 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .ranking.blue .bar {
+    background: var(--blue);
+  }
+
+  .ranking.teal .bar {
+    background: var(--teal);
+  }
+
+  .ranking.gold .bar {
+    background: var(--gold);
+  }
+
+  .count {
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  @keyframes stretch {
+    from {
+      transform: scaleX(0);
+    }
+
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @media (max-width: 620px) {
+    li {
+      grid-template-columns: minmax(0, 1fr) 30px;
+      gap: 6px 10px;
+    }
+
+    .label {
+      grid-column: 1 / -1;
+      font-size: 0.78rem;
+    }
+
+    .track {
+      height: 14px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bar {
+      animation: none;
+    }
+  }
+</style>

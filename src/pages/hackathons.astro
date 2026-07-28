@@ -2,42 +2,345 @@
 import { getHackathons } from "../lib/hackathons";
 import PageShell from "../components/PageShell.astro";
 import HackathonTimeline from "../components/HackathonTimeline.astro";
+import JourneyInfographic from "../components/JourneyInfographic.astro";
+import { buildTotals } from "../lib/insights";
 
 const hackathons = getHackathons();
+
+const GOAL = 100;
+const totals = buildTotals(hackathons, GOAL);
+
+const stats = [
+  { value: String(totals.remaining), label: "Still to build" },
+  { value: String(totals.awarded), label: "Placed or awarded" },
+  { value: String(totals.collaborators), label: "Teammates so far" },
+  { value: String(totals.countries), label: "Countries" },
+];
+
+const ticks = Array.from({ length: GOAL }, (_, index) => index < totals.logged);
 ---
 
 <PageShell title="Journey Map | The 100 Hackathoner">
   <section class="archive-hero container">
-    <h1>Journey Map</h1>
-    <p>
-      A running record of the 100-hackathon journey: what was built, where it
-      happened, who joined, and what shipped before demo day.
-    </p>
+    <div class="hero-top">
+      <div class="hero-copy">
+        <p class="meta">
+          {
+            totals.firstYear && totals.latestYear
+              ? `${totals.firstYear} — ${totals.latestYear}`
+              : "The log"
+          }
+        </p>
+        <h1>Journey Map</h1>
+        <p class="lead">
+          A running record of the 100-hackathon journey: what was built, where it
+          happened, who joined, and what shipped before demo day.
+        </p>
+      </div>
+
+      <div class="counter" aria-hidden="true">
+        <span class="counter-value">
+          {String(totals.logged).padStart(3, "0")}
+        </span>
+        <span class="counter-goal">/ {GOAL}</span>
+        <span class="counter-label">Logged</span>
+      </div>
+    </div>
+
+    <div class="progress">
+      <p class="eyeless">
+        {totals.logged} of {GOAL} hackathons logged, {totals.remaining} remaining.
+      </p>
+      <div class="ticks" aria-hidden="true">
+        {ticks.map((filled) => <span class:list={["tick", { filled }]} />)}
+      </div>
+    </div>
+
+    <dl class="stats">
+      {
+        stats.map((stat) => (
+          <div>
+            <dt>{stat.label}</dt>
+            <dd>{stat.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <div class="switch" role="group" aria-label="Journey view">
+      <button type="button" data-view="list" aria-pressed="true">
+        Timeline
+      </button>
+      <button type="button" data-view="chart" aria-pressed="false">
+        Infographic
+      </button>
+    </div>
   </section>
-  <section class="section container">
+
+  <section class="archive-body container" data-view-panel="list">
     <HackathonTimeline items={hackathons} />
+  </section>
+
+  <section class="archive-body container" data-view-panel="chart" hidden>
+    <JourneyInfographic items={hackathons} goal={GOAL} />
   </section>
 </PageShell>
 
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>("[data-view]");
+  const panels = document.querySelectorAll<HTMLElement>("[data-view-panel]");
+
+  function apply(mode: string) {
+    for (const panel of panels) {
+      panel.hidden = panel.dataset.viewPanel !== mode;
+    }
+
+    for (const button of buttons) {
+      button.setAttribute("aria-pressed", String(button.dataset.view === mode));
+    }
+  }
+
+  function fromHash() {
+    return location.hash === "#infographic" ? "chart" : "list";
+  }
+
+  apply(fromHash());
+
+  // A hash-only navigation does not reload the document, so react to it.
+  window.addEventListener("hashchange", () => apply(fromHash()));
+
+  for (const button of buttons) {
+    button.addEventListener("click", () => {
+      const mode = button.dataset.view ?? "list";
+      apply(mode);
+      history.replaceState(
+        null,
+        "",
+        mode === "chart" ? "#infographic" : location.pathname,
+      );
+    });
+  }
+</script>
+
 <style>
   .archive-hero {
-    padding: 82px 0 30px;
+    padding: 72px 0 0;
+  }
+
+  .archive-body {
+    padding: 26px 0 96px;
+  }
+
+  .hero-top {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 40px;
+    align-items: end;
   }
 
   h1 {
-    margin: 0;
+    margin: 12px 0 0;
     color: var(--ink);
-    font-size: clamp(4rem, 10vw, 10rem);
+    font-size: clamp(3.5rem, 9vw, 8.5rem);
     font-weight: 950;
-    letter-spacing: -0.035em;
-    line-height: 0.95;
+    letter-spacing: -0.05em;
+    line-height: 0.9;
   }
 
-  p {
-    max-width: 760px;
-    margin: 24px 0 0;
+  .lead {
+    max-width: 54ch;
+    margin: 22px 0 0;
     color: var(--muted);
-    font-size: 1.12rem;
-    line-height: 1.75;
+    font-size: 1.08rem;
+    line-height: 1.7;
+  }
+
+  /* Counter ----------------------------------------------------------- */
+
+  .counter {
+    display: grid;
+    grid-template-columns: auto auto;
+    align-items: baseline;
+    justify-items: end;
+    padding-bottom: 6px;
+  }
+
+  .counter-value {
+    color: var(--red);
+    font-size: clamp(3.2rem, 7vw, 5.2rem);
+    font-weight: 950;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.06em;
+    line-height: 0.82;
+  }
+
+  .counter-goal {
+    margin-left: 8px;
+    color: var(--faint);
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+  }
+
+  .counter-label {
+    grid-column: 1 / -1;
+    margin-top: 10px;
+    color: var(--faint);
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  /* Progress ticks ---------------------------------------------------- */
+
+  .progress {
+    margin-top: 34px;
+  }
+
+  .ticks {
+    display: grid;
+    grid-template-columns: repeat(100, minmax(0, 1fr));
+    gap: 2px;
+    align-items: end;
+    height: 28px;
+  }
+
+  .tick {
+    height: 12px;
+    background: rgba(14, 18, 18, 0.13);
+    transition: height 220ms ease;
+  }
+
+  .tick.filled {
+    height: 28px;
+    background: var(--ink);
+  }
+
+  .tick.filled:nth-child(10n) {
+    background: var(--red);
+  }
+
+  /* Stats ------------------------------------------------------------- */
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1px;
+    margin: 30px 0 0;
+    background: var(--line);
+  }
+
+  .stats div {
+    padding: 18px 20px 20px;
+    background: var(--bg);
+  }
+
+  dt {
+    color: var(--faint);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 8px 0 0;
+    color: var(--ink);
+    font-size: 1.9rem;
+    font-weight: 950;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.05em;
+    line-height: 1;
+  }
+
+  /* View switch ------------------------------------------------------- */
+
+  .switch {
+    display: inline-flex;
+    gap: 4px;
+    margin-top: 34px;
+    padding: 4px;
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    background: var(--bg-paper);
+  }
+
+  .switch button {
+    min-height: 38px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 0.02em;
+    transition:
+      background 160ms ease,
+      color 160ms ease;
+  }
+
+  .switch button:hover {
+    color: var(--ink);
+  }
+
+  .switch button[aria-pressed="true"] {
+    background: var(--ink);
+    color: white;
+  }
+
+  @media (max-width: 900px) {
+    .archive-hero {
+      padding-top: 52px;
+    }
+
+    .hero-top {
+      grid-template-columns: 1fr;
+      gap: 26px;
+      align-items: start;
+    }
+
+    .counter {
+      justify-items: start;
+      justify-content: start;
+    }
+
+    .stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ticks {
+      grid-template-columns: repeat(50, minmax(0, 1fr));
+      height: auto;
+      gap: 2px 2px;
+      grid-auto-rows: 14px;
+    }
+
+    .tick,
+    .tick.filled {
+      height: 100%;
+    }
+
+    .tick.filled {
+      background: var(--ink);
+    }
+
+    .switch {
+      width: 100%;
+    }
+
+    .switch button {
+      flex: 1;
+      padding: 0 10px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tick,
+    .switch button {
+      transition: none;
+    }
   }
 </style>

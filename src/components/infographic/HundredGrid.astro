@@ -1,0 +1,189 @@
+---
+import type { GridCell } from "../../lib/insights";
+import { formatDateLabel } from "../../lib/format";
+
+interface Props {
+  cells: GridCell[];
+}
+
+const { cells } = Astro.props;
+
+function describe(cell: GridCell) {
+  if (!cell.item) return `Slot ${cell.slot} — not built yet`;
+
+  const date = formatDateLabel(cell.item.dateLabel, cell.item.startDate);
+  const award = cell.item.award?.trim();
+
+  return [
+    `#${String(cell.slot).padStart(3, "0")} ${cell.item.title}`,
+    cell.item.event,
+    date,
+    award,
+  ]
+    .filter(Boolean)
+    .join(" · ");
+}
+---
+
+<div class="hundred">
+  <ol class="grid">
+    {
+      cells.map((cell) => (
+        <li class:list={["cell", cell.tier]}>
+          {cell.item ? (
+            <a href={`/hackathons/${cell.slot}/`} title={describe(cell)}>
+              <span class="slot">{cell.slot}</span>
+              <span class="eyeless">{describe(cell)}</span>
+            </a>
+          ) : (
+            <span class="slot" title={describe(cell)}>
+              {cell.slot}
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+
+  <ul class="legend">
+    <li><span class="swatch podium" />Podium or prize</li>
+    <li><span class="swatch recognised" />Other award</li>
+    <li><span class="swatch shipped" />Shipped</li>
+    <li><span class="swatch empty" />Still to build</li>
+  </ul>
+</div>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cell {
+    position: relative;
+    aspect-ratio: 1;
+  }
+
+  .cell a,
+  .cell > .slot {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    place-items: center;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    font-size: clamp(0.6rem, 0.9vw, 0.82rem);
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    transition:
+      transform 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  .cell a:hover,
+  .cell a:focus-visible {
+    z-index: 2;
+    box-shadow: 0 6px 18px rgba(14, 18, 18, 0.24);
+    outline: none;
+    transform: scale(1.14);
+  }
+
+  .cell.shipped a {
+    background: var(--ink);
+    color: rgba(255, 255, 255, 0.92);
+  }
+
+  .cell.recognised a {
+    background: var(--teal);
+    color: white;
+  }
+
+  .cell.podium a {
+    background: var(--gold);
+    color: var(--gold-ink);
+  }
+
+  .cell.empty > .slot {
+    border-color: var(--line);
+    background: transparent;
+    color: var(--faint);
+    font-weight: 800;
+    opacity: 0.75;
+  }
+
+  .cell.empty:nth-child(10n) > .slot,
+  .cell.podium a,
+  .cell.recognised a {
+    font-weight: 950;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    margin: 22px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .legend li {
+    display: inline-flex;
+    gap: 8px;
+    align-items: center;
+    color: var(--muted);
+    font-size: 0.72rem;
+    font-weight: 850;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .swatch {
+    width: 13px;
+    height: 13px;
+    border-radius: 3px;
+  }
+
+  .swatch.shipped {
+    background: var(--ink);
+  }
+
+  .swatch.recognised {
+    background: var(--teal);
+  }
+
+  .swatch.podium {
+    background: var(--gold);
+  }
+
+  .swatch.empty {
+    border: 1px solid var(--line-strong);
+  }
+
+  @media (max-width: 620px) {
+    .grid {
+      gap: 4px;
+    }
+
+    .cell a,
+    .cell > .slot {
+      border-radius: 2px;
+      font-size: 0.55rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cell a {
+      transition: none;
+    }
+
+    .cell a:hover,
+    .cell a:focus-visible {
+      transform: none;
+    }
+  }
+</style>
