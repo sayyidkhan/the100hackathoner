@@ -36,13 +36,13 @@ Reason:
 
 ### Content
 
-**Markdown / MDX**
+**SQLite for the hackathon archive; Markdown for essays and memoir entries**
 
 Reason:
-- perfect for essays and memoir entries
-- easy to version control
-- easy for AI agents to generate and edit
-- no database needed for POC
+- the Excel workbook imports into an embedded relational database during builds
+- SQL supports future filtering, aggregation, and infographic views
+- the static site has no production database service to operate
+- essays remain easy to author and version as Markdown
 
 ### Deployment
 

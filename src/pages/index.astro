@@ -1,15 +1,14 @@
 ---
 import { getCollection } from "astro:content";
 import PageShell from "../components/PageShell.astro";
+import { getHackathons } from "../lib/hackathons";
 
-const hackathons = (await getCollection("hackathons")).sort(
-  (a, b) => b.data.number - a.data.number,
-);
+const hackathons = getHackathons();
 const essays = (await getCollection("essays")).sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
 );
 
-const completed = hackathons[0]?.data.number ?? 64;
+const completed = hackathons[0]?.number ?? 0;
 const total = 100;
 const remaining = total - completed;
 const featured = hackathons[0];
@@ -18,10 +17,10 @@ const progressPercent = Math.round((completed / total) * 100);
 
 const checkpoints = Array.from({ length: total }, (_, index) => {
   const number = index + 1;
-  const known = hackathons.find((item) => item.data.number === number);
+  const known = hackathons.find((item) => item.number === number);
   return {
     number,
-    title: known?.data.project ?? "",
+    title: known?.title ?? "",
     status:
       number < completed
         ? "complete"
@@ -141,7 +140,7 @@ const stats = [
                 class={`checkpoint ${checkpoint.status}`}
                 href={
                   checkpoint.title
-                    ? `/hackathons/${hackathons.find((item) => item.data.number === checkpoint.number)?.slug}/`
+                    ? `/hackathons/${checkpoint.number}/`
                     : "/hackathons/"
                 }
                 title={checkpoint.title || `Hackathon ${checkpoint.number}`}
@@ -154,7 +153,7 @@ const stats = [
         <div class="map-note">
           <strong>Current checkpoint</strong>
           <span>
-            #{String(completed).padStart(3, "0")} {featured?.data.project}
+            #{String(completed).padStart(3, "0")} {featured?.title}
           </span>
         </div>
       </div>
@@ -168,8 +167,8 @@ const stats = [
           <div class="report-visual" aria-hidden="true">
             <div class="game-card">
               <div class="game-header">
-                <span>AI Game Jam</span>
-                <strong>#{String(featured.data.number).padStart(3, "0")}</strong>
+                <span>{featured.tags[0] ?? "Hackathon"}</span>
+                <strong>#{String(featured.number).padStart(3, "0")}</strong>
               </div>
               <div class="game-grid">
                 {Array.from({ length: 56 }, (_, index) => (
@@ -186,18 +185,18 @@ const stats = [
           <div class="report-copy">
             <p class="meta">Latest Field Report</p>
             <h2 class="serif">
-              #{String(featured.data.number).padStart(3, "0")} {featured.data.project}
+              #{String(featured.number).padStart(3, "0")} {featured.title}
             </h2>
-            <p class="lesson">"{featured.data.lesson}"</p>
+            <p class="lesson">{featured.solution ?? "Project details not recorded."}</p>
             <p>
               The latest chapter captures the useful pressure of every
               hackathon: what can be made real, understandable, and demo-ready
               before time runs out?
             </p>
-            <div class="stack-row" aria-label={`${featured.data.project} stack`}>
-              {featured.data.stack.map((tech) => <span>{tech}</span>)}
+            <div class="stack-row" aria-label={`${featured.title} themes`}>
+              {featured.tags.map((tag) => <span>{tag}</span>)}
             </div>
-            <a class="button blue" href={`/hackathons/${featured.slug}/`}>Read the Report</a>
+            <a class="button blue" href={`/hackathons/${featured.number}/`}>View the Record</a>
           </div>
         </div>
       </section>
@@ -234,7 +233,7 @@ const stats = [
         <h2 class="serif">Build Archive</h2>
         <p>
           Compact evidence from the latest prototypes: project, event, outcome,
-          stack, and the lesson worth carrying forward.
+          and the themes behind each build.
         </p>
       </div>
       <div class="build-table" role="table" aria-label="Latest hackathon builds">
@@ -243,16 +242,16 @@ const stats = [
           <span>Project</span>
           <span>Event</span>
           <span>Outcome</span>
-          <span>Stack</span>
+          <span>Focus</span>
         </div>
         {
           latest.map((item) => (
-            <a class="build-row" role="row" href={`/hackathons/${item.slug}/`}>
-              <span>#{String(item.data.number).padStart(3, "0")}</span>
-              <strong>{item.data.project}</strong>
-              <span>{item.data.event}</span>
-              <span class="status">{item.data.result}</span>
-              <span>{item.data.stack.slice(0, 3).join(" / ")}</span>
+            <a class="build-row" role="row" href={`/hackathons/${item.number}/`}>
+              <span>#{String(item.number).padStart(3, "0")}</span>
+              <strong>{item.title}</strong>
+              <span>{item.event}</span>
+              <span class="status">{item.award ?? "Completed"}</span>
+              <span>{item.tags.slice(0, 3).join(" / ")}</span>
             </a>
           ))
         }

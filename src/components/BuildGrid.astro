@@ -1,14 +1,11 @@
 ---
+import type { Hackathon } from "../lib/hackathons";
+
 interface Item {
-  slug: string;
-  data: {
-    number: number;
-    title: string;
-    project: string;
-    event: string;
-    lesson: string;
-    stack: string[];
-  };
+  number: Hackathon["number"];
+  title: Hackathon["title"];
+  solution: Hackathon["solution"];
+  tags: Hackathon["tags"];
 }
 
 interface Props {
@@ -25,13 +22,13 @@ const visibleItems = Astro.props.limit
   {
     visibleItems.map((item) => (
       <article>
-        <a href={`/hackathons/${item.slug}/`}>
-          <span class="meta">Hackathon #{String(item.data.number).padStart(3, "0")}</span>
-          <h3>{item.data.project}</h3>
-          <p>{item.data.lesson}</p>
-          <ul aria-label={`${item.data.project} stack`}>
-            {item.data.stack.map((tech) => (
-              <li>{tech}</li>
+        <a href={`/hackathons/${item.number}/`}>
+          <span class="meta">Hackathon #{String(item.number).padStart(3, "0")}</span>
+          <h3>{item.title}</h3>
+          <p>{item.solution ?? "Project details not recorded."}</p>
+          <ul aria-label={`${item.title} themes`}>
+            {item.tags.map((tag) => (
+              <li>{tag}</li>
             ))}
           </ul>
         </a>

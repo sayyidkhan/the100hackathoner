@@ -1,14 +1,12 @@
 ---
 interface Item {
-  slug: string;
-  data: {
-    number: number;
-    title: string;
-    event: string;
-    result: string;
-    lesson: string;
-    date: string;
-  };
+  number: number;
+  title: string;
+  event: string;
+  award: string | null;
+  solution: string | null;
+  dateLabel: string | null;
+  startDate: string | null;
 }
 
 interface Props {
@@ -25,15 +23,15 @@ const visibleItems = Astro.props.limit
   {
     visibleItems.map((item) => (
       <article class="timeline-item">
-        <a href={`/hackathons/${item.slug}/`}>
-          <span class="number">#{String(item.data.number).padStart(3, "0")}</span>
-          <time datetime={item.data.date}>{item.data.date}</time>
+        <a href={`/hackathons/${item.number}/`}>
+          <span class="number">#{String(item.number).padStart(3, "0")}</span>
+          <time datetime={item.startDate ?? undefined}>{item.dateLabel ?? "Date not recorded"}</time>
           <div>
-            <p class="meta">{item.data.event}</p>
-            <h3>{item.data.title}</h3>
-            <p>{item.data.lesson}</p>
+            <p class="meta">{item.event}</p>
+            <h3>{item.title}</h3>
+            <p>{item.solution ?? "Project details not recorded."}</p>
           </div>
-          <strong>{item.data.result}</strong>
+          <strong>{item.award ?? "Completed"}</strong>
         </a>
       </article>
     ))

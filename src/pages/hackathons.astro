@@ -1,19 +1,17 @@
 ---
-import { getCollection } from "astro:content";
+import { getHackathons } from "../lib/hackathons";
 import PageShell from "../components/PageShell.astro";
 import HackathonTimeline from "../components/HackathonTimeline.astro";
 
-const hackathons = (await getCollection("hackathons")).sort(
-  (a, b) => b.data.number - a.data.number,
-);
+const hackathons = getHackathons();
 ---
 
 <PageShell title="Journey Map | The 100 Hackathoner">
   <section class="archive-hero container">
     <h1>Journey Map</h1>
     <p>
-      A running record of the 100-hackathon journey: what was built, what broke,
-      what shipped, and the lesson that stayed after demo day.
+      A running record of the 100-hackathon journey: what was built, where it
+      happened, who joined, and what shipped before demo day.
     </p>
   </section>
   <section class="section container">

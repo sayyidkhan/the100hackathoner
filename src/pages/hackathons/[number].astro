@@ -1,0 +1,177 @@
+---
+import PageShell from "../../components/PageShell.astro";
+import { getHackathons, type Hackathon } from "../../lib/hackathons";
+
+export function getStaticPaths() {
+  return getHackathons().map((hackathon) => ({
+    params: { number: String(hackathon.number) },
+    props: { hackathon },
+  }));
+}
+
+const { hackathon } = Astro.props as { hackathon: Hackathon };
+const duration =
+  hackathon.duration && hackathon.durationUnit
+    ? `${hackathon.duration} ${hackathon.durationUnit}`
+    : null;
+const details = [
+  ["Event", hackathon.event],
+  ["Organizers", hackathon.organizers.join(" · ")],
+  ["Date", hackathon.dateLabel],
+  ["Duration", duration],
+  ["Focus", hackathon.tags.join(" · ")],
+  ["Award", hackathon.award],
+  ["Team", hackathon.members.join(" · ")],
+  ["Client", hackathon.client],
+  ["Location", [hackathon.location, hackathon.country].filter(Boolean).join(", ")],
+].filter(([, value]) => Boolean(value));
+---
+
+<PageShell title={`${hackathon.title} | The 100 Hackathoner`}>
+  <article class="record container">
+    <a class="back" href="/hackathons/">Back to journey</a>
+    <p class="meta">Hackathon #{String(hackathon.number).padStart(3, "0")}</p>
+    <h1>{hackathon.title}</h1>
+    <p class="event">{hackathon.event}</p>
+
+    {
+      hackathon.solution && (
+        <section class="summary">
+          <p class="meta">What We Built</p>
+          <p>{hackathon.solution}</p>
+        </section>
+      )
+    }
+
+    <dl class="details">
+      {
+        details.map(([label, value]) => (
+          <div>
+            <dt>{label}</dt>
+            <dd>{value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    {
+      (hackathon.githubUrl || hackathon.eventUrl) && (
+        <div class="links" aria-label="Hackathon links">
+          {hackathon.githubUrl && (
+            <a href={hackathon.githubUrl} rel="noreferrer" target="_blank">Source code</a>
+          )}
+          {hackathon.eventUrl && (
+            <a href={hackathon.eventUrl} rel="noreferrer" target="_blank">Event page</a>
+          )}
+        </div>
+      )
+    }
+  </article>
+</PageShell>
+
+<style>
+  .record {
+    max-width: 920px;
+    padding-top: 104px;
+    padding-bottom: 88px;
+  }
+
+  .back {
+    display: inline-block;
+    margin-bottom: 48px;
+    color: var(--red);
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .meta {
+    margin: 0;
+    color: var(--red);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    max-width: 850px;
+    margin: 14px 0 0;
+    color: var(--ink);
+    font-size: clamp(3.4rem, 8vw, 7rem);
+    font-weight: 950;
+    letter-spacing: -0.065em;
+    line-height: 0.9;
+  }
+
+  .event {
+    margin: 22px 0 0;
+    color: var(--muted);
+    font-size: 1.15rem;
+    font-weight: 750;
+  }
+
+  .summary {
+    max-width: 780px;
+    margin-top: 64px;
+  }
+
+  .summary > p:last-child {
+    margin: 12px 0 0;
+    color: var(--ink);
+    font-size: clamp(1.35rem, 2.6vw, 2rem);
+    letter-spacing: -0.035em;
+    line-height: 1.3;
+  }
+
+  .details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 42px;
+    margin: 64px 0 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .details div {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  dt {
+    color: var(--faint);
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 8px 0 0;
+    color: var(--ink);
+    font-weight: 750;
+    line-height: 1.5;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 42px;
+  }
+
+  .links a {
+    border: 1px solid var(--ink);
+    color: var(--ink);
+    font-size: 0.8rem;
+    font-weight: 900;
+    padding: 11px 15px;
+  }
+
+  @media (max-width: 640px) {
+    .details {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+</style>

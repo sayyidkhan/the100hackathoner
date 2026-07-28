@@ -46,16 +46,14 @@ npm run preview
 ```txt
 src/
   components/        Shared UI components
-  content/
-    essays/          Field notes and memoir essays
-    hackathons/      Hackathon chapter entries
-    judging/         Judging logs and pattern notes
-    principles/      Evolving 100-hackathon principles
+  content/           Essays, judging logs, and principles
+  lib/               SQLite data access for the hackathon archive
   layouts/           Base HTML layout
   pages/             Astro routes
   styles/            Global design system styles
+scripts/             Spreadsheet-to-SQLite import jobs
 docs/                Planning and project notes
-data/                Source data files
+data/                Workbook source and generated SQLite archive
 ```
 
 ## Common Edits
@@ -84,10 +82,18 @@ Footer:
 src/components/Footer.astro
 ```
 
-Hackathon entries:
+Hackathon archive source:
 
 ```txt
-src/content/hackathons/
+data/Hackathon CV.xlsx
+```
+
+The workbook is imported into `data/hackathons.db` before local development
+and production builds. Do not edit the database manually. Update the workbook,
+then run:
+
+```bash
+npm run sync:hackathons
 ```
 
 Essay entries:
@@ -110,31 +116,10 @@ src/content/principles/
 
 ## Content Format
 
-Hackathon entries are Markdown files with frontmatter:
-
-```md
----
-number: 64
-title: "Data Center Destroyer"
-event: "AI Game Jam"
-date: "2026-05-01"
-result: "Built prototype"
-project: "Data Center Destroyer"
-stack:
-  - React
-  - Phaser
-  - OpenAI
-  - Vercel
-lesson: "A working demo beats an elegant idea that no one can touch."
-demoUrl: ""
-githubUrl: ""
-coverImage: "/images/hackathons/data-center-destroyer.png"
----
-
-## Summary
-
-Write the chapter here.
-```
+Hackathon records use a normalized SQLite model generated from the workbook.
+The import stores core event data plus relational organizer, participant, tag,
+award, and link tables. Astro reads the display view during the static build to
+generate `/hackathons/1/` through `/hackathons/73/`.
 
 Essay entries use:
 
@@ -204,6 +189,7 @@ They are marked `draft: true`, so they do not render publicly.
 
 ```bash
 npm run dev      # Start local development server
+npm run sync:hackathons # Rebuild the SQLite archive from Excel
 npm run build    # Run Astro checks and build static site
 npm run preview  # Preview built site
 ```
