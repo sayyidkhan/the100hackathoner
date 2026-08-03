@@ -1,6 +1,9 @@
 ---
 import type { GridCell } from "../../lib/insights";
-import { formatDateLabel } from "../../lib/format";
+import {
+  formatDateLabel,
+  formatDuration,
+} from "../../lib/format";
 
 interface Props {
   cells: GridCell[];
@@ -23,25 +26,89 @@ function describe(cell: GridCell) {
     .filter(Boolean)
     .join(" · ");
 }
+
+function preview(cell: GridCell) {
+  if (!cell.item) return null;
+
+  return {
+    id: `build-preview-${cell.slot}`,
+    date: formatDateLabel(cell.item.dateLabel, cell.item.startDate),
+    duration: formatDuration(cell.item.duration, cell.item.durationUnit),
+    place: [cell.item.location, cell.item.country].filter(Boolean).join(", "),
+  };
+}
 ---
 
 <div class="hundred">
   <ol class="grid">
     {
-      cells.map((cell) => (
-        <li class:list={["cell", cell.tier]}>
-          {cell.item ? (
-            <a href={`/hackathons/${cell.slot}/`} title={describe(cell)}>
-              <span class="slot">{cell.slot}</span>
-              <span class="eyeless">{describe(cell)}</span>
-            </a>
-          ) : (
-            <span class="slot" title={describe(cell)}>
-              {cell.slot}
-            </span>
-          )}
-        </li>
-      ))
+      cells.map((cell) => {
+        const details = preview(cell);
+
+        return (
+          <li class:list={["cell", cell.tier]}>
+            {cell.item && details ? (
+              <a
+                href={`/hackathons/${cell.slot}/`}
+                aria-label={describe(cell)}
+                aria-describedby={details.id}
+              >
+                <span class="slot">{cell.slot}</span>
+                <span class="build-preview" id={details.id} role="tooltip">
+                  <span class="preview-kicker">
+                    #{String(cell.slot).padStart(3, "0")}
+                    {details.date && ` · ${details.date}`}
+                  </span>
+                  <strong>{cell.item.title}</strong>
+                  <span class="preview-event">{cell.item.event}</span>
+                  <span class="preview-solution">
+                    {cell.item.solution ?? "Project details not recorded."}
+                  </span>
+
+                  {(details.duration || details.place) && (
+                    <span class="preview-facts">
+                      {details.duration && <span>{details.duration}</span>}
+                      {details.place && <span>{details.place}</span>}
+                    </span>
+                  )}
+
+                  <span class="preview-context">
+                    {cell.item.organizers.length > 0 && (
+                      <span>
+                        <b>By</b> {cell.item.organizers.join(" · ")}
+                      </span>
+                    )}
+                    {cell.item.members.length > 0 && (
+                      <span>
+                        <b>Team</b> {cell.item.members.join(" · ")}
+                      </span>
+                    )}
+                    {cell.item.client && (
+                      <span>
+                        <b>Client</b> {cell.item.client}
+                      </span>
+                    )}
+                  </span>
+
+                  {(cell.item.tags.length > 0 || cell.item.award) && (
+                    <span class="preview-footer">
+                      {cell.item.tags.length > 0 && (
+                        <span>{cell.item.tags.join(" · ")}</span>
+                      )}
+                      {cell.item.award && <em>{cell.item.award}</em>}
+                    </span>
+                  )}
+                  <span class="preview-cta">Open full record →</span>
+                </span>
+              </a>
+            ) : (
+              <span class="slot" aria-label={describe(cell)}>
+                {cell.slot}
+              </span>
+            )}
+          </li>
+        );
+      })
     }
   </ol>
 
@@ -64,8 +131,22 @@ function describe(cell: GridCell) {
   }
 
   .cell {
+    --preview-x: -50%;
+    --preview-arrow: 50%;
     position: relative;
     aspect-ratio: 1;
+  }
+
+  .cell:nth-child(10n + 1),
+  .cell:nth-child(10n + 2) {
+    --preview-x: 0%;
+    --preview-arrow: 24px;
+  }
+
+  .cell:nth-child(10n),
+  .cell:nth-child(10n + 9) {
+    --preview-x: -100%;
+    --preview-arrow: calc(100% - 24px);
   }
 
   .cell a,
@@ -87,10 +168,165 @@ function describe(cell: GridCell) {
 
   .cell a:hover,
   .cell a:focus-visible {
-    z-index: 2;
+    z-index: 5;
     box-shadow: 0 6px 18px rgba(14, 18, 18, 0.24);
     outline: none;
     transform: scale(1.14);
+  }
+
+  .build-preview {
+    position: absolute;
+    bottom: calc(100% + 11px);
+    left: 50%;
+    z-index: 8;
+    display: grid;
+    visibility: hidden;
+    width: min(340px, calc(100vw - 36px));
+    gap: 7px;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    background: var(--black);
+    box-shadow: 0 18px 38px rgba(5, 5, 5, 0.32);
+    color: white;
+    opacity: 0;
+    pointer-events: none;
+    text-align: left;
+    transform: translate(var(--preview-x), 7px);
+    transform-origin: var(--preview-arrow) 100%;
+    transition:
+      opacity 140ms ease,
+      transform 140ms ease,
+      visibility 0s linear 140ms;
+  }
+
+  .build-preview::after {
+    position: absolute;
+    top: 100%;
+    left: var(--preview-arrow);
+    width: 10px;
+    height: 10px;
+    background: var(--black);
+    content: "";
+    transform: translate(-50%, -5px) rotate(45deg);
+  }
+
+  .cell:nth-child(-n + 10) .build-preview {
+    top: calc(100% + 11px);
+    bottom: auto;
+    transform: translate(var(--preview-x), -7px);
+    transform-origin: var(--preview-arrow) 0;
+  }
+
+  .cell:nth-child(-n + 10) .build-preview::after {
+    top: auto;
+    bottom: 100%;
+    transform: translate(-50%, 5px) rotate(45deg);
+  }
+
+  .cell a:hover .build-preview,
+  .cell a:focus-visible .build-preview {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(var(--preview-x), 0);
+    transition-delay: 0s;
+  }
+
+  .cell:nth-child(-n + 10) a:hover .build-preview,
+  .cell:nth-child(-n + 10) a:focus-visible .build-preview {
+    transform: translate(var(--preview-x), 0);
+  }
+
+  .preview-kicker {
+    color: var(--yellow);
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+
+  .build-preview strong {
+    color: white;
+    font-size: 1.05rem;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+  }
+
+  .preview-event,
+  .preview-solution {
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.72rem;
+    font-weight: 650;
+    line-height: 1.45;
+  }
+
+  .preview-event {
+    color: rgba(255, 255, 255, 0.88);
+    font-weight: 800;
+  }
+
+  .preview-solution {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .preview-facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .preview-facts span {
+    padding: 3px 6px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 2px;
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 0.61rem;
+    font-weight: 800;
+  }
+
+  .preview-context {
+    display: grid;
+    gap: 3px;
+    color: rgba(255, 255, 255, 0.58);
+    font-size: 0.62rem;
+    line-height: 1.4;
+  }
+
+  .preview-context b {
+    margin-right: 4px;
+    color: rgba(255, 255, 255, 0.88);
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .preview-footer {
+    display: grid;
+    gap: 4px;
+    padding-top: 7px;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    color: #7ee2d7;
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 0.03em;
+    line-height: 1.35;
+    text-transform: uppercase;
+  }
+
+  .preview-footer em {
+    color: #ffd66c;
+    font-style: normal;
+  }
+
+  .preview-cta {
+    color: rgba(255, 255, 255, 0.44);
+    font-size: 0.58rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   .cell.shipped a {
@@ -173,6 +409,10 @@ function describe(cell: GridCell) {
     .cell > .slot {
       border-radius: 2px;
       font-size: 0.55rem;
+    }
+
+    .build-preview {
+      display: none;
     }
   }
 
