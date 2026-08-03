@@ -12,16 +12,39 @@ const peak = Math.max(...stats.map((stat) => stat.total), 1);
 <div class="cadence">
   <ol class="cols" style={`--peak:${peak}`}>
     {
-      stats.map((stat) => (
-        <li class:list={["col", { dormant: stat.dormant }]}>
+      stats.map((stat) => {
+        const shipped = stat.total - stat.awarded;
+        const buildLabel = `${stat.total} ${stat.total === 1 ? "build" : "builds"}`;
+        const tooltipId = `cadence-${stat.year}`;
+        const label = stat.dormant
+          ? `${stat.year}: dormant year, ${stat.cumulative} cumulative hackathons`
+          : `${stat.year}: ${stat.total} builds, ${stat.awarded} awarded, ${shipped} shipped, ${stat.days} days, ${stat.cumulative} cumulative`;
+
+        return (
+        <li
+          class:list={["col", { dormant: stat.dormant }]}
+          tabindex="0"
+          aria-label={label}
+          aria-describedby={tooltipId}
+        >
           <span class="count">{stat.total}</span>
+
+          <span class="year-preview" id={tooltipId} role="tooltip">
+            <strong>{stat.year}</strong>
+            {stat.dormant ? (
+              <span>No builds recorded</span>
+            ) : (
+              <span>{buildLabel} · {stat.awarded} awarded</span>
+            )}
+            <span>{shipped} shipped · {stat.days || 0} days</span>
+            <em>{stat.cumulative} cumulative</em>
+          </span>
 
           <div class="track">
             <div
               class="bar"
               style={`--ratio:${stat.total / peak}`}
-              role="img"
-              aria-label={`${stat.year}: ${stat.total} builds, ${stat.awarded} awarded, ${stat.days} days`}
+              aria-hidden="true"
             >
               {stat.awarded > 0 && (
                 <span
@@ -35,7 +58,8 @@ const peak = Math.max(...stats.map((stat) => stat.total), 1);
           <span class="year">{stat.year}</span>
           <span class="days">{stat.dormant ? "—" : `${stat.days}d`}</span>
         </li>
-      ))
+        );
+      })
     }
   </ol>
 
@@ -44,6 +68,7 @@ const peak = Math.max(...stats.map((stat) => stat.total), 1);
     <li><span class="swatch awarded" />Awarded</li>
     <li><span class="swatch dormant" />Dormant year</li>
     <li class="note">Sub-label = days spent building that year</li>
+    <li class="note">Hover or focus a year for details</li>
   </ul>
 </div>
 
@@ -63,11 +88,96 @@ const peak = Math.max(...stats.map((stat) => stat.total), 1);
   }
 
   .col {
+    --preview-x: -50%;
     display: grid;
+    position: relative;
     grid-template-rows: auto var(--chart-h) auto auto;
     gap: 8px;
     justify-items: center;
     text-align: center;
+  }
+
+  .col:first-child,
+  .col:nth-child(2) {
+    --preview-x: 0%;
+  }
+
+  .col:last-child,
+  .col:nth-last-child(2) {
+    --preview-x: -100%;
+  }
+
+  .col:focus-visible {
+    border-radius: 3px;
+    outline: 2px solid var(--red);
+    outline-offset: 4px;
+  }
+
+  .year-preview {
+    position: absolute;
+    top: 38px;
+    left: 50%;
+    z-index: 5;
+    display: grid;
+    visibility: hidden;
+    width: min(190px, calc(100vw - 34px));
+    gap: 4px;
+    padding: 11px 12px;
+    border-radius: 3px;
+    background: var(--black);
+    box-shadow: 0 14px 28px rgba(5, 5, 5, 0.28);
+    color: white;
+    opacity: 0;
+    pointer-events: none;
+    text-align: left;
+    transform: translate(var(--preview-x), 7px);
+    transition:
+      opacity 140ms ease,
+      transform 140ms ease,
+      visibility 0s linear 140ms;
+  }
+
+  .year-preview strong {
+    color: var(--yellow);
+    font-size: 0.68rem;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+  }
+
+  .year-preview span,
+  .year-preview em {
+    color: rgba(255, 255, 255, 0.76);
+    font-size: 0.65rem;
+    font-style: normal;
+    font-weight: 750;
+    line-height: 1.35;
+  }
+
+  .year-preview em {
+    padding-top: 5px;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    color: #7ee2d7;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .col:hover,
+  .col:focus-within {
+    z-index: 6;
+  }
+
+  .col:hover .year-preview,
+  .col:focus-visible .year-preview {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(var(--preview-x), 0);
+    transition-delay: 0s;
+  }
+
+  .col:hover .bar,
+  .col:focus-visible .bar {
+    filter: brightness(1.22);
+    box-shadow: 0 8px 22px rgba(14, 18, 18, 0.18);
   }
 
   .count {
@@ -100,6 +210,9 @@ const peak = Math.max(...stats.map((stat) => stat.total), 1);
     background: var(--ink);
     transform-origin: bottom;
     animation: grow 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    transition:
+      filter 140ms ease,
+      box-shadow 140ms ease;
   }
 
   .col.dormant .bar {
@@ -217,8 +330,10 @@ const peak = Math.max(...stats.map((stat) => stat.total), 1);
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .bar {
+    .bar,
+    .year-preview {
       animation: none;
+      transition: none;
     }
   }
 </style>

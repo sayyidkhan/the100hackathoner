@@ -31,6 +31,17 @@ const line = points.map((point) => `${point.cx},${point.cy}`).join(" ");
 const area = `${PAD.left},${y(0)} ${line} ${points.at(-1)!.cx},${y(0)}`;
 const gridValues = [25, 50, 75];
 const finalPoint = points.at(-1)!;
+const TOOLTIP_W = 188;
+const TOOLTIP_H = 70;
+
+const tooltipX = (point: (typeof points)[number]) =>
+  Math.min(
+    W - PAD.right - TOOLTIP_W,
+    Math.max(PAD.left, point.cx - TOOLTIP_W / 2),
+  );
+
+const tooltipY = (point: (typeof points)[number]) =>
+  Math.max(PAD.top + 4, point.cy - TOOLTIP_H - 14);
 
 // Contiguous runs of dormant years, used to shade and annotate the hiatus.
 const dormantRuns: { start: number; end: number }[] = [];
@@ -49,7 +60,7 @@ const halfStep = stats.length > 1 ? innerW / (stats.length - 1) / 2 : 0;
 ---
 
 <figure class="momentum">
-  <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="momentum-caption">
+  <svg viewBox={`0 0 ${W} ${H}`} role="group" aria-labelledby="momentum-caption">
     {
       dormantRuns.map((run) => (
         <rect
@@ -82,8 +93,16 @@ const halfStep = stats.length > 1 ? innerW / (stats.length - 1) / 2 : 0;
     <polyline class="line" points={line} />
 
     {
-      points.map((point) => (
-        <>
+      points.map((point) => {
+        const shipped = point.total - point.awarded;
+        const buildLabel = `${point.total} ${point.total === 1 ? "build" : "builds"}`;
+        const label = point.dormant
+          ? `${point.year}: dormant year, ${point.cumulative} cumulative hackathons`
+          : `${point.year}: ${point.total} builds, ${point.awarded} awarded, ${shipped} shipped, ${point.days} days, ${point.cumulative} cumulative`;
+
+        return (
+        <g class="point-target" tabindex="0" role="img" aria-label={label}>
+          <circle class="hit-area" cx={point.cx} cy={point.cy} r="15" />
           <circle
             class:list={["dot", { dormant: point.dormant }]}
             cx={point.cx}
@@ -93,8 +112,25 @@ const halfStep = stats.length > 1 ? innerW / (stats.length - 1) / 2 : 0;
           <text class="year" x={point.cx} y={H - 16}>
             {point.year}
           </text>
-        </>
-      ))
+          <g
+            class="point-preview"
+            transform={`translate(${tooltipX(point)} ${tooltipY(point)})`}
+            aria-hidden="true"
+          >
+            <rect width={TOOLTIP_W} height={TOOLTIP_H} rx="3" />
+            <text class="preview-year" x="11" y="17">{point.year}</text>
+            <text class="preview-main" x="11" y="37">
+              {point.dormant
+                ? "No builds recorded"
+                : `${buildLabel} · ${point.awarded} awarded`}
+            </text>
+            <text class="preview-sub" x="11" y="56">
+              {shipped} shipped · {point.days || 0} days · {point.cumulative} cumulative
+            </text>
+          </g>
+        </g>
+        );
+      })
     }
 
     <text class="total" x={finalPoint.cx - 16} y={finalPoint.cy - 16}>
@@ -116,7 +152,7 @@ const halfStep = stats.length > 1 ? innerW / (stats.length - 1) / 2 : 0;
 
   <figcaption id="momentum-caption">
     Cumulative hackathons completed by the end of each year, against the target
-    of {goal}.
+    of {goal}. Hover or focus a point for annual details.
   </figcaption>
 </figure>
 
@@ -164,10 +200,76 @@ const halfStep = stats.length > 1 ? innerW / (stats.length - 1) / 2 : 0;
     fill: var(--red);
     stroke: var(--bg-paper);
     stroke-width: 2.5;
+    transition:
+      filter 140ms ease,
+      stroke-width 140ms ease;
   }
 
   .dot.dormant {
     fill: var(--faint);
+  }
+
+  .point-target {
+    cursor: pointer;
+    outline: none;
+  }
+
+  .hit-area {
+    fill: transparent;
+  }
+
+  .point-preview {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 140ms ease;
+  }
+
+  .point-preview rect {
+    fill: var(--black);
+    filter: drop-shadow(0 8px 12px rgba(5, 5, 5, 0.24));
+  }
+
+  .point-preview text {
+    font-family: inherit;
+    text-anchor: start;
+  }
+
+  .preview-year {
+    fill: var(--yellow);
+    font-size: 11px;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+  }
+
+  .preview-main {
+    fill: rgba(255, 255, 255, 0.9);
+    font-size: 11px;
+    font-weight: 850;
+  }
+
+  .preview-sub {
+    fill: #7ee2d7;
+    font-size: 9px;
+    font-weight: 800;
+  }
+
+  .point-target:hover .point-preview,
+  .point-target:focus-visible .point-preview {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .point-target:hover .dot,
+  .point-target:focus-visible .dot {
+    filter: drop-shadow(0 0 6px rgba(237, 28, 36, 0.55));
+    stroke-width: 4;
+  }
+
+  .point-target:focus-visible .hit-area {
+    fill: rgba(237, 28, 36, 0.14);
+    stroke: var(--red);
+    stroke-width: 1.5;
   }
 
   .axis,
@@ -231,6 +333,17 @@ const halfStep = stats.length > 1 ? innerW / (stats.length - 1) / 2 : 0;
     .goal-label,
     .annotation {
       font-size: 19px;
+    }
+
+    .point-preview {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dot,
+    .point-preview {
+      transition: none;
     }
   }
 </style>
