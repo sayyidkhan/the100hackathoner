@@ -137,6 +137,11 @@ function preview(cell: GridCell) {
     aspect-ratio: 1;
   }
 
+  .cell:hover,
+  .cell:focus-within {
+    z-index: 20;
+  }
+
   .cell:nth-child(10n + 1),
   .cell:nth-child(10n + 2) {
     --preview-x: 0%;
@@ -168,7 +173,6 @@ function preview(cell: GridCell) {
 
   .cell a:hover,
   .cell a:focus-visible {
-    z-index: 5;
     box-shadow: 0 6px 18px rgba(14, 18, 18, 0.24);
     outline: none;
     transform: scale(1.14);
