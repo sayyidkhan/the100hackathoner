@@ -35,6 +35,7 @@
     inset: 0;
     z-index: 0;
     overflow: hidden;
+    contain: paint;
     background:
       radial-gradient(circle at 74% 46%, rgba(16, 48, 68, 0.7), transparent 34%),
       radial-gradient(circle at 35% 80%, rgba(76, 13, 22, 0.34), transparent 38%),
@@ -53,9 +54,7 @@
   .cinematic-flare {
     position: absolute;
     border-radius: 50%;
-    filter: blur(8px);
-    mix-blend-mode: screen;
-    opacity: 0.38;
+    opacity: 0.3;
     will-change: transform;
   }
 
@@ -88,8 +87,7 @@
       rgba(115, 207, 255, 0.16),
       transparent
     );
-    filter: blur(18px);
-    opacity: 0.55;
+    opacity: 0.4;
     transform: rotate(17deg);
     transform-origin: 50% 50%;
     will-change: transform;
@@ -188,10 +186,10 @@
 
   .cinematic-grain {
     position: absolute;
-    inset: -40%;
+    inset: -12%;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
-    mix-blend-mode: soft-light;
-    opacity: 0.11;
+    background-size: 180px 180px;
+    opacity: 0.045;
     will-change: transform;
   }
 
@@ -287,8 +285,15 @@
     }
 
     .cinematic-grain {
-      animation: cinematic-grain-shift 240ms steps(2, end) infinite;
+      animation: cinematic-grain-shift 1.4s steps(4, end) infinite;
     }
+  }
+
+  .cinematic-backdrop[data-visible="false"] .cinematic-number,
+  .cinematic-backdrop[data-visible="false"] .cinematic-flare,
+  .cinematic-backdrop[data-visible="false"] .cinematic-beam,
+  .cinematic-backdrop[data-visible="false"] .cinematic-grain {
+    animation-play-state: paused;
   }
 
   @media (max-width: 720px) {
@@ -332,6 +337,8 @@
     scale: number;
   };
 
+  type ConnectionPair = [number, number];
+
   const initializeBackdrop = (backdrop: HTMLElement) => {
     if (backdrop.dataset.ready === "true") return;
     backdrop.dataset.ready = "true";
@@ -350,10 +357,18 @@
     let animationFrame = 0;
     let sceneVisible = true;
     let startTime = performance.now();
+    let lastFrameTime = 0;
+    let connectionPairs: ConnectionPair[] = [];
     let pointerX = 0;
     let pointerY = 0;
     let pointerTargetX = 0;
     let pointerTargetY = 0;
+
+    const deviceMemory = (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8;
+    const compactDevice = window.matchMedia("(max-width: 720px), (pointer: coarse)").matches;
+    const lowPowerScene = compactDevice || navigator.hardwareConcurrency <= 4 || deviceMemory <= 4;
+    const frameInterval = 1000 / (lowPowerScene ? 20 : 30);
+    const maximumPixelRatio = lowPowerScene ? 1 : 1.35;
 
     const seededRandom = (() => {
       let seed = 100073;
@@ -393,12 +408,13 @@
       const bounds = hero.getBoundingClientRect();
       width = Math.max(1, bounds.width);
       height = Math.max(1, bounds.height);
-      pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+      pixelRatio = Math.min(window.devicePixelRatio || 1, maximumPixelRatio);
       canvas.width = Math.round(width * pixelRatio);
       canvas.height = Math.round(height * pixelRatio);
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
       context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      connectionPairs = buildConnectionPairs(performance.now());
       draw(performance.now());
     };
 
@@ -433,6 +449,30 @@
           scale: depth,
         };
       });
+    };
+
+    const buildConnectionPairs = (time: number): ConnectionPair[] => {
+      const projected = projectNodes(time, 1);
+      const threshold = Math.min(lowPowerScene ? 108 : 132, width * 0.115);
+      const maximumConnections = lowPowerScene ? 2 : 4;
+      const pairs: ConnectionPair[] = [];
+
+      projected.forEach((nodeA, first) => {
+        const nearby: Array<{ second: number; distance: number }> = [];
+
+        for (let second = first + 1; second < projected.length; second += 1) {
+          const nodeB = projected[second];
+          const distance = Math.hypot(nodeA.px - nodeB.px, nodeA.py - nodeB.py);
+          if (distance <= threshold) nearby.push({ second, distance });
+        }
+
+        nearby
+          .sort((a, b) => a.distance - b.distance)
+          .slice(0, maximumConnections)
+          .forEach(({ second }) => pairs.push([first, second]));
+      });
+
+      return pairs;
     };
 
     const drawRoute = (projected: ProjectedNode[], time: number) => {
@@ -471,32 +511,26 @@
     };
 
     const drawConnections = (projected: ProjectedNode[]) => {
-      const threshold = Math.min(138, width * 0.12);
+      const threshold = Math.min(lowPowerScene ? 112 : 138, width * 0.12);
       context.save();
 
-      for (let first = 0; first < projected.length; first += 1) {
+      connectionPairs.forEach(([first, second]) => {
         const nodeA = projected[first];
+        const nodeB = projected[second];
+        const distance = Math.hypot(nodeA.px - nodeB.px, nodeA.py - nodeB.py);
+        if (distance > threshold) return;
 
-        for (let second = first + 1; second < projected.length; second += 1) {
-          const nodeB = projected[second];
-          const deltaX = nodeA.px - nodeB.px;
-          const deltaY = nodeA.py - nodeB.py;
-          const distance = Math.hypot(deltaX, deltaY);
-
-          if (distance > threshold) continue;
-
-          const completed = nodeA.index < 73 && nodeB.index < 73;
-          const alpha = (1 - distance / threshold) * (completed ? 0.16 : 0.055);
-          context.beginPath();
-          context.moveTo(nodeA.px, nodeA.py);
-          context.lineTo(nodeB.px, nodeB.py);
-          context.strokeStyle = completed
-            ? `rgba(80, 194, 213, ${alpha})`
-            : `rgba(218, 234, 240, ${alpha})`;
-          context.lineWidth = 0.65;
-          context.stroke();
-        }
-      }
+        const completed = nodeA.index < 73 && nodeB.index < 73;
+        const alpha = (1 - distance / threshold) * (completed ? 0.16 : 0.055);
+        context.beginPath();
+        context.moveTo(nodeA.px, nodeA.py);
+        context.lineTo(nodeB.px, nodeB.py);
+        context.strokeStyle = completed
+          ? `rgba(80, 194, 213, ${alpha})`
+          : `rgba(218, 234, 240, ${alpha})`;
+        context.lineWidth = 0.65;
+        context.stroke();
+      });
 
       context.restore();
     };
@@ -541,8 +575,8 @@
                 ? "#37d6c8"
                 : "#69b8ff"
               : "#d9eaf0";
-        context.shadowColor = current ? "#ff343b" : completed ? "#4ac8de" : "transparent";
-        context.shadowBlur = current ? 18 : completed ? 5 : 0;
+        context.shadowColor = current ? "#ff343b" : milestone ? "#f5b51b" : "transparent";
+        context.shadowBlur = current ? 18 : milestone ? 4 : 0;
         context.fill();
 
         if (current && width > 900) {
@@ -595,7 +629,10 @@
     };
 
     const animate = (time: number) => {
-      draw(time);
+      if (time - lastFrameTime >= frameInterval) {
+        draw(time);
+        lastFrameTime = time;
+      }
       if (!reducedMotion.matches && sceneVisible && !document.hidden) {
         animationFrame = window.requestAnimationFrame(animate);
       }
@@ -604,6 +641,7 @@
     const start = () => {
       window.cancelAnimationFrame(animationFrame);
       startTime = performance.now();
+      lastFrameTime = 0;
       if (reducedMotion.matches) draw(startTime + 1700);
       else animationFrame = window.requestAnimationFrame(animate);
     };
@@ -626,6 +664,7 @@
     const resizeObserver = new ResizeObserver(resize);
     const intersectionObserver = new IntersectionObserver(([entry]) => {
       sceneVisible = entry.isIntersecting;
+      backdrop.dataset.visible = String(sceneVisible);
       if (sceneVisible) start();
       else window.cancelAnimationFrame(animationFrame);
     });
