@@ -1,10 +1,11 @@
 import { readSheet } from "read-excel-file/node";
 import { DatabaseSync } from "node:sqlite";
-import { mkdir } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
 const workbookPath = resolve("data/Hackathon CV.xlsx");
 const databasePath = resolve("data/hackathons.db");
+const catalogPath = resolve("src/data/hackathons.json");
 
 const columns = {
   number: 1,
@@ -91,6 +92,32 @@ function splitList(value) {
 
 function splitMembers(value) {
   return splitList(value).map((member) => member.replace(/\s*\([^)]*\)/g, "").trim()).filter(Boolean);
+}
+
+function splitCatalogValue(value) {
+  return value ? value.split(",").filter(Boolean) : [];
+}
+
+function toCatalogEntry(row) {
+  return {
+    number: row.number,
+    title: row.title,
+    event: row.event,
+    dateLabel: row.date_label,
+    startDate: row.start_date,
+    duration: row.duration,
+    durationUnit: row.duration_unit,
+    solution: row.solution,
+    client: row.client,
+    country: row.country,
+    location: row.location,
+    award: row.award,
+    tags: splitCatalogValue(row.tags),
+    organizers: splitCatalogValue(row.organizers),
+    members: splitCatalogValue(row.members),
+    githubUrl: row.github_url,
+    eventUrl: row.event_url,
+  };
 }
 
 function prepareSchema(db) {
@@ -209,7 +236,10 @@ function findOrCreate(db, table, name) {
   return db.prepare(`INSERT INTO ${table} (name) VALUES (?)`).run(name).lastInsertRowid;
 }
 
-await mkdir(dirname(databasePath), { recursive: true });
+await Promise.all([
+  mkdir(dirname(databasePath), { recursive: true }),
+  mkdir(dirname(catalogPath), { recursive: true }),
+]);
 
 const rows = await readSheet(workbookPath);
 if (rows.length < 2) throw new Error("The workbook does not contain hackathon rows.");
@@ -269,7 +299,12 @@ try {
   }
 
   db.exec("COMMIT");
-  console.log(`Imported ${imported} hackathons into ${databasePath}`);
+  const catalog = db
+    .prepare("SELECT * FROM hackathon_catalog ORDER BY number DESC")
+    .all()
+    .map(toCatalogEntry);
+  await writeFile(catalogPath, `${JSON.stringify(catalog, null, 2)}\n`);
+  console.log(`Imported ${imported} hackathons into ${databasePath} and ${catalogPath}`);
 } catch (error) {
   db.exec("ROLLBACK");
   throw error;

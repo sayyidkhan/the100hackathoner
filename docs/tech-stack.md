@@ -36,12 +36,14 @@ Reason:
 
 ### Content
 
-**SQLite for the hackathon archive; Markdown for essays and memoir entries**
+**SQLite for analysis, a generated JSON catalog for deployment, and Markdown for essays and memoir entries**
 
 Reason:
-- the Excel workbook imports into an embedded relational database during builds
+- the Excel workbook imports into an embedded relational database in an explicit batch job
 - SQL supports future filtering, aggregation, and infographic views
+- the batch exports a versioned JSON catalog that Astro consumes during builds
 - the static site has no production database service to operate
+- deployment does not depend on the host's SQLite or Excel support
 - essays remain easy to author and version as Markdown
 
 ### Deployment

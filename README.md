@@ -41,19 +41,23 @@ Preview the production build locally:
 npm run preview
 ```
 
+Vercel supplies the production hostname automatically. On another host, set
+`SITE_URL` to the canonical origin shown in `.env.example`.
+
 ## Project Structure
 
 ```txt
 src/
   components/        Shared UI components
   content/           Essays, judging logs, and principles
-  lib/               SQLite data access for the hackathon archive
+  data/              Static hackathon catalog consumed by Astro
+  lib/               Hackathon catalog access
   layouts/           Base HTML layout
   pages/             Astro routes
   styles/            Global design system styles
-scripts/             Spreadsheet-to-SQLite import jobs
+scripts/             Spreadsheet-to-SQLite/catalog import jobs
 docs/                Planning and project notes
-data/                Workbook source and generated SQLite archive
+data/                Workbook source and generated SQLite analysis database
 ```
 
 ## Common Edits
@@ -88,13 +92,17 @@ Hackathon archive source:
 data/Hackathon CV.xlsx
 ```
 
-The workbook is imported into `data/hackathons.db` before local development
-and production builds. Do not edit the database manually. Update the workbook,
+Do not edit the generated database or catalog manually. Update the workbook,
 then run:
 
 ```bash
 npm run sync:hackathons
 ```
+
+The batch creates `data/hackathons.db` for local analysis and
+`src/data/hackathons.json` for the static site. Commit both generated files
+with the workbook change. Production builds read only the JSON catalog and do
+not require Excel or SQLite support on the deployment host.
 
 Essay entries:
 
@@ -118,8 +126,9 @@ src/content/principles/
 
 Hackathon records use a normalized SQLite model generated from the workbook.
 The import stores core event data plus relational organizer, participant, tag,
-award, and link tables. Astro reads the display view during the static build to
-generate `/hackathons/1/` through `/hackathons/73/`.
+award, and link tables, then exports the display view to a static JSON catalog.
+Astro reads that catalog to generate `/hackathons/1/` through
+`/hackathons/73/` without opening SQLite during deployment.
 
 Essay entries use:
 

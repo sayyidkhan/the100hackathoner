@@ -1,0 +1,2002 @@
+[
+  {
+    "number": 73,
+    "title": "Zo Drive",
+    "event": "Zo Computer Jul 2026 Build Challenge (Kill your SaaS)",
+    "dateLabel": "15 Jul - 25 Jul 2026",
+    "startDate": "2026-07-15",
+    "duration": 10,
+    "durationUnit": "Days",
+    "solution": "clone google drive together with other commonly used infra features",
+    "client": "Zo Computer",
+    "country": "US",
+    "location": "Remote",
+    "award": null,
+    "tags": [
+      "Infra"
+    ],
+    "organizers": [
+      "Zo Computer"
+    ],
+    "members": [
+      "sayyid"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/zo-drive",
+    "eventUrl": "https://ambassador.zo.space/build-challenge"
+  },
+  {
+    "number": 72,
+    "title": "Alien Homecoming",
+    "event": "Whackathon 2026",
+    "dateLabel": "18/7/2026",
+    "startDate": "2026-07-18",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "An adventure game where an alien is trying to find its way home, each map is ai rendered",
+    "client": "Folly",
+    "country": "Singapore",
+    "location": "Terra Loft",
+    "award": null,
+    "tags": [
+      "Game"
+    ],
+    "organizers": [
+      "Folly"
+    ],
+    "members": [
+      "sayyid"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/alien-homecoming",
+    "eventUrl": "https://luma.com/68nouvl9?tk=yuORah"
+  },
+  {
+    "number": 71,
+    "title": "Kingdom Of PAL",
+    "event": "BUIDL_OPC_Hackathon_SG",
+    "dateLabel": "7 Dec 2026",
+    "startDate": "2026-12-07",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "kingdom of pal: 7 dwarfs and a shiekh, a tool to help maange one person community biz",
+    "client": "amber.ac",
+    "country": "Singapore",
+    "location": "Lifelong Learning Institute",
+    "award": "4.5K AWS Credits",
+    "tags": [
+      "Productivity"
+    ],
+    "organizers": [
+      "amber.ac"
+    ],
+    "members": [
+      "sayyid",
+      "bruce"
+    ],
+    "githubUrl": null,
+    "eventUrl": "https://luma.com/r6v3evdi?tk=BuCFqn"
+  },
+  {
+    "number": 70,
+    "title": "zo relationship mapper",
+    "event": "Sup Build2026 Hackathon",
+    "dateLabel": "27/6/2026",
+    "startDate": "2026-06-27",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Live career opportunity and relationship mapper powered by OpenAI and Exa",
+    "client": "Sup",
+    "country": "Singapore",
+    "location": "Suntec Tower 1",
+    "award": null,
+    "tags": [
+      "productivity"
+    ],
+    "organizers": [
+      "Sup"
+    ],
+    "members": [
+      "sayyid"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/zo-relationship-mapper",
+    "eventUrl": "https://luma.com/zda76sc1?tk=f30DS9"
+  },
+  {
+    "number": 69,
+    "title": "Zo Order Tracker",
+    "event": "Zo Computer Jun 2026 Build Challenge",
+    "dateLabel": "20 Jun - 21 Jun 2026",
+    "startDate": "2026-06-20",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "A lightweight storefront and payment-proof order tracker for small businesses, deployed on Zo Computer.",
+    "client": "Zo Computer",
+    "country": "US",
+    "location": "Remote",
+    "award": null,
+    "tags": [
+      "productivity"
+    ],
+    "organizers": [
+      "Zo Computer"
+    ],
+    "members": [
+      "sayyid",
+      "hong ming",
+      "bruce",
+      "aslam"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/zo-order-tracker",
+    "eventUrl": "https://ambassador.zo.space/build-challenge"
+  },
+  {
+    "number": 68,
+    "title": "Buzo 2.1",
+    "event": "UCWS 2026 (Finals)",
+    "dateLabel": "13/6/2026",
+    "startDate": "2026-06-13",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Buzo - Your AI Concierage for live events worldwide",
+    "client": null,
+    "country": "Singapore",
+    "location": "8 George St, Pickering Operations Complex",
+    "award": null,
+    "tags": [
+      "Events"
+    ],
+    "organizers": [
+      "Epic Connector"
+    ],
+    "members": [
+      "sayyid",
+      "clarence tan"
+    ],
+    "githubUrl": null,
+    "eventUrl": "https://luma.com/UCWS2026?tk=y5h4YG"
+  },
+  {
+    "number": 67,
+    "title": "SceneVerse AI",
+    "event": "Super AI Hackathon 2026",
+    "dateLabel": "9/6/2026 - 11/6/2026",
+    "startDate": "2026-06-09",
+    "duration": 3,
+    "durationUnit": "Days",
+    "solution": "Agentic AI + VR - Talk to the movie characters",
+    "client": "SuperAI",
+    "country": "Singapore",
+    "location": "Marina Bay Sands",
+    "award": null,
+    "tags": [
+      "Movie"
+    ],
+    "organizers": [
+      "Super AI"
+    ],
+    "members": [
+      "sayyid",
+      "mika",
+      "adora"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/agentic-vr-frontend",
+    "eventUrl": null
+  },
+  {
+    "number": 66,
+    "title": "Buzo 2.0",
+    "event": "UCWS 2026 (Semi-Finals)",
+    "dateLabel": "1/5/2026 - 30/5/2026",
+    "startDate": "2026-05-01",
+    "duration": 1,
+    "durationUnit": "Month",
+    "solution": "Buzo - Your AI Concierage for live events worldwide",
+    "client": null,
+    "country": "Singapore",
+    "location": "Remote",
+    "award": "Top 20, 10K USD OpenAI Credits, 2K USD Gemini Cloud Credits",
+    "tags": [
+      "Events"
+    ],
+    "organizers": [
+      "Epic Connector"
+    ],
+    "members": [
+      "sayyid",
+      "clarence tan"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 65,
+    "title": "Mums Can Build",
+    "event": "Ralphthon SG 2026",
+    "dateLabel": "17/5/26",
+    "startDate": "2026-05-17",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Voice-first backend harness that turns spoken software ideas into structured Codex tasks, then coordinates a builder worker and streams progress back to the user.",
+    "client": null,
+    "country": "Singapore",
+    "location": "Suntec Tower 1",
+    "award": null,
+    "tags": [
+      "Agentic AI"
+    ],
+    "organizers": [
+      "SuperTeam SG",
+      "Hashed",
+      "Petani"
+    ],
+    "members": [
+      "sayyid"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/mums-can-build",
+    "eventUrl": "https://luma.com/4hx7p0vs?tk=ruRx4s"
+  },
+  {
+    "number": 64,
+    "title": "Data Center Destroyer",
+    "event": "aie hackathon 2026",
+    "dateLabel": "5 Sept 2026",
+    "startDate": "2026-09-05",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "build the ultimate data center destroyer",
+    "client": null,
+    "country": "Singapore",
+    "location": "NUS",
+    "award": null,
+    "tags": [
+      "Game"
+    ],
+    "organizers": [
+      "65 labs"
+    ],
+    "members": [
+      "sayyid",
+      "hisyam",
+      "hafidz",
+      "jazli"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/data-center-destroyer",
+    "eventUrl": "https://luma.com/aie-hack?tk=6ESqwa"
+  },
+  {
+    "number": 63,
+    "title": "Data Center Tycoon [Web + Mobile Edition]",
+    "event": "Vercel Zero to Agent: Global 2026",
+    "dateLabel": "4 Apr 2026",
+    "startDate": "2026-04-04",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "build the ultimate data center empire (now mobile optimised)",
+    "client": null,
+    "country": "Singapore",
+    "location": "Remote",
+    "award": null,
+    "tags": [
+      "Game"
+    ],
+    "organizers": [
+      "v0",
+      "Vercel"
+    ],
+    "members": [
+      "sayyid"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/v0-data-center-tycoon",
+    "eventUrl": "https://community.vercel.com/hackathons/zero-to-agent"
+  },
+  {
+    "number": 62,
+    "title": "Ask Buzo",
+    "event": "Emergency GPT hackathon 2026",
+    "dateLabel": "4 Mar 2026",
+    "startDate": "2026-03-04",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Buzo (Ai Search) Feature - Personalised Event Searching",
+    "client": null,
+    "country": "Singapore",
+    "location": "Open Sourced Café",
+    "award": null,
+    "tags": [
+      "Events"
+    ],
+    "organizers": [
+      "openai"
+    ],
+    "members": [
+      "sayyid",
+      "clarence tan",
+      "zhang cheng"
+    ],
+    "githubUrl": "https://github.com/gigradarapp/gr-ask-buzo",
+    "eventUrl": "https://luma.com/zprbhtzy?tk=gMcrjt"
+  },
+  {
+    "number": 61,
+    "title": "Data Center Tycoon [Web Only]",
+    "event": "Vercel Zero to Agent: Singapore (1 Hr Hackathon) 2026",
+    "dateLabel": "30/4/2026",
+    "startDate": "2026-04-30",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "build the ultimate data center empire",
+    "client": null,
+    "country": "Singapore",
+    "location": "SQ Collective",
+    "award": "v0 Sock",
+    "tags": [
+      "Game"
+    ],
+    "organizers": [
+      "v0",
+      "Vercel"
+    ],
+    "members": [
+      "sayyid"
+    ],
+    "githubUrl": null,
+    "eventUrl": "https://luma.com/bh5iqhnx?tk=17u8ZH"
+  },
+  {
+    "number": 60,
+    "title": "Guardian Agent",
+    "event": "Build Voice Agents with Speechmatics | TGB Buildathon 2026",
+    "dateLabel": "29/4/2026",
+    "startDate": "2026-04-29",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Build Voice Agents with Speechmatics | TGB Buildathon",
+    "client": null,
+    "country": "Singapore",
+    "location": "SGInnovate",
+    "award": "2K Speechmatics Credits",
+    "tags": [
+      "Agentic AI (Voice)"
+    ],
+    "organizers": [
+      "Speechmatics"
+    ],
+    "members": [
+      "sayyid"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/guardian-agent",
+    "eventUrl": "https://luma.com/tgbspeechmatics1?tk=NaV6RE"
+  },
+  {
+    "number": 59,
+    "title": "Brain Org",
+    "event": "Temasek Hackathon 2026",
+    "dateLabel": "24/4/2026",
+    "startDate": "2026-04-24",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "AI that detects and fixes workflow bottlenecks",
+    "client": null,
+    "country": "Singapore",
+    "location": "Temasek ShopHouse",
+    "award": null,
+    "tags": [
+      "Project Management"
+    ],
+    "organizers": [
+      "Temasek",
+      "Antrophic",
+      "Genspark"
+    ],
+    "members": [
+      "sayyid",
+      "shashi",
+      "ryan foo"
+    ],
+    "githubUrl": "https://devfolio.co/projects/ontrack-ai-7d28",
+    "eventUrl": "https://push-to-prod.devfolio.co/overview"
+  },
+  {
+    "number": 58,
+    "title": "HackAtlas",
+    "event": "MeDo Singapore Vibe Coding Hackathon 2026",
+    "dateLabel": "18/4/2026",
+    "startDate": "2026-04-18",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "HackAtlas —Mapping the world’s top hackathon builders.",
+    "client": "MeDo",
+    "country": "Singapore",
+    "location": "NUS",
+    "award": null,
+    "tags": [
+      "Human Resource"
+    ],
+    "organizers": [
+      "MeDo Singapore"
+    ],
+    "members": [
+      "sayyid",
+      "zhang cheng",
+      "elena xiao"
+    ],
+    "githubUrl": "https://devpost.com/software/1248526/joins/rd1pZGiClia_sxEWA0RNJg",
+    "eventUrl": "https://luma.com/sgvibecodinghackathon?tk=vDly3i"
+  },
+  {
+    "number": 57,
+    "title": "Medivoice",
+    "event": "Agora.io Voice AI Hackathon Singapore 2026",
+    "dateLabel": "4 Oct 2026",
+    "startDate": "2026-10-04",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Speak your symptoms. Get your MC. Skip the queue.",
+    "client": null,
+    "country": "Singapore",
+    "location": "Carousell Campus (Regional HQ)",
+    "award": "3rd Prize: S$ 300 Cash, and S$ 385 worth of Credits",
+    "tags": [
+      "Healthcare",
+      "Agentic AI (Voice)"
+    ],
+    "organizers": [
+      "Agora.io"
+    ],
+    "members": [
+      "sayyid"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/agora-medihealth",
+    "eventUrl": "https://luma.com/89t0ejof?tk=jjk7Rp"
+  },
+  {
+    "number": 56,
+    "title": "Bryan Feedback Agent",
+    "event": "January Capital Hackathon SG 2026",
+    "dateLabel": "4 Jul 2026",
+    "startDate": "2026-07-04",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Bryan Feedback Agent - An Agent that collects high quailty event feedback after an event",
+    "client": null,
+    "country": "Singapore",
+    "location": "NUS",
+    "award": null,
+    "tags": [
+      "Events"
+    ],
+    "organizers": [
+      "January Capital",
+      "OpenAI"
+    ],
+    "members": [
+      "sayyid/clarence tan"
+    ],
+    "githubUrl": "https://github.com/gigradarapp/gr-bryan-feedback-agent",
+    "eventUrl": "https://luma.com/wn9f2gta?tk=iqBwSL"
+  },
+  {
+    "number": 55,
+    "title": "Buzo",
+    "event": "TinyFish SG Hackathon 2026",
+    "dateLabel": "28/3/2026",
+    "startDate": "2026-03-28",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Buzo - Your AI Concierage for live events worldwide",
+    "client": null,
+    "country": "Singapore",
+    "location": "NUS",
+    "award": null,
+    "tags": [
+      "Events"
+    ],
+    "organizers": [
+      "TinyFish"
+    ],
+    "members": [
+      "sayyid",
+      "clarence tan",
+      "zhang cheng"
+    ],
+    "githubUrl": null,
+    "eventUrl": "https://luma.com/4n1e9si9?tk=I1WSBi"
+  },
+  {
+    "number": 54,
+    "title": "Gigradar",
+    "event": "SUSS X Openclaw Hackathon 2026",
+    "dateLabel": "13/3/2026",
+    "startDate": "2026-03-13",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Gigradar - AI agents that discover and verify live events across the internet.",
+    "client": null,
+    "country": "Singapore",
+    "location": "SUSS",
+    "award": "1st Prize (Wavespeed AI Credits $150 USD)",
+    "tags": [
+      "Events"
+    ],
+    "organizers": [
+      "Singapore Opensourced Hub",
+      "Wavespeed AI",
+      "Minimax",
+      "Mem u"
+    ],
+    "members": [
+      "sayyid",
+      "clarence tan",
+      "zhang cheng"
+    ],
+    "githubUrl": null,
+    "eventUrl": "https://luma.com/sourceawakening?tk=HdsoHg"
+  },
+  {
+    "number": 53,
+    "title": "DevDuel Agent",
+    "event": "AgentForce Hackathon 2026",
+    "dateLabel": "28/2/2026",
+    "startDate": "2026-02-28",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Track 2: Compares two public professional profiles in an anime-style 1vs1 battle.",
+    "client": "Bright Data, ActionBook, Acontext",
+    "country": "Singapore",
+    "location": "NUS",
+    "award": "1st Prize (API Credits $500 USD)",
+    "tags": [
+      "Agentic AI"
+    ],
+    "organizers": [
+      "AI Builders"
+    ],
+    "members": [
+      "sayyid",
+      "hisyam",
+      "shashi"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/agent-forge-track2",
+    "eventUrl": "https://luma.com/sgaihackthon?tk=9KBC0q"
+  },
+  {
+    "number": 52,
+    "title": "AI LinkedIn Launch Studio",
+    "event": "AgentForce Hackathon 2026",
+    "dateLabel": "28/2/2026",
+    "startDate": "2026-02-28",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Track 1: A multimodal AI application that generates complete LinkedIn launch packages",
+    "client": "WaveSpeed AI, Zeabur, Qoder, Insforge",
+    "country": "Singapore",
+    "location": "NUS",
+    "award": "1st Prize (API Credits $500 USD)",
+    "tags": [
+      "Agentic AI"
+    ],
+    "organizers": [
+      "AI Builders"
+    ],
+    "members": [
+      "sayyid",
+      "hisyam",
+      "shashi"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/agent-forge-track1",
+    "eventUrl": "https://luma.com/sgaihackthon?tk=9KBC0q"
+  },
+  {
+    "number": 51,
+    "title": "Should I Quit",
+    "event": "Agentfield Hackathon 2026",
+    "dateLabel": "2 Jul 2026",
+    "startDate": "2026-07-02",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Build an Agentic AI to help you to determine to quit your job",
+    "client": "Agentfield",
+    "country": "Singapore",
+    "location": "Monk Brew House",
+    "award": null,
+    "tags": [
+      "Agentic AI"
+    ],
+    "organizers": [
+      "AI Builders"
+    ],
+    "members": [
+      "sayyid",
+      "shashi",
+      "clement"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/shouldIquit",
+    "eventUrl": "https://luma.com/afsghackathon"
+  },
+  {
+    "number": 50,
+    "title": "MagiStock",
+    "event": "Agentfield Hackathon 2026",
+    "dateLabel": "2 Jul 2026",
+    "startDate": "2026-07-02",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "MagiStock → Autonomous Portfolio Risk Governor",
+    "client": "Agentfield",
+    "country": "Singapore",
+    "location": "Monk Brew House",
+    "award": "1st Prize (OpenRouter Credits $1000 USD)",
+    "tags": [
+      "Agentic AI"
+    ],
+    "organizers": [
+      "AI Builders"
+    ],
+    "members": [
+      "sayyid",
+      "shashi",
+      "clement"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/agentfields",
+    "eventUrl": "https://luma.com/afsghackathon"
+  },
+  {
+    "number": 49,
+    "title": "Stress Out,Bunny In",
+    "event": "APAC’s First Art x Tech Hackathon",
+    "dateLabel": "24/1/2026",
+    "startDate": "2026-01-24",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Stress Out, Bunny In: A gentle interactive space to stop working and start resting.",
+    "client": "Thoth AI, Airfoil, Elevenlabs, V0, Figma, OpenAI, Lovable, SMU",
+    "country": "Singapore",
+    "location": "SMU Connexion",
+    "award": null,
+    "tags": [
+      "Curated Theme: Touch Grass"
+    ],
+    "organizers": [
+      "Yee / Amanda / Elie / Joe / Jass"
+    ],
+    "members": [
+      "sayyid",
+      "hisyam",
+      "shashi"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/art-x-tech-hackathon-2026",
+    "eventUrl": "https://luma.com/186w8zoo?tk=Y3hTyJ"
+  },
+  {
+    "number": 48,
+    "title": "jollycard",
+    "event": "Lovable & ANCHR 2025",
+    "dateLabel": "Nov 22-23, 2025",
+    "startDate": "2025-11-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Gen AI Greeting Card Generator",
+    "client": "Lovable",
+    "country": "Singapore",
+    "location": "Remote",
+    "award": null,
+    "tags": [
+      "Open Track"
+    ],
+    "organizers": [
+      "Lovable"
+    ],
+    "members": [
+      "sayyid",
+      "sopia"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/jollycards",
+    "eventUrl": null
+  },
+  {
+    "number": 47,
+    "title": "Natalie's Tempeh",
+    "event": "Lovable & ANCHR 2025",
+    "dateLabel": "Nov 22-23, 2025",
+    "startDate": "2025-11-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Tempeh shaped computer parts",
+    "client": "Lovable",
+    "country": "Singapore",
+    "location": "Remote",
+    "award": null,
+    "tags": [
+      "Open Track"
+    ],
+    "organizers": [
+      "Lovable"
+    ],
+    "members": [
+      "sayyid"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/nataliestempeh",
+    "eventUrl": null
+  },
+  {
+    "number": 46,
+    "title": "Hedera Agents Hub",
+    "event": "Singhack Hackathon 2025",
+    "dateLabel": "31Oct - 2 Nov, 2025",
+    "startDate": "2025-11-02",
+    "duration": 2.5,
+    "durationUnit": "Days",
+    "solution": "Agentic Ai ecosystem on hedera blockchain",
+    "client": "Hedera",
+    "country": "Singapore",
+    "location": "catapult by capitaland",
+    "award": null,
+    "tags": [
+      "Blockchain"
+    ],
+    "organizers": [
+      "Singhacks"
+    ],
+    "members": [
+      "sayyid",
+      "shashi",
+      "brian",
+      "marcus"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/HederaAgentsHub",
+    "eventUrl": null
+  },
+  {
+    "number": 45,
+    "title": "Asterix",
+    "event": "Cloudflare Hackathon 2025",
+    "dateLabel": "24 Oct 2025",
+    "startDate": "2025-10-24",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Vibe Coding Addiction Tool",
+    "client": "Cloudflare & Redis",
+    "country": "Singapore",
+    "location": "Cloudflare Office Singapore",
+    "award": null,
+    "tags": [
+      "Open Track"
+    ],
+    "organizers": [
+      "Cloudflare"
+    ],
+    "members": [
+      "sayyid",
+      "cy",
+      "jun kai",
+      "ajentik"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/asterix",
+    "eventUrl": null
+  },
+  {
+    "number": 44,
+    "title": "Vibewater Associates",
+    "event": "Cursor Hackathon Singapore 2025",
+    "dateLabel": "Oct 18-19, 2025",
+    "startDate": "2025-10-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Vibe Trading App",
+    "client": "OpenAI, Antrohpic, convex, cursor, fal.ai",
+    "country": "Singapore",
+    "location": "SUTD",
+    "award": null,
+    "tags": [
+      "Open Track"
+    ],
+    "organizers": [
+      "Cursor"
+    ],
+    "members": [
+      "sayyid",
+      "hisyam",
+      "hafidz",
+      "shashi"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/vibewater_associates",
+    "eventUrl": null
+  },
+  {
+    "number": 43,
+    "title": "F1 Degens",
+    "event": "Airia Hackathon 2025",
+    "dateLabel": "2 Oct 2025",
+    "startDate": "2025-10-02",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Built a formula 1 betting app",
+    "client": null,
+    "country": "Singapore",
+    "location": "SQ Collective",
+    "award": null,
+    "tags": [
+      "Formula 1"
+    ],
+    "organizers": [
+      "Airia"
+    ],
+    "members": [
+      "sayyid"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 42,
+    "title": "AstroDegen",
+    "event": "Nosana Hackathon 2025",
+    "dateLabel": "30 Sept 2025",
+    "startDate": "2025-09-30",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Built a moon trading app, trade crypto according to moon cycles",
+    "client": "Nosana",
+    "country": "Singapore",
+    "location": "Monk Brew House",
+    "award": "1st Prize, $500 Nosana Cloud Credit",
+    "tags": [
+      "ML Inference"
+    ],
+    "organizers": [
+      "Nosana"
+    ],
+    "members": [
+      "sayyid"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/nosana-ci-agent-challenge",
+    "eventUrl": null
+  },
+  {
+    "number": 41,
+    "title": "NAS.IO Hackathon 2025",
+    "event": "NAS.IO Hackathon 2025",
+    "dateLabel": "20 Sept 2025",
+    "startDate": "2025-09-20",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Learn how to build a funnel using nas.io platform",
+    "client": null,
+    "country": "Singapore",
+    "location": "SMU",
+    "award": null,
+    "tags": [
+      "Advertising"
+    ],
+    "organizers": [
+      "NAS.io"
+    ],
+    "members": [
+      "sayyid"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/prompt-alchemist-beta",
+    "eventUrl": null
+  },
+  {
+    "number": 40,
+    "title": "Sarawak AI Hackathon 2025",
+    "event": "Sarawak AI Hackathon 2025",
+    "dateLabel": "Sep 6, 2025",
+    "startDate": "2025-09-01",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": null,
+    "client": "Singapore X Sarawak",
+    "country": "Sarawak",
+    "location": "Makeramai Makerspace, Kuching, Sarawak, Malaysia",
+    "award": "Throphy, Best Novel Hackathon Finisher",
+    "tags": [
+      "Design"
+    ],
+    "organizers": [
+      "Sarawak X Singapore"
+    ],
+    "members": [
+      "Hisyam",
+      "Hafidz"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 39,
+    "title": "chatgpt-6-nano",
+    "event": "Emergency GPT hackathon 2025",
+    "dateLabel": "Aug 10, 2025",
+    "startDate": "2025-08-01",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "chatgpt 6 nano",
+    "client": null,
+    "country": "Singapore",
+    "location": "SQ Collective",
+    "award": null,
+    "tags": [
+      "Open Track"
+    ],
+    "organizers": [
+      "The TGB Collective"
+    ],
+    "members": [
+      "sayyid",
+      "ivan"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/gpt6-nano",
+    "eventUrl": null
+  },
+  {
+    "number": 38,
+    "title": "UpsacleAI [VR Edition]",
+    "event": "OOJU X Manus.AI Hackathon 2025",
+    "dateLabel": "Jun 27, 2025",
+    "startDate": "2025-06-01",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "AI consulting for SMEs (VR edition)",
+    "client": "OOJU & Manus.ai",
+    "country": "Singapore",
+    "location": "SQ Collective",
+    "award": "2nd Prize (Manus Pro Subscription)",
+    "tags": [
+      "Virtual Reality"
+    ],
+    "organizers": [
+      "Manus"
+    ],
+    "members": [
+      "Sayyid",
+      "Joewin",
+      "Lester",
+      "Wan Wei"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/manus-im-hackathon",
+    "eventUrl": null
+  },
+  {
+    "number": 37,
+    "title": "UpsacleAI [Bolt Edition]",
+    "event": "Bolt.New Hackathon 2025",
+    "dateLabel": "Jun 21, 2025",
+    "startDate": "2025-06-01",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "AI consulting for SMEs (v2)",
+    "client": "bolt.new",
+    "country": "Singapore",
+    "location": "Virtual",
+    "award": null,
+    "tags": [
+      "Open Track"
+    ],
+    "organizers": [
+      "Virtual"
+    ],
+    "members": [
+      "Sayyid",
+      "Joewin",
+      "Lester",
+      "Wan Wei"
+    ],
+    "githubUrl": "https://devpost.com/software/jslw-scaleupai-bolt-edition",
+    "eventUrl": null
+  },
+  {
+    "number": 36,
+    "title": "UpsacleAI",
+    "event": "Super AI Hackathon 2025",
+    "dateLabel": "Jun 17-19, 2025",
+    "startDate": "2025-06-01",
+    "duration": 3,
+    "durationUnit": "Days",
+    "solution": "AI consulting for SMEs (McKinsey-style)",
+    "client": "Super AI Hackathon",
+    "country": "Singapore",
+    "location": "Marina Bay Sands",
+    "award": null,
+    "tags": [
+      "Open Track"
+    ],
+    "organizers": [
+      "Super AI"
+    ],
+    "members": [
+      "Sayyid",
+      "Joewin",
+      "Lester",
+      "Wan Wei"
+    ],
+    "githubUrl": "http://github.com/cheonglol/superai-next-hackathon-2025",
+    "eventUrl": null
+  },
+  {
+    "number": 35,
+    "title": "AnginOmbak",
+    "event": "Mosque Tech Challenge 2025",
+    "dateLabel": "Mar 22-23, 2025",
+    "startDate": "2025-03-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Father-child bonding app (Gen AI adventures)",
+    "client": null,
+    "country": "Singapore",
+    "location": "Al-Mawaddah Mosque",
+    "award": "2nd Prize ($1000 SGD)",
+    "tags": [
+      "Family"
+    ],
+    "organizers": [
+      "Al-Mawaddah Mosque"
+    ],
+    "members": [
+      "Sayyid",
+      "Adib",
+      "Ali",
+      "Hilsan"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/anginombak",
+    "eventUrl": null
+  },
+  {
+    "number": 34,
+    "title": "LrnMate",
+    "event": "Builder Together: AI Hackathon 2024",
+    "dateLabel": "Jun 6-7, 2024",
+    "startDate": "2024-06-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "AI quiz generator from videos (enterprise)",
+    "client": null,
+    "country": "Singapore",
+    "location": "128 Princep Street, Singapore",
+    "award": null,
+    "tags": [
+      "Education"
+    ],
+    "organizers": [
+      "Antler"
+    ],
+    "members": [
+      "Sayyid",
+      "Arav",
+      "Manas"
+    ],
+    "githubUrl": "https://github.com/arav-behl/LrnMate/tree/main",
+    "eventUrl": null
+  },
+  {
+    "number": 33,
+    "title": "Structur3",
+    "event": "ICP Ideathon 2023",
+    "dateLabel": "Dec 17-18, 2023",
+    "startDate": "2023-12-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Decentralized website builder on ICP blockchain",
+    "client": "ICP",
+    "country": "Singapore",
+    "location": "Cineleisure Orchard",
+    "award": "3rd Prize ($250 SGD)",
+    "tags": [
+      "Productivity"
+    ],
+    "organizers": [
+      "ICP"
+    ],
+    "members": [
+      "Sayyid",
+      "Jimmy Peh"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 32,
+    "title": "Instareadr",
+    "event": "ICP Ideathon 2023",
+    "dateLabel": "Dec 17-18, 2023",
+    "startDate": "2023-12-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Web3 jargon summarizer (Instagram-style)",
+    "client": "ICP",
+    "country": "Singapore",
+    "location": "Cineleisure Orchard",
+    "award": "Participating Award ($100 USD)",
+    "tags": [
+      "Productivity"
+    ],
+    "organizers": [
+      "ICP"
+    ],
+    "members": [
+      "Sayyid",
+      "Iskandar"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 31,
+    "title": "GrowthGuru",
+    "event": "Mosque Tech Challenge 2023",
+    "dateLabel": "Apr 15-16, 2023",
+    "startDate": "2023-04-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Career/learning/mental health tracker",
+    "client": null,
+    "country": "Singapore",
+    "location": "Al-Falah Mosque",
+    "award": null,
+    "tags": [
+      "Wellness / Healthcare"
+    ],
+    "organizers": [
+      "Al-Falah Mosque"
+    ],
+    "members": [
+      "Sayyid",
+      "Iskandar",
+      "Hakam",
+      "Hakim"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 30,
+    "title": "The Punisher",
+    "event": "Super Silly Hackathon 2019",
+    "dateLabel": "Dec 14, 2019",
+    "startDate": "2019-12-01",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Couple expectation manager (Angel/Devil concept)",
+    "client": null,
+    "country": "Singapore",
+    "location": "Carousell @ Keppel Towers 2",
+    "award": null,
+    "tags": [
+      "Silly Solutions"
+    ],
+    "organizers": [
+      "Carousell"
+    ],
+    "members": [
+      "Sayyid",
+      "Haley"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 29,
+    "title": "MyNextGym",
+    "event": "#HACKNTU 2019",
+    "dateLabel": "Oct 12-13, 2019",
+    "startDate": "2019-10-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Home waste-picking robot",
+    "client": null,
+    "country": "Singapore",
+    "location": "NTU",
+    "award": null,
+    "tags": [
+      "Waste Management / Sustainability"
+    ],
+    "organizers": [
+      "Intuition 6.0"
+    ],
+    "members": [
+      "Sayyid",
+      "Matthew",
+      "Sin Mei Chong",
+      "Zi Cing Sim"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 28,
+    "title": "Kitar-GO",
+    "event": "#SWSG 2019",
+    "dateLabel": "Sep 6-8, 2019",
+    "startDate": "2019-09-01",
+    "duration": 2.5,
+    "durationUnit": "Days",
+    "solution": "Gamified recycling app",
+    "client": null,
+    "country": "Singapore",
+    "location": "SCAPE (Level 5)",
+    "award": null,
+    "tags": [
+      "Waste Management / Sustainability"
+    ],
+    "organizers": [
+      "Startup Weekend SG"
+    ],
+    "members": [
+      "Sayyid",
+      "Yan Sheng",
+      "Bobby Lim",
+      "Maureen"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 27,
+    "title": "GrabHunt",
+    "event": "#AngelHack 2019",
+    "dateLabel": "Jun 6-7, 2019",
+    "startDate": "2019-06-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "E-credits via GrabPoints",
+    "client": null,
+    "country": "Singapore",
+    "location": "PSB Academy STEM Campus",
+    "award": null,
+    "tags": [
+      "Fintech"
+    ],
+    "organizers": [
+      "IBM",
+      "AngelHack",
+      "AWS",
+      "Grab"
+    ],
+    "members": [
+      "Sayyid",
+      "Yan Sheng",
+      "Kang Liang",
+      "Ashraf"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 26,
+    "title": "Amigo",
+    "event": "#Flutter Hackathon 2019",
+    "dateLabel": "Jun 1, 2019",
+    "startDate": "2019-06-01",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Language exchange platform",
+    "client": null,
+    "country": "Singapore",
+    "location": "Block 71",
+    "award": null,
+    "tags": [
+      "Education / Linguistics"
+    ],
+    "organizers": [
+      "Flutter",
+      "PSLOVE"
+    ],
+    "members": [
+      "Sayyid",
+      "Kamil",
+      "Kashif",
+      "Aseem",
+      "Arthur"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 25,
+    "title": "NeuroSurge",
+    "event": "#Mosque Hackathon 2019",
+    "dateLabel": "May 19-20, 2019",
+    "startDate": "2019-05-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Mnemonics for memory retention",
+    "client": "Mendaki",
+    "country": "Singapore",
+    "location": "An-Nur Mosque",
+    "award": "3rd Place, $500 SGD cash",
+    "tags": [
+      "Healthy Living"
+    ],
+    "organizers": [
+      "An-Nur Mosque"
+    ],
+    "members": [
+      "David",
+      "Sayyid",
+      "Matthew"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 24,
+    "title": "MyNextGym",
+    "event": "#HACKNTU 2019",
+    "dateLabel": "Jan 19-20, 2019",
+    "startDate": "2019-01-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Gym location analytics",
+    "client": null,
+    "country": "Singapore",
+    "location": "NTU (The ARC – North Spine)",
+    "award": null,
+    "tags": [
+      "Smart Nation"
+    ],
+    "organizers": [
+      "NTU"
+    ],
+    "members": [
+      "David",
+      "Sayyid",
+      "Matthew",
+      "Kenneth"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 23,
+    "title": "PestOverflow",
+    "event": "#NUS Hack&Roll 2019",
+    "dateLabel": "Jan 19-20, 2019",
+    "startDate": "2019-01-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "IoT pest detector",
+    "client": null,
+    "country": "Singapore",
+    "location": "NUS",
+    "award": null,
+    "tags": [
+      "Pest Busting"
+    ],
+    "organizers": [
+      "NUS"
+    ],
+    "members": [
+      "David",
+      "Sayyid",
+      "Matthew",
+      "Kyren"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 22,
+    "title": "ShoeObituaries",
+    "event": "Super Silly Hackathon 2018",
+    "dateLabel": "Dec 15, 2018",
+    "startDate": "2018-12-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Shoe burial service",
+    "client": null,
+    "country": "Singapore",
+    "location": "GoJek Office (38 Sin Ming Ln)",
+    "award": null,
+    "tags": [
+      "Afterlife"
+    ],
+    "organizers": [
+      "GoJek"
+    ],
+    "members": [
+      "Sayyid"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 21,
+    "title": "WinWinCusine",
+    "event": "#SP Smart Nation Hackathon 2018",
+    "dateLabel": "Nov 10, 2018",
+    "startDate": "2018-11-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Group food recommendation app",
+    "client": null,
+    "country": "Singapore",
+    "location": "Singapore Poly (LT18A)",
+    "award": null,
+    "tags": [
+      "Smart Nation / Social Good"
+    ],
+    "organizers": [
+      "SP"
+    ],
+    "members": [
+      "David",
+      "Sayyid",
+      "Matthew"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 20,
+    "title": "CO2unter",
+    "event": "#NASA Space Hackathon 2018",
+    "dateLabel": "Oct 20-21, 2018",
+    "startDate": "2018-10-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Data visualization app",
+    "client": null,
+    "country": "Singapore",
+    "location": "Mapletree Business City",
+    "award": null,
+    "tags": [
+      "Space"
+    ],
+    "organizers": [
+      "Padang.co",
+      "NASA"
+    ],
+    "members": [
+      "Sayyid",
+      "Yan Sheng",
+      "Heng Pei",
+      "Evan",
+      "Yu Ning"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 19,
+    "title": "Fasight",
+    "event": "#NTU Intuition Hackathon 2018",
+    "dateLabel": "Oct 13-14, 2018",
+    "startDate": "2018-10-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Open-source digital will planner",
+    "client": null,
+    "country": "Singapore",
+    "location": "NTU (The Arc – North Spine)",
+    "award": null,
+    "tags": [
+      "Fintech",
+      "Financial Legacy"
+    ],
+    "organizers": [
+      "NTU"
+    ],
+    "members": [
+      "Sayyid",
+      "Gia",
+      "Timothy John",
+      "Balint"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 18,
+    "title": "Checker App",
+    "event": "#WSG HR Hackathon 2018",
+    "dateLabel": "Sep 8-9, 2018",
+    "startDate": "2018-09-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Job description optimizer",
+    "client": null,
+    "country": "Singapore",
+    "location": "Mapletree Business City",
+    "award": null,
+    "tags": [
+      "Human Resource"
+    ],
+    "organizers": [
+      "Padang.co"
+    ],
+    "members": [
+      "Sayyid",
+      "Jun Ting",
+      "Dael",
+      "Ben"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 17,
+    "title": "iceigloo",
+    "event": "#Mosque-Tech Challenge 2018",
+    "dateLabel": "1 Jun 2018",
+    "startDate": "2018-06-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Shariah-compliant investment analyzer",
+    "client": null,
+    "country": "Singapore",
+    "location": "Muhajirin Mosque",
+    "award": "2nd Place, $600 cash",
+    "tags": [
+      "Fintech",
+      "Shariah Compliance"
+    ],
+    "organizers": [
+      "Mendaki"
+    ],
+    "members": [
+      "Sayyid",
+      "Matthew",
+      "Jay"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 16,
+    "title": "Goblin (E-Waste Collector)",
+    "event": "#SmartCity Hackathon 2018",
+    "dateLabel": "1 Apr 2018",
+    "startDate": "2018-04-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "E-waste collection for elderly empowerment",
+    "client": null,
+    "country": "Singapore",
+    "location": "NTU Alumni Club",
+    "award": null,
+    "tags": [
+      "Social Enterprise",
+      "E-Waste"
+    ],
+    "organizers": [
+      "Energo"
+    ],
+    "members": [
+      "Sayyid",
+      "Edward",
+      "Matthew",
+      "Willie",
+      "Bobby"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 15,
+    "title": "Weather Guru",
+    "event": "#FOSSASIA SP Hackathon 2018",
+    "dateLabel": "1 Mar 2018",
+    "startDate": "2018-03-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Rain-to-flood probability analytics",
+    "client": "FOSSASIA",
+    "country": "Singapore",
+    "location": "Lifelong Learning Institute",
+    "award": null,
+    "tags": [
+      "Data Analytics",
+      "Weather"
+    ],
+    "organizers": [
+      "FOSSASIA"
+    ],
+    "members": [
+      "Sayyid",
+      "Syabiqah",
+      "Yan Sheng"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 14,
+    "title": "Smart Food Bridge",
+    "event": "#SPSEC SP Hackathon 2018",
+    "dateLabel": "1 Mar 2018",
+    "startDate": "2018-03-01",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Dietary food locator",
+    "client": null,
+    "country": "Singapore",
+    "location": "SP",
+    "award": "3rd Place, $100 Capitaland voucher",
+    "tags": [
+      "Food",
+      "Health",
+      "Fitness"
+    ],
+    "organizers": [
+      "SP"
+    ],
+    "members": [
+      "Sayyid",
+      "Hong Wei"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 13,
+    "title": "Life-Worth Evaluator",
+    "event": "Hack&Roll 2018",
+    "dateLabel": "1 Jan 2018",
+    "startDate": "2018-01-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Time optimization analytics",
+    "client": null,
+    "country": "Singapore",
+    "location": "NUS",
+    "award": null,
+    "tags": [
+      "Data Analytics",
+      "Personal Development"
+    ],
+    "organizers": [
+      "NUS"
+    ],
+    "members": [
+      "Sayyid",
+      "Jet New"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 12,
+    "title": "Nestash",
+    "event": "Intuition Hackathon 2017",
+    "dateLabel": "1 Oct 2017",
+    "startDate": "2017-10-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Impact investment search tool",
+    "client": "Blackrock",
+    "country": "Singapore",
+    "location": "NTU",
+    "award": null,
+    "tags": [
+      "Data Analytics",
+      "Edu-Fintech"
+    ],
+    "organizers": [
+      "NTU"
+    ],
+    "members": [
+      "Sayyid",
+      "Daryll",
+      "Edward",
+      "Matthew"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 11,
+    "title": "Warriors&Mages",
+    "event": "SUTD Whatthehack Hackathon 2017",
+    "dateLabel": "1 Oct 2017",
+    "startDate": "2017-10-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Student budget/lifestyle optimizer",
+    "client": null,
+    "country": "Singapore",
+    "location": "SUTD",
+    "award": null,
+    "tags": [
+      "Data Analytics",
+      "Edu-Fintech"
+    ],
+    "organizers": [
+      "SUTD"
+    ],
+    "members": [
+      "Sayyid",
+      "Mortiz",
+      "Terry",
+      "Hendry"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 10,
+    "title": "Swagmylife",
+    "event": "DataDriven Hackathon 2017",
+    "dateLabel": "1 Sept 2017",
+    "startDate": "2017-09-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "App for expats/home movers",
+    "client": "PropertyGuru, Esplanade, Tabsquare",
+    "country": "Singapore",
+    "location": "Facebook APAC 2017",
+    "award": "*rated best project",
+    "tags": [
+      "Data Analytics",
+      "Various"
+    ],
+    "organizers": [
+      "Keeboola Asia"
+    ],
+    "members": [
+      "Sayyid",
+      "Ilas",
+      "Gene"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 9,
+    "title": "Mailbox IOT system",
+    "event": "#BOT Hackathon – Bosch IOT 2017",
+    "dateLabel": "1 May 2017",
+    "startDate": "2017-05-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Notifier Mailer system",
+    "client": null,
+    "country": "Singapore",
+    "location": "Block 71",
+    "award": null,
+    "tags": [
+      "Healthcare"
+    ],
+    "organizers": [
+      "Bosch"
+    ],
+    "members": [
+      "Sayyid",
+      "Anna",
+      "Eileen",
+      "Singaram"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 8,
+    "title": "Vainster",
+    "event": "NUS Data Hackathon 2017",
+    "dateLabel": "1 May 2017",
+    "startDate": "2017-05-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Face-mapping health analysis",
+    "client": null,
+    "country": "Singapore",
+    "location": "NUS",
+    "award": null,
+    "tags": [
+      "Healthcare"
+    ],
+    "organizers": [
+      "NUS"
+    ],
+    "members": [
+      "Sayyid",
+      "Celine Lim",
+      "Eric"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 7,
+    "title": "Vanita",
+    "event": "#UNITEDWEHACK – Empower Women 2017",
+    "dateLabel": "1 Apr 2017",
+    "startDate": "2017-04-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Last-mile delivery service in third-world countries",
+    "client": null,
+    "country": "Singapore",
+    "location": "Spacemob",
+    "award": null,
+    "tags": [
+      "Logistics",
+      "Delivery"
+    ],
+    "organizers": [
+      "AngelHack",
+      "Spacemob",
+      "GA"
+    ],
+    "members": [
+      "Sayyid",
+      "Ann",
+      "Shi Yang",
+      "Leon"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 6,
+    "title": "SocialCapitalAsia",
+    "event": "SO.IMPACT Bootcamp 2017",
+    "dateLabel": "Feb - Mar 2017",
+    "startDate": "2017-02-01",
+    "duration": 3,
+    "durationUnit": "Weeks",
+    "solution": "Tackle Financial Inclusion with data-science",
+    "client": "Bank of Mangaladan",
+    "country": "Singapore",
+    "location": "Scape",
+    "award": "Shortlisted for top 10",
+    "tags": [
+      "Fintech"
+    ],
+    "organizers": [
+      "Scape/DBS/UnFramed"
+    ],
+    "members": [
+      "Sayyid",
+      "Wilson Chua",
+      "Roger",
+      "Aaron",
+      "Gayan"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 5,
+    "title": "SayWhat",
+    "event": "Edu-Tech Hackathon 2017",
+    "dateLabel": "1 Feb 2017",
+    "startDate": "2017-02-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Improve learning via ML/DL",
+    "client": "NUS",
+    "country": "Singapore",
+    "location": "NUS",
+    "award": null,
+    "tags": [
+      "Education"
+    ],
+    "organizers": [
+      "NUS Edu-tech"
+    ],
+    "members": [
+      "Sayyid",
+      "Mathilde Gaucher",
+      "Xiao Heng",
+      "Raimie Tang"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 4,
+    "title": "SocialCapitalAsia",
+    "event": "Fintech Festival Hackathon 2016",
+    "dateLabel": "1 Nov 2016",
+    "startDate": "2016-11-01",
+    "duration": 3,
+    "durationUnit": "Days",
+    "solution": "Tackle Financial Inclusion with data-science",
+    "client": "Bank of Mangaladan",
+    "country": "Singapore",
+    "location": "Singapore Expo",
+    "award": "Best Use of IBM Bluemix, SmartWatch",
+    "tags": [
+      "Fintech"
+    ],
+    "organizers": [
+      "ByteAcademy",
+      "IBM"
+    ],
+    "members": [
+      "Sayyid",
+      "Wilson Chua",
+      "Roger",
+      "Aaron"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 3,
+    "title": "PropertyGuru Smart Algorithm",
+    "event": "DataDriven Hackathon 2016",
+    "dateLabel": "1 Oct 2016",
+    "startDate": "2016-10-01",
+    "duration": 2,
+    "durationUnit": "Days",
+    "solution": "Increase Conversion Rate for PropertyGuru",
+    "client": "PropertyGuru",
+    "country": "Singapore",
+    "location": "NUS",
+    "award": "*rated best project",
+    "tags": [
+      "Property Management",
+      "Data Analytics"
+    ],
+    "organizers": [
+      "Keeboola Asia",
+      "CodingGirls"
+    ],
+    "members": [
+      "Sayyid",
+      "Yishu",
+      "Wilson Chua",
+      "Gaille",
+      "Ryan",
+      "Nicholas Ling"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 2,
+    "title": "Xueyiyi V2.0",
+    "event": "Innovplus 2016 2nd Quarter",
+    "dateLabel": "Sep - Oct 2016",
+    "startDate": "2016-09-01",
+    "duration": 1,
+    "durationUnit": "Month",
+    "solution": "Work Place Learning Solution",
+    "client": "Colleads, SMER, Prince",
+    "country": "Singapore",
+    "location": "Lifelong Learning Institute",
+    "award": null,
+    "tags": [
+      "Education"
+    ],
+    "organizers": [
+      "Inlab"
+    ],
+    "members": [
+      "Hazni",
+      "Sayyid",
+      "David (Educator",
+      "PM)"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  },
+  {
+    "number": 1,
+    "title": "Xueyiyi V1.0",
+    "event": "Education Technology Hackathon",
+    "dateLabel": "1st Sep - 3rd Sept 2016",
+    "startDate": "2016-09-01",
+    "duration": 3,
+    "durationUnit": "Days",
+    "solution": "Work Place Learning Solution",
+    "client": null,
+    "country": "Singapore",
+    "location": "Lifelong Learning Institute / Scape",
+    "award": "First Place, 18k SGD seed Funding",
+    "tags": [
+      "Education"
+    ],
+    "organizers": [
+      "Biipmi Pte Ltd"
+    ],
+    "members": [
+      "Hazni",
+      "Cheryl",
+      "David",
+      "Sayyid"
+    ],
+    "githubUrl": null,
+    "eventUrl": null
+  }
+]
