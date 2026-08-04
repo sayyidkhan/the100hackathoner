@@ -2,6 +2,7 @@
 import { getHackathons } from "../lib/hackathons";
 import PageShell from "../components/PageShell.astro";
 import HackathonTimeline from "../components/HackathonTimeline.astro";
+import HackathonTable from "../components/HackathonTable.astro";
 import JourneyInfographic from "../components/JourneyInfographic.astro";
 import { buildTotals } from "../lib/insights";
 
@@ -78,7 +79,24 @@ const ticks = Array.from({ length: GOAL }, (_, index) => index < totals.logged);
   </section>
 
   <section class="archive-body container" data-view-panel="list">
-    <HackathonTimeline items={hackathons} />
+    <div class="archive-toolbar">
+      <p>Browse the archive</p>
+      <div class="archive-switch" role="group" aria-label="Timeline layout">
+        <button type="button" data-archive-view="cards" aria-pressed="true">
+          Cards
+        </button>
+        <button type="button" data-archive-view="table" aria-pressed="false">
+          Table
+        </button>
+      </div>
+    </div>
+
+    <div data-archive-panel="cards">
+      <HackathonTimeline items={hackathons} />
+    </div>
+    <div data-archive-panel="table" hidden>
+      <HackathonTable items={hackathons} />
+    </div>
   </section>
 
   <section class="archive-body container" data-view-panel="chart" hidden>
@@ -89,6 +107,8 @@ const ticks = Array.from({ length: GOAL }, (_, index) => index < totals.logged);
 <script>
   const buttons = document.querySelectorAll<HTMLButtonElement>("[data-view]");
   const panels = document.querySelectorAll<HTMLElement>("[data-view-panel]");
+  const archiveButtons = document.querySelectorAll<HTMLButtonElement>("[data-archive-view]");
+  const archivePanels = document.querySelectorAll<HTMLElement>("[data-archive-panel]");
 
   function apply(mode: string) {
     for (const panel of panels) {
@@ -104,10 +124,39 @@ const ticks = Array.from({ length: GOAL }, (_, index) => index < totals.logged);
     return location.hash === "#infographic" ? "chart" : "list";
   }
 
+  function applyArchiveView(mode: string) {
+    for (const panel of archivePanels) {
+      panel.hidden = panel.dataset.archivePanel !== mode;
+    }
+
+    for (const button of archiveButtons) {
+      button.setAttribute(
+        "aria-pressed",
+        String(button.dataset.archiveView === mode),
+      );
+    }
+  }
+
+  function archiveViewFromHash() {
+    return location.hash === "#table" ? "table" : "cards";
+  }
+
+  function activeArchiveView() {
+    return (
+      [...archiveButtons].find(
+        (button) => button.getAttribute("aria-pressed") === "true",
+      )?.dataset.archiveView ?? "cards"
+    );
+  }
+
   apply(fromHash());
+  applyArchiveView(archiveViewFromHash());
 
   // A hash-only navigation does not reload the document, so react to it.
-  window.addEventListener("hashchange", () => apply(fromHash()));
+  window.addEventListener("hashchange", () => {
+    apply(fromHash());
+    applyArchiveView(archiveViewFromHash());
+  });
 
   for (const button of buttons) {
     button.addEventListener("click", () => {
@@ -116,8 +165,20 @@ const ticks = Array.from({ length: GOAL }, (_, index) => index < totals.logged);
       history.replaceState(
         null,
         "",
-        mode === "chart" ? "#infographic" : location.pathname,
+        mode === "chart"
+          ? "#infographic"
+          : activeArchiveView() === "table"
+            ? "#table"
+            : location.pathname,
       );
+    });
+  }
+
+  for (const button of archiveButtons) {
+    button.addEventListener("click", () => {
+      const mode = button.dataset.archiveView ?? "cards";
+      applyArchiveView(mode);
+      history.replaceState(null, "", mode === "table" ? "#table" : location.pathname);
     });
   }
 </script>
@@ -129,6 +190,53 @@ const ticks = Array.from({ length: GOAL }, (_, index) => index < totals.logged);
 
   .archive-body {
     padding: 26px 0 96px;
+  }
+
+  .archive-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px 20px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .archive-toolbar > p {
+    margin: 0;
+    color: var(--faint);
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+  }
+
+  .archive-switch {
+    display: inline-flex;
+    padding: 3px;
+    border: 1px solid var(--line-strong);
+    border-radius: 5px;
+    background: var(--bg-paper);
+  }
+
+  .archive-switch button {
+    min-height: 32px;
+    padding: 0 12px;
+    border: 0;
+    border-radius: 3px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 900;
+  }
+
+  .archive-switch button:hover {
+    color: var(--ink);
+  }
+
+  .archive-switch button[aria-pressed="true"] {
+    background: var(--ink);
+    color: white;
   }
 
   .hero-top {
@@ -334,6 +442,18 @@ const ticks = Array.from({ length: GOAL }, (_, index) => index < totals.logged);
     .switch button {
       flex: 1;
       padding: 0 10px;
+    }
+
+    .archive-toolbar {
+      align-items: stretch;
+    }
+
+    .archive-switch {
+      width: 100%;
+    }
+
+    .archive-switch button {
+      flex: 1;
     }
   }
 

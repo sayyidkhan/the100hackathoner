@@ -1,0 +1,224 @@
+---
+import type { Hackathon } from "../lib/hackathons";
+import { isRemoteParticipation } from "../lib/insights";
+import { classifyAward, formatDateLabel, formatDuration } from "../lib/format";
+
+interface Props {
+  items: Hackathon[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="table-scroll" tabindex="0" aria-label="Hackathon archive table">
+  <table>
+    <thead>
+      <tr>
+        <th scope="col">No.</th>
+        <th scope="col">Date</th>
+        <th scope="col">Build</th>
+        <th scope="col">Format</th>
+        <th scope="col">Location</th>
+        <th scope="col">Outcome</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        items.map((item) => {
+          const tier = classifyAward(item.award);
+          const date = formatDateLabel(item.dateLabel, item.startDate);
+          const duration = formatDuration(item.duration, item.durationUnit);
+          const location = [item.location, item.country].filter(Boolean).join(", ");
+          const remote = isRemoteParticipation(item.location);
+
+          return (
+            <tr>
+              <td class="number">{String(item.number).padStart(3, "0")}</td>
+              <td class="date">
+                {date ? <time datetime={item.startDate ?? undefined}>{date}</time> : "—"}
+                {duration && <span>{duration}</span>}
+              </td>
+              <td class="build">
+                <a href={`/hackathons/${item.number}/`}>
+                  <strong>{item.title}</strong>
+                  <span>{item.event}</span>
+                </a>
+              </td>
+              <td>
+                <span class:list={["format", { remote }]}>
+                  {remote ? "Remote" : "On-site"}
+                </span>
+              </td>
+              <td class="location">{location || "—"}</td>
+              <td>
+                <span class:list={["outcome", tier]}>
+                  {item.award ?? "Shipped"}
+                </span>
+              </td>
+            </tr>
+          );
+        })
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .table-scroll {
+    overflow-x: auto;
+    border-top: 1px solid var(--line-strong);
+    border-bottom: 1px solid var(--line-strong);
+    outline-offset: 4px;
+  }
+
+  table {
+    width: 100%;
+    min-width: 880px;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  th {
+    padding: 13px 14px;
+    border-bottom: 1px solid var(--line-strong);
+    color: var(--faint);
+    font-size: 0.68rem;
+    font-weight: 950;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  td {
+    padding: 16px 14px;
+    border-bottom: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.82rem;
+    line-height: 1.45;
+    vertical-align: top;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  tbody tr {
+    transition: background 160ms ease;
+  }
+
+  tbody tr:hover {
+    background: var(--bg-paper);
+  }
+
+  .number {
+    color: var(--ink);
+    font-weight: 950;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.03em;
+  }
+
+  .date time,
+  .date span,
+  .build a,
+  .build span {
+    display: block;
+  }
+
+  .date time {
+    color: var(--ink);
+    font-weight: 800;
+    white-space: nowrap;
+  }
+
+  .date span {
+    margin-top: 3px;
+    color: var(--faint);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .build {
+    min-width: 230px;
+  }
+
+  .build a {
+    color: var(--ink);
+  }
+
+  .build strong {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 900;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+  }
+
+  .build span {
+    max-width: 42ch;
+    margin-top: 5px;
+    color: var(--red);
+    font-size: 0.66rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    line-height: 1.35;
+    text-transform: uppercase;
+  }
+
+  .build a:hover strong,
+  .build a:focus-visible strong {
+    color: var(--red);
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+
+  .format,
+  .outcome {
+    display: inline-block;
+    padding: 4px 7px;
+    border-radius: 3px;
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+  }
+
+  .format {
+    border: 1px solid var(--line);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .format.remote {
+    border-color: rgba(19, 88, 219, 0.28);
+    background: rgba(19, 88, 219, 0.06);
+    color: #10399b;
+  }
+
+  .location {
+    max-width: 175px;
+  }
+
+  .outcome.shipped {
+    border: 1px solid var(--line);
+    color: var(--faint);
+    text-transform: uppercase;
+  }
+
+  .outcome.recognised {
+    background: rgba(7, 155, 145, 0.13);
+    color: #06635d;
+  }
+
+  .outcome.podium {
+    background: var(--gold);
+    color: var(--gold-ink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    tbody tr {
+      transition: none;
+    }
+  }
+</style>

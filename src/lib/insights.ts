@@ -269,6 +269,59 @@ export function buildPeopleStats(items: Hackathon[], limit = 8): Ranked[] {
   ).slice(0, limit);
 }
 
+export interface ParticipationModeStat {
+  label: "Remote" | "On-site";
+  count: number;
+  days: number;
+  awarded: number;
+  teamBuilds: number;
+}
+
+export interface ParticipationModeStats {
+  remote: ParticipationModeStat;
+  onSite: ParticipationModeStat;
+}
+
+/** Returns true when the source log explicitly records a remote format. */
+export function isRemoteParticipation(location: string | null) {
+  return /\b(remote|virtual|online)\b/i.test(location ?? "");
+}
+
+/**
+ * Remote events are explicitly marked in the source log. Everything else is
+ * treated as an in-person event, which keeps the classification easy to audit.
+ */
+export function buildParticipationModeStats(
+  items: Hackathon[],
+): ParticipationModeStats {
+  const createStat = (
+    label: ParticipationModeStat["label"],
+  ): ParticipationModeStat => ({
+    label,
+    count: 0,
+    days: 0,
+    awarded: 0,
+    teamBuilds: 0,
+  });
+
+  const remote = createStat("Remote");
+  const onSite = createStat("On-site");
+
+  for (const item of items) {
+    const stat = isRemoteParticipation(item.location) ? remote : onSite;
+
+    stat.count += 1;
+    stat.days += toDays(item.duration, item.durationUnit);
+    if (item.award?.trim()) stat.awarded += 1;
+    if (item.members.length > 1) stat.teamBuilds += 1;
+  }
+
+  remote.days = Math.round(remote.days);
+  onSite.days = Math.round(onSite.days);
+
+  return { remote, onSite };
+}
+
 export interface AwardEntry {
   number: number;
   title: string;

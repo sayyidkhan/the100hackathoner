@@ -111,7 +111,10 @@ function parsePeopleDirectory(rows) {
   const headers = new Map(
     rows[headerIndex].map((value, index) => [clean(value), index]),
   );
-  const valueAt = (row, label) => row[headers.get(label)];
+  const valueAt = (row, label) => {
+    const index = headers.get(label);
+    return index === undefined ? undefined : row[index];
+  };
 
   return rows.slice(headerIndex + 1).flatMap((row) => {
     const name = clean(valueAt(row, "Name"));
@@ -288,7 +291,7 @@ await Promise.all([
 ]);
 
 const [rows, peopleRows] = await Promise.all([
-  readSheet(workbookPath, "Sheet1"),
+  readSheet(workbookPath, "Hackathons"),
   readSheet(workbookPath, "People"),
 ]);
 if (rows.length < 2) throw new Error("The workbook does not contain hackathon rows.");

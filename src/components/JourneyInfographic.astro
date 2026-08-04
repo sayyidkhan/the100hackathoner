@@ -6,6 +6,7 @@ import {
   buildGrid,
   buildMonthStats,
   buildPeopleStats,
+  buildParticipationModeStats,
   buildTagStats,
   buildTotals,
   buildVenueStats,
@@ -34,6 +35,7 @@ const tags = buildTagStats(items, 10);
 const people = buildPeopleStats(items, 8);
 const venues = buildVenueStats(items, 8);
 const countries = buildCountryStats(items);
+const participationModes = buildParticipationModeStats(items);
 
 const activeYears = yearStats.filter((stat) => !stat.dormant);
 const peakYear = activeYears.reduce(
@@ -96,6 +98,11 @@ const panels = [
     id: "places",
     title: "Where it happens",
     copy: `${totals.venues} venues across ${totals.countries} countries.${topVenue ? ` ${topVenue.label} has hosted ${topVenue.count}.` : ""}`,
+  },
+  {
+    id: "formats",
+    title: "Remote / on-site",
+    copy: `The journey is room-first: ${participationModes.onSite.count} on-site builds and ${participationModes.remote.count} remote. Remote includes entries logged as Remote, Virtual, or Online.`,
   },
 ];
 
@@ -165,6 +172,42 @@ const panelFor = (id: string) => panels.find((panel) => panel.id === id)!;
                 <p class="plot-note">By country</p>
                 <BarRanking items={countries} accent="gold" labelWidth="minmax(0, 110px)" />
               </div>
+            </div>
+          )}
+
+          {panel.id === "formats" && (
+            <div class="modes">
+              <div
+                class="mode-bar"
+                aria-label={`${participationModes.onSite.count} on-site and ${participationModes.remote.count} remote hackathons`}
+              >
+                <span
+                  class="on-site"
+                  style={`--share:${participationModes.onSite.count / totals.logged}`}
+                />
+                <span
+                  class="remote"
+                  style={`--share:${participationModes.remote.count / totals.logged}`}
+                />
+              </div>
+
+              <dl class="mode-cards">
+                {[participationModes.onSite, participationModes.remote].map((mode) => (
+                  <div class:list={["mode-card", mode.label === "Remote" ? "remote" : "on-site"]}>
+                    <dt>
+                      {mode.label}
+                      <span>{Math.round((mode.count / totals.logged) * 100)}%</span>
+                    </dt>
+                    <dd>{mode.count}</dd>
+                    <p>hackathons</p>
+                    <ul>
+                      <li><span>Building time</span><b>{mode.days} days</b></li>
+                      <li><span>Awards</span><b>{mode.awarded}</b></li>
+                      <li><span>Team builds</span><b>{mode.teamBuilds}</b></li>
+                    </ul>
+                  </div>
+                ))}
+              </dl>
             </div>
           )}
         </div>
@@ -314,6 +357,100 @@ const panelFor = (id: string) => panels.find((panel) => panel.id === id)!;
     gap: 40px;
   }
 
+  /* Participation mode ------------------------------------------------- */
+
+  .mode-bar {
+    display: flex;
+    overflow: hidden;
+    height: 18px;
+    margin-bottom: 18px;
+    border-radius: 3px;
+    background: rgba(14, 18, 18, 0.08);
+  }
+
+  .mode-bar span {
+    width: calc(var(--share) * 100%);
+    min-width: 3px;
+  }
+
+  .mode-bar .on-site {
+    background: var(--ink);
+  }
+
+  .mode-bar .remote {
+    background: var(--blue);
+  }
+
+  .mode-cards {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1px;
+    margin: 0;
+    background: var(--line);
+  }
+
+  .mode-card {
+    padding: 22px;
+    background: var(--bg-paper);
+  }
+
+  .mode-card dt {
+    display: flex;
+    justify-content: space-between;
+    color: var(--faint);
+    font-size: 0.7rem;
+    font-weight: 950;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .mode-card dt span {
+    color: var(--ink);
+  }
+
+  .mode-card.remote dt span {
+    color: var(--blue);
+  }
+
+  .mode-card dd {
+    margin: 22px 0 0;
+    color: var(--ink);
+    font-size: clamp(3.4rem, 7vw, 5.5rem);
+    font-weight: 950;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.07em;
+    line-height: 0.78;
+  }
+
+  .mode-card > p {
+    margin: 9px 0 24px;
+    color: var(--muted);
+    font-size: 0.76rem;
+    font-weight: 850;
+  }
+
+  .mode-card ul {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 13px 0 0;
+    border-top: 1px solid var(--line);
+    list-style: none;
+  }
+
+  .mode-card li {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  .mode-card li b {
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+
   @media (max-width: 1000px) {
     .panel {
       grid-template-columns: minmax(0, 1fr);
@@ -350,6 +487,15 @@ const panelFor = (id: string) => panels.find((panel) => panel.id === id)!;
 
     .split b {
       font-size: 1rem;
+    }
+
+    .mode-card {
+      padding: 17px;
+    }
+
+    .mode-card dd {
+      margin-top: 18px;
+      font-size: 3.3rem;
     }
   }
 </style>
