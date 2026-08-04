@@ -91,7 +91,40 @@ function splitList(value) {
 }
 
 function splitMembers(value) {
-  return splitList(value).map((member) => member.replace(/\s*\([^)]*\)/g, "").trim()).filter(Boolean);
+  const text = clean(value);
+  if (!text) return [];
+
+  return text
+    .replace(/\s*\([^)]*\)/g, "")
+    .split(/\s*(?:,|&|;|\/)+\s*/)
+    .map(clean)
+    .filter(Boolean);
+}
+
+function parsePeopleDirectory(rows) {
+  const headerIndex = rows.findIndex((row) => {
+    const labels = row.map(clean);
+    return labels.includes("Name") && labels.includes("LinkedIn URL");
+  });
+  if (headerIndex === -1) return [];
+
+  const headers = new Map(
+    rows[headerIndex].map((value, index) => [clean(value), index]),
+  );
+  const valueAt = (row, label) => row[headers.get(label)];
+
+  return rows.slice(headerIndex + 1).flatMap((row) => {
+    const name = clean(valueAt(row, "Name"));
+    if (!name) return [];
+    return [{
+      name,
+      linkedinUrl: cleanUrl(valueAt(row, "LinkedIn URL")),
+      company: clean(valueAt(row, "Company")),
+      role: clean(valueAt(row, "Role")),
+      location: clean(valueAt(row, "Location")),
+      notes: clean(valueAt(row, "Notes")),
+    }];
+  });
 }
 
 function splitCatalogValue(value) {
@@ -161,7 +194,12 @@ function prepareSchema(db) {
 
     CREATE TABLE people (
       id INTEGER PRIMARY KEY,
-      name TEXT NOT NULL UNIQUE
+      name TEXT NOT NULL UNIQUE,
+      linkedin_url TEXT,
+      company TEXT,
+      role TEXT,
+      location TEXT,
+      notes TEXT
     );
 
     CREATE TABLE hackathon_members (
@@ -236,13 +274,25 @@ function findOrCreate(db, table, name) {
   return db.prepare(`INSERT INTO ${table} (name) VALUES (?)`).run(name).lastInsertRowid;
 }
 
+function findOrCreatePerson(db, name) {
+  const existing = db
+    .prepare("SELECT id FROM people WHERE name = ? COLLATE NOCASE")
+    .get(name);
+  if (existing) return existing.id;
+  return db.prepare("INSERT INTO people (name) VALUES (?)").run(name).lastInsertRowid;
+}
+
 await Promise.all([
   mkdir(dirname(databasePath), { recursive: true }),
   mkdir(dirname(catalogPath), { recursive: true }),
 ]);
 
-const rows = await readSheet(workbookPath);
+const [rows, peopleRows] = await Promise.all([
+  readSheet(workbookPath, "Sheet1"),
+  readSheet(workbookPath, "People"),
+]);
 if (rows.length < 2) throw new Error("The workbook does not contain hackathon rows.");
+const peopleDirectory = parsePeopleDirectory(peopleRows);
 
 const db = new DatabaseSync(databasePath);
 
@@ -260,9 +310,30 @@ try {
   const linkTag = db.prepare("INSERT OR IGNORE INTO hackathon_tags (hackathon_number, tag_id) VALUES (?, ?)");
   const insertAward = db.prepare("INSERT INTO hackathon_awards (hackathon_number, award_text) VALUES (?, ?)");
   const insertLink = db.prepare("INSERT INTO hackathon_links (hackathon_number, type, url) VALUES (?, ?, ?)");
+  const upsertPerson = db.prepare(`
+    INSERT INTO people (name, linkedin_url, company, role, location, notes)
+    VALUES (?, ?, ?, ?, ?, ?)
+    ON CONFLICT(name) DO UPDATE SET
+      linkedin_url = excluded.linkedin_url,
+      company = excluded.company,
+      role = excluded.role,
+      location = excluded.location,
+      notes = excluded.notes
+  `);
 
   db.exec("BEGIN");
   let imported = 0;
+
+  for (const person of peopleDirectory) {
+    upsertPerson.run(
+      person.name,
+      person.linkedinUrl,
+      person.company,
+      person.role,
+      person.location,
+      person.notes,
+    );
+  }
 
   for (const row of rows.slice(1)) {
     const valueAt = (column) => row[column - 1];
@@ -287,7 +358,7 @@ try {
       linkOrganization.run(number, findOrCreate(db, "organizations", organizer));
     }
     for (const member of splitMembers(valueAt(columns.team))) {
-      linkPerson.run(number, findOrCreate(db, "people", member));
+      linkPerson.run(number, findOrCreatePerson(db, member));
     }
     for (const tag of splitList(valueAt(columns.theme))) {
       linkTag.run(number, findOrCreate(db, "tags", tag));
@@ -304,7 +375,7 @@ try {
     .all()
     .map(toCatalogEntry);
   await writeFile(catalogPath, `${JSON.stringify(catalog, null, 2)}\n`);
-  console.log(`Imported ${imported} hackathons into ${databasePath} and ${catalogPath}`);
+  console.log(`Imported ${imported} hackathons and ${peopleDirectory.length} people into ${databasePath} and ${catalogPath}`);
 } catch (error) {
   db.exec("ROLLBACK");
   throw error;
