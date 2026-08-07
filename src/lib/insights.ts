@@ -3,20 +3,48 @@ import { classifyAward, getYear, type AwardTier } from "./format";
 
 export const OWNER = "sayyid";
 
-/** Normalises the mixed duration units in the source sheet to whole days. */
-export function toDays(duration: number | null, unit: string | null) {
+const MINUTES_PER_HOUR = 60;
+const MINUTES_PER_DAY = 24 * MINUTES_PER_HOUR;
+
+/** Normalises exact event windows to minutes without changing their source unit. */
+export function toMinutes(duration: number | null, unit: string | null) {
   if (!duration) return 0;
 
   switch (unit?.trim().toLowerCase()) {
+    case "minute":
+    case "minutes":
+    case "min":
+    case "mins":
+      return duration;
+    case "hour":
+    case "hours":
+    case "hr":
+    case "hrs":
+      return duration * MINUTES_PER_HOUR;
+    case "day":
+    case "days":
+      return duration * MINUTES_PER_DAY;
     case "week":
     case "weeks":
-      return duration * 7;
+      return duration * 7 * MINUTES_PER_DAY;
     case "month":
     case "months":
-      return duration * 30;
+      return duration * 30 * MINUTES_PER_DAY;
     default:
-      return duration;
+      // Historical rows without a recognised unit were entered as days.
+      return duration * MINUTES_PER_DAY;
   }
+}
+
+/** Exact elapsed days, used only when a day-based representation is needed. */
+export function toDays(duration: number | null, unit: string | null) {
+  return toMinutes(duration, unit) / MINUTES_PER_DAY;
+}
+
+/** Journey totals credit every logged hackathon with at least one day. */
+export function toCountedDays(duration: number | null, unit: string | null) {
+  const exactDays = toDays(duration, unit);
+  return exactDays > 0 ? Math.max(1, exactDays) : 0;
 }
 
 const FIRST_PLACE_PATTERN = /\b(1st|first place|winner|champion|grand prize)\b/i;
@@ -80,13 +108,59 @@ export interface Totals {
   activeYears: number;
 }
 
+export interface DurationStats {
+  shortestMinutes: number;
+  longestMinutes: number;
+  averageMinutes: number;
+}
+
+export interface DurationOccurrence {
+  minutes: number;
+  count: number;
+}
+
+/** Groups hackathons by their exact normalised event window. */
+export function buildDurationOccurrences(items: Hackathon[]): DurationOccurrence[] {
+  const counts = new Map<number, number>();
+
+  for (const item of items) {
+    const minutes = toMinutes(item.duration, item.durationUnit);
+    if (minutes <= 0) continue;
+    counts.set(minutes, (counts.get(minutes) ?? 0) + 1);
+  }
+
+  return [...counts.entries()]
+    .map(([minutes, count]) => ({ minutes, count }))
+    .sort((a, b) => a.minutes - b.minutes);
+}
+
+/**
+ * Summarises exact build windows in minutes. Credited journey days are kept
+ * separate so a 45-minute sprint can remain visible without disappearing.
+ */
+export function buildDurationStats(items: Hackathon[]): DurationStats | null {
+  const durations = items
+    .map((item) => toMinutes(item.duration, item.durationUnit))
+    .filter((duration) => duration > 0);
+
+  if (!durations.length) return null;
+
+  const shortestMinutes = Math.min(...durations);
+  const longestMinutes = Math.max(...durations);
+  const averageMinutes = Math.round(
+    durations.reduce((sum, duration) => sum + duration, 0) / durations.length,
+  );
+
+  return { shortestMinutes, longestMinutes, averageMinutes };
+}
+
 export function buildTotals(items: Hackathon[], goal = 100): Totals {
   const years = items
     .map((item) => getYear(item.startDate, item.dateLabel))
     .filter((year): year is number => Boolean(year));
 
   const days = items.reduce(
-    (sum, item) => sum + toDays(item.duration, item.durationUnit),
+    (sum, item) => sum + toCountedDays(item.duration, item.durationUnit),
     0,
   );
 
@@ -155,7 +229,7 @@ export function buildYearStats(items: Hackathon[]): YearStat[] {
     const bucket = byYear.get(year) ?? { total: 0, awarded: 0, days: 0 };
     bucket.total += 1;
     if (item.award?.trim()) bucket.awarded += 1;
-    bucket.days += toDays(item.duration, item.durationUnit);
+    bucket.days += toCountedDays(item.duration, item.durationUnit);
     byYear.set(year, bucket);
   }
 
@@ -311,7 +385,7 @@ export function buildParticipationModeStats(
     const stat = isRemoteParticipation(item.location) ? remote : onSite;
 
     stat.count += 1;
-    stat.days += toDays(item.duration, item.durationUnit);
+    stat.days += toCountedDays(item.duration, item.durationUnit);
     if (item.award?.trim()) stat.awarded += 1;
     if (item.members.length > 1) stat.teamBuilds += 1;
   }

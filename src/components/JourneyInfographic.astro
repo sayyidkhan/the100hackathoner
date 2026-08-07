@@ -3,6 +3,8 @@ import type { Hackathon } from "../lib/hackathons";
 import {
   buildAwards,
   buildCountryStats,
+  buildDurationOccurrences,
+  buildDurationStats,
   buildGrid,
   buildMonthStats,
   buildPeopleStats,
@@ -36,6 +38,8 @@ const people = buildPeopleStats(items, 8);
 const venues = buildVenueStats(items, 8);
 const countries = buildCountryStats(items);
 const participationModes = buildParticipationModeStats(items);
+const durationStats = buildDurationStats(items);
+const durationOccurrences = buildDurationOccurrences(items);
 
 const activeYears = yearStats.filter((stat) => !stat.dormant);
 const peakYear = activeYears.reduce(
@@ -51,9 +55,56 @@ const topVenue = venues[0];
 const awardRate = Math.round((totals.awarded / totals.logged) * 100);
 const avgDays = Math.round((totals.days / totals.logged) * 10) / 10;
 
+function durationDisplay(minutes: number) {
+  const rounded = (value: number) =>
+    String(Math.round(value * 10) / 10).replace(/\.0$/, "");
+
+  if (minutes < 60) {
+    return { value: rounded(minutes), unit: "min", label: `${rounded(minutes)} min` };
+  }
+
+  if (minutes < 24 * 60) {
+    const hours = minutes / 60;
+    const value = rounded(hours);
+    const unit = hours === 1 ? "hr" : "hrs";
+    return { value, unit, label: `${value} ${unit}` };
+  }
+
+  const days = minutes / (24 * 60);
+  const value = rounded(days);
+  const unit = days === 1 ? "day" : "days";
+  return { value, unit, label: `${value} ${unit}` };
+}
+
+function compressedPosition(value: number, minimum: number, maximum: number) {
+  if (minimum <= 0 || maximum <= minimum) return 50;
+  return (Math.log(value / minimum) / Math.log(maximum / minimum)) * 100;
+}
+
+const shortestDuration = durationStats
+  ? durationDisplay(durationStats.shortestMinutes)
+  : null;
+const averageDuration = durationStats
+  ? durationDisplay(durationStats.averageMinutes)
+  : null;
+const longestDuration = durationStats
+  ? durationDisplay(durationStats.longestMinutes)
+  : null;
+const averagePosition = durationStats
+  ? compressedPosition(
+      durationStats.averageMinutes,
+      durationStats.shortestMinutes,
+      durationStats.longestMinutes,
+    )
+  : 50;
+const peakDurationOccurrence = Math.max(
+  ...durationOccurrences.map((occurrence) => occurrence.count),
+  1,
+);
+
 const headline = [
-  { value: String(totals.days), label: "Days spent building", note: `≈ ${totals.months} months` },
-  { value: String(avgDays), label: "Avg days per build", note: "start to demo" },
+  { value: String(totals.days), label: "Hackathon-days logged", note: "minimum 1 day per event" },
+  { value: String(avgDays), label: "Avg credited days", note: "journey accounting" },
   { value: String(totals.events), label: "Distinct events", note: `${totals.venues} venues` },
   { value: `${awardRate}%`, label: "Award rate", note: `${totals.awarded} of ${totals.logged}` },
 ];
@@ -73,6 +124,13 @@ const panels = [
     id: "momentum",
     title: "Momentum",
     copy: `The climb toward ${goal}. Over half the total was logged in the last two years alone.`,
+  },
+  {
+    id: "timespan",
+    title: "Build window",
+    copy: shortestDuration && averageDuration && longestDuration
+      ? `Exact event windows run from ${shortestDuration.label} to ${longestDuration.label}, averaging ${averageDuration.label}. The compressed scale keeps both extremes visible.`
+      : "Build time is not yet recorded for the logged hackathons.",
   },
   {
     id: "season",
@@ -108,7 +166,6 @@ const panels = [
 
 const panelIndex = (id: string) =>
   String(panels.findIndex((panel) => panel.id === id) + 1).padStart(2, "0");
-const panelFor = (id: string) => panels.find((panel) => panel.id === id)!;
 ---
 
 <div class="infographic">
@@ -137,6 +194,95 @@ const panelFor = (id: string) => panels.find((panel) => panel.id === id)!;
           {panel.id === "grid" && <HundredGrid cells={grid} />}
           {panel.id === "cadence" && <YearCadence stats={yearStats} />}
           {panel.id === "momentum" && <MomentumChart stats={yearStats} goal={goal} />}
+          {panel.id === "timespan" && durationStats && shortestDuration && averageDuration && longestDuration && (
+            <div
+              class="duration-range"
+              aria-label={`Exact build duration ranges from ${shortestDuration.label} to ${longestDuration.label}, with an average of ${averageDuration.label}`}
+            >
+              <div class="duration-summary">
+                <div class="duration-stat shortest">
+                  <span class="duration-label">Shortest <em>Speed outlier</em></span>
+                  <strong>{shortestDuration.value}</strong>
+                  <span class="duration-unit">{shortestDuration.unit}</span>
+                </div>
+                <div class="duration-stat average">
+                  <span class="duration-label">Average</span>
+                  <strong>{averageDuration.value}</strong>
+                  <span class="duration-unit">{averageDuration.unit}</span>
+                </div>
+                <div class="duration-stat longest">
+                  <span class="duration-label">Longest <em>Endurance outlier</em></span>
+                  <strong>{longestDuration.value}</strong>
+                  <span class="duration-unit">{longestDuration.unit}</span>
+                </div>
+              </div>
+
+              <div class="duration-scale" aria-hidden="true">
+                <span class="duration-track" />
+                <span class="duration-marker shortest" style="--position: 0%" />
+                <span class="duration-break first">//</span>
+                <span
+                  class="duration-marker average"
+                  style={`--position:${averagePosition}%`}
+                />
+                <span class="duration-break second">//</span>
+                <span class="duration-marker longest" style="--position: 100%" />
+              </div>
+
+              <div class="duration-scale-labels">
+                <span>{shortestDuration.label}</span>
+                <span class="scale-key">Compressed time scale</span>
+                <span>{longestDuration.label}</span>
+              </div>
+
+              <div class="duration-frequency">
+                <div class="frequency-heading">
+                  <span>Frequency by exact window</span>
+                  <span>Bubble size = hackathons</span>
+                </div>
+                <div
+                  class="frequency-plot"
+                  aria-label="Frequency of hackathons by exact event duration"
+                >
+                  <span class="frequency-track" aria-hidden="true" />
+                  {durationOccurrences.map((occurrence) => {
+                    const display = durationDisplay(occurrence.minutes);
+                    const position = compressedPosition(
+                      occurrence.minutes,
+                      durationStats.shortestMinutes,
+                      durationStats.longestMinutes,
+                    );
+                    const size = 10 + Math.sqrt(occurrence.count / peakDurationOccurrence) * 32;
+                    const hackathonLabel = occurrence.count === 1 ? "hackathon" : "hackathons";
+
+                    return (
+                      <span
+                        class:list={[
+                          "frequency-bubble",
+                          { peak: occurrence.count === peakDurationOccurrence },
+                        ]}
+                        style={`--position:${position}%;--size:${size}px`}
+                        role="img"
+                        tabindex="0"
+                        aria-label={`${display.label}: ${occurrence.count} ${hackathonLabel}`}
+                        data-tooltip={`${display.label} · ${occurrence.count} ${hackathonLabel}`}
+                      >
+                        {occurrence.count > 1 && <b>{occurrence.count}</b>}
+                      </span>
+                    );
+                  })}
+                </div>
+                <div class="frequency-legend" aria-hidden="true">
+                  <span><i class="small" /> Less common</span>
+                  <span><i class="large" /> More common</span>
+                </div>
+              </div>
+
+              <p class="duration-note">
+                Exact windows are calculated in minutes. Journey totals credit every hackathon at least one day; months are counted as 30 days.
+              </p>
+            </div>
+          )}
           {panel.id === "season" && <MonthPulse months={monthStats} />}
           {panel.id === "trophies" && <AwardWall awards={awards} />}
           {panel.id === "themes" && <BarRanking items={tags} accent="blue" labelWidth="minmax(0, 190px)" />}
@@ -201,7 +347,7 @@ const panelFor = (id: string) => panels.find((panel) => panel.id === id)!;
                     <dd>{mode.count}</dd>
                     <p>hackathons</p>
                     <ul>
-                      <li><span>Building time</span><b>{mode.days} days</b></li>
+                      <li><span>Hackathon-days</span><b>{mode.days}</b></li>
                       <li><span>Awards</span><b>{mode.awarded}</b></li>
                       <li><span>Team builds</span><b>{mode.teamBuilds}</b></li>
                     </ul>
@@ -313,6 +459,308 @@ const panelFor = (id: string) => panels.find((panel) => panel.id === id)!;
   }
 
   /* Crew ---------------------------------------------------------------- */
+
+  /* Build duration ------------------------------------------------------ */
+
+  .duration-range {
+    padding: 26px;
+    border: 1px solid var(--line);
+    background: var(--bg-paper);
+  }
+
+  .duration-summary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .duration-stat {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 6px;
+    align-items: end;
+    min-width: 0;
+  }
+
+  .duration-stat.average {
+    padding: 0 16px;
+    border-right: 1px solid var(--line);
+    border-left: 1px solid var(--line);
+  }
+
+  .duration-stat.longest {
+    text-align: right;
+  }
+
+  .duration-stat.longest .duration-label,
+  .duration-stat.longest .duration-unit {
+    justify-self: end;
+  }
+
+  .duration-label {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    grid-column: 1 / -1;
+    margin-bottom: 9px;
+    color: var(--faint);
+    font-size: 0.68rem;
+    font-weight: 950;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .duration-label em {
+    padding: 3px 5px;
+    border-radius: 2px;
+    background: color-mix(in srgb, currentColor 10%, transparent);
+    font-size: 0.54rem;
+    font-style: normal;
+    letter-spacing: 0.08em;
+  }
+
+  .duration-stat strong {
+    color: var(--ink);
+    font-size: clamp(2.8rem, 6vw, 4.6rem);
+    font-weight: 950;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.08em;
+    line-height: 0.78;
+  }
+
+  .duration-stat.shortest strong {
+    color: var(--blue);
+  }
+
+  .duration-stat.longest strong {
+    color: var(--red);
+  }
+
+  .duration-unit {
+    padding-bottom: 2px;
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 850;
+  }
+
+  .duration-scale {
+    position: relative;
+    height: 36px;
+    margin-top: 34px;
+  }
+
+  .duration-track {
+    position: absolute;
+    top: 17px;
+    right: 0;
+    left: 0;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      var(--blue) 0%,
+      var(--line-strong) 20%,
+      var(--line-strong) 80%,
+      var(--red) 100%
+    );
+  }
+
+  .duration-marker {
+    position: absolute;
+    top: 9px;
+    left: var(--position);
+    width: 18px;
+    height: 18px;
+    border: 3px solid var(--bg-paper);
+    border-radius: 50%;
+    transform: translateX(-50%);
+  }
+
+  .duration-marker.shortest {
+    background: var(--blue);
+  }
+
+  .duration-marker.average {
+    background: var(--ink);
+  }
+
+  .duration-marker.longest {
+    background: var(--red);
+  }
+
+  .duration-break {
+    position: absolute;
+    top: 8px;
+    padding: 1px 4px 2px;
+    background: var(--bg-paper);
+    color: var(--faint);
+    font-size: 0.75rem;
+    font-weight: 950;
+    letter-spacing: -0.08em;
+    transform: translateX(-50%) rotate(-12deg);
+  }
+
+  .duration-break.first {
+    left: 23%;
+  }
+
+  .duration-break.second {
+    left: 78%;
+  }
+
+  .duration-scale-labels {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 12px;
+    color: var(--faint);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .duration-scale-labels span:last-child {
+    text-align: right;
+  }
+
+  .duration-scale-labels .scale-key {
+    color: var(--muted);
+    text-align: center;
+  }
+
+  .duration-frequency {
+    margin-top: 26px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+  }
+
+  .frequency-heading,
+  .frequency-legend {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--faint);
+    font-size: 0.64rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .frequency-plot {
+    position: relative;
+    height: 74px;
+    margin: 8px 22px 4px;
+  }
+
+  .frequency-track {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    height: 1px;
+    background: var(--line-strong);
+  }
+
+  .frequency-bubble {
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: var(--position);
+    display: grid;
+    width: var(--size);
+    height: var(--size);
+    place-items: center;
+    border: 2px solid var(--bg-paper);
+    border-radius: 50%;
+    outline: none;
+    background: var(--ink);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 18%, transparent);
+    color: white;
+    transform: translate(-50%, -50%);
+  }
+
+  .frequency-bubble.peak {
+    background: var(--teal);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--teal) 13%, transparent);
+  }
+
+  .frequency-bubble b {
+    font-size: 0.68rem;
+    font-weight: 950;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .frequency-bubble::after {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    z-index: 3;
+    padding: 6px 8px;
+    border-radius: 3px;
+    background: var(--ink);
+    color: white;
+    content: attr(data-tooltip);
+    font-size: 0.65rem;
+    font-weight: 850;
+    letter-spacing: 0;
+    line-height: 1;
+    opacity: 0;
+    pointer-events: none;
+    text-transform: none;
+    transform: translate(-50%, 4px);
+    transition: opacity 140ms ease, transform 140ms ease;
+    white-space: nowrap;
+  }
+
+  .frequency-bubble:hover::after,
+  .frequency-bubble:focus-visible::after {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+
+  .frequency-bubble:focus-visible {
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--blue) 24%, transparent);
+  }
+
+  .frequency-legend {
+    justify-content: flex-end;
+    font-size: 0.57rem;
+    letter-spacing: 0.08em;
+  }
+
+  .frequency-legend span {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .frequency-legend i {
+    display: block;
+    border-radius: 50%;
+    background: var(--ink);
+  }
+
+  .frequency-legend i.small {
+    width: 7px;
+    height: 7px;
+  }
+
+  .frequency-legend i.large {
+    width: 13px;
+    height: 13px;
+    background: var(--teal);
+  }
+
+  .duration-note {
+    margin: 20px 0 0;
+    padding-top: 14px;
+    border-top: 1px solid var(--line);
+    color: var(--faint);
+    font-size: 0.72rem;
+    line-height: 1.5;
+  }
 
   .crew .split {
     display: flex;
@@ -496,6 +944,48 @@ const panelFor = (id: string) => panels.find((panel) => panel.id === id)!;
     .mode-card dd {
       margin-top: 18px;
       font-size: 3.3rem;
+    }
+
+    .duration-range {
+      padding: 19px;
+    }
+
+    .duration-summary {
+      gap: 8px;
+    }
+
+    .duration-stat.average {
+      padding: 0 9px;
+    }
+
+    .duration-stat strong {
+      font-size: clamp(2.3rem, 12vw, 3.4rem);
+    }
+
+    .duration-unit {
+      padding-bottom: 1px;
+      font-size: 0.66rem;
+    }
+
+    .duration-label em {
+      display: none;
+    }
+
+    .duration-scale-labels {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .duration-scale-labels .scale-key {
+      display: none;
+    }
+
+    .frequency-heading span:last-child {
+      display: none;
+    }
+
+    .frequency-plot {
+      margin-right: 18px;
+      margin-left: 18px;
     }
   }
 </style>
