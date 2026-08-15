@@ -18,6 +18,11 @@ export interface Hackathon {
   members: string[];
   githubUrl: string | null;
   eventUrl: string | null;
+  socialLinks: {
+    linkedin: string[];
+    instagram: string[];
+    facebook: string[];
+  };
 }
 
 const hackathons = hackathonCatalog satisfies Hackathon[];

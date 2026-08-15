@@ -25,6 +25,11 @@ const details = [
   ["Client", hackathon.client],
   ["Location", [hackathon.location, hackathon.country].filter(Boolean).join(", ")],
 ].filter(([, value]) => Boolean(value));
+const socialPlatforms = [
+  { key: "linkedin", label: "LinkedIn", urls: hackathon.socialLinks.linkedin },
+  { key: "instagram", label: "Instagram", urls: hackathon.socialLinks.instagram },
+  { key: "facebook", label: "Facebook", urls: hackathon.socialLinks.facebook },
+].filter((platform) => platform.urls.length);
 ---
 
 <PageShell title={`${hackathon.title} | The 100 Hackathoner`}>
@@ -64,6 +69,29 @@ const details = [
             <a href={hackathon.eventUrl} rel="noreferrer" target="_blank">Event page</a>
           )}
         </div>
+      )
+    }
+
+    {
+      socialPlatforms.length > 0 && (
+        <section class="socials" aria-labelledby="social-posts-heading">
+          <p class="meta">Follow the build</p>
+          <h2 id="social-posts-heading">Original posts</h2>
+          <div class="social-platforms">
+            {socialPlatforms.map((platform) => (
+              <div class:list={["social-platform", platform.key]}>
+                <p>{platform.label}</p>
+                <div class="social-posts">
+                  {platform.urls.map((url, index) => (
+                    <a href={url} rel="noreferrer" target="_blank">
+                      {platform.label} post {index + 1}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
       )
     }
   </article>
@@ -168,10 +196,69 @@ const details = [
     padding: 11px 15px;
   }
 
+  .socials {
+    margin-top: 68px;
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+  }
+
+  .socials h2 {
+    margin: 10px 0 0;
+    color: var(--ink);
+    font-size: clamp(1.8rem, 3vw, 2.7rem);
+    letter-spacing: -0.04em;
+  }
+
+  .social-platforms {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .social-platform {
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid var(--line-strong);
+    background: var(--bg-paper);
+  }
+
+  .social-platform > p {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 950;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .social-platform.linkedin > p { color: #0a66c2; }
+  .social-platform.instagram > p { color: #c13584; }
+  .social-platform.facebook > p { color: #1877f2; }
+
+  .social-posts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .social-posts a {
+    border-bottom: 1px solid currentColor;
+    color: var(--ink);
+    font-size: 0.78rem;
+    font-weight: 850;
+  }
+
+  .social-posts a:hover { color: var(--red); }
+
   @media (max-width: 640px) {
     .details {
       grid-template-columns: 1fr;
       gap: 0;
+    }
+
+    .social-platforms {
+      grid-template-columns: 1fr;
     }
   }
 </style>

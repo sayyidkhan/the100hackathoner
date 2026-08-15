@@ -130,11 +130,46 @@ function parsePeopleDirectory(rows) {
   });
 }
 
+function emptySocialLinks() {
+  return { linkedin: [], instagram: [], facebook: [] };
+}
+
+function splitUrls(value) {
+  if (value === null || value === undefined) return [];
+  return String(value).split(/\r?\n/).map(cleanUrl).filter(Boolean);
+}
+
+function parseSocialLinks(rows) {
+  const headerIndex = rows.findIndex((row) => {
+    const labels = row.map(clean);
+    return labels.includes("Hackathon #") && labels.includes("LinkedIn");
+  });
+  if (headerIndex === -1) return new Map();
+
+  const headers = new Map(
+    rows[headerIndex].map((value, index) => [clean(value), index]),
+  );
+  const valueAt = (row, label) => {
+    const index = headers.get(label);
+    return index === undefined ? undefined : row[index];
+  };
+
+  return new Map(rows.slice(headerIndex + 1).flatMap((row) => {
+    const match = String(valueAt(row, "Hackathon #") ?? "").match(/\d+/);
+    if (!match) return [];
+    return [[Number(match[0]), {
+      linkedin: splitUrls(valueAt(row, "LinkedIn")),
+      instagram: splitUrls(valueAt(row, "Instagram")),
+      facebook: splitUrls(valueAt(row, "Facebook")),
+    }]];
+  }));
+}
+
 function splitCatalogValue(value) {
   return value ? value.split(",").filter(Boolean) : [];
 }
 
-function toCatalogEntry(row) {
+function toCatalogEntry(row, socialLinks = emptySocialLinks()) {
   return {
     number: row.number,
     title: row.title,
@@ -153,6 +188,7 @@ function toCatalogEntry(row) {
     members: splitCatalogValue(row.members),
     githubUrl: row.github_url,
     eventUrl: row.event_url,
+    socialLinks,
   };
 }
 
@@ -161,6 +197,7 @@ function prepareSchema(db) {
     PRAGMA foreign_keys = ON;
     DROP VIEW IF EXISTS hackathon_catalog;
     DROP TABLE IF EXISTS hackathon_links;
+    DROP TABLE IF EXISTS hackathon_social_links;
     DROP TABLE IF EXISTS hackathon_awards;
     DROP TABLE IF EXISTS hackathon_tags;
     DROP TABLE IF EXISTS tags;
@@ -234,6 +271,13 @@ function prepareSchema(db) {
       PRIMARY KEY (hackathon_number, type)
     );
 
+    CREATE TABLE hackathon_social_links (
+      hackathon_number INTEGER NOT NULL REFERENCES hackathons(number) ON DELETE CASCADE,
+      platform TEXT NOT NULL CHECK (platform IN ('linkedin', 'instagram', 'facebook')),
+      url TEXT NOT NULL,
+      PRIMARY KEY (hackathon_number, platform, url)
+    );
+
     CREATE INDEX idx_hackathons_start_date ON hackathons(start_date);
     CREATE INDEX idx_hackathons_country ON hackathons(country);
     CREATE INDEX idx_tags_name ON tags(name);
@@ -290,12 +334,14 @@ await Promise.all([
   mkdir(dirname(catalogPath), { recursive: true }),
 ]);
 
-const [rows, peopleRows] = await Promise.all([
+const [rows, peopleRows, socialRows] = await Promise.all([
   readSheet(workbookPath, "Hackathons"),
   readSheet(workbookPath, "People"),
+  readSheet(workbookPath, "Socials"),
 ]);
 if (rows.length < 2) throw new Error("The workbook does not contain hackathon rows.");
 const peopleDirectory = parsePeopleDirectory(peopleRows);
+const workbookSocialLinks = parseSocialLinks(socialRows);
 
 const db = new DatabaseSync(databasePath);
 
@@ -313,6 +359,9 @@ try {
   const linkTag = db.prepare("INSERT OR IGNORE INTO hackathon_tags (hackathon_number, tag_id) VALUES (?, ?)");
   const insertAward = db.prepare("INSERT INTO hackathon_awards (hackathon_number, award_text) VALUES (?, ?)");
   const insertLink = db.prepare("INSERT INTO hackathon_links (hackathon_number, type, url) VALUES (?, ?, ?)");
+  const insertSocialLink = db.prepare(
+    "INSERT INTO hackathon_social_links (hackathon_number, platform, url) VALUES (?, ?, ?)",
+  );
   const upsertPerson = db.prepare(`
     INSERT INTO people (name, linkedin_url, company, role, location, notes)
     VALUES (?, ?, ?, ?, ?, ?)
@@ -369,14 +418,26 @@ try {
     if (award) insertAward.run(number, award);
     if (sourceCode) insertLink.run(number, "source_code", sourceCode);
     if (eventUrl) insertLink.run(number, "event", eventUrl);
+    const socialLinks = workbookSocialLinks.get(number) ?? emptySocialLinks();
+    for (const [platform, urls] of Object.entries(socialLinks)) {
+      for (const url of urls) insertSocialLink.run(number, platform, url);
+    }
     imported += 1;
   }
 
   db.exec("COMMIT");
+  const socialLinksByHackathon = new Map();
+  for (const row of db
+    .prepare("SELECT hackathon_number, platform, url FROM hackathon_social_links ORDER BY platform, url")
+    .all()) {
+    const links = socialLinksByHackathon.get(row.hackathon_number) ?? emptySocialLinks();
+    links[row.platform].push(row.url);
+    socialLinksByHackathon.set(row.hackathon_number, links);
+  }
   const catalog = db
     .prepare("SELECT * FROM hackathon_catalog ORDER BY number DESC")
     .all()
-    .map(toCatalogEntry);
+    .map((row) => toCatalogEntry(row, socialLinksByHackathon.get(row.number)));
   await writeFile(catalogPath, `${JSON.stringify(catalog, null, 2)}\n`);
   console.log(`Imported ${imported} hackathons and ${peopleDirectory.length} people into ${databasePath} and ${catalogPath}`);
 } catch (error) {
