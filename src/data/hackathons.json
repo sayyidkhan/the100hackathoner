@@ -1,5 +1,68 @@
 [
   {
+    "number": 75,
+    "title": "Buzo Atlas",
+    "event": "One AI Hackathon 2026",
+    "dateLabel": "15/08/2026",
+    "startDate": "2026-08-15",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "An Agentic Family Office for the nightlife and culture economy",
+    "client": "CybrDeck",
+    "country": "Singapore",
+    "location": "Kent Ridge, Block 71",
+    "award": "25USD + 2000 in app credits worth of Cybrdeck API credits",
+    "tags": [
+      "Family Office"
+    ],
+    "organizers": [
+      "CybrDeck"
+    ],
+    "members": [
+      "Sayyid",
+      "clarence"
+    ],
+    "githubUrl": "https://github.com/gigradarapp/gr-atlas",
+    "eventUrl": "https://luma.com/e9h4kv5k?tk=lzXXdx",
+    "socialLinks": {
+      "linkedin": [],
+      "instagram": [],
+      "facebook": []
+    }
+  },
+  {
+    "number": 74,
+    "title": "The Cooperate Telepath",
+    "event": "Google Buildathon 2026 (Theme: The Cooperate Telepath)",
+    "dateLabel": "8 May 2026",
+    "startDate": "2026-05-08",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "Translating stakeholder dreams into user reality. A multi-agent feature stress-tester powered by Google ADK and Gemini.",
+    "client": "Google",
+    "country": "Singapore",
+    "location": "Marina Bay Sands",
+    "award": null,
+    "tags": [
+      "Google"
+    ],
+    "organizers": [
+      "Google"
+    ],
+    "members": [
+      "Sayyid"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/the-corporate-telepath",
+    "eventUrl": null,
+    "socialLinks": {
+      "linkedin": [
+        "https://www.linkedin.com/feed/update/urn:li:activity:7490764342309855232/"
+      ],
+      "instagram": [],
+      "facebook": []
+    }
+  },
+  {
     "number": 73,
     "title": "Zo Drive",
     "event": "Zo Computer Jul 2026 Build Challenge (Kill your SaaS)",
