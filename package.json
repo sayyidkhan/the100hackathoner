@@ -9,6 +9,7 @@
   "scripts": {
     "sync:hackathons": "node scripts/sync-hackathons.mjs",
     "predev": "npm run sync:hackathons",
+    "prebuild": "npm run sync:hackathons",
     "dev": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview"

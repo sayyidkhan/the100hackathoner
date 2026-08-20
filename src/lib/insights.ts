@@ -315,7 +315,8 @@ export interface Ranked {
   count: number;
 }
 
-export function buildTagStats(items: Hackathon[], limit = 10): Ranked[] {
+/** Every unique theme in the source log, ranked by recurrence. */
+export function buildTagStats(items: Hackathon[], limit = Infinity): Ranked[] {
   return tally(items.flatMap((item) => item.tags)).slice(0, limit);
 }
 
@@ -341,6 +342,26 @@ export function buildPeopleStats(items: Hackathon[], limit = 8): Ranked[] {
       .flatMap((item) => item.members)
       .filter((member) => member.trim().toLowerCase() !== OWNER),
   ).slice(0, limit);
+}
+
+/** Counts teammates only on events where the source log records an award. */
+export function buildHomeRunPeopleStats(
+  items: Hackathon[],
+  limit = 8,
+): Ranked[] {
+  return buildPeopleStats(
+    items.filter((item) => Boolean(item.award?.trim())),
+    limit,
+  );
+}
+
+/** Counts awarded hackathons that included at least one teammate. */
+export function buildHomeRunTeamCount(items: Hackathon[]) {
+  return items.filter(
+    (item) =>
+      Boolean(item.award?.trim()) &&
+      item.members.some((member) => member.trim().toLowerCase() !== OWNER),
+  ).length;
 }
 
 export interface ParticipationModeStat {

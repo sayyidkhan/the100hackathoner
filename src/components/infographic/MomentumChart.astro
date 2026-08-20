@@ -29,7 +29,7 @@ const points = stats.map((stat, index) => ({
 
 const line = points.map((point) => `${point.cx},${point.cy}`).join(" ");
 const area = `${PAD.left},${y(0)} ${line} ${points.at(-1)!.cx},${y(0)}`;
-const gridValues = [25, 50, 75];
+const gridValues = [1, 2, 3].map((step) => (goal * step) / 4);
 const finalPoint = points.at(-1)!;
 const TOOLTIP_W = 188;
 const TOOLTIP_H = 70;
