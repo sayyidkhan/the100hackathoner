@@ -14,6 +14,11 @@ export interface Hackathon {
   location: string | null;
   award: string | null;
   tags: string[];
+  categories: string[];
+  themeCategories: Array<{
+    theme: string;
+    category: string;
+  }>;
   organizers: string[];
   members: string[];
   githubUrl: string | null;

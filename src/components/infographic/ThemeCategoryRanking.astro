@@ -1,0 +1,188 @@
+---
+import type { ThemeCategoryStat } from "../../lib/insights";
+
+interface Props {
+  categories: ThemeCategoryStat[];
+}
+
+const { categories } = Astro.props;
+const maximum = Math.max(...categories.map((category) => category.count), 1);
+---
+
+<ol class="category-ranking">
+  {
+    categories.map((category) => {
+      const ratio = category.count / maximum;
+      const themeLabel = category.themes.length === 1 ? "theme" : "themes";
+
+      return (
+        <li>
+          <details>
+            <summary>
+              <span class="category-label">{category.label}</span>
+              <span class="category-track" aria-hidden="true">
+                <i style={`--share:${ratio}`} />
+              </span>
+              <b>{category.count}</b>
+              <em>Show {themeLabel}</em>
+            </summary>
+            <div class="theme-detail">
+              <p>Detailed themes in this category</p>
+              <ol>
+                {
+                  category.themes.map((theme) => (
+                    <li>
+                      <span>{theme.label}</span>
+                      <b>{theme.count}</b>
+                    </li>
+                  ))
+                }
+              </ol>
+            </div>
+          </details>
+        </li>
+      );
+    })
+  }
+</ol>
+
+<style>
+  .category-ranking,
+  .theme-detail ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .category-ranking {
+    display: grid;
+    gap: 8px;
+  }
+
+  details {
+    border-bottom: 1px solid transparent;
+  }
+
+  details[open] {
+    border-color: var(--line);
+  }
+
+  summary {
+    display: grid;
+    grid-template-columns: minmax(135px, 190px) minmax(0, 1fr) 26px auto;
+    gap: 14px;
+    align-items: center;
+    min-height: 40px;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .category-label {
+    overflow: hidden;
+    color: var(--ink);
+    font-size: 0.84rem;
+    font-weight: 900;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .category-track {
+    display: block;
+    height: 18px;
+    overflow: hidden;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--ink) 6%, transparent);
+  }
+
+  .category-track i {
+    display: block;
+    width: calc(var(--share) * 100%);
+    height: 100%;
+    border-radius: inherit;
+    background: var(--blue);
+    transition: width 220ms ease;
+  }
+
+  summary b {
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-align: right;
+  }
+
+  summary em {
+    min-width: 82px;
+    color: var(--faint);
+    font-size: 0.6rem;
+    font-style: normal;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  details[open] summary em {
+    font-size: 0;
+  }
+
+  details[open] summary em::after {
+    content: "Collapse";
+    font-size: 0.6rem;
+  }
+
+  .theme-detail {
+    margin: 4px 0 14px;
+    padding: 13px 14px 14px;
+    border-left: 3px solid color-mix(in srgb, var(--blue) 65%, transparent);
+    background: color-mix(in srgb, var(--blue) 5%, var(--bg-paper));
+  }
+
+  .theme-detail p {
+    margin: 0 0 9px;
+    color: var(--faint);
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .theme-detail ol {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 6px 14px;
+  }
+
+  .theme-detail li {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    color: var(--ink);
+    font-size: 0.74rem;
+    font-weight: 750;
+  }
+
+  .theme-detail li b {
+    color: var(--blue);
+  }
+
+  @media (max-width: 620px) {
+    summary {
+      grid-template-columns: minmax(0, 1fr) 28px auto;
+      gap: 9px;
+    }
+
+    .category-track {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      height: 8px;
+      margin-bottom: 4px;
+    }
+
+    summary em {
+      min-width: 62px;
+      font-size: 0.52rem;
+    }
+  }
+</style>

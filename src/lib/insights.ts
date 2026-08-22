@@ -315,9 +315,45 @@ export interface Ranked {
   count: number;
 }
 
+export interface ThemeCategoryStat extends Ranked {
+  themes: Ranked[];
+}
+
 /** Every unique theme in the source log, ranked by recurrence. */
 export function buildTagStats(items: Hackathon[], limit = Infinity): Ranked[] {
   return tally(items.flatMap((item) => item.tags)).slice(0, limit);
+}
+
+/**
+ * Groups source themes into editable high-level categories. A category is
+ * counted once per hackathon, even if that build has multiple raw themes in it.
+ */
+export function buildThemeCategoryStats(items: Hackathon[]): ThemeCategoryStat[] {
+  const categories = new Map<string, { label: string; events: Set<number>; themes: string[] }>();
+
+  for (const item of items) {
+    for (const entry of item.themeCategories) {
+      const category = entry.category.trim() || "Unclassified";
+      const key = category.toLowerCase();
+      const group = categories.get(key) ?? {
+        label: titleCase(category),
+        events: new Set<number>(),
+        themes: [],
+      };
+
+      group.events.add(item.number);
+      group.themes.push(entry.theme);
+      categories.set(key, group);
+    }
+  }
+
+  return [...categories.values()]
+    .map((group) => ({
+      label: group.label,
+      count: group.events.size,
+      themes: tally(group.themes),
+    }))
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
 }
 
 export function buildVenueStats(items: Hackathon[], limit = 8): Ranked[] {

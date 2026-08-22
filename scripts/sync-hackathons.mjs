@@ -165,11 +165,41 @@ function parseSocialLinks(rows) {
   }));
 }
 
+function parseThemeMap(rows) {
+  const headerIndex = rows.findIndex((row) => {
+    const labels = row.map(clean);
+    return labels.includes("Raw Theme") && labels.includes("General Category");
+  });
+  if (headerIndex === -1) return new Map();
+
+  const headers = new Map(
+    rows[headerIndex].map((value, index) => [clean(value), index]),
+  );
+  const rawThemeIndex = headers.get("Raw Theme");
+  const categoryIndex = headers.get("General Category");
+
+  return new Map(rows.slice(headerIndex + 1).flatMap((row) => {
+    const rawTheme = clean(row[rawThemeIndex]);
+    const category = clean(row[categoryIndex]);
+    return rawTheme && category
+      ? [[rawTheme.toLowerCase(), category]]
+      : [];
+  }));
+}
+
+async function readOptionalSheet(workbook, sheetName) {
+  try {
+    return await readSheet(workbook, sheetName);
+  } catch {
+    return [];
+  }
+}
+
 function splitCatalogValue(value) {
   return value ? value.split(",").filter(Boolean) : [];
 }
 
-function toCatalogEntry(row, socialLinks = emptySocialLinks()) {
+function toCatalogEntry(row, socialLinks = emptySocialLinks(), themeCategories = []) {
   return {
     number: row.number,
     title: row.title,
@@ -184,6 +214,8 @@ function toCatalogEntry(row, socialLinks = emptySocialLinks()) {
     location: row.location,
     award: row.award,
     tags: splitCatalogValue(row.tags),
+    categories: splitCatalogValue(row.categories),
+    themeCategories,
     organizers: splitCatalogValue(row.organizers),
     members: splitCatalogValue(row.members),
     githubUrl: row.github_url,
@@ -199,6 +231,8 @@ function prepareSchema(db) {
     DROP TABLE IF EXISTS hackathon_links;
     DROP TABLE IF EXISTS hackathon_social_links;
     DROP TABLE IF EXISTS hackathon_awards;
+    DROP TABLE IF EXISTS tag_categories;
+    DROP TABLE IF EXISTS categories;
     DROP TABLE IF EXISTS hackathon_tags;
     DROP TABLE IF EXISTS tags;
     DROP TABLE IF EXISTS hackathon_members;
@@ -259,6 +293,16 @@ function prepareSchema(db) {
       PRIMARY KEY (hackathon_number, tag_id)
     );
 
+    CREATE TABLE categories (
+      id INTEGER PRIMARY KEY,
+      name TEXT NOT NULL UNIQUE
+    );
+
+    CREATE TABLE tag_categories (
+      tag_id INTEGER PRIMARY KEY REFERENCES tags(id) ON DELETE CASCADE,
+      category_id INTEGER NOT NULL REFERENCES categories(id) ON DELETE CASCADE
+    );
+
     CREATE TABLE hackathon_awards (
       hackathon_number INTEGER PRIMARY KEY REFERENCES hackathons(number) ON DELETE CASCADE,
       award_text TEXT NOT NULL
@@ -281,6 +325,7 @@ function prepareSchema(db) {
     CREATE INDEX idx_hackathons_start_date ON hackathons(start_date);
     CREATE INDEX idx_hackathons_country ON hackathons(country);
     CREATE INDEX idx_tags_name ON tags(name);
+    CREATE INDEX idx_categories_name ON categories(name);
     CREATE INDEX idx_people_name ON people(name);
 
     CREATE VIEW hackathon_catalog AS
@@ -298,6 +343,7 @@ function prepareSchema(db) {
       h.location,
       a.award_text AS award,
       GROUP_CONCAT(DISTINCT t.name) AS tags,
+      GROUP_CONCAT(DISTINCT c.name) AS categories,
       GROUP_CONCAT(DISTINCT o.name) AS organizers,
       GROUP_CONCAT(DISTINCT p.name) AS members,
       MAX(CASE WHEN l.type = 'source_code' THEN l.url END) AS github_url,
@@ -306,6 +352,8 @@ function prepareSchema(db) {
     LEFT JOIN hackathon_awards a ON a.hackathon_number = h.number
     LEFT JOIN hackathon_tags ht ON ht.hackathon_number = h.number
     LEFT JOIN tags t ON t.id = ht.tag_id
+    LEFT JOIN tag_categories tc ON tc.tag_id = t.id
+    LEFT JOIN categories c ON c.id = tc.category_id
     LEFT JOIN hackathon_organizers ho ON ho.hackathon_number = h.number
     LEFT JOIN organizations o ON o.id = ho.organization_id
     LEFT JOIN hackathon_members hm ON hm.hackathon_number = h.number
@@ -334,14 +382,16 @@ await Promise.all([
   mkdir(dirname(catalogPath), { recursive: true }),
 ]);
 
-const [rows, peopleRows, socialRows] = await Promise.all([
+const [rows, peopleRows, socialRows, themeMapRows] = await Promise.all([
   readSheet(workbookPath, "Hackathons"),
   readSheet(workbookPath, "People"),
   readSheet(workbookPath, "Socials"),
+  readOptionalSheet(workbookPath, "Theme Map"),
 ]);
 if (rows.length < 2) throw new Error("The workbook does not contain hackathon rows.");
 const peopleDirectory = parsePeopleDirectory(peopleRows);
 const workbookSocialLinks = parseSocialLinks(socialRows);
+const themeMap = parseThemeMap(themeMapRows);
 
 const db = new DatabaseSync(databasePath);
 
@@ -357,6 +407,7 @@ try {
   const linkOrganization = db.prepare("INSERT OR IGNORE INTO hackathon_organizers (hackathon_number, organization_id) VALUES (?, ?)");
   const linkPerson = db.prepare("INSERT OR IGNORE INTO hackathon_members (hackathon_number, person_id) VALUES (?, ?)");
   const linkTag = db.prepare("INSERT OR IGNORE INTO hackathon_tags (hackathon_number, tag_id) VALUES (?, ?)");
+  const linkTagCategory = db.prepare("INSERT OR IGNORE INTO tag_categories (tag_id, category_id) VALUES (?, ?)");
   const insertAward = db.prepare("INSERT INTO hackathon_awards (hackathon_number, award_text) VALUES (?, ?)");
   const insertLink = db.prepare("INSERT INTO hackathon_links (hackathon_number, type, url) VALUES (?, ?, ?)");
   const insertSocialLink = db.prepare(
@@ -413,7 +464,10 @@ try {
       linkPerson.run(number, findOrCreatePerson(db, member));
     }
     for (const tag of splitList(valueAt(columns.theme))) {
-      linkTag.run(number, findOrCreate(db, "tags", tag));
+      const tagId = findOrCreate(db, "tags", tag);
+      const category = themeMap.get(tag.toLowerCase()) ?? "Unclassified";
+      linkTag.run(number, tagId);
+      linkTagCategory.run(tagId, findOrCreate(db, "categories", category));
     }
     if (award) insertAward.run(number, award);
     if (sourceCode) insertLink.run(number, "source_code", sourceCode);
@@ -434,10 +488,29 @@ try {
     links[row.platform].push(row.url);
     socialLinksByHackathon.set(row.hackathon_number, links);
   }
+  const themeCategoriesByHackathon = new Map();
+  for (const row of db
+    .prepare(`
+      SELECT ht.hackathon_number, t.name AS theme, c.name AS category
+      FROM hackathon_tags ht
+      JOIN tags t ON t.id = ht.tag_id
+      JOIN tag_categories tc ON tc.tag_id = t.id
+      JOIN categories c ON c.id = tc.category_id
+      ORDER BY ht.hackathon_number, t.name
+    `)
+    .all()) {
+    const themes = themeCategoriesByHackathon.get(row.hackathon_number) ?? [];
+    themes.push({ theme: row.theme, category: row.category });
+    themeCategoriesByHackathon.set(row.hackathon_number, themes);
+  }
   const catalog = db
     .prepare("SELECT * FROM hackathon_catalog ORDER BY number DESC")
     .all()
-    .map((row) => toCatalogEntry(row, socialLinksByHackathon.get(row.number)));
+    .map((row) => toCatalogEntry(
+      row,
+      socialLinksByHackathon.get(row.number),
+      themeCategoriesByHackathon.get(row.number),
+    ));
   await writeFile(catalogPath, `${JSON.stringify(catalog, null, 2)}\n`);
   console.log(`Imported ${imported} hackathons and ${peopleDirectory.length} people into ${databasePath} and ${catalogPath}`);
 } catch (error) {

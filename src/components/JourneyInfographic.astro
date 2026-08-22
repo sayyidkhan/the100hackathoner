@@ -11,7 +11,7 @@ import {
   buildMonthStats,
   buildPeopleStats,
   buildParticipationModeStats,
-  buildTagStats,
+  buildThemeCategoryStats,
   buildTotals,
   buildVenueStats,
   buildYearStats,
@@ -22,6 +22,7 @@ import MomentumChart from "./infographic/MomentumChart.astro";
 import MonthPulse from "./infographic/MonthPulse.astro";
 import AwardWall from "./infographic/AwardWall.astro";
 import BarRanking from "./infographic/BarRanking.astro";
+import ThemeCategoryRanking from "./infographic/ThemeCategoryRanking.astro";
 
 interface Props {
   items: Hackathon[];
@@ -35,10 +36,14 @@ const yearStats = buildYearStats(items);
 const monthStats = buildMonthStats(items);
 const grid = buildGrid(items, goal);
 const awards = buildAwards(items);
-const tags = buildTagStats(items);
-const people = buildPeopleStats(items, 8);
+const themeCategories = buildThemeCategoryStats(items);
+const people = buildPeopleStats(items, items.length);
+const repeatPeople = people.filter((person) => person.count > 1);
+const singlePeople = people.filter((person) => person.count === 1);
 const homeRunPeople = buildHomeRunPeopleStats(items, items.length);
 const homeRunTeamCount = buildHomeRunTeamCount(items);
+const repeatHomeRunPeople = homeRunPeople.filter((person) => person.count > 1);
+const singleHomeRunPeople = homeRunPeople.filter((person) => person.count === 1);
 const venues = buildVenueStats(items, 8);
 const countries = buildCountryStats(items);
 const participationModes = buildParticipationModeStats(items);
@@ -56,7 +61,7 @@ const peakMonth = monthStats.reduce(
 );
 const dormantYears = yearStats.filter((stat) => stat.dormant);
 const topVenue = venues[0];
-const topTheme = tags[0];
+const topThemeCategory = themeCategories[0];
 const awardRate = Math.round((totals.awarded / totals.logged) * 100);
 const avgDays = Math.round((totals.days / totals.logged) * 10) / 10;
 const recentYears = activeYears.slice(-2);
@@ -156,8 +161,8 @@ const panels = [
   {
     id: "themes",
     title: "What gets built",
-    copy: topTheme
-      ? `${tags.length} recorded themes across ${totals.events} events. ${topTheme.label} leads with ${topTheme.count} builds; new themes are included automatically on sync.`
+    copy: topThemeCategory
+      ? `${themeCategories.length} general categories across ${totals.events} events. ${topThemeCategory.label} leads with ${topThemeCategory.count} builds; open a category to see its detailed themes.`
       : "Themes appear here automatically once they are recorded in the Hackathon CV.",
   },
   {
@@ -303,7 +308,11 @@ const panelIndex = (id: string) =>
           )}
           {panel.id === "season" && <MonthPulse months={monthStats} />}
           {panel.id === "trophies" && <AwardWall awards={awards} />}
-          {panel.id === "themes" && <BarRanking items={tags} accent="blue" labelWidth="minmax(0, 190px)" />}
+          {panel.id === "themes" && (
+            <div class="themes">
+              <ThemeCategoryRanking categories={themeCategories} />
+            </div>
+          )}
 
           {panel.id === "crew" && (
             <div class="crew">
@@ -331,12 +340,48 @@ const panelIndex = (id: string) =>
               </div>
               <div data-crew-panel="all">
                 <p class="plot-note">Most frequent teammates</p>
-                <BarRanking items={people} accent="teal" labelWidth="minmax(0, 150px)" />
+                {repeatPeople.length > 0 && (
+                  <BarRanking items={repeatPeople} accent="teal" labelWidth="minmax(0, 150px)" />
+                )}
+                {singlePeople.length > 0 && (
+                  <div class="one-run-roster teal">
+                    <p class="plot-note">
+                      One build each · {singlePeople.length} teammates
+                    </p>
+                    <ol>
+                      {singlePeople.map((person) => (
+                        <li>
+                          <span class="one-run-dot" aria-hidden="true" />
+                          <span>{person.label}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
               </div>
               <div data-crew-panel="home-runs" hidden>
                 <p class="plot-note">Most shared award runs · {homeRunTeamCount} team results</p>
                 {homeRunPeople.length ? (
-                  <BarRanking items={homeRunPeople} accent="gold" labelWidth="minmax(0, 150px)" />
+                  <>
+                    {repeatHomeRunPeople.length > 0 && (
+                      <BarRanking items={repeatHomeRunPeople} accent="gold" labelWidth="minmax(0, 150px)" />
+                    )}
+                    {singleHomeRunPeople.length > 0 && (
+                      <div class="one-run-roster">
+                        <p class="plot-note">
+                          One award run each · {singleHomeRunPeople.length} teammates
+                        </p>
+                        <ol>
+                          {singleHomeRunPeople.map((person) => (
+                            <li>
+                              <span class="one-run-dot" aria-hidden="true" />
+                              <span>{person.label}</span>
+                            </li>
+                          ))}
+                        </ol>
+                      </div>
+                    )}
+                  </>
                 ) : (
                   <p class="crew-empty">No teammates are linked to an awarded run yet.</p>
                 )}
@@ -888,6 +933,59 @@ const panelIndex = (id: string) =>
     margin: 0;
     color: var(--muted);
     font-size: 0.86rem;
+  }
+
+  .one-run-roster {
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+
+  .one-run-roster ol {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 7px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .one-run-roster li {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 0;
+    padding: 8px 10px;
+    border: 1px solid color-mix(in srgb, var(--gold) 42%, var(--line));
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--gold) 8%, var(--bg-paper));
+    color: var(--ink);
+    font-size: 0.74rem;
+    font-weight: 850;
+  }
+
+  .one-run-roster li > span:last-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .one-run-dot {
+    display: block;
+    width: 7px;
+    height: 7px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  .one-run-roster.teal li {
+    border-color: color-mix(in srgb, var(--teal) 42%, var(--line));
+    background: color-mix(in srgb, var(--teal) 8%, var(--bg-paper));
+  }
+
+  .one-run-roster.teal .one-run-dot {
+    background: var(--teal);
   }
 
   .split span {
