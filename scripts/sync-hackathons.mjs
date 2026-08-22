@@ -130,6 +130,38 @@ function parsePeopleDirectory(rows) {
   });
 }
 
+/**
+ * Resolves a short team-cell alias only when one directory entry owns that
+ * first name. Ambiguous aliases stay untouched so similarly named people are
+ * never merged by accident.
+ */
+function buildMemberNameResolver(peopleDirectory) {
+  const canonicalNames = new Map();
+  const aliases = new Map();
+
+  for (const person of peopleDirectory) {
+    const canonicalName = person.name.trim();
+    const canonicalKey = canonicalName.toLowerCase();
+    canonicalNames.set(canonicalKey, canonicalName);
+
+    const alias = canonicalName.split(/\s+/)[0]?.toLowerCase();
+    if (!alias) continue;
+    const matches = aliases.get(alias) ?? new Set();
+    matches.add(canonicalName);
+    aliases.set(alias, matches);
+  }
+
+  return (rawName) => {
+    const name = rawName.trim();
+    const key = name.toLowerCase();
+    const exactMatch = canonicalNames.get(key);
+    if (exactMatch) return exactMatch;
+
+    const aliasMatches = aliases.get(key);
+    return aliasMatches?.size === 1 ? [...aliasMatches][0] : name;
+  };
+}
+
 function emptySocialLinks() {
   return { linkedin: [], instagram: [], facebook: [] };
 }
@@ -390,6 +422,7 @@ const [rows, peopleRows, socialRows, themeMapRows] = await Promise.all([
 ]);
 if (rows.length < 2) throw new Error("The workbook does not contain hackathon rows.");
 const peopleDirectory = parsePeopleDirectory(peopleRows);
+const resolveMemberName = buildMemberNameResolver(peopleDirectory);
 const workbookSocialLinks = parseSocialLinks(socialRows);
 const themeMap = parseThemeMap(themeMapRows);
 
@@ -461,7 +494,7 @@ try {
       linkOrganization.run(number, findOrCreate(db, "organizations", organizer));
     }
     for (const member of splitMembers(valueAt(columns.team))) {
-      linkPerson.run(number, findOrCreatePerson(db, member));
+      linkPerson.run(number, findOrCreatePerson(db, resolveMemberName(member)));
     }
     for (const tag of splitList(valueAt(columns.theme))) {
       const tagId = findOrCreate(db, "tags", tag);

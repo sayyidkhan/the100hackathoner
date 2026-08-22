@@ -1,0 +1,331 @@
+---
+import type { CollaborationStat } from "../../lib/insights";
+
+interface Props {
+  items: CollaborationStat[];
+  accent?: "teal" | "gold";
+  repeatLabel: string;
+  singleLabel: string;
+}
+
+const {
+  items,
+  accent = "teal",
+  repeatLabel,
+  singleLabel,
+} = Astro.props;
+const repeated = items.filter((person) => person.count > 1);
+const single = items.filter((person) => person.count === 1);
+const peak = Math.max(...repeated.map((person) => person.count), 1);
+---
+
+<div class:list={["teammate-ranking", accent]}>
+  {
+    repeated.length > 0 && (
+      <>
+        <p class="section-label">{repeatLabel}</p>
+        <ol class="bar-list">
+          {
+            repeated.map((person) => (
+              <li class="teammate" tabindex="0">
+                <span class="name">{person.label}</span>
+                <span class="track" aria-hidden="true">
+                  <span class="bar" style={`--ratio:${person.count / peak}`} />
+                </span>
+                <b class="count">{person.count}</b>
+                <span class="hover-card" role="tooltip">
+                  <strong>{person.label}</strong>
+                  <span>{person.count} hackathons together</span>
+                  <ol>
+                    {person.hackathons.map((hackathon) => (
+                      <li>
+                        <a href={`/hackathons/${hackathon.number}/`}>
+                          <b>#{String(hackathon.number).padStart(3, "0")}</b>
+                          <span>{hackathon.title}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ol>
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+      </>
+    )
+  }
+
+  {
+    single.length > 0 && (
+      <div class="single-roster">
+        <p class="section-label">{singleLabel} · {single.length} teammates</p>
+        <ol>
+          {
+            single.map((person) => (
+              <li class="teammate" tabindex="0">
+                <span class="dot" aria-hidden="true" />
+                <span class="name">{person.label}</span>
+                <span class="hover-card" role="tooltip">
+                  <strong>{person.label}</strong>
+                  <span>1 hackathon together</span>
+                  <ol>
+                    {person.hackathons.map((hackathon) => (
+                      <li>
+                        <a href={`/hackathons/${hackathon.number}/`}>
+                          <b>#{String(hackathon.number).padStart(3, "0")}</b>
+                          <span>{hackathon.title}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ol>
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    )
+  }
+</div>
+
+<script>
+  const safeInset = 16;
+
+  function revealCard(teammate: HTMLElement) {
+    const card = teammate.querySelector<HTMLElement>(".hover-card");
+    if (!card) return;
+
+    teammate.dataset.popoverOpen = "true";
+    card.style.setProperty("--popover-offset-x", "0px");
+
+    requestAnimationFrame(() => {
+      const bounds = card.getBoundingClientRect();
+      const shiftLeft = Math.max(0, bounds.right - (window.innerWidth - safeInset));
+      const shiftRight = Math.max(0, safeInset - (bounds.left - shiftLeft));
+      card.style.setProperty("--popover-offset-x", `${shiftRight - shiftLeft}px`);
+    });
+  }
+
+  function concealCard(teammate: HTMLElement) {
+    delete teammate.dataset.popoverOpen;
+  }
+
+  document.querySelectorAll<HTMLElement>(".teammate-ranking .teammate").forEach((teammate) => {
+    teammate.addEventListener("mouseenter", () => revealCard(teammate));
+    teammate.addEventListener("mouseleave", () => concealCard(teammate));
+    teammate.addEventListener("focusin", () => revealCard(teammate));
+    teammate.addEventListener("focusout", (event) => {
+      const nextTarget = event.relatedTarget;
+      if (!(nextTarget instanceof Node) || !teammate.contains(nextTarget)) {
+        concealCard(teammate);
+      }
+    });
+  });
+</script>
+
+<style>
+  .teammate-ranking {
+    --accent: var(--teal);
+  }
+
+  .teammate-ranking.gold {
+    --accent: var(--gold);
+  }
+
+  .section-label {
+    margin: 0 0 14px;
+    color: var(--faint);
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .bar-list,
+  .single-roster ol,
+  .hover-card ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bar-list {
+    display: grid;
+    gap: 11px;
+  }
+
+  .teammate {
+    position: relative;
+  }
+
+  .bar-list .teammate {
+    display: grid;
+    grid-template-columns: minmax(0, 150px) minmax(0, 1fr) 34px;
+    gap: 14px;
+    align-items: center;
+  }
+
+  .name {
+    overflow: hidden;
+    color: var(--ink);
+    font-size: 0.82rem;
+    font-weight: 850;
+    letter-spacing: -0.01em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .track {
+    display: block;
+    height: 18px;
+    border-radius: 2px;
+    background: rgba(14, 18, 18, 0.06);
+  }
+
+  .bar {
+    display: block;
+    width: calc(var(--ratio) * 100%);
+    min-width: 3px;
+    height: 100%;
+    border-radius: 2px;
+    background: var(--accent);
+  }
+
+  .count {
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  .single-roster {
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+
+  .single-roster > ol {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 7px;
+  }
+
+  .single-roster .teammate {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 0;
+    padding: 8px 10px;
+    border: 1px solid color-mix(in srgb, var(--accent) 42%, var(--line));
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--accent) 8%, var(--bg-paper));
+  }
+
+  .single-roster .name {
+    min-width: 0;
+    font-size: 0.74rem;
+  }
+
+  .dot {
+    display: block;
+    width: 7px;
+    height: 7px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .hover-card {
+    position: absolute;
+    z-index: 20;
+    bottom: calc(100% + 10px);
+    left: 0;
+    display: grid;
+    width: min(340px, calc(100vw - 40px));
+    gap: 6px;
+    padding: 13px;
+    border: 1px solid color-mix(in srgb, var(--accent) 65%, var(--line));
+    border-radius: 3px;
+    background: var(--ink);
+    box-shadow: 0 12px 28px rgba(14, 18, 18, 0.2);
+    color: white;
+    display: none;
+    pointer-events: none;
+    transform: translate(var(--popover-offset-x, 0px), 0);
+  }
+
+  .bar-list .hover-card {
+    left: min(164px, 30%);
+  }
+
+  .teammate[data-popover-open] .hover-card {
+    display: grid;
+    pointer-events: auto;
+  }
+
+  .teammate:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--accent) 35%, transparent);
+    outline-offset: 3px;
+  }
+
+  .hover-card > strong {
+    font-size: 0.82rem;
+  }
+
+  .hover-card > span {
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.65rem;
+    font-weight: 750;
+  }
+
+  .hover-card ol {
+    display: grid;
+    gap: 2px;
+    max-height: 170px;
+    overflow-y: auto;
+    margin-top: 5px;
+    padding-top: 7px;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+  }
+
+  .hover-card a {
+    display: flex;
+    gap: 7px;
+    align-items: baseline;
+    color: white;
+    font-size: 0.68rem;
+    font-weight: 750;
+    line-height: 1.3;
+    text-decoration: none;
+  }
+
+  .hover-card a:hover,
+  .hover-card a:focus-visible {
+    color: var(--accent);
+  }
+
+  .hover-card a b {
+    color: var(--accent);
+    font-size: 0.62rem;
+    letter-spacing: 0.06em;
+  }
+
+  @media (max-width: 620px) {
+    .bar-list .teammate {
+      grid-template-columns: minmax(0, 1fr) 30px;
+      gap: 6px 10px;
+    }
+
+    .bar-list .track {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      height: 14px;
+    }
+
+    .bar-list .hover-card {
+      left: 0;
+    }
+  }
+
+</style>

@@ -1,5 +1,46 @@
 [
   {
+    "number": 76,
+    "title": "Agrim Tycoon",
+    "event": "Build with Gemini Hackathon 2026",
+    "dateLabel": "22/08/2026",
+    "startDate": "2026-08-22",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "A local-first city-management game where players govern Innovation City with Gemma as an on-device chief of staff for incident triage, guardrails, and scenario stress-testing.",
+    "client": "Google DeepMind",
+    "country": "Singapore",
+    "location": "Lorong AI @ One-North",
+    "award": null,
+    "tags": [
+      "Agentic AI"
+    ],
+    "categories": [
+      "AI & Data"
+    ],
+    "themeCategories": [
+      {
+        "theme": "Agentic AI",
+        "category": "AI & Data"
+      }
+    ],
+    "organizers": [
+      "Google",
+      "65labs",
+      "Lorong AI"
+    ],
+    "members": [
+      "Sayyid"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/agrim-tycoon",
+    "eventUrl": "https://luma.com/deepmind-v4ci?tk=LBgGrm",
+    "socialLinks": {
+      "linkedin": [],
+      "instagram": [],
+      "facebook": []
+    }
+  },
+  {
     "number": 75,
     "title": "Buzo Atlas",
     "event": "One AI Hackathon 2026",
@@ -28,8 +69,8 @@
       "CybrDeck"
     ],
     "members": [
-      "Sayyid",
-      "clarence"
+      "Clarence Chan",
+      "Sayyid"
     ],
     "githubUrl": "https://github.com/gigradarapp/gr-atlas",
     "eventUrl": "https://luma.com/e9h4kv5k?tk=lzXXdx",

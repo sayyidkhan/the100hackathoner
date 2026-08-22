@@ -315,6 +315,13 @@ export interface Ranked {
   count: number;
 }
 
+export interface CollaborationStat extends Ranked {
+  hackathons: Array<{
+    number: number;
+    title: string;
+  }>;
+}
+
 export interface ThemeCategoryStat extends Ranked {
   themes: Ranked[];
 }
@@ -380,6 +387,36 @@ export function buildPeopleStats(items: Hackathon[], limit = 8): Ranked[] {
   ).slice(0, limit);
 }
 
+/** Lists each collaborator with the source hackathons shared together. */
+export function buildCollaborationStats(items: Hackathon[]): CollaborationStat[] {
+  const collaborators = new Map<string, CollaborationStat>();
+
+  for (const item of items) {
+    for (const member of item.members) {
+      const name = member.trim();
+      const key = name.toLowerCase();
+      if (!name || key === OWNER) continue;
+
+      const collaborator = collaborators.get(key) ?? {
+        label: titleCase(name),
+        count: 0,
+        hackathons: [],
+      };
+
+      collaborator.count += 1;
+      collaborator.hackathons.push({ number: item.number, title: item.title });
+      collaborators.set(key, collaborator);
+    }
+  }
+
+  return [...collaborators.values()]
+    .map((collaborator) => ({
+      ...collaborator,
+      hackathons: collaborator.hackathons.sort((a, b) => a.number - b.number),
+    }))
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+}
+
 /** Counts teammates only on events where the source log records an award. */
 export function buildHomeRunPeopleStats(
   items: Hackathon[],
@@ -388,6 +425,13 @@ export function buildHomeRunPeopleStats(
   return buildPeopleStats(
     items.filter((item) => Boolean(item.award?.trim())),
     limit,
+  );
+}
+
+/** Lists teammates from awarded runs, retaining their winning shared records. */
+export function buildHomeRunCollaborationStats(items: Hackathon[]) {
+  return buildCollaborationStats(
+    items.filter((item) => Boolean(item.award?.trim())),
   );
 }
 
@@ -405,6 +449,7 @@ export interface ParticipationModeStat {
   count: number;
   days: number;
   awarded: number;
+  soloBuilds: number;
   teamBuilds: number;
 }
 
@@ -432,6 +477,7 @@ export function buildParticipationModeStats(
     count: 0,
     days: 0,
     awarded: 0,
+    soloBuilds: 0,
     teamBuilds: 0,
   });
 
@@ -445,6 +491,7 @@ export function buildParticipationModeStats(
     stat.days += toCountedDays(item.duration, item.durationUnit);
     if (item.award?.trim()) stat.awarded += 1;
     if (item.members.length > 1) stat.teamBuilds += 1;
+    else stat.soloBuilds += 1;
   }
 
   remote.days = Math.round(remote.days);
