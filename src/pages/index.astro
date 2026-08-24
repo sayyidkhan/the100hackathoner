@@ -92,9 +92,7 @@ const checkpoints = Array.from({ length: total }, (_, index) => {
           ? "award"
           : number < completed
             ? "complete"
-          : number % 10 === 0
-            ? "milestone"
-            : "future",
+          : "future",
   };
 });
 
@@ -151,7 +149,6 @@ const checkpoints = Array.from({ length: total }, (_, index) => {
           <span><i class="complete"></i> Completed</span>
           <span><i class="award"></i> Awarded</span>
           <span><i class="current"></i> Current</span>
-          <span><i class="milestone"></i> Milestone</span>
           <span><i class="future"></i> Ahead</span>
         </div>
         <div class="map-summary">
@@ -536,15 +533,11 @@ const checkpoints = Array.from({ length: total }, (_, index) => {
   }
 
   .map-legend .award {
-    background: #05776e;
+    background: var(--yellow);
   }
 
   .map-legend .current {
     background: var(--red);
-  }
-
-  .map-legend .milestone {
-    background: var(--yellow);
   }
 
   .map-legend .future {
@@ -740,19 +733,14 @@ const checkpoints = Array.from({ length: total }, (_, index) => {
   }
 
   .checkpoint.award {
-    background: #05776e;
-    color: white;
+    border-color: color-mix(in srgb, var(--yellow) 65%, var(--line));
+    background: var(--yellow);
+    color: #4e3900;
   }
 
   .checkpoint.current {
     background: var(--red);
     color: white;
-  }
-
-  .checkpoint.milestone {
-    border-color: color-mix(in srgb, var(--yellow) 58%, var(--line));
-    background: color-mix(in srgb, var(--yellow) 23%, white);
-    color: #8b5e00;
   }
 
   .checkpoint.future {
@@ -894,7 +882,8 @@ const checkpoints = Array.from({ length: total }, (_, index) => {
   }
 
   .calendar-day.award {
-    background: #05776e;
+    background: var(--yellow);
+    color: #4e3900;
   }
 
   .calendar-day.current {
