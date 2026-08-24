@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import HeroCinematicBackdrop from "../components/HeroCinematicBackdrop.astro";
 import PageShell from "../components/PageShell.astro";
+import { getYear } from "../lib/format";
 import { getHackathons } from "../lib/hackathons";
 
 const hackathons = getHackathons();
@@ -14,6 +15,68 @@ const total = 100;
 const remaining = total - completed;
 const featured = hackathons[0];
 const progressPercent = Math.round((completed / total) * 100);
+const years = [...new Set(hackathons.map((item) => getYear(item.startDate, item.dateLabel)).filter((year): year is number => year !== null))]
+  .sort((a, b) => b - a)
+  .map((year) => ({
+    value: year,
+    count: hackathons.filter((item) => getYear(item.startDate, item.dateLabel) === year).length,
+  }));
+
+function toIsoDate(date: Date) {
+  return date.toISOString().slice(0, 10);
+}
+
+function formatCalendarDate(isoDate: string) {
+  return new Intl.DateTimeFormat("en-SG", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(`${isoDate}T00:00:00Z`));
+}
+
+const quarterNames = ["Jan – Mar", "Apr – Jun", "Jul – Sep", "Oct – Dec"];
+
+function calendarQuartersForYear(year: number) {
+  const eventsByDate = new Map<string, typeof hackathons>();
+
+  for (const event of hackathons) {
+    if (getYear(event.startDate, event.dateLabel) !== year || !event.startDate) continue;
+    const events = eventsByDate.get(event.startDate) ?? [];
+    events.push(event);
+    eventsByDate.set(event.startDate, events);
+  }
+
+  return quarterNames.map((label, quarter) => {
+    const firstMonth = quarter * 3;
+    const start = new Date(Date.UTC(year, firstMonth, 1));
+    start.setUTCDate(start.getUTCDate() - start.getUTCDay());
+    const end = new Date(Date.UTC(year, firstMonth + 3, 0));
+    end.setUTCDate(end.getUTCDate() + (6 - end.getUTCDay()));
+    const cells = [];
+
+    for (let date = new Date(start); date <= end; date.setUTCDate(date.getUTCDate() + 1)) {
+      const isoDate = toIsoDate(date);
+      cells.push({
+        isoDate,
+        isInQuarter:
+          date.getUTCFullYear() === year &&
+          date.getUTCMonth() >= firstMonth &&
+          date.getUTCMonth() < firstMonth + 3,
+        events: eventsByDate.get(isoDate) ?? [],
+      });
+    }
+
+    return { label, cells, weeks: cells.length / 7 };
+  });
+}
+
+const calendarYears = years.map(({ value, count }) => ({
+  year: value,
+  count,
+  quarters: calendarQuartersForYear(value),
+}));
 
 const checkpoints = Array.from({ length: total }, (_, index) => {
   const number = index + 1;
@@ -26,11 +89,14 @@ const checkpoints = Array.from({ length: total }, (_, index) => {
     solution: known?.solution ?? "",
     tags: known?.tags.slice(0, 2) ?? [],
     award: known?.award ?? "",
+    year: known ? getYear(known.startDate, known.dateLabel) : null,
     status:
-      number < completed
-        ? "complete"
-        : number === completed
+      number === completed
           ? "current"
+        : known?.award
+          ? "award"
+          : number < completed
+            ? "complete"
           : number % 10 === 0
             ? "milestone"
             : "future",
@@ -108,50 +174,172 @@ const lessonPatterns = [
         </p>
       </div>
 
-      <div class="map-panel">
+      <div class="map-panel" data-map-view="sequence">
         <div class="map-legend">
           <span><i class="complete"></i> Completed</span>
+          <span><i class="award"></i> Awarded</span>
           <span><i class="current"></i> Current</span>
           <span><i class="milestone"></i> Milestone</span>
           <span><i class="future"></i> Ahead</span>
         </div>
-        <div class="checkpoint-grid" aria-label="One hundred hackathon checkpoints">
-          {
-            checkpoints.map((checkpoint) => (
-              <a
-                class={`checkpoint ${checkpoint.status}`}
-                href={
-                  checkpoint.title
-                    ? `/hackathons/${checkpoint.number}/`
-                    : "/hackathons/"
-                }
-                aria-label={
-                  checkpoint.title
-                    ? `Hackathon ${checkpoint.number}: ${checkpoint.title}. View details.`
-                    : `Hackathon ${checkpoint.number}`
-                }
-              >
-                {String(checkpoint.number).padStart(2, "0")}
-                {
-                  checkpoint.title && (
-                    <span class="checkpoint-preview" role="tooltip">
-                      <span class="preview-kicker">
-                        #{String(checkpoint.number).padStart(3, "0")}
-                        {checkpoint.dateLabel && ` · ${checkpoint.dateLabel}`}
+        <div class="map-summary">
+          <div class="map-summary-copy">
+            <span>Hackathons done</span>
+            <strong>{completed} / {total}</strong>
+            <span>{remaining} to go</span>
+          </div>
+          <div class="map-view-toggle" aria-label="Choose map view">
+            <button type="button" class="active" aria-pressed="true" data-map-view-button="sequence">Sequence</button>
+            <button type="button" aria-pressed="false" data-map-view-button="calendar">Calendar</button>
+          </div>
+        </div>
+        <div class="map-content">
+          <div class="map-display">
+            <div class="checkpoint-grid" aria-label="One hundred hackathon checkpoints" data-sequence-view>
+            {
+              checkpoints.map((checkpoint) => (
+                <a
+                  class={`checkpoint ${checkpoint.status}`}
+                  data-checkpoint-year={checkpoint.year ?? ""}
+                  href={
+                    checkpoint.title
+                      ? `/hackathons/${checkpoint.number}/`
+                      : "/hackathons/"
+                  }
+                  aria-label={
+                    checkpoint.title
+                      ? `Hackathon ${checkpoint.number}: ${checkpoint.title}. View details.`
+                      : `Hackathon ${checkpoint.number}`
+                  }
+                >
+                  {String(checkpoint.number).padStart(2, "0")}
+                  {
+                    checkpoint.title && (
+                      <span class="checkpoint-preview" role="tooltip">
+                        <span class="preview-kicker">
+                          #{String(checkpoint.number).padStart(3, "0")}
+                          {checkpoint.dateLabel && ` · ${checkpoint.dateLabel}`}
+                        </span>
+                        <strong>{checkpoint.title}</strong>
+                        <span class="preview-event">{checkpoint.event}</span>
+                        {checkpoint.solution && <span class="preview-solution">{checkpoint.solution}</span>}
+                        <span class="preview-footer">
+                          {checkpoint.tags.length > 0 && checkpoint.tags.join(" · ")}
+                          {checkpoint.award && <em>{checkpoint.award}</em>}
+                        </span>
                       </span>
-                      <strong>{checkpoint.title}</strong>
-                      <span class="preview-event">{checkpoint.event}</span>
-                      {checkpoint.solution && <span class="preview-solution">{checkpoint.solution}</span>}
-                      <span class="preview-footer">
-                        {checkpoint.tags.length > 0 && checkpoint.tags.join(" · ")}
-                        {checkpoint.award && <em>{checkpoint.award}</em>}
-                      </span>
-                    </span>
-                  )
-                }
-              </a>
-            ))
-          }
+                    )
+                  }
+                </a>
+              ))
+            }
+            </div>
+            <div class="calendar-views" data-calendar-view>
+              {
+                calendarYears.map(({ year, count, quarters }) => (
+                  <section class="calendar-year" data-calendar-year={year} aria-label={`${year} hackathon calendar`}>
+                    <header>
+                      <strong>{year}</strong>
+                      <span>{count} hackathons</span>
+                    </header>
+                    <div class="calendar-quarters">
+                      {
+                        quarters.map(({ label, cells, weeks }) => (
+                          <section class="calendar-quarter" aria-label={`${label} ${year}`}>
+                            <h3>{label}</h3>
+                            <div class="calendar-frame">
+                              <div class="calendar-weekdays" aria-hidden="true">
+                                <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                              </div>
+                              <div class="calendar-grid" style={`--week-count: ${weeks}`}>
+                        {
+                          cells.map((cell, index) => {
+                            const hasAward = cell.events.some((event) => Boolean(event.award));
+                            const isCurrent = cell.events.some((event) => event.number === completed);
+                            const intensity = Math.min(cell.events.length, 3);
+                            const primary = cell.events[0];
+                            const calendarDate = formatCalendarDate(cell.isoDate);
+                            const weekdayIndex = index % 7;
+                            const weekIndex = Math.floor(index / 7);
+                            const previewVertical = weekdayIndex < 5 ? "preview-below" : "preview-above";
+                            const previewHorizontal = weekIndex < 3
+                              ? "preview-left"
+                              : weekIndex > weeks - 4
+                                ? "preview-right"
+                                : "preview-center";
+
+                            return cell.isInQuarter ? (
+                              <a
+                                class:list={[
+                                  "calendar-day",
+                                  cell.events.length > 0 && "has-event",
+                                  hasAward && "award",
+                                  isCurrent && "current",
+                                  `intensity-${intensity}`,
+                                  previewVertical,
+                                  previewHorizontal,
+                                ]}
+                                href={primary ? `/hackathons/${primary.number}/` : undefined}
+                                tabindex={primary ? undefined : 0}
+                                aria-label={
+                                  primary
+                                    ? `Hackathon ${primary.number}: ${primary.title}. View details.`
+                                    : `${calendarDate}. No hackathons recorded.`
+                                }
+                              >
+                                {cell.events.length > 1 && <span>{cell.events.length}</span>}
+                                <span class:list={["calendar-preview", !primary && "empty"]} role="tooltip">
+                                  {
+                                    primary ? (
+                                      <>
+                                      <span class="calendar-preview-kicker">
+                                        #{String(primary.number).padStart(3, "0")}
+                                        {primary.dateLabel && ` · ${primary.dateLabel}`}
+                                      </span>
+                                      <strong>{primary.title}</strong>
+                                      <span class="calendar-preview-event">{primary.event}</span>
+                                      <span class="calendar-preview-footer">
+                                        {primary.award || primary.tags.slice(0, 2).join(" · ")}
+                                        {cell.events.length > 1 && <em>+{cell.events.length - 1} more</em>}
+                                      </span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <span class="calendar-preview-kicker">{calendarDate}</span>
+                                        <strong>No hackathons</strong>
+                                        <span class="calendar-preview-event">No contribution recorded for this date.</span>
+                                      </>
+                                    )
+                                  }
+                                </span>
+                              </a>
+                            ) : <span class="calendar-day outside" aria-hidden="true"></span>;
+                          })
+                        }
+                              </div>
+                            </div>
+                          </section>
+                        ))
+                      }
+                    </div>
+                  </section>
+                ))
+              }
+            </div>
+          </div>
+          <div class="map-year-tabs" aria-label="Filter hackathons by year" data-year-tabs>
+            <span class="year-tabs-label">View</span>
+            <button type="button" class="active" aria-pressed="true" data-year-filter="all">
+              <span>All</span><b>{completed}</b>
+            </button>
+            {
+              years.map(({ value, count }) => (
+                <button type="button" aria-pressed="false" data-year-filter={value}>
+                  <span>{value}</span><b>{count}</b>
+                </button>
+              ))
+            }
+          </div>
         </div>
         <div class="map-note">
           <strong>Current checkpoint</strong>
@@ -290,6 +478,54 @@ const lessonPatterns = [
     </div>
   </section>
 </PageShell>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-map-view]").forEach((panel) => {
+    const tabs = panel.querySelector<HTMLElement>("[data-year-tabs]");
+    if (!tabs) return;
+
+    const cells = [...panel.querySelectorAll<HTMLElement>("[data-sequence-view] [data-checkpoint-year]")];
+    const calendarYears = [...panel.querySelectorAll<HTMLElement>("[data-calendar-year]")];
+    const buttons = [...tabs.querySelectorAll<HTMLButtonElement>("[data-year-filter]")];
+    const viewButtons = [...panel.querySelectorAll<HTMLButtonElement>("[data-map-view-button]")];
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const selectedYear = button.dataset.yearFilter ?? "all";
+
+        buttons.forEach((item) => {
+          const isActive = item === button;
+          item.classList.toggle("active", isActive);
+          item.setAttribute("aria-pressed", String(isActive));
+        });
+
+        cells.forEach((cell) => {
+          const isMatch = selectedYear === "all" || cell.dataset.checkpointYear === selectedYear;
+          cell.classList.toggle("is-filtered", !isMatch);
+          cell.tabIndex = isMatch ? 0 : -1;
+        });
+
+        calendarYears.forEach((calendarYear) => {
+          const isMatch = selectedYear === "all" || calendarYear.dataset.calendarYear === selectedYear;
+          calendarYear.classList.toggle("is-filtered", !isMatch);
+        });
+      });
+    });
+
+    viewButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const view = button.dataset.mapViewButton ?? "sequence";
+        panel.dataset.mapView = view;
+
+        viewButtons.forEach((item) => {
+          const isActive = item === button;
+          item.classList.toggle("active", isActive);
+          item.setAttribute("aria-pressed", String(isActive));
+        });
+      });
+    });
+  });
+</script>
 
 <style>
   .hero {
@@ -453,6 +689,10 @@ const lessonPatterns = [
     background: var(--teal);
   }
 
+  .map-legend .award {
+    background: #05776e;
+  }
+
   .map-legend .current {
     background: var(--red);
   }
@@ -466,24 +706,167 @@ const lessonPatterns = [
     background: white;
   }
 
+  .map-summary {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 20px 22px 0;
+    color: var(--muted);
+    font-size: 0.74rem;
+    font-weight: 850;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .map-summary-copy {
+    display: flex;
+    gap: 10px;
+    align-items: baseline;
+  }
+
+  .map-summary strong {
+    color: var(--ink);
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+  }
+
+  .map-summary span:last-child {
+    color: var(--faint);
+  }
+
+  .map-view-toggle {
+    display: inline-flex;
+    flex: 0 0 auto;
+    overflow: hidden;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    background: white;
+  }
+
+  .map-view-toggle button {
+    min-height: 31px;
+    padding: 6px 10px;
+    border: 0;
+    border-right: 1px solid var(--line-strong);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.64rem;
+    font-weight: 900;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .map-view-toggle button:last-child {
+    border-right: 0;
+  }
+
+  .map-view-toggle button.active {
+    background: var(--black);
+    color: white;
+  }
+
+  .map-view-toggle button:focus-visible {
+    position: relative;
+    z-index: 1;
+    outline: 2px solid var(--blue);
+    outline-offset: -2px;
+  }
+
+  .map-content {
+    --map-display-height: 600px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 128px;
+    gap: 0 18px;
+    align-items: start;
+    min-height: var(--map-display-height);
+    padding: 0 22px;
+  }
+
+  .map-display {
+    min-height: var(--map-display-height);
+    min-width: 0;
+  }
+
   .checkpoint-grid {
     display: grid;
-    grid-template-columns: repeat(20, minmax(0, 1fr));
-    gap: 0;
-    padding: 22px;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: 6px;
+    width: min(100%, 680px);
+    padding: 20px 0 26px;
+  }
+
+  .map-year-tabs {
+    display: grid;
+    gap: 5px;
+    padding: 20px 0 26px;
+  }
+
+  .year-tabs-label {
+    margin: 0 0 3px;
+    color: var(--faint);
+    font-size: 0.64rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .map-year-tabs button {
+    display: flex;
+    min-height: 52px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    background: white;
+    color: var(--muted);
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.03em;
+    transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 140ms ease;
+  }
+
+  .map-year-tabs button:hover,
+  .map-year-tabs button:focus-visible {
+    border-color: var(--ink);
+    color: var(--ink);
+    outline: none;
+    transform: translateX(-2px);
+  }
+
+  .map-year-tabs button.active {
+    border-color: var(--black);
+    background: var(--black);
+    color: white;
+  }
+
+  .map-year-tabs button b {
+    color: var(--faint);
+    font-size: 0.7rem;
+  }
+
+  .map-year-tabs button.active b {
+    color: var(--yellow);
   }
 
   .checkpoint {
     --preview-opacity: 0;
     --preview-offset: 8px;
     display: grid;
-    min-height: 48px;
+    aspect-ratio: 1;
     place-items: center;
     position: relative;
-    border-right: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
+    min-height: 0;
+    border: 1px solid transparent;
+    border-radius: 3px;
+    background: #eceee9;
     color: var(--faint);
-    font-size: 0.72rem;
+    font-size: clamp(0.6rem, 1.1vw, 0.74rem);
     font-weight: 900;
     transition:
       background 140ms ease,
@@ -496,12 +879,276 @@ const lessonPatterns = [
     --preview-opacity: 1;
     --preview-offset: 0;
     z-index: 2;
-    transform: scale(1.08);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--ink) 75%, transparent);
+    transform: scale(1.11);
   }
 
   .checkpoint:focus-visible {
-    outline: 3px solid var(--ink);
+    outline: 2px solid var(--ink);
+    outline-offset: 3px;
+  }
+
+  .checkpoint.complete {
+    background: color-mix(in srgb, var(--teal) 70%, white);
+    color: #005f59;
+  }
+
+  .checkpoint.award {
+    background: #05776e;
+    color: white;
+  }
+
+  .checkpoint.current {
+    background: var(--red);
+    color: white;
+  }
+
+  .checkpoint.milestone {
+    border-color: color-mix(in srgb, var(--yellow) 58%, var(--line));
+    background: color-mix(in srgb, var(--yellow) 23%, white);
+    color: #8b5e00;
+  }
+
+  .checkpoint.future {
+    border-color: var(--line);
+    background: white;
+  }
+
+  .checkpoint.is-filtered {
+    opacity: 0.14;
+    pointer-events: none;
+  }
+
+  .calendar-views {
+    display: none;
+    width: 100%;
+    padding: 20px 0 26px;
+  }
+
+  .map-panel[data-map-view="calendar"] [data-sequence-view] {
+    display: none;
+  }
+
+  .map-panel[data-map-view="calendar"] [data-calendar-view] {
+    display: grid;
+    gap: 22px;
+    box-sizing: border-box;
+    max-height: 760px;
+    overflow-y: auto;
+    padding-right: 8px;
+  }
+
+  .calendar-year {
+    display: grid;
+    gap: 16px;
+    padding: 22px;
+    border: 1px solid var(--line);
+    background: white;
+  }
+
+  .calendar-year.is-filtered {
+    display: none;
+  }
+
+  .calendar-year header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .calendar-year header strong {
+    color: var(--ink);
+    font-size: 1.1rem;
+    letter-spacing: -0.04em;
+  }
+
+  .calendar-year header span {
+    color: var(--faint);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .calendar-quarters {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .calendar-quarter {
+    display: grid;
+    gap: 10px;
+    min-width: 0;
+    padding: 16px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+  }
+
+  .calendar-quarter h3 {
+    margin: 0;
+    color: var(--ink);
+    font-size: 0.76rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .calendar-weekdays {
+    display: grid;
+    grid-template-rows: repeat(7, minmax(0, 1fr));
+    gap: 3px;
+    color: var(--faint);
+    font-size: 0.54rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .calendar-frame {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr);
+    gap: 7px;
+  }
+
+  .calendar-grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: repeat(var(--week-count), minmax(0, 1fr));
+    grid-template-rows: repeat(7, minmax(0, 1fr));
+    gap: 3px;
+    aspect-ratio: var(--week-count) / 7;
+  }
+
+  .calendar-day {
+    --preview-opacity: 0;
+    --preview-offset: 8px;
+    position: relative;
+    display: grid;
+    place-items: center;
+    border-radius: 2px;
+    background: #eff0ec;
+    color: white;
+    font-size: clamp(0.56rem, 1vw, 0.72rem);
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  .calendar-day.outside {
+    background: transparent;
+  }
+
+  .calendar-day.has-event {
+    background: color-mix(in srgb, var(--teal) 70%, white);
+  }
+
+  .calendar-day.has-event.intensity-2,
+  .calendar-day.has-event.intensity-3 {
+    background: var(--teal);
+  }
+
+  .calendar-day.award {
+    background: #05776e;
+  }
+
+  .calendar-day.current {
+    background: var(--red);
+  }
+
+  .calendar-day:hover,
+  .calendar-day:focus-visible {
+    --preview-opacity: 1;
+    --preview-offset: 0;
+    z-index: 2;
+    outline: 2px solid var(--ink);
     outline-offset: 2px;
+    transform: scale(1.12);
+  }
+
+  .calendar-preview {
+    position: absolute;
+    z-index: 6;
+    display: none;
+    width: min(230px, calc(100vw - 40px));
+    gap: 4px;
+    padding: 10px 11px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: var(--black);
+    box-shadow: 0 10px 20px rgba(5, 5, 5, 0.22);
+    color: white;
+    text-align: left;
+  }
+
+  .calendar-preview.empty {
+    width: min(200px, calc(100vw - 40px));
+  }
+
+  .preview-below .calendar-preview {
+    top: calc(100% + 10px);
+  }
+
+  .preview-above .calendar-preview {
+    bottom: calc(100% + 10px);
+  }
+
+  .preview-center .calendar-preview {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .preview-left .calendar-preview {
+    left: 0;
+  }
+
+  .preview-right .calendar-preview {
+    right: 0;
+  }
+
+  .calendar-preview-kicker {
+    color: var(--yellow);
+    font-size: 0.56rem;
+    font-weight: 900;
+    letter-spacing: 0.06em;
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+
+  .calendar-preview strong {
+    color: white;
+    font-size: 0.84rem;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .calendar-preview-event {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.64rem;
+    font-weight: 650;
+    line-height: 1.35;
+  }
+
+  .calendar-preview-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    color: #7ee2d7;
+    font-size: 0.54rem;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+
+  .calendar-preview-footer em {
+    color: #ffd66c;
+    font-style: normal;
+  }
+
+  .calendar-day:hover .calendar-preview,
+  .calendar-day:focus-visible .calendar-preview {
+    display: grid;
   }
 
   .checkpoint-preview {
@@ -579,22 +1226,6 @@ const lessonPatterns = [
   .preview-footer em {
     color: #ffd66c;
     font-style: normal;
-  }
-
-  .checkpoint.complete {
-    border-color: rgba(7, 155, 145, 0.5);
-    background: rgba(7, 155, 145, 0.18);
-    color: #05635d;
-  }
-
-  .checkpoint.current {
-    background: var(--red);
-    color: white;
-  }
-
-  .checkpoint.milestone {
-    background: rgba(245, 181, 27, 0.22);
-    color: #8a5f00;
   }
 
   .map-note {
@@ -938,10 +1569,6 @@ const lessonPatterns = [
       font-size: clamp(3.1rem, 7vw, 4.1rem);
     }
 
-    .checkpoint-grid {
-      grid-template-columns: repeat(10, minmax(0, 1fr));
-    }
-
     .lesson-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -981,13 +1608,67 @@ const lessonPatterns = [
       line-height: 0.86;
     }
 
+    .map-summary {
+      padding: 16px 14px 0;
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .map-content {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      padding: 0 14px;
+    }
+
+    .map-display {
+      min-height: 0;
+    }
+
     .checkpoint-grid {
-      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 4px;
+      width: 100%;
+      padding: 16px 0;
+    }
+
+    .map-year-tabs {
+      display: flex;
+      width: 100%;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 0 0 16px;
+    }
+
+    .year-tabs-label {
+      align-self: center;
+      margin: 0 2px 0 0;
+    }
+
+    .map-year-tabs button {
+      flex: 0 0 auto;
+    }
+
+    .calendar-views {
+      height: auto !important;
+      width: 100%;
+      padding: 16px 0;
+    }
+
+    .calendar-year {
       padding: 14px;
     }
 
+    .calendar-quarter {
+      padding: 7px;
+    }
+
+    .calendar-quarters {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
     .checkpoint {
-      min-height: 42px;
+      font-size: 0.56rem;
     }
 
     .map-note,
