@@ -11,14 +11,6 @@ const hackathons = getHackathons();
 const GOAL = 100;
 const totals = buildTotals(hackathons, GOAL);
 
-const stats = [
-  { value: String(totals.remaining), label: "Still to build" },
-  { value: String(totals.awarded), label: "Placed or awarded" },
-  { value: String(totals.collaborators), label: "Teammates so far" },
-  { value: String(totals.countries), label: "Countries" },
-];
-
-const ticks = Array.from({ length: GOAL }, (_, index) => index < totals.logged);
 ---
 
 <PageShell title="Journey Map | The 100 Hackathoner">
@@ -48,33 +40,16 @@ const ticks = Array.from({ length: GOAL }, (_, index) => index < totals.logged);
       </div>
     </div>
 
-    <div class="progress">
-      <p class="eyeless">
-        {totals.logged} of {GOAL} hackathons logged, {totals.remaining} remaining.
-      </p>
-      <div class="ticks" aria-hidden="true">
-        {ticks.map((filled) => <span class:list={["tick", { filled }]} />)}
+    <div class="journey-nav">
+      <p>{totals.logged} logged <span aria-hidden="true">/</span> {totals.remaining} to go</p>
+      <div class="switch" role="group" aria-label="Journey view">
+        <button type="button" data-view="list" aria-pressed="true">
+          Timeline
+        </button>
+        <button type="button" data-view="chart" aria-pressed="false">
+          Infographic
+        </button>
       </div>
-    </div>
-
-    <dl class="stats">
-      {
-        stats.map((stat) => (
-          <div>
-            <dt>{stat.label}</dt>
-            <dd>{stat.value}</dd>
-          </div>
-        ))
-      }
-    </dl>
-
-    <div class="switch" role="group" aria-label="Journey view">
-      <button type="button" data-view="list" aria-pressed="true">
-        Timeline
-      </button>
-      <button type="button" data-view="chart" aria-pressed="false">
-        Infographic
-      </button>
     </div>
   </section>
 
@@ -300,74 +275,35 @@ const ticks = Array.from({ length: GOAL }, (_, index) => index < totals.logged);
     text-transform: uppercase;
   }
 
-  /* Progress ticks ---------------------------------------------------- */
+  /* View switch ------------------------------------------------------- */
 
-  .progress {
+  .journey-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
     margin-top: 34px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line-strong);
   }
 
-  .ticks {
-    display: grid;
-    grid-template-columns: repeat(100, minmax(0, 1fr));
-    gap: 2px;
-    align-items: end;
-    height: 28px;
-  }
-
-  .tick {
-    height: 12px;
-    background: rgba(14, 18, 18, 0.13);
-    transition: height 220ms ease;
-  }
-
-  .tick.filled {
-    height: 28px;
-    background: var(--ink);
-  }
-
-  .tick.filled:nth-child(10n) {
-    background: var(--red);
-  }
-
-  /* Stats ------------------------------------------------------------- */
-
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 1px;
-    margin: 30px 0 0;
-    background: var(--line);
-  }
-
-  .stats div {
-    padding: 18px 20px 20px;
-    background: var(--bg);
-  }
-
-  dt {
+  .journey-nav > p {
+    margin: 0;
     color: var(--faint);
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     font-weight: 900;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
   }
 
-  dd {
-    margin: 8px 0 0;
-    color: var(--ink);
-    font-size: 1.9rem;
-    font-weight: 950;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.05em;
-    line-height: 1;
+  .journey-nav > p span {
+    color: var(--red);
+    padding: 0 5px;
   }
-
-  /* View switch ------------------------------------------------------- */
 
   .switch {
     display: inline-flex;
     gap: 4px;
-    margin-top: 34px;
     padding: 4px;
     border: 1px solid var(--line-strong);
     border-radius: 6px;
@@ -415,35 +351,6 @@ const ticks = Array.from({ length: GOAL }, (_, index) => index < totals.logged);
       justify-content: start;
     }
 
-    .stats {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .ticks {
-      grid-template-columns: repeat(50, minmax(0, 1fr));
-      height: auto;
-      gap: 2px 2px;
-      grid-auto-rows: 14px;
-    }
-
-    .tick,
-    .tick.filled {
-      height: 100%;
-    }
-
-    .tick.filled {
-      background: var(--ink);
-    }
-
-    .switch {
-      width: 100%;
-    }
-
-    .switch button {
-      flex: 1;
-      padding: 0 10px;
-    }
-
     .archive-toolbar {
       align-items: stretch;
     }
@@ -457,8 +364,23 @@ const ticks = Array.from({ length: GOAL }, (_, index) => index < totals.logged);
     }
   }
 
+  @media (max-width: 560px) {
+    .journey-nav {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    .switch {
+      width: 100%;
+    }
+
+    .switch button {
+      flex: 1;
+      padding: 0 10px;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .tick,
     .switch button {
       transition: none;
     }

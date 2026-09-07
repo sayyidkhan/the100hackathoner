@@ -1,15 +1,76 @@
 ---
 import type { GridCell } from "../../lib/insights";
-import {
-  formatDateLabel,
-  formatDuration,
-} from "../../lib/format";
+import { formatDateLabel, formatDuration, getYear } from "../../lib/format";
 
 interface Props {
   cells: GridCell[];
 }
 
 const { cells } = Astro.props;
+const items = cells.flatMap((cell) => (cell.item ? [cell.item] : []));
+const currentSlot = Math.max(...cells.filter((cell) => cell.item).map((cell) => cell.slot), 0);
+const years = [...new Set(items.map((item) => getYear(item.startDate, item.dateLabel)).filter((year): year is number => year !== null))]
+  .sort((a, b) => b - a)
+  .map((year) => ({
+    value: year,
+    count: items.filter((item) => getYear(item.startDate, item.dateLabel) === year).length,
+  }));
+
+const quarterNames = ["Jan – Mar", "Apr – Jun", "Jul – Sep", "Oct – Dec"];
+
+function toIsoDate(date: Date) {
+  return date.toISOString().slice(0, 10);
+}
+
+function formatCalendarDate(isoDate: string) {
+  return new Intl.DateTimeFormat("en-SG", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(`${isoDate}T00:00:00Z`));
+}
+
+function calendarQuartersForYear(year: number) {
+  const eventsByDate = new Map<string, typeof items>();
+
+  for (const item of items) {
+    if (getYear(item.startDate, item.dateLabel) !== year || !item.startDate) continue;
+    const events = eventsByDate.get(item.startDate) ?? [];
+    events.push(item);
+    eventsByDate.set(item.startDate, events);
+  }
+
+  return quarterNames.map((label, quarter) => {
+    const firstMonth = quarter * 3;
+    const start = new Date(Date.UTC(year, firstMonth, 1));
+    start.setUTCDate(start.getUTCDate() - start.getUTCDay());
+    const end = new Date(Date.UTC(year, firstMonth + 3, 0));
+    end.setUTCDate(end.getUTCDate() + (6 - end.getUTCDay()));
+    const dates = [];
+
+    for (let date = new Date(start); date <= end; date.setUTCDate(date.getUTCDate() + 1)) {
+      const isoDate = toIsoDate(date);
+      dates.push({
+        isoDate,
+        isInQuarter:
+          date.getUTCFullYear() === year &&
+          date.getUTCMonth() >= firstMonth &&
+          date.getUTCMonth() < firstMonth + 3,
+        events: eventsByDate.get(isoDate) ?? [],
+      });
+    }
+
+    return { label, dates, weeks: dates.length / 7 };
+  });
+}
+
+const calendarYears = years.map(({ value, count }) => ({
+  year: value,
+  count,
+  quarters: calendarQuartersForYear(value),
+}));
 
 function describe(cell: GridCell) {
   if (!cell.item) return `Slot ${cell.slot} — not built yet`;
@@ -39,395 +100,304 @@ function preview(cell: GridCell) {
 }
 ---
 
-<div class="hundred">
-  <ol class="grid">
-    {
-      cells.map((cell) => {
-        const details = preview(cell);
+<div class="hundred" data-hundred-map data-hundred-view="sequence">
+  <div class="hundred-topbar">
+    <ul class="legend" aria-label="Board legend">
+      <li><span class="swatch complete" />Completed</li>
+      <li><span class="swatch award" />Awarded</li>
+      <li><span class="swatch current" />Current</li>
+      <li><span class="swatch future" />Ahead</li>
+    </ul>
+    <div class="view-toggle" aria-label="Choose board view">
+      <button type="button" class="active" aria-pressed="true" data-hundred-view-button="sequence">Sequence</button>
+      <button type="button" aria-pressed="false" data-hundred-view-button="calendar">Calendar</button>
+    </div>
+  </div>
 
-        return (
-          <li class:list={["cell", cell.tier]}>
-            {cell.item && details ? (
-              <a
-                href={`/hackathons/${cell.slot}/`}
-                aria-label={describe(cell)}
-                aria-describedby={details.id}
-              >
-                <span class="slot">{cell.slot}</span>
-                <span class="build-preview" id={details.id} role="tooltip">
-                  <span class="preview-kicker">
-                    #{String(cell.slot).padStart(3, "0")}
-                    {details.date && ` · ${details.date}`}
-                  </span>
-                  <strong>{cell.item.title}</strong>
-                  <span class="preview-event">{cell.item.event}</span>
-                  <span class="preview-solution">
-                    {cell.item.solution ?? "Project details not recorded."}
-                  </span>
+  <div class="hundred-content">
+    <div class="hundred-display">
+      <ol class="grid" aria-label="One hundred hackathon checkpoints" data-hundred-sequence>
+        {
+          cells.map((cell) => {
+            const details = preview(cell);
+            const year = cell.item ? getYear(cell.item.startDate, cell.item.dateLabel) : null;
+            const state = !cell.item
+              ? "future"
+              : cell.slot === currentSlot
+                ? "current"
+                : cell.item.award
+                  ? "award"
+                  : "complete";
 
-                  {(details.duration || details.place) && (
-                    <span class="preview-facts">
-                      {details.duration && <span>{details.duration}</span>}
-                      {details.place && <span>{details.place}</span>}
-                    </span>
-                  )}
-
-                  <span class="preview-context">
-                    {cell.item.organizers.length > 0 && (
-                      <span>
-                        <b>By</b> {cell.item.organizers.join(" · ")}
+            return (
+              <li class:list={["cell", state]} data-hundred-year={year ?? ""}>
+                {cell.item && details ? (
+                  <a
+                    href={`/hackathons/${cell.slot}/`}
+                    aria-label={describe(cell)}
+                    aria-describedby={details.id}
+                  >
+                    <span class="slot">{cell.slot}</span>
+                    <span class="build-preview" id={details.id} role="tooltip">
+                      <span class="preview-kicker">
+                        #{String(cell.slot).padStart(3, "0")}
+                        {details.date && ` · ${details.date}`}
                       </span>
-                    )}
-                    {cell.item.members.length > 0 && (
-                      <span>
-                        <b>Team</b> {cell.item.members.join(" · ")}
-                      </span>
-                    )}
-                    {cell.item.client && (
-                      <span>
-                        <b>Client</b> {cell.item.client}
-                      </span>
-                    )}
-                  </span>
-
-                  {(cell.item.tags.length > 0 || cell.item.award) && (
-                    <span class="preview-footer">
-                      {cell.item.tags.length > 0 && (
-                        <span>{cell.item.tags.join(" · ")}</span>
+                      <strong>{cell.item.title}</strong>
+                      <span class="preview-event">{cell.item.event}</span>
+                      <span class="preview-solution">{cell.item.solution ?? "Project details not recorded."}</span>
+                      {(details.duration || details.place) && (
+                        <span class="preview-facts">
+                          {details.duration && <span>{details.duration}</span>}
+                          {details.place && <span>{details.place}</span>}
+                        </span>
                       )}
-                      {cell.item.award && <em>{cell.item.award}</em>}
+                      <span class="preview-context">
+                        {cell.item.organizers.length > 0 && <span><b>By</b> {cell.item.organizers.join(" · ")}</span>}
+                        {cell.item.members.length > 0 && <span><b>Team</b> {cell.item.members.join(" · ")}</span>}
+                        {cell.item.client && <span><b>Client</b> {cell.item.client}</span>}
+                      </span>
+                      {(cell.item.tags.length > 0 || cell.item.award) && (
+                        <span class="preview-footer">
+                          {cell.item.tags.length > 0 && <span>{cell.item.tags.join(" · ")}</span>}
+                          {cell.item.award && <em>{cell.item.award}</em>}
+                        </span>
+                      )}
+                      <span class="preview-cta">Open full record →</span>
                     </span>
-                  )}
-                  <span class="preview-cta">Open full record →</span>
-                </span>
-              </a>
-            ) : (
-              <span class="slot" aria-label={describe(cell)}>
-                {cell.slot}
-              </span>
-            )}
-          </li>
-        );
-      })
-    }
-  </ol>
+                  </a>
+                ) : (
+                  <span class="slot" aria-label={describe(cell)}>{cell.slot}</span>
+                )}
+              </li>
+            );
+          })
+        }
+      </ol>
 
-  <ul class="legend">
-    <li><span class="swatch podium" />Podium or prize</li>
-    <li><span class="swatch recognised" />Other award</li>
-    <li><span class="swatch shipped" />Shipped</li>
-    <li><span class="swatch empty" />Still to build</li>
-  </ul>
+      <div class="calendar-views" data-hundred-calendar>
+        {
+          calendarYears.map(({ year, count, quarters }) => (
+            <section class="calendar-year" data-calendar-year={year} aria-label={`${year} hackathon calendar`}>
+              <header>
+                <strong>{year}</strong>
+                <span>{count} hackathons</span>
+              </header>
+              <div class="calendar-quarters">
+                {
+                  quarters.map(({ label, dates, weeks }) => (
+                    <section class="calendar-quarter" aria-label={`${label} ${year}`}>
+                      <h3>{label}</h3>
+                      <div class="calendar-frame">
+                        <div class="calendar-weekdays" aria-hidden="true">
+                          <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+                        </div>
+                        <div class="calendar-grid" style={`--week-count: ${weeks}`}>
+                          {
+                            dates.map((date, index) => {
+                              const primary = date.events[0];
+                              const hasAward = date.events.some((event) => Boolean(event.award));
+                              const isCurrent = date.events.some((event) => event.number === currentSlot);
+                              const intensity = Math.min(date.events.length, 3);
+                              const weekdayIndex = index % 7;
+                              const weekIndex = Math.floor(index / 7);
+                              const vertical = weekdayIndex < 5 ? "preview-below" : "preview-above";
+                              const horizontal = weekIndex < 3 ? "preview-left" : weekIndex > weeks - 4 ? "preview-right" : "preview-center";
+                              const dateLabel = formatCalendarDate(date.isoDate);
+
+                              return date.isInQuarter ? (
+                                <span
+                                  class:list={[
+                                    "calendar-day",
+                                    date.events.length > 0 && "has-event",
+                                    hasAward && "award",
+                                    isCurrent && "current",
+                                    `intensity-${intensity}`,
+                                    vertical,
+                                    horizontal,
+                                  ]}
+                                  tabindex="0"
+                                  aria-label={primary ? `Hackathon ${primary.number}: ${primary.title}. View details.` : `${dateLabel}. No hackathons recorded.`}
+                                >
+                                  {primary ? <a href={`/hackathons/${primary.number}/`} aria-label={`Open ${primary.title}`}>{date.events.length > 1 && <span>{date.events.length}</span>}</a> : null}
+                                  <span class:list={["calendar-preview", !primary && "empty"]} role="tooltip">
+                                    {primary ? (
+                                      <>
+                                        <span class="calendar-preview-kicker">#{String(primary.number).padStart(3, "0")}{primary.dateLabel && ` · ${primary.dateLabel}`}</span>
+                                        <strong>{primary.title}</strong>
+                                        <span class="calendar-preview-event">{primary.event}</span>
+                                        <span class="calendar-preview-footer">
+                                          {primary.award || primary.tags.slice(0, 2).join(" · ")}
+                                          {date.events.length > 1 && <em>+{date.events.length - 1} more</em>}
+                                        </span>
+                                      </>
+                                    ) : (
+                                      <>
+                                        <span class="calendar-preview-kicker">{dateLabel}</span>
+                                        <strong>No hackathons</strong>
+                                        <span class="calendar-preview-event">No contribution recorded for this date.</span>
+                                      </>
+                                    )}
+                                  </span>
+                                </span>
+                              ) : <span class="calendar-day outside" aria-hidden="true"></span>;
+                            })
+                          }
+                        </div>
+                      </div>
+                    </section>
+                  ))
+                }
+              </div>
+            </section>
+          ))
+        }
+      </div>
+    </div>
+
+    <aside class="year-tabs" aria-label="Filter hackathons by year" data-hundred-year-tabs>
+      <span class="year-tabs-label">View</span>
+      <button type="button" class="active" aria-pressed="true" data-hundred-year-filter="all"><span>All</span><b>{items.length}</b></button>
+      {
+        years.map(({ value, count }) => (
+          <button type="button" aria-pressed="false" data-hundred-year-filter={value}><span>{value}</span><b>{count}</b></button>
+        ))
+      }
+    </aside>
+  </div>
 </div>
 
+<script>
+  document.querySelectorAll<HTMLElement>("[data-hundred-map]").forEach((panel) => {
+    const yearTabs = panel.querySelector<HTMLElement>("[data-hundred-year-tabs]");
+    if (!yearTabs) return;
+
+    const sequenceCells = [...panel.querySelectorAll<HTMLElement>("[data-hundred-sequence] [data-hundred-year]")];
+    const calendarYears = [...panel.querySelectorAll<HTMLElement>("[data-calendar-year]")];
+    const yearButtons = [...yearTabs.querySelectorAll<HTMLButtonElement>("[data-hundred-year-filter]")];
+    const viewButtons = [...panel.querySelectorAll<HTMLButtonElement>("[data-hundred-view-button]")];
+
+    yearButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const selectedYear = button.dataset.hundredYearFilter ?? "all";
+        yearButtons.forEach((item) => {
+          const active = item === button;
+          item.classList.toggle("active", active);
+          item.setAttribute("aria-pressed", String(active));
+        });
+        sequenceCells.forEach((cell) => {
+          const matching = selectedYear === "all" || cell.dataset.hundredYear === selectedYear;
+          cell.classList.toggle("is-filtered", !matching);
+          const link = cell.querySelector<HTMLAnchorElement>("a");
+          if (link) link.tabIndex = matching ? 0 : -1;
+        });
+        calendarYears.forEach((calendarYear) => {
+          calendarYear.classList.toggle("is-filtered", selectedYear !== "all" && calendarYear.dataset.calendarYear !== selectedYear);
+        });
+      });
+    });
+
+    viewButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const view = button.dataset.hundredViewButton ?? "sequence";
+        panel.dataset.hundredView = view;
+        viewButtons.forEach((item) => {
+          const active = item === button;
+          item.classList.toggle("active", active);
+          item.setAttribute("aria-pressed", String(active));
+        });
+      });
+    });
+  });
+</script>
+
 <style>
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(10, minmax(0, 1fr));
-    gap: 6px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .cell {
-    --preview-x: -50%;
-    --preview-arrow: 50%;
-    position: relative;
-    aspect-ratio: 1;
-  }
-
-  .cell:hover,
-  .cell:focus-within {
-    z-index: 20;
-  }
-
-  .cell:nth-child(10n + 1),
-  .cell:nth-child(10n + 2) {
-    --preview-x: 0%;
-    --preview-arrow: 24px;
-  }
-
-  .cell:nth-child(10n),
-  .cell:nth-child(10n + 9) {
-    --preview-x: -100%;
-    --preview-arrow: calc(100% - 24px);
-  }
-
-  .cell a,
-  .cell > .slot {
-    display: grid;
-    width: 100%;
-    height: 100%;
-    place-items: center;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    font-size: clamp(0.6rem, 0.9vw, 0.82rem);
-    font-weight: 900;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.02em;
-    transition:
-      transform 160ms ease,
-      box-shadow 160ms ease;
-  }
-
-  .cell a:hover,
-  .cell a:focus-visible {
-    box-shadow: 0 6px 18px rgba(14, 18, 18, 0.24);
-    outline: none;
-    transform: scale(1.14);
-  }
-
-  .build-preview {
-    position: absolute;
-    bottom: calc(100% + 11px);
-    left: 50%;
-    z-index: 8;
-    display: grid;
-    visibility: hidden;
-    width: min(340px, calc(100vw - 36px));
-    gap: 7px;
-    padding: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 3px;
-    background: var(--black);
-    box-shadow: 0 18px 38px rgba(5, 5, 5, 0.32);
-    color: white;
-    opacity: 0;
-    pointer-events: none;
-    text-align: left;
-    transform: translate(var(--preview-x), 7px);
-    transform-origin: var(--preview-arrow) 100%;
-    transition:
-      opacity 140ms ease,
-      transform 140ms ease,
-      visibility 0s linear 140ms;
-  }
-
-  .build-preview::after {
-    position: absolute;
-    top: 100%;
-    left: var(--preview-arrow);
-    width: 10px;
-    height: 10px;
-    background: var(--black);
-    content: "";
-    transform: translate(-50%, -5px) rotate(45deg);
-  }
-
-  .cell:nth-child(-n + 10) .build-preview {
-    top: calc(100% + 11px);
-    bottom: auto;
-    transform: translate(var(--preview-x), -7px);
-    transform-origin: var(--preview-arrow) 0;
-  }
-
-  .cell:nth-child(-n + 10) .build-preview::after {
-    top: auto;
-    bottom: 100%;
-    transform: translate(-50%, 5px) rotate(45deg);
-  }
-
-  .cell a:hover .build-preview,
-  .cell a:focus-visible .build-preview {
-    visibility: visible;
-    opacity: 1;
-    transform: translate(var(--preview-x), 0);
-    transition-delay: 0s;
-  }
-
-  .cell:nth-child(-n + 10) a:hover .build-preview,
-  .cell:nth-child(-n + 10) a:focus-visible .build-preview {
-    transform: translate(var(--preview-x), 0);
-  }
-
-  .preview-kicker {
-    color: var(--yellow);
-    font-size: 0.62rem;
-    font-weight: 900;
-    letter-spacing: 0.08em;
-    line-height: 1.3;
-    text-transform: uppercase;
-  }
-
-  .build-preview strong {
-    color: white;
-    font-size: 1.05rem;
-    letter-spacing: -0.03em;
-    line-height: 1.08;
-  }
-
-  .preview-event,
-  .preview-solution {
-    color: rgba(255, 255, 255, 0.72);
-    font-size: 0.72rem;
-    font-weight: 650;
-    line-height: 1.45;
-  }
-
-  .preview-event {
-    color: rgba(255, 255, 255, 0.88);
-    font-weight: 800;
-  }
-
-  .preview-solution {
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 3;
-  }
-
-  .preview-facts {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-  }
-
-  .preview-facts span {
-    padding: 3px 6px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 2px;
-    color: rgba(255, 255, 255, 0.76);
-    font-size: 0.61rem;
-    font-weight: 800;
-  }
-
-  .preview-context {
-    display: grid;
-    gap: 3px;
-    color: rgba(255, 255, 255, 0.58);
-    font-size: 0.62rem;
-    line-height: 1.4;
-  }
-
-  .preview-context b {
-    margin-right: 4px;
-    color: rgba(255, 255, 255, 0.88);
-    font-weight: 900;
-    text-transform: uppercase;
-  }
-
-  .preview-footer {
-    display: grid;
-    gap: 4px;
-    padding-top: 7px;
-    border-top: 1px solid rgba(255, 255, 255, 0.16);
-    color: #7ee2d7;
-    font-size: 0.62rem;
-    font-weight: 900;
-    letter-spacing: 0.03em;
-    line-height: 1.35;
-    text-transform: uppercase;
-  }
-
-  .preview-footer em {
-    color: #ffd66c;
-    font-style: normal;
-  }
-
-  .preview-cta {
-    color: rgba(255, 255, 255, 0.44);
-    font-size: 0.58rem;
-    font-weight: 900;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .cell.shipped a {
-    background: var(--ink);
-    color: rgba(255, 255, 255, 0.92);
-  }
-
-  .cell.recognised a {
-    background: var(--teal);
-    color: white;
-  }
-
-  .cell.podium a {
-    background: var(--gold);
-    color: var(--gold-ink);
-  }
-
-  .cell.empty > .slot {
-    border-color: var(--line);
-    background: transparent;
-    color: var(--faint);
-    font-weight: 800;
-    opacity: 0.75;
-  }
-
-  .cell.empty:nth-child(10n) > .slot,
-  .cell.podium a,
-  .cell.recognised a {
-    font-weight: 950;
-  }
-
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px 22px;
-    margin: 22px 0 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .legend li {
-    display: inline-flex;
-    gap: 8px;
-    align-items: center;
-    color: var(--muted);
-    font-size: 0.72rem;
-    font-weight: 850;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .swatch {
-    width: 13px;
-    height: 13px;
-    border-radius: 3px;
-  }
-
-  .swatch.shipped {
-    background: var(--ink);
-  }
-
-  .swatch.recognised {
-    background: var(--teal);
-  }
-
-  .swatch.podium {
-    background: var(--gold);
-  }
-
-  .swatch.empty {
-    border: 1px solid var(--line-strong);
-  }
-
-  @media (max-width: 620px) {
-    .grid {
-      gap: 4px;
-    }
-
-    .cell a,
-    .cell > .slot {
-      border-radius: 2px;
-      font-size: 0.55rem;
-    }
-
-    .build-preview {
-      display: none;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .cell a {
-      transition: none;
-    }
-
-    .cell a:hover,
-    .cell a:focus-visible {
-      transform: none;
-    }
-  }
+  .hundred-topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; margin-bottom: 10px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 0; padding: 0; list-style: none; }
+  .legend li { display: inline-flex; gap: 8px; align-items: center; color: var(--muted); font-size: .72rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; }
+  .swatch { width: 13px; height: 13px; border-radius: 3px; }
+  .swatch.complete { background: color-mix(in srgb, var(--teal) 70%, white); }
+  .swatch.award { background: var(--gold); }
+  .swatch.current { background: var(--red); }
+  .swatch.future { border: 1px solid var(--line-strong); background: white; }
+  .view-toggle { display: inline-flex; overflow: hidden; border: 1px solid var(--line-strong); border-radius: 3px; background: white; }
+  .view-toggle button { min-height: 34px; padding: 7px 11px; border: 0; border-right: 1px solid var(--line-strong); background: transparent; color: var(--muted); cursor: pointer; font: inherit; font-size: .64rem; font-weight: 900; letter-spacing: .07em; text-transform: uppercase; }
+  .view-toggle button:last-child { border-right: 0; }
+  .view-toggle button.active { background: var(--black); color: white; }
+  .view-toggle button:focus-visible { position: relative; z-index: 1; outline: 2px solid var(--blue); outline-offset: -2px; }
+  .hundred-content { display: grid; grid-template-columns: minmax(0, 1fr) 128px; gap: 18px; align-items: start; }
+  .hundred-display { min-width: 0; }
+  .grid { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; margin: 0; padding: 0; list-style: none; }
+  .cell { --preview-x: -50%; --preview-arrow: 50%; position: relative; aspect-ratio: 1; }
+  .cell:hover, .cell:focus-within { z-index: 20; }
+  .cell:nth-child(10n + 1), .cell:nth-child(10n + 2) { --preview-x: 0%; --preview-arrow: 24px; }
+  .cell:nth-child(10n), .cell:nth-child(10n + 9) { --preview-x: -100%; --preview-arrow: calc(100% - 24px); }
+  .cell a, .cell > .slot { display: grid; width: 100%; height: 100%; place-items: center; border: 1px solid transparent; border-radius: 3px; font-size: clamp(.6rem, .9vw, .82rem); font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: -.02em; transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease; }
+  .cell a:hover, .cell a:focus-visible { box-shadow: 0 6px 18px rgba(14,18,18,.24); outline: none; transform: scale(1.14); }
+  .cell.complete a { background: color-mix(in srgb, var(--teal) 70%, white); color: #005f59; }
+  .cell.award a { border-color: color-mix(in srgb, var(--gold) 65%, var(--line)); background: var(--gold); color: var(--gold-ink); }
+  .cell.current a { background: var(--red); color: white; }
+  .cell.future > .slot { border-color: var(--line); background: white; color: var(--faint); font-weight: 800; }
+  .cell.is-filtered { opacity: .14; pointer-events: none; }
+  .build-preview { position: absolute; bottom: calc(100% + 11px); left: 50%; z-index: 8; display: grid; visibility: hidden; width: min(340px, calc(100vw - 36px)); gap: 7px; padding: 15px; border: 1px solid rgba(255,255,255,.2); border-radius: 3px; background: var(--black); box-shadow: 0 18px 38px rgba(5,5,5,.32); color: white; opacity: 0; pointer-events: none; text-align: left; transform: translate(var(--preview-x), 7px); transform-origin: var(--preview-arrow) 100%; transition: opacity 140ms ease, transform 140ms ease, visibility 0s linear 140ms; }
+  .build-preview::after { position: absolute; top: 100%; left: var(--preview-arrow); width: 10px; height: 10px; background: var(--black); content: ""; transform: translate(-50%, -5px) rotate(45deg); }
+  .cell:nth-child(-n + 10) .build-preview { top: calc(100% + 11px); bottom: auto; transform: translate(var(--preview-x), -7px); transform-origin: var(--preview-arrow) 0; }
+  .cell:nth-child(-n + 10) .build-preview::after { top: auto; bottom: 100%; transform: translate(-50%, 5px) rotate(45deg); }
+  .cell a:hover .build-preview, .cell a:focus-visible .build-preview { visibility: visible; opacity: 1; transform: translate(var(--preview-x), 0); transition-delay: 0s; }
+  .preview-kicker, .calendar-preview-kicker { color: var(--yellow); font-size: .62rem; font-weight: 900; letter-spacing: .08em; line-height: 1.3; text-transform: uppercase; }
+  .build-preview strong { color: white; font-size: 1.05rem; letter-spacing: -.03em; line-height: 1.08; }
+  .preview-event, .preview-solution { color: rgba(255,255,255,.72); font-size: .72rem; font-weight: 650; line-height: 1.45; }
+  .preview-event { color: rgba(255,255,255,.88); font-weight: 800; }
+  .preview-solution { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+  .preview-facts { display: flex; flex-wrap: wrap; gap: 5px; }
+  .preview-facts span { padding: 3px 6px; border: 1px solid rgba(255,255,255,.18); border-radius: 2px; color: rgba(255,255,255,.76); font-size: .61rem; font-weight: 800; }
+  .preview-context { display: grid; gap: 3px; color: rgba(255,255,255,.58); font-size: .62rem; line-height: 1.4; }
+  .preview-context b { margin-right: 4px; color: rgba(255,255,255,.88); font-weight: 900; text-transform: uppercase; }
+  .preview-footer { display: grid; gap: 4px; padding-top: 7px; border-top: 1px solid rgba(255,255,255,.16); color: #7ee2d7; font-size: .62rem; font-weight: 900; letter-spacing: .03em; line-height: 1.35; text-transform: uppercase; }
+  .preview-footer em { color: #ffd66c; font-style: normal; }
+  .preview-cta { color: rgba(255,255,255,.44); font-size: .58rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+  .year-tabs { display: grid; gap: 5px; }
+  .year-tabs-label { margin: 0 0 3px; color: var(--faint); font-size: .64rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
+  .year-tabs button { display: flex; min-height: 52px; align-items: center; justify-content: space-between; padding: 10px 12px; border: 1px solid var(--line); border-radius: 3px; background: white; color: var(--muted); cursor: pointer; font: inherit; font-size: .78rem; font-weight: 900; letter-spacing: .03em; transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 140ms ease; }
+  .year-tabs button:hover, .year-tabs button:focus-visible { border-color: var(--ink); color: var(--ink); outline: none; transform: translateX(-2px); }
+  .year-tabs button.active { border-color: var(--black); background: var(--black); color: white; }
+  .year-tabs button b { color: var(--faint); font-size: .7rem; }
+  .year-tabs button.active b { color: var(--yellow); }
+  .calendar-views { display: none; width: 100%; }
+  .hundred[data-hundred-view="calendar"] [data-hundred-sequence] { display: none; }
+  .hundred[data-hundred-view="calendar"] [data-hundred-calendar] { display: grid; gap: 18px; }
+  .calendar-year { display: grid; gap: 16px; padding: 20px; border: 1px solid var(--line); background: white; }
+  .calendar-year.is-filtered { display: none; }
+  .calendar-year header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .calendar-year header strong { color: var(--ink); font-size: 1.1rem; letter-spacing: -.04em; }
+  .calendar-year header span { color: var(--faint); font-size: .68rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+  .calendar-quarters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .calendar-quarter { display: grid; gap: 10px; min-width: 0; padding: 14px; border: 1px solid var(--line); background: var(--surface); }
+  .calendar-quarter h3 { margin: 0; color: var(--ink); font-size: .76rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+  .calendar-frame { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 7px; }
+  .calendar-weekdays { display: grid; grid-template-rows: repeat(7, minmax(0, 1fr)); gap: 3px; color: var(--faint); font-size: .54rem; font-weight: 800; line-height: 1; }
+  .calendar-grid { display: grid; grid-auto-flow: column; grid-template-columns: repeat(var(--week-count), minmax(0, 1fr)); grid-template-rows: repeat(7, minmax(0, 1fr)); gap: 3px; aspect-ratio: var(--week-count) / 7; }
+  .calendar-day { position: relative; display: grid; place-items: center; border-radius: 2px; background: #eff0ec; color: white; font-size: clamp(.56rem, 1vw, .72rem); font-weight: 900; line-height: 1; }
+  .calendar-day > a { display: grid; width: 100%; height: 100%; place-items: center; color: inherit; }
+  .calendar-day.outside { background: transparent; }
+  .calendar-day.has-event { background: color-mix(in srgb, var(--teal) 70%, white); }
+  .calendar-day.has-event.intensity-2, .calendar-day.has-event.intensity-3 { background: var(--teal); }
+  .calendar-day.award { background: var(--gold); color: var(--gold-ink); }
+  .calendar-day.current { background: var(--red); color: white; }
+  .calendar-day:hover, .calendar-day:focus-visible { z-index: 10; outline: 2px solid var(--ink); outline-offset: 2px; transform: scale(1.12); }
+  .calendar-preview { position: absolute; z-index: 12; display: none; width: min(230px, calc(100vw - 40px)); gap: 4px; padding: 10px 11px; border: 1px solid rgba(255,255,255,.18); background: var(--black); box-shadow: 0 10px 20px rgba(5,5,5,.22); color: white; text-align: left; }
+  .calendar-preview.empty { width: min(200px, calc(100vw - 40px)); }
+  .preview-below .calendar-preview { top: calc(100% + 10px); }
+  .preview-above .calendar-preview { bottom: calc(100% + 10px); }
+  .preview-center .calendar-preview { left: 50%; transform: translateX(-50%); }
+  .preview-left .calendar-preview { left: 0; }
+  .preview-right .calendar-preview { right: 0; }
+  .calendar-preview strong { color: white; font-size: .84rem; letter-spacing: -.02em; line-height: 1.1; }
+  .calendar-preview-event { color: rgba(255,255,255,.7); font-size: .64rem; font-weight: 650; line-height: 1.35; }
+  .calendar-preview-footer { display: flex; justify-content: space-between; gap: 8px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,.14); color: #7ee2d7; font-size: .54rem; font-weight: 900; letter-spacing: .04em; line-height: 1.3; text-transform: uppercase; }
+  .calendar-preview-footer em { color: #ffd66c; font-style: normal; }
+  .calendar-day:hover .calendar-preview, .calendar-day:focus-visible .calendar-preview { display: grid; }
+  @media (max-width: 820px) { .hundred-content { grid-template-columns: 1fr; } .year-tabs { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); } .year-tabs-label { grid-column: 1 / -1; } }
+  @media (max-width: 620px) { .hundred-topbar { align-items: flex-start; } .grid { gap: 4px; } .cell a, .cell > .slot { border-radius: 2px; font-size: .55rem; } .build-preview { display: none; } .calendar-quarters { grid-template-columns: 1fr; } .calendar-year { padding: 14px; } }
+  @media (prefers-reduced-motion: reduce) { .cell a { transition: none; } .cell a:hover, .cell a:focus-visible { transform: none; } }
 </style>
