@@ -2170,7 +2170,7 @@
     "client": "ICP",
     "country": "Singapore",
     "location": "Cineleisure Orchard",
-    "award": "Participating Award ($100 USD)",
+    "award": null,
     "tags": [
       "Productivity"
     ],
