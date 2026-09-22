@@ -1,5 +1,48 @@
 [
   {
+    "number": 81,
+    "title": "The Next 8 Seconds: Draw Your Way Home",
+    "event": "Anti-Drug Jam 2026",
+    "dateLabel": "19 Sep 2026",
+    "startDate": "2026-09-19",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "An illustrated storybook adventure where you sketch solutions to help Bob navigate peer pressure and find his safe way home.",
+    "client": "SCOGA × NCADA",
+    "country": "Singapore",
+    "location": "*SCAPE Ground Theatre",
+    "award": null,
+    "tags": [
+      "Anti Drugs"
+    ],
+    "categories": [
+      "Smart Nation / Social Good"
+    ],
+    "themeCategories": [
+      {
+        "theme": "Anti Drugs",
+        "category": "Smart Nation / Social Good"
+      }
+    ],
+    "organizers": [
+      "SCOGA",
+      "Esports Academy",
+      "National Council Against Drug Abuse (NCADA)"
+    ],
+    "members": [
+      "Sayyid"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/8-mins",
+    "eventUrl": "https://scoga-anti-drug-jam-2026.ai.studio/",
+    "socialLinks": {
+      "linkedin": [],
+      "instagram": [
+        "https://www.instagram.com/p/Dddoi71EyhB/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA=="
+      ],
+      "facebook": []
+    }
+  },
+  {
     "number": 80,
     "title": "Itachi's Crow",
     "event": "GPT-6 Astra Hackathon: Singapore",
@@ -32,12 +75,14 @@
       "Sherry Jiang"
     ],
     "members": [
+      "Clement Lork",
       "Sayyid"
     ],
     "githubUrl": "https://github.com/sayyidkhan/itachiscrow",
     "eventUrl": "https://luma.com/fdzbrq5b?tk=QX3FM2",
     "socialLinks": {
       "linkedin": [
+        "https://www.linkedin.com/feed/update/urn:li:activity:7505062754270175232/",
         "https://www.linkedin.com/posts/sayyidkhan92_hackathon-astra-ai-activity-7504873783019597824-0MLK?utm_source=share&utm_medium=member_desktop&rcm=ACoAABzB85UB8iZMlY6hoj9K3g7MfcRKsCZOvqw",
         "https://www.linkedin.com/posts/sayyidkhan92_hackathon-astra-ai-activity-7506342725504557056-ifQj?utm_source=share&utm_medium=member_desktop&rcm=ACoAABzB85UB8iZMlY6hoj9K3g7MfcRKsCZOvqw"
       ],
@@ -57,7 +102,7 @@
     "duration": 2,
     "durationUnit": "Days",
     "solution": "A bilingual digital visitor experience for Long Taa, a Sebup longhouse village in Sarawak, with trip planning and a Kimi-powered visitor assistant.",
-    "client": null,
+    "client": "Longtaa Borneo",
     "country": "Malaysia",
     "location": "Affin Bank Hikmah Exchange, Kuching, Sarawak",
     "award": "Trophy, First Runner Up, SG × Sarawak AI & Design Hackathon 2026, 200 USD Kimi AI credits",
@@ -78,6 +123,8 @@
       "ANCHR AI Labs"
     ],
     "members": [
+      "Bruce Chua",
+      "Hao Ming",
       "Sayyid"
     ],
     "githubUrl": "https://github.com/sayyidkhan/longtaaborneo",
@@ -179,9 +226,7 @@
     "githubUrl": "https://github.com/sayyidkhan/zo-memories",
     "eventUrl": "https://ambassador.zo.space/build-challenge",
     "socialLinks": {
-      "linkedin": [
-        "https://www.linkedin.com/posts/sayyidkhan92_hackathon-singapore-ai-activity-7498397192852779008-CO54?utm_source=share&utm_medium=member_desktop&rcm=ACoAABzB85UB8iZMlY6hoj9K3g7MfcRKsCZOvqw"
-      ],
+      "linkedin": [],
       "instagram": [
         "https://www.instagram.com/p/Dcxszh0nbh6/"
       ],
@@ -224,7 +269,9 @@
     "githubUrl": "https://github.com/sayyidkhan/agrim-tycoon",
     "eventUrl": "https://luma.com/deepmind-v4ci?tk=LBgGrm",
     "socialLinks": {
-      "linkedin": [],
+      "linkedin": [
+        "https://www.linkedin.com/feed/update/urn:li:activity:7498397192852779008/"
+      ],
       "instagram": [
         "https://www.instagram.com/p/DcghI50ncWn/",
         "https://www.instagram.com/reel/Dcgk8b_RELZ/"
@@ -1323,7 +1370,7 @@
       "AI Builders"
     ],
     "members": [
-      "clement",
+      "Clement Lork",
       "Sayyid",
       "shashi"
     ],
@@ -1364,7 +1411,7 @@
       "AI Builders"
     ],
     "members": [
-      "clement",
+      "Clement Lork",
       "Sayyid",
       "shashi"
     ],
