@@ -40,7 +40,8 @@
         "https://www.instagram.com/p/Dddoi71EyhB/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA=="
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 80,
@@ -54,7 +55,7 @@
     "client": "OpenAI",
     "country": "Singapore",
     "location": "Singapore",
-    "award": "Best use of GPT-Image-2.5, 5,000 USD OpenAI credits",
+    "award": "Best Project — Best Use of GPT-Image-2.5 — US$5,000 OpenAI Credits Each",
     "tags": [
       "Agentic AI"
     ],
@@ -91,6 +92,25 @@
         "https://www.instagram.com/reel/DdOiYzlxNim/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA=="
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "Best Project — Best Use of GPT-Image-2.5 — US$5,000 OpenAI Credits Each",
+      "awardType": "Best Project",
+      "additionalInfo": "Best Use of GPT-Image-2.5",
+      "teamMembers": 2,
+      "allocation": "Per Team Member",
+      "cash": null,
+      "credits": {
+        "team": 10000,
+        "individual": 5000,
+        "currency": "USD"
+      },
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": "OpenAI credits",
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -105,7 +125,7 @@
     "client": "Longtaa Borneo",
     "country": "Malaysia",
     "location": "Affin Bank Hikmah Exchange, Kuching, Sarawak",
-    "award": "Trophy, First Runner Up, SG × Sarawak AI & Design Hackathon 2026, 200 USD Kimi AI credits",
+    "award": "First Runner-Up — SG × Sarawak AI & Design Hackathon — US$200 Kimi AI Credits + Trophy",
     "tags": [
       "Micro Business"
     ],
@@ -144,6 +164,25 @@
         "https://www.instagram.com/reel/Dc8Mz_8z325/"
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "First Runner-Up — SG × Sarawak AI & Design Hackathon — US$200 Kimi AI Credits + Trophy",
+      "awardType": "First Runner-Up",
+      "additionalInfo": "SG × Sarawak AI & Design Hackathon 2026",
+      "teamMembers": 3,
+      "allocation": "Per Team",
+      "cash": null,
+      "credits": {
+        "team": 200,
+        "individual": 66.66666666666667,
+        "currency": "USD"
+      },
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": "Trophy; Kimi AI credits",
+      "physicalAsset": "Trophy",
+      "trophyCount": 1
     }
   },
   {
@@ -190,7 +229,8 @@
         "https://www.instagram.com/p/Dc5Nkd-nU1B/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 77,
@@ -231,7 +271,8 @@
         "https://www.instagram.com/p/Dcxszh0nbh6/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 76,
@@ -277,7 +318,8 @@
         "https://www.instagram.com/reel/Dcgk8b_RELZ/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 75,
@@ -291,7 +333,7 @@
     "client": "CybrDeck",
     "country": "Singapore",
     "location": "Kent Ridge, Block 71",
-    "award": "Best Vertical Solution (Family Office Track), 2,000 Cybrdeck API credits (worth US$25)",
+    "award": "Best Project — Best Vertical Solution: Family Office Track — 2,000 Cybrdeck API Credits Each (US$25 value)",
     "tags": [
       "Family Office"
     ],
@@ -321,6 +363,25 @@
         "https://www.instagram.com/p/DcOZh7DHVFE/"
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "Best Project — Best Vertical Solution: Family Office Track — 2,000 Cybrdeck API Credits Each (US$25 value)",
+      "awardType": "Best Project",
+      "additionalInfo": "Best Vertical Solution: Family Office Track",
+      "teamMembers": 2,
+      "allocation": "Per Team Member",
+      "cash": null,
+      "credits": {
+        "team": 50,
+        "individual": 25,
+        "currency": "USD"
+      },
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": "2,000 Cybrdeck API credits",
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -364,7 +425,8 @@
         "https://www.instagram.com/p/Db50W3FHYuM/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 73,
@@ -405,7 +467,8 @@
         "https://www.instagram.com/p/DbpmfeiHexb/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 72,
@@ -450,7 +513,8 @@
         "https://www.instagram.com/reel/DbN5OnlRCGQ/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 71,
@@ -494,6 +558,25 @@
         "https://www.instagram.com/p/Dash2D1k4C2/"
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "Top 30 — US$4,500 AWS Credits",
+      "awardType": "Top 30",
+      "additionalInfo": null,
+      "teamMembers": 2,
+      "allocation": "Per Team",
+      "cash": null,
+      "credits": {
+        "team": 4500,
+        "individual": 2250,
+        "currency": "USD"
+      },
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": "AWS credits",
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -539,7 +622,8 @@
         "https://www.instagram.com/reel/DaFm4k2zifY/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 69,
@@ -583,7 +667,8 @@
         "https://www.instagram.com/p/DZ7Wj9anW7x/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 68,
@@ -628,7 +713,8 @@
         "https://www.instagram.com/p/DZ7AtfFndkJ/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 67,
@@ -674,7 +760,8 @@
         "https://www.instagram.com/reel/DZonQbURE5R/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 66,
@@ -688,7 +775,7 @@
     "client": null,
     "country": "Singapore",
     "location": "Remote",
-    "award": "Top 20, 10K USD OpenAI Credits, 2K USD Gemini Cloud Credits",
+    "award": "Top 20 — US$12,000 Credits (OpenAI + Gemini Cloud)",
     "tags": [
       "Events"
     ],
@@ -719,6 +806,25 @@
         "https://www.instagram.com/p/DZeIbzgRO-n/"
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "Top 20 — US$12,000 Credits (OpenAI + Gemini Cloud)",
+      "awardType": "Top 20",
+      "additionalInfo": null,
+      "teamMembers": 2,
+      "allocation": "Per Team",
+      "cash": null,
+      "credits": {
+        "team": 12000,
+        "individual": 6000,
+        "currency": "USD"
+      },
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": "10K OpenAI credits; 2K Gemini Cloud credits",
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -764,7 +870,8 @@
         "https://www.instagram.com/p/DYe1dlpE7Af/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 64,
@@ -810,7 +917,8 @@
         "https://www.instagram.com/p/DYLfGwuk3Xc/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 63,
@@ -850,7 +958,8 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 62,
@@ -893,7 +1002,8 @@
         "https://www.instagram.com/p/DX4HAVzE9WO/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 61,
@@ -938,6 +1048,21 @@
         "https://www.instagram.com/reel/DXykZomTmXD/"
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "2nd Place — v0 Sock",
+      "awardType": "2nd Place",
+      "additionalInfo": "v0 Sock",
+      "teamMembers": 1,
+      "allocation": "Per Team",
+      "cash": null,
+      "credits": null,
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": "v0 Sock",
+      "physicalAsset": "v0 Sock",
+      "trophyCount": null
     }
   },
   {
@@ -952,7 +1077,7 @@
     "client": null,
     "country": "Singapore",
     "location": "SGInnovate",
-    "award": "2K USD Speechmatics Credits",
+    "award": "Award — Speechmatics — US$2,000 Speechmatics Credits",
     "tags": [
       "Agentic AI (Voice)"
     ],
@@ -981,6 +1106,25 @@
         "https://www.instagram.com/p/DXwnu_3E2dI/"
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "Award — Speechmatics — US$2,000 Speechmatics Credits",
+      "awardType": "Award",
+      "additionalInfo": "Speechmatics",
+      "teamMembers": 1,
+      "allocation": "Per Team",
+      "cash": null,
+      "credits": {
+        "team": 2000,
+        "individual": 2000,
+        "currency": "USD"
+      },
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": "Speechmatics credits",
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -1028,7 +1172,8 @@
         "https://www.instagram.com/p/DXg-YyWE5r6/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 58,
@@ -1071,7 +1216,8 @@
         "https://www.instagram.com/p/DXRahaqk28d/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 57,
@@ -1085,7 +1231,7 @@
     "client": null,
     "country": "Singapore",
     "location": "Carousell Campus (Regional HQ)",
-    "award": "3rd Prize: S$300 Cash and S$385 worth of API Credits",
+    "award": "3rd Place — S$300 Cash + S$385 API Credits",
     "tags": [
       "Healthcare",
       "Agentic AI (Voice)"
@@ -1121,6 +1267,29 @@
         "https://www.instagram.com/p/DW_vFeIk0-2/"
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "3rd Place — S$300 Cash + S$385 API Credits",
+      "awardType": "3rd Prize",
+      "additionalInfo": null,
+      "teamMembers": 1,
+      "allocation": "Per Team",
+      "cash": {
+        "team": 300,
+        "individual": 300,
+        "currency": "SGD"
+      },
+      "credits": {
+        "team": 385,
+        "individual": 385,
+        "currency": "SGD"
+      },
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": "API credits",
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -1162,7 +1331,8 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 55,
@@ -1205,7 +1375,8 @@
         "https://www.instagram.com/p/DWd1UjUkwSf/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 54,
@@ -1219,7 +1390,7 @@
     "client": null,
     "country": "Singapore",
     "location": "SUSS",
-    "award": "1st Prize (Wavespeed AI Credits $150 USD)",
+    "award": "1st Place — US$150 Wavespeed AI Credits",
     "tags": [
       "Events"
     ],
@@ -1253,6 +1424,25 @@
         "https://www.instagram.com/p/DV0x7PoE18a/"
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "1st Place — US$150 Wavespeed AI Credits",
+      "awardType": "1st Prize",
+      "additionalInfo": null,
+      "teamMembers": 3,
+      "allocation": "Per Team",
+      "cash": null,
+      "credits": {
+        "team": 150,
+        "individual": 50,
+        "currency": "USD"
+      },
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": "Wavespeed AI credits",
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -1267,7 +1457,7 @@
     "client": "Bright Data, ActionBook, Acontext",
     "country": "Singapore",
     "location": "NUS",
-    "award": "1st Prize (API Credits $500 USD)",
+    "award": "1st Place — US$500 API Credits",
     "tags": [
       "Agentic AI"
     ],
@@ -1296,6 +1486,25 @@
         "https://www.instagram.com/p/DVTWt5qE6QA/"
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "1st Place — US$500 API Credits",
+      "awardType": "1st Prize",
+      "additionalInfo": null,
+      "teamMembers": 3,
+      "allocation": "Per Team",
+      "cash": null,
+      "credits": {
+        "team": 500,
+        "individual": 166.66666666666666,
+        "currency": "USD"
+      },
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": "API credits",
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -1310,7 +1519,7 @@
     "client": "WaveSpeed AI, Zeabur, Qoder, Insforge",
     "country": "Singapore",
     "location": "NUS",
-    "award": "1st Prize (API Credits $500 USD)",
+    "award": "1st Place — US$500 API Credits",
     "tags": [
       "Agentic AI"
     ],
@@ -1339,6 +1548,25 @@
         "https://www.instagram.com/p/DVTWt5qE6QA/"
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "1st Place — US$500 API Credits",
+      "awardType": "1st Prize",
+      "additionalInfo": null,
+      "teamMembers": 3,
+      "allocation": "Per Team",
+      "cash": null,
+      "credits": {
+        "team": 500,
+        "individual": 166.66666666666666,
+        "currency": "USD"
+      },
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": "API credits",
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -1380,7 +1608,8 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 50,
@@ -1394,7 +1623,7 @@
     "client": "Agentfield",
     "country": "Singapore",
     "location": "Monk Brew House",
-    "award": "1st Prize (OpenRouter Credits $1000 USD)",
+    "award": "1st Place — US$1,000 OpenRouter Credits",
     "tags": [
       "Agentic AI"
     ],
@@ -1425,6 +1654,25 @@
         "https://www.instagram.com/p/DUdGe1jk_Wh/"
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "1st Place — US$1,000 OpenRouter Credits",
+      "awardType": "1st Prize",
+      "additionalInfo": null,
+      "teamMembers": 3,
+      "allocation": "Per Team",
+      "cash": null,
+      "credits": {
+        "team": 1000,
+        "individual": 333.3333333333333,
+        "currency": "USD"
+      },
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": "OpenRouter credits",
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -1468,7 +1716,8 @@
         "https://www.instagram.com/p/DT49z3cE84y/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 48,
@@ -1508,7 +1757,8 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 47,
@@ -1547,7 +1797,8 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 46,
@@ -1591,7 +1842,8 @@
         "https://www.instagram.com/reel/DQjw5Lik-5m/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 45,
@@ -1635,7 +1887,8 @@
         "https://www.instagram.com/reel/DQV0xxIk9ab/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 44,
@@ -1681,7 +1934,8 @@
         "https://www.instagram.com/p/DP-pSUWjPCS/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 43,
@@ -1722,7 +1976,8 @@
         "https://www.instagram.com/p/DPbGjobkxFW/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 42,
@@ -1736,7 +1991,7 @@
     "client": "Nosana",
     "country": "Singapore",
     "location": "Monk Brew House",
-    "award": "1st Prize, $500 Nosana Cloud Credit",
+    "award": "1st Place — US$500 Nosana Cloud Credits",
     "tags": [
       "ML Inference"
     ],
@@ -1763,6 +2018,25 @@
         "https://www.instagram.com/p/DPOUBvaE3GR/"
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "1st Place — US$500 Nosana Cloud Credits",
+      "awardType": "1st Prize",
+      "additionalInfo": null,
+      "teamMembers": 1,
+      "allocation": "Per Team",
+      "cash": null,
+      "credits": {
+        "team": 500,
+        "individual": 500,
+        "currency": "USD"
+      },
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": "Nosana Cloud credit",
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -1804,7 +2078,8 @@
         "https://www.instagram.com/p/DO0q1KYky3H/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 40,
@@ -1851,6 +2126,21 @@
         "https://www.instagram.com/reel/DOVLDxsE37O/"
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "Novel Hackathon Finisher — Trophy",
+      "awardType": "Novel Hackathon Finisher",
+      "additionalInfo": null,
+      "teamMembers": 2,
+      "allocation": "Per Team",
+      "cash": null,
+      "credits": null,
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": "Trophy",
+      "physicalAsset": "Trophy",
+      "trophyCount": 1
     }
   },
   {
@@ -1893,7 +2183,8 @@
         "https://www.instagram.com/p/DNLa9r_xO3o/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 38,
@@ -1907,7 +2198,7 @@
     "client": "OOJU & Manus.ai",
     "country": "Singapore",
     "location": "SQ Collective",
-    "award": "2nd Prize (Manus Pro Subscription)",
+    "award": "2nd Place — Manus Pro Subscription (US$39/month each)",
     "tags": [
       "Virtual Reality"
     ],
@@ -1935,6 +2226,25 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "2nd Place — Manus Pro Subscription (US$39/month each)",
+      "awardType": "2nd Prize",
+      "additionalInfo": null,
+      "teamMembers": 4,
+      "allocation": "Per Team Member",
+      "cash": null,
+      "credits": null,
+      "subscriptionValue": {
+        "team": 156,
+        "individual": 39,
+        "currency": "USD"
+      },
+      "subscriptionCount": 4,
+      "funding": null,
+      "otherNonCashPrize": "Manus Pro subscription",
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -1979,7 +2289,8 @@
         "https://www.instagram.com/p/DLcXTxAxUgg/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 36,
@@ -2026,7 +2337,8 @@
         "https://www.instagram.com/reel/DLEZ4_LRK_G/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 35,
@@ -2040,7 +2352,7 @@
     "client": null,
     "country": "Singapore",
     "location": "Al-Mawaddah Mosque",
-    "award": "2nd Prize (S$1,000 Cash)",
+    "award": "2nd Place — S$1,000 Cash",
     "tags": [
       "Family"
     ],
@@ -2071,6 +2383,25 @@
         "https://www.instagram.com/p/DHlaIwwz9Qg/"
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "2nd Place — S$1,000 Cash",
+      "awardType": "2nd Place",
+      "additionalInfo": null,
+      "teamMembers": 4,
+      "allocation": "Per Team",
+      "cash": {
+        "team": 1000,
+        "individual": 250,
+        "currency": "SGD"
+      },
+      "credits": null,
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": null,
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -2114,7 +2445,8 @@
         "https://www.instagram.com/p/C8MapmzSGnB/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 33,
@@ -2128,7 +2460,7 @@
     "client": "ICP",
     "country": "Singapore",
     "location": "Cineleisure Orchard",
-    "award": "3rd Prize (S$250 Cash)",
+    "award": "3rd Place — S$250 Cash",
     "tags": [
       "Productivity"
     ],
@@ -2156,6 +2488,25 @@
         "https://www.instagram.com/p/C1E93kNxOjM/"
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "3rd Place — S$250 Cash",
+      "awardType": "3rd Place",
+      "additionalInfo": null,
+      "teamMembers": 2,
+      "allocation": "Per Team",
+      "cash": {
+        "team": 250,
+        "individual": 125,
+        "currency": "SGD"
+      },
+      "credits": null,
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": null,
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -2198,7 +2549,8 @@
         "https://www.instagram.com/p/C0_xx0zRc1u/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 31,
@@ -2242,7 +2594,8 @@
         "https://www.instagram.com/p/CrGJq7JvfYS/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 30,
@@ -2284,7 +2637,8 @@
       "facebook": [
         "https://www.facebook.com/sayyid.iskandar/posts/pfbid02T7TywvEM5ypGy8vVEQyJVS1ZAzQns7CGz483NQGZX5CKf1DaCw8P6VbcAFdQmqczl"
       ]
-    }
+    },
+    "prize": null
   },
   {
     "number": 29,
@@ -2329,7 +2683,8 @@
         "https://www.facebook.com/sayyid.iskandar/posts/pfbid02HTKxyfqPKL2uR4n9zFFxAzkXbE7FYNjkzzuQpqRpEgeCBzYnqvfko88xe9nDPD4kl",
         "https://www.facebook.com/share/v/1BNrHxPRHz/"
       ]
-    }
+    },
+    "prize": null
   },
   {
     "number": 28,
@@ -2386,7 +2741,8 @@
         "https://www.facebook.com/share/p/1JmrdD1Bb7/",
         "https://www.facebook.com/share/p/1QzGUmEibA/"
       ]
-    }
+    },
+    "prize": null
   },
   {
     "number": 27,
@@ -2433,7 +2789,8 @@
       "facebook": [
         "https://www.facebook.com/share/p/1F5LDVBjUj/"
       ]
-    }
+    },
+    "prize": null
   },
   {
     "number": 26,
@@ -2479,7 +2836,8 @@
       "facebook": [
         "https://www.facebook.com/share/p/18y8TAM2dB/"
       ]
-    }
+    },
+    "prize": null
   },
   {
     "number": 25,
@@ -2493,7 +2851,7 @@
     "client": "Mendaki",
     "country": "Singapore",
     "location": "An-Nur Mosque",
-    "award": "3rd Place, $500 SGD cash",
+    "award": "3rd Place — S$500 Cash",
     "tags": [
       "Healthy Living"
     ],
@@ -2522,6 +2880,25 @@
         "https://www.instagram.com/p/Bxo5Ka1FLrR/"
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "3rd Place — S$500 Cash",
+      "awardType": "3rd Place",
+      "additionalInfo": null,
+      "teamMembers": 6,
+      "allocation": "Per Team",
+      "cash": {
+        "team": 500,
+        "individual": 83.33333333333333,
+        "currency": "SGD"
+      },
+      "credits": null,
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": null,
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -2564,7 +2941,8 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 23,
@@ -2608,7 +2986,8 @@
         "https://www.instagram.com/p/Bs2f8FHHXNo/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 22,
@@ -2647,7 +3026,8 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 21,
@@ -2690,7 +3070,8 @@
         "https://www.instagram.com/p/BqADJkbAn8x/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 20,
@@ -2737,7 +3118,8 @@
         "https://www.instagram.com/p/BpMd-mignvt/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 19,
@@ -2786,7 +3168,8 @@
         "https://www.instagram.com/p/Bo6FW7zg0Zj/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 18,
@@ -2831,7 +3214,8 @@
         "https://www.instagram.com/p/BngqOFTggiI/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 17,
@@ -2845,7 +3229,7 @@
     "client": null,
     "country": "Singapore",
     "location": "Muhajirin Mosque",
-    "award": "2nd Place, $600 cash",
+    "award": "2nd Place — S$600 Cash",
     "tags": [
       "Fintech",
       "Shariah Compliance"
@@ -2879,6 +3263,25 @@
         "https://www.instagram.com/p/BjogOfOA6tG/"
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "2nd Place — S$600 Cash",
+      "awardType": "2nd Place",
+      "additionalInfo": null,
+      "teamMembers": 3,
+      "allocation": "Per Team",
+      "cash": {
+        "team": 600,
+        "individual": 200,
+        "currency": "SGD"
+      },
+      "credits": null,
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": null,
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -2924,7 +3327,8 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 15,
@@ -2973,7 +3377,8 @@
         "https://www.instagram.com/p/Bgvs2dLAeue/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 14,
@@ -2987,7 +3392,7 @@
     "client": null,
     "country": "Singapore",
     "location": "SP",
-    "award": "3rd Place, $100 Capitaland voucher",
+    "award": "3rd Place — S$100 Capitaland Voucher Each",
     "tags": [
       "Food",
       "Health",
@@ -3026,6 +3431,25 @@
         "https://www.instagram.com/p/BgWUFk4FOSa/"
       ],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "3rd Place — S$100 Capitaland Voucher Each",
+      "awardType": "3rd Place",
+      "additionalInfo": null,
+      "teamMembers": 2,
+      "allocation": "Per Team Member",
+      "cash": {
+        "team": 200,
+        "individual": 100,
+        "currency": "SGD"
+      },
+      "credits": null,
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": "S$100 Capitaland voucher",
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -3072,7 +3496,8 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 12,
@@ -3120,7 +3545,8 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 11,
@@ -3170,7 +3596,8 @@
         "https://www.instagram.com/p/BZsdBDyAuNk/"
       ],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 10,
@@ -3184,7 +3611,7 @@
     "client": "PropertyGuru, Esplanade, Tabsquare",
     "country": "Singapore",
     "location": "Facebook APAC 2017",
-    "award": "*rated best project",
+    "award": "Best Project",
     "tags": [
       "Data Analytics",
       "Various"
@@ -3217,6 +3644,21 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "Best Project",
+      "awardType": "Best Project",
+      "additionalInfo": "Rated best project",
+      "teamMembers": 3,
+      "allocation": "Per Team",
+      "cash": null,
+      "credits": null,
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": null,
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -3259,7 +3701,8 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 8,
@@ -3300,7 +3743,8 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 7,
@@ -3349,7 +3793,8 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 6,
@@ -3392,7 +3837,8 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 5,
@@ -3434,7 +3880,8 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 4,
@@ -3448,7 +3895,7 @@
     "client": "Bank of Mangaladan",
     "country": "Singapore",
     "location": "Singapore Expo",
-    "award": "1st Place, Best Use of IBM Bluemix, US$100,000 IBM Bluemix Credits, SmartWatch",
+    "award": "1st Place — Best Use of IBM Bluemix — US$100,000 IBM Bluemix Credits — SmartWatch",
     "tags": [
       "Fintech"
     ],
@@ -3477,6 +3924,25 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "1st Place — Best Use of IBM Bluemix — US$100,000 IBM Bluemix Credits — SmartWatch",
+      "awardType": "1st Place",
+      "additionalInfo": "Best Use of IBM Bluemix",
+      "teamMembers": 4,
+      "allocation": "Per Team",
+      "cash": null,
+      "credits": {
+        "team": 100000,
+        "individual": 25000,
+        "currency": "USD"
+      },
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": "IBM Bluemix credits; SmartWatch",
+      "physicalAsset": "SmartWatch",
+      "trophyCount": null
     }
   },
   {
@@ -3491,7 +3957,7 @@
     "client": "PropertyGuru",
     "country": "Singapore",
     "location": "NUS",
-    "award": "*rated best project",
+    "award": "Best Project",
     "tags": [
       "Property Management",
       "Data Analytics"
@@ -3528,6 +3994,21 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "Best Project",
+      "awardType": "Best Project",
+      "additionalInfo": "Rated best project",
+      "teamMembers": 6,
+      "allocation": "Per Team",
+      "cash": null,
+      "credits": null,
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": null,
+      "otherNonCashPrize": null,
+      "physicalAsset": null,
+      "trophyCount": null
     }
   },
   {
@@ -3569,7 +4050,8 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
-    }
+    },
+    "prize": null
   },
   {
     "number": 1,
@@ -3583,7 +4065,7 @@
     "client": null,
     "country": "Singapore",
     "location": "Lifelong Learning Institute / Scape",
-    "award": "First Place, 18k SGD seed Funding",
+    "award": "1st Place — S$18,000 Seed Funding",
     "tags": [
       "Education"
     ],
@@ -3611,6 +4093,25 @@
       "linkedin": [],
       "instagram": [],
       "facebook": []
+    },
+    "prize": {
+      "awardSummary": "1st Place — S$18,000 Seed Funding",
+      "awardType": "1st Place",
+      "additionalInfo": null,
+      "teamMembers": 5,
+      "allocation": "Per Team",
+      "cash": null,
+      "credits": null,
+      "subscriptionValue": null,
+      "subscriptionCount": null,
+      "funding": {
+        "team": 18000,
+        "individual": 3600,
+        "currency": "SGD"
+      },
+      "otherNonCashPrize": null,
+      "physicalAsset": null,
+      "trophyCount": null
     }
   }
 ]

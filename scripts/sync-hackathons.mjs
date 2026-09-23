@@ -24,6 +24,24 @@ const columns = {
   location: 14,
   sourceCode: 15,
   eventLink: 16,
+  awardType: 17,
+  additionalInfo: 18,
+  cashAmount: 19,
+  cashCurrency: 20,
+  creditAmount: 21,
+  creditCurrency: 22,
+  subscriptionCount: 23,
+  subscriptionAmount: 24,
+  subscriptionCurrency: 25,
+  otherNonCashPrize: 26,
+  physicalAsset: 27,
+  trophyCount: 28,
+  fundingAmount: 29,
+  fundingCurrency: 30,
+  cashTreatment: 31,
+  awardSummary: 33,
+  teamMemberCount: 34,
+  prizeAllocation: 35,
 };
 
 const monthIndex = new Map([
@@ -231,7 +249,7 @@ function splitCatalogValue(value) {
   return value ? value.split(",").filter(Boolean) : [];
 }
 
-function toCatalogEntry(row, socialLinks = emptySocialLinks(), themeCategories = []) {
+function toCatalogEntry(row, socialLinks = emptySocialLinks(), themeCategories = [], prize = null) {
   return {
     number: row.number,
     title: row.title,
@@ -253,6 +271,59 @@ function toCatalogEntry(row, socialLinks = emptySocialLinks(), themeCategories =
     githubUrl: row.github_url,
     eventUrl: row.event_url,
     socialLinks,
+    prize,
+  };
+}
+
+function numberOrNull(value) {
+  const number = Number(value);
+  return Number.isFinite(number) && number !== 0 ? number : null;
+}
+
+function buildPrize(row) {
+  const valueAt = (column) => row[column - 1];
+  const teamMembers = numberOrNull(valueAt(columns.teamMemberCount)) ?? 1;
+  const allocation = clean(valueAt(columns.prizeAllocation)) ?? "Per Team";
+  const multiplier = allocation === "Per Team Member" ? teamMembers : 1;
+  const amount = (value, currency) => {
+    const raw = numberOrNull(value);
+    const unit = clean(currency);
+    if (!raw || !unit) return null;
+    const team = raw * multiplier;
+    return { team, individual: team / teamMembers, currency: unit };
+  };
+
+  const cash = amount(valueAt(columns.cashAmount), valueAt(columns.cashCurrency));
+  const credits = amount(valueAt(columns.creditAmount), valueAt(columns.creditCurrency));
+  const subscriptionValue = amount(valueAt(columns.subscriptionAmount), valueAt(columns.subscriptionCurrency));
+  const rawSubscriptionCount = numberOrNull(valueAt(columns.subscriptionCount));
+  const subscriptionCount = rawSubscriptionCount
+    ? rawSubscriptionCount * multiplier
+    : null;
+  const funding = amount(valueAt(columns.fundingAmount), valueAt(columns.fundingCurrency));
+  const awardType = clean(valueAt(columns.awardType));
+  const otherNonCashPrize = clean(valueAt(columns.otherNonCashPrize));
+  const physicalAsset = clean(valueAt(columns.physicalAsset));
+  const trophyCount = numberOrNull(valueAt(columns.trophyCount));
+
+  if (!cash && !credits && !subscriptionValue && !funding && !awardType && !otherNonCashPrize && !physicalAsset && !trophyCount) {
+    return null;
+  }
+
+  return {
+    awardSummary: clean(valueAt(columns.awardSummary)) ?? clean(valueAt(columns.award)),
+    awardType,
+    additionalInfo: clean(valueAt(columns.additionalInfo)),
+    teamMembers,
+    allocation,
+    cash: cash && clean(valueAt(columns.cashTreatment)) === "Yes" ? cash : null,
+    credits,
+    subscriptionValue,
+    subscriptionCount,
+    funding,
+    otherNonCashPrize,
+    physicalAsset,
+    trophyCount,
   };
 }
 
@@ -425,6 +496,13 @@ const peopleDirectory = parsePeopleDirectory(peopleRows);
 const resolveMemberName = buildMemberNameResolver(peopleDirectory);
 const workbookSocialLinks = parseSocialLinks(socialRows);
 const themeMap = parseThemeMap(themeMapRows);
+const prizesByHackathon = new Map(
+  rows.slice(1).flatMap((row) => {
+    const number = Number(row[columns.number - 1]);
+    const prize = buildPrize(row);
+    return Number.isInteger(number) && prize ? [[number, prize]] : [];
+  }),
+);
 
 const db = new DatabaseSync(databasePath);
 
@@ -543,6 +621,7 @@ try {
       row,
       socialLinksByHackathon.get(row.number),
       themeCategoriesByHackathon.get(row.number),
+      prizesByHackathon.get(row.number),
     ));
   await writeFile(catalogPath, `${JSON.stringify(catalog, null, 2)}\n`);
   console.log(`Imported ${imported} hackathons and ${peopleDirectory.length} people into ${databasePath} and ${catalogPath}`);

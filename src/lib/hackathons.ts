@@ -1,5 +1,27 @@
 import hackathonCatalog from "../data/hackathons.json";
 
+export interface PrizeAmount {
+  team: number;
+  individual: number;
+  currency: string;
+}
+
+export interface Prize {
+  awardSummary: string | null;
+  awardType: string | null;
+  additionalInfo: string | null;
+  teamMembers: number;
+  allocation: string;
+  cash: PrizeAmount | null;
+  credits: PrizeAmount | null;
+  subscriptionValue: PrizeAmount | null;
+  subscriptionCount: number | null;
+  funding: PrizeAmount | null;
+  otherNonCashPrize: string | null;
+  physicalAsset: string | null;
+  trophyCount: number | null;
+}
+
 export interface Hackathon {
   number: number;
   title: string;
@@ -28,6 +50,7 @@ export interface Hackathon {
     instagram: string[];
     facebook: string[];
   };
+  prize: Prize | null;
 }
 
 const hackathons = hackathonCatalog satisfies Hackathon[];

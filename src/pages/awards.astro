@@ -1,0 +1,162 @@
+---
+import PageShell from "../components/PageShell.astro";
+import {
+  buildPrizeSummary,
+  buildPrizeTotals,
+  formatPrizeAmount,
+  getPrizeRecords,
+} from "../lib/prizes";
+
+const records = getPrizeRecords();
+const summary = buildPrizeSummary(records);
+const totals = buildPrizeTotals(records);
+---
+
+<PageShell
+  title="Prize Money & Awards | The 100 Hackathoner"
+  description="A public breakdown of hackathon prize money, credits, subscriptions, and funding, shown as team totals and individual share."
+>
+  <main class="container awards-page">
+    <section class="intro">
+      <p class="meta">Prize Money & Awards</p>
+      <h1>What the builds earned.</h1>
+      <p class="lead">
+        A running ledger of prize money, credits, subscriptions, and funding from
+        the hackathon journey. Team totals and my individual share are shown
+        separately. Values stay in their original currency.
+      </p>
+    </section>
+
+    <section class="total-grid" aria-label="All tracked prize value">
+      {
+        totals.map((total) => (
+          <article class="total-card">
+            <p>All tracked value</p>
+            <strong>{total.currency}</strong>
+            <dl>
+              <div>
+                <dt>Team total</dt>
+                <dd>{formatPrizeAmount(total.team, total.currency)}</dd>
+              </div>
+              <div>
+                <dt>My share</dt>
+                <dd>{formatPrizeAmount(total.individual, total.currency)}</dd>
+              </div>
+            </dl>
+          </article>
+        ))
+      }
+    </section>
+
+    <section class="breakdown" aria-labelledby="breakdown-heading">
+      <div class="section-title">
+        <div>
+          <p class="meta">By category</p>
+          <h2 id="breakdown-heading">The breakdown</h2>
+        </div>
+        <p>Cash vouchers are counted as cash-equivalent. Credits, subscriptions, and funding remain separate categories.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Category</th>
+              <th>Currency</th>
+              <th>Team total</th>
+              <th>My share</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              summary.map((row) => (
+                <tr>
+                  <td>{row.category}</td>
+                  <td>{row.currency}</td>
+                  <td>{formatPrizeAmount(row.team, row.currency)}</td>
+                  <td>{formatPrizeAmount(row.individual, row.currency)}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="records" aria-labelledby="records-heading">
+      <div class="section-title">
+        <div>
+          <p class="meta">Prize details</p>
+          <h2 id="records-heading">Where it came from</h2>
+        </div>
+        <p>{records.length} tracked prize entries across the journey.</p>
+      </div>
+
+      <div class="record-list">
+        {
+          records.map(({ hackathon, category, amount }) => (
+            <article class="record">
+              <div class="record-number">#{String(hackathon.number).padStart(3, "0")}</div>
+              <div class="record-copy">
+                <p class="record-category">{category} · {amount.currency}</p>
+                <h3><a href={`/hackathons/${hackathon.number}/`}>{hackathon.title}</a></h3>
+                <p>{hackathon.prize?.awardSummary ?? hackathon.award}</p>
+              </div>
+              <dl class="record-values">
+                <div>
+                  <dt>Team</dt>
+                  <dd>{formatPrizeAmount(amount.team, amount.currency)}</dd>
+                </div>
+                <div>
+                  <dt>My share</dt>
+                  <dd>{formatPrizeAmount(amount.individual, amount.currency)}</dd>
+                </div>
+              </dl>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+</PageShell>
+
+<style>
+  .awards-page { padding: 78px 0 100px; }
+  .intro { max-width: 760px; }
+  h1, h2, h3, p { margin-top: 0; }
+  h1 { margin-bottom: 22px; color: var(--ink); font-size: clamp(3.3rem, 8vw, 7.4rem); line-height: .9; letter-spacing: -.055em; }
+  .lead { margin: 0; color: var(--muted); font-size: 1.08rem; line-height: 1.7; }
+  .total-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-top: 54px; }
+  .total-card { padding: 24px; border: 1px solid var(--line-strong); border-top: 6px solid var(--red); background: var(--bg-paper); box-shadow: var(--shadow); }
+  .total-card > p, .record-category { margin-bottom: 8px; color: var(--faint); font-size: .72rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+  .total-card > strong { display: block; margin-bottom: 24px; color: var(--red); font-size: 1.5rem; }
+  dl { margin: 0; }
+  .total-card dl { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  dt { color: var(--muted); font-size: .76rem; font-weight: 800; }
+  dd { margin: 6px 0 0; color: var(--ink); font-size: 1.08rem; font-weight: 950; font-variant-numeric: tabular-nums; }
+  .breakdown, .records { margin-top: 86px; }
+  .section-title { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, .6fr); gap: 34px; align-items: end; margin-bottom: 26px; }
+  .section-title h2 { margin-bottom: 0; color: var(--ink); font-size: clamp(2.3rem, 5vw, 4.6rem); line-height: .92; letter-spacing: -.045em; }
+  .section-title > p { margin-bottom: 0; color: var(--muted); line-height: 1.6; }
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line-strong); background: var(--bg-paper); }
+  table { width: 100%; border-collapse: collapse; min-width: 660px; }
+  th { padding: 14px 18px; background: var(--ink); color: white; font-size: .75rem; letter-spacing: .08em; text-align: left; text-transform: uppercase; }
+  th:nth-child(n+3), td:nth-child(n+3) { text-align: right; }
+  td { padding: 17px 18px; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  td:first-child { font-weight: 850; }
+  td:nth-child(n+3) { color: var(--ink); font-weight: 900; }
+  .record-list { border-top: 1px solid var(--line-strong); }
+  .record { display: grid; grid-template-columns: 68px minmax(0, 1fr) minmax(220px, auto); gap: 18px; align-items: center; padding: 23px 0; border-bottom: 1px solid var(--line); }
+  .record-number { color: var(--red); font-size: .9rem; font-weight: 950; }
+  .record-copy h3 { margin-bottom: 6px; color: var(--ink); font-size: 1.05rem; }
+  .record-copy h3 a:hover { color: var(--red); }
+  .record-copy > p:last-child { margin-bottom: 0; color: var(--muted); font-size: .9rem; line-height: 1.5; }
+  .record-values { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; min-width: 230px; }
+  .record-values dd { font-size: .95rem; }
+  @media (max-width: 760px) {
+    .awards-page { padding-top: 54px; }
+    .section-title { grid-template-columns: 1fr; gap: 14px; }
+    .record { grid-template-columns: 52px 1fr; }
+    .record-values { grid-column: 2; min-width: 0; }
+  }
+</style>

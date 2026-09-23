@@ -5,6 +5,8 @@ A fast Astro site documenting Sayyid Khan's journey to complete 100 hackathons.
 The site is a public archive, field log, and memoir of ideas, teams, prototypes,
 failures, wins, and lessons learned through repeated hackathon execution.
 
+Live site: [the100hackathoner.vercel.app](https://the100hackathoner.vercel.app/)
+
 ## Getting Started
 
 Install dependencies:
@@ -41,8 +43,10 @@ Preview the production build locally:
 npm run preview
 ```
 
-Vercel supplies the production hostname automatically. On another host, set
-`SITE_URL` to the canonical origin shown in `.env.example`.
+The production site is deployed at
+[the100hackathoner.vercel.app](https://the100hackathoner.vercel.app/). Vercel
+supplies the production hostname automatically. On another host, set `SITE_URL`
+to the canonical origin.
 
 ## Project Structure
 
