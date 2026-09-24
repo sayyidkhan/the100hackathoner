@@ -30,12 +30,32 @@ const maximum = Math.max(...categories.map((category) => category.count), 1);
               <p>Detailed themes in this category</p>
               <ol>
                 {
-                  category.themes.map((theme) => (
-                    <li>
+                  category.themes.map((theme) => {
+                    const hackathonList = theme.hackathons
+                      .map(({ number, title }) => `#${number} ${title}`)
+                      .join(" · ");
+
+                    return (
+                    <li
+                      tabindex="0"
+                      aria-label={`${theme.label}: ${theme.count} build${theme.count === 1 ? "" : "s"}. Hackathons ${hackathonList}.`}
+                    >
                       <span>{theme.label}</span>
                       <b>{theme.count}</b>
+                      <span class="theme-tooltip" role="tooltip">
+                        <strong>Hackathons</strong>
+                        <ul class="theme-tooltip-list">
+                          {theme.hackathons.map((hackathon) => (
+                            <li>
+                              <b>#{hackathon.number}</b>
+                              <span>{hackathon.title}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </span>
                     </li>
-                  ))
+                    );
+                  })
                 }
               </ol>
             </div>
@@ -155,16 +175,86 @@ const maximum = Math.max(...categories.map((category) => category.count), 1);
   }
 
   .theme-detail li {
+    position: relative;
     display: flex;
     gap: 10px;
     justify-content: space-between;
     color: var(--ink);
     font-size: 0.74rem;
     font-weight: 750;
+    cursor: help;
+    outline: none;
   }
 
   .theme-detail li b {
     color: var(--blue);
+  }
+
+  .theme-detail li:focus-visible {
+    border-radius: 2px;
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+  }
+
+  .theme-tooltip {
+    position: absolute;
+    z-index: 2;
+    bottom: calc(100% + 8px);
+    left: 0;
+    min-width: 112px;
+    max-width: min(330px, 80vw);
+    padding: 7px 9px;
+    border-radius: 3px;
+    background: var(--ink);
+    color: var(--bg-paper);
+    font-size: 0.66rem;
+    font-weight: 800;
+    line-height: 1.25;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(3px);
+    transition: opacity 140ms ease, transform 140ms ease;
+    visibility: hidden;
+  }
+
+  .theme-tooltip strong {
+    display: block;
+    margin-bottom: 5px;
+    color: color-mix(in srgb, var(--bg-paper) 72%, transparent);
+    font-size: 0.56rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .theme-tooltip-list {
+    display: grid;
+    gap: 3px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .theme-tooltip .theme-tooltip-list li {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 6px;
+    padding-top: 3px;
+    border-top: 1px solid color-mix(in srgb, var(--bg-paper) 18%, transparent);
+    color: var(--bg-paper);
+    font-size: 0.66rem;
+    font-weight: 800;
+  }
+
+  .theme-tooltip .theme-tooltip-list b {
+    color: var(--blue);
+    white-space: nowrap;
+  }
+
+  .theme-detail li:hover .theme-tooltip,
+  .theme-detail li:focus-visible .theme-tooltip {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
   }
 
   @media (max-width: 620px) {

@@ -323,7 +323,12 @@ export interface CollaborationStat extends Ranked {
 }
 
 export interface ThemeCategoryStat extends Ranked {
-  themes: Ranked[];
+  themes: Array<Ranked & {
+    hackathons: Array<{
+      number: number;
+      title: string;
+    }>;
+  }>;
 }
 
 /** Every unique theme in the source log, ranked by recurrence. */
@@ -336,7 +341,11 @@ export function buildTagStats(items: Hackathon[], limit = Infinity): Ranked[] {
  * counted once per hackathon, even if that build has multiple raw themes in it.
  */
 export function buildThemeCategoryStats(items: Hackathon[]): ThemeCategoryStat[] {
-  const categories = new Map<string, { label: string; events: Set<number>; themes: string[] }>();
+  const categories = new Map<string, {
+    label: string;
+    events: Set<number>;
+    themes: Map<string, { label: string; events: Map<number, string> }>;
+  }>();
 
   for (const item of items) {
     for (const entry of item.themeCategories) {
@@ -345,11 +354,18 @@ export function buildThemeCategoryStats(items: Hackathon[]): ThemeCategoryStat[]
       const group = categories.get(key) ?? {
         label: titleCase(category),
         events: new Set<number>(),
-        themes: [],
+        themes: new Map(),
+      };
+      const theme = entry.theme.trim() || "Unclassified";
+      const themeKey = theme.toLowerCase();
+      const themeGroup = group.themes.get(themeKey) ?? {
+        label: theme,
+        events: new Map<number, string>(),
       };
 
       group.events.add(item.number);
-      group.themes.push(entry.theme);
+      themeGroup.events.set(item.number, item.title);
+      group.themes.set(themeKey, themeGroup);
       categories.set(key, group);
     }
   }
@@ -358,7 +374,15 @@ export function buildThemeCategoryStats(items: Hackathon[]): ThemeCategoryStat[]
     .map((group) => ({
       label: group.label,
       count: group.events.size,
-      themes: tally(group.themes),
+      themes: [...group.themes.values()]
+        .map((theme) => ({
+          label: theme.label,
+          count: theme.events.size,
+          hackathons: [...theme.events]
+            .map(([number, title]) => ({ number, title }))
+            .sort((a, b) => a.number - b.number),
+        }))
+        .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label)),
     }))
     .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
 }

@@ -60,7 +60,6 @@ const dormantYears = yearStats.filter((stat) => stat.dormant);
 const topVenue = venues[0];
 const topThemeCategory = themeCategories[0];
 const awardRate = Math.round((totals.awarded / totals.logged) * 100);
-const avgDays = Math.round((totals.days / totals.logged) * 10) / 10;
 const recentYears = activeYears.slice(-2);
 const recentBuilds = recentYears.reduce((sum, stat) => sum + stat.total, 0);
 const recentShare = totals.logged ? Math.round((recentBuilds / totals.logged) * 100) : 0;
@@ -117,7 +116,6 @@ const peakDurationOccurrence = Math.max(
 
 const headline = [
   { value: String(totals.days), label: "Hackathon-days logged", note: "minimum 1 day per event" },
-  { value: String(avgDays), label: "Avg credited days", note: "journey accounting" },
   { value: String(totals.events), label: "Distinct events", note: `${totals.venues} venues` },
   { value: `${awardRate}%`, label: "Award rate", note: `${totals.awarded} of ${totals.logged}` },
 ];
@@ -437,7 +435,7 @@ const panelIndex = (id: string) =>
 
   .headline {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1px;
     margin: 0 0 8px;
     background: var(--line);
