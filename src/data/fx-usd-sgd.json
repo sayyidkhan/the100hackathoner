@@ -1,0 +1,19 @@
+[
+  { "month": "2016-09", "sgdPerUsd": 1.3591 },
+  { "month": "2016-10", "sgdPerUsd": 1.3847 },
+  { "month": "2016-11", "sgdPerUsd": 1.4105 },
+  { "month": "2017-09", "sgdPerUsd": 1.3494 },
+  { "month": "2018-03", "sgdPerUsd": 1.3146 },
+  { "month": "2018-06", "sgdPerUsd": 1.3480 },
+  { "month": "2019-05", "sgdPerUsd": 1.3706 },
+  { "month": "2023-12", "sgdPerUsd": 1.3321 },
+  { "month": "2025-03", "sgdPerUsd": 1.3356 },
+  { "month": "2025-06", "sgdPerUsd": 1.2825 },
+  { "month": "2025-09", "sgdPerUsd": 1.2847 },
+  { "month": "2026-02", "sgdPerUsd": 1.2664 },
+  { "month": "2026-03", "sgdPerUsd": 1.2796 },
+  { "month": "2026-04", "sgdPerUsd": 1.2759 },
+  { "month": "2026-05", "sgdPerUsd": 1.2748 },
+  { "month": "2026-07", "sgdPerUsd": 1.2908 },
+  { "month": "2026-08", "sgdPerUsd": 1.2763 }
+]
