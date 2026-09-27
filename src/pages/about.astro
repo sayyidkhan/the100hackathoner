@@ -40,6 +40,34 @@ import PageShell from "../components/PageShell.astro";
       <li>Purpose is discovered through motion.</li>
     </ul>
   </section>
+
+  <section class="section contact-section" id="contact" aria-labelledby="contact-heading">
+    <div class="container contact">
+      <div>
+        <p class="contact-eyebrow">Get in touch</p>
+        <h2 id="contact-heading">Invite me into the room where builders gather.</h2>
+        <p class="contact-intro">
+          Speaking, mentoring, judging, AI workshops, hackathon programming, and
+          collaborations around fast prototyping, AI agents, and builder culture.
+        </p>
+      </div>
+      <form action="mailto:hello@example.com" method="post" enctype="text/plain">
+        <label>
+          Name
+          <input name="name" autocomplete="name" />
+        </label>
+        <label>
+          Email
+          <input name="email" type="email" autocomplete="email" />
+        </label>
+        <label>
+          What are you planning?
+          <textarea name="message" rows="6"></textarea>
+        </label>
+        <button class="button primary" type="submit">Start the Conversation</button>
+      </form>
+    </div>
+  </section>
 </PageShell>
 
 <style>
@@ -119,9 +147,84 @@ import PageShell from "../components/PageShell.astro";
     border-color: var(--black);
   }
 
+  .contact-section {
+    scroll-margin-top: 120px;
+    border-top: 1px solid var(--line);
+    background: var(--bg-paper);
+  }
+
+  .contact {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(320px, 0.65fr);
+    gap: 54px;
+    align-items: start;
+  }
+
+  .contact-eyebrow {
+    margin: 0 0 16px;
+    color: var(--red);
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .contact h2 {
+    max-width: 760px;
+    font-family: inherit;
+    font-weight: 950;
+    letter-spacing: -0.035em;
+    line-height: 0.96;
+  }
+
+  .contact-intro {
+    max-width: 700px;
+    margin: 28px 0 0;
+    font-size: 1.12rem;
+  }
+
+  form {
+    display: grid;
+    gap: 16px;
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    padding: 24px;
+  }
+
+  label {
+    display: grid;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    background: var(--bg-paper);
+    color: var(--text);
+    padding: 13px 12px;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  form button {
+    width: 100%;
+    cursor: pointer;
+  }
+
   @media (max-width: 900px) {
     .split,
-    .beliefs ul {
+    .beliefs ul,
+    .contact {
       grid-template-columns: 1fr;
     }
   }
