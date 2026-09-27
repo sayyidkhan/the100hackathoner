@@ -19,6 +19,7 @@ const currencies = (["SGD", "USD"] as const).map((currency) => ({
   equivalent: converted.totals[currency],
 }));
 const fxMonths = getUsedFxMonths(records);
+const publishedFxMonths = fxMonths.filter((rate): rate is typeof rate & { sgdPerUsd: number } => rate.sgdPerUsd !== undefined);
 const monthLabel = (month: string) => new Intl.DateTimeFormat("en-SG", { month: "short", year: "numeric", timeZone: "UTC" }).format(new Date(`${month}-01T00:00:00Z`));
 const formatFigure = (value: number) => new Intl.NumberFormat("en-SG", {
   minimumFractionDigits: Number.isInteger(value) ? 0 : 2,
@@ -102,14 +103,13 @@ const categoryByCurrency = (["SGD", "USD"] as const).map((currency) => ({
         <p>Federal Reserve G.5 monthly average, via <a href={fxSource} target="_blank" rel="noopener noreferrer">FRED EXSIUS</a>. USD→SGD is stored; SGD→USD is its reciprocal. Published months are cached.</p>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Hackathon month</th><th>US$1 in SGD</th><th>S$1 in USD</th><th>Status</th></tr></thead>
+            <thead><tr><th>Hackathon month</th><th>US$1 in SGD</th><th>S$1 in USD</th></tr></thead>
             <tbody>
-              {fxMonths.map(({ month, sgdPerUsd }) => (
+              {publishedFxMonths.map(({ month, sgdPerUsd }) => (
                 <tr>
                   <td>{monthLabel(month)}</td>
-                  <td>{sgdPerUsd === undefined ? "—" : `S$${sgdPerUsd.toFixed(4)}`}</td>
-                  <td>{sgdPerUsd === undefined ? "—" : `US$${(1 / sgdPerUsd).toFixed(4)}`}</td>
-                  <td>{sgdPerUsd === undefined ? "Pending publication" : "Cached"}</td>
+                  <td>{`S$${sgdPerUsd.toFixed(4)}`}</td>
+                  <td>{`US$${(1 / sgdPerUsd).toFixed(4)}`}</td>
                 </tr>
               ))}
             </tbody>
