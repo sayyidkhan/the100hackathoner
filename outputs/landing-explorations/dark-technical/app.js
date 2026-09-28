@@ -1,42 +1,132 @@
-const $=s=>document.querySelector(s);
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const pad=n=>String(n).padStart(3,'0');
-const dialog=$('#project-dialog');
-let data=[],filter='all';
-const artworks=[
-`<svg viewBox="0 0 420 320" aria-hidden="true"><defs><linearGradient id="paper" x2=".8" y2="1"><stop stop-color="#e8dcff"/><stop offset="1" stop-color="#6e529c"/></linearGradient><linearGradient id="page" x2="1" y2="1"><stop stop-color="#ae88e7"/><stop offset="1" stop-color="#452c61"/></linearGradient><filter id="home-glow"><feGaussianBlur stdDeviation="7"/></filter></defs><ellipse cx="223" cy="267" rx="130" ry="13" fill="#9c66e7" opacity=".24" filter="url(#home-glow)"/><path d="m68 209 149 63 143-73-142-58z" fill="#382344" stroke="#bc96e0"/><path d="m70 196 147 61 140-72-140-55z" fill="url(#page)" stroke="#d9bef3"/><path d="m70 192 147 53 140-69-138-63z" fill="url(#paper)"/><path d="m218 113-1 132" stroke="#52345f" opacity=".8"/><path d="m95 186 68-31 45 17-57 28" stroke="#5c367e" stroke-width="1.7" fill="none" stroke-dasharray="5 3"/><path d="m172 143 48-56 55 17 23 73-57 28-55-23z" fill="#4b2b72" stroke="#d8b0ff"/><path d="m172 143 48-56 57 19 23 70-57-44z" fill="#c5a0ef"/><path d="m220 87 21 44 59 45" fill="none" stroke="#f0d9ff" stroke-width="2"/><path d="m224 164 21-10 4 42-21 8z" fill="#e8c3ff"/><path d="m201 151 13 5v14l-13-5z" fill="#c29bf5"/><circle cx="122" cy="215" r="4" fill="#ead7ff"/><path d="m297 247 29-15 24 9" stroke="#9d72cb" fill="none"/><path d="m315 121 9-6m-20-13 5-9m-18 9 1-13" stroke="#d3b4f5" stroke-width="2"/></svg>`,
-`<svg viewBox="0 0 420 320" aria-hidden="true"><defs><linearGradient id="city" x2="1" y2="1"><stop stop-color="#407c9e"/><stop offset="1" stop-color="#14283b"/></linearGradient><linearGradient id="crow" x2="1" y2="1"><stop stop-color="#c6f7ff"/><stop offset=".5" stop-color="#70b5d6"/><stop offset="1" stop-color="#215778"/></linearGradient></defs><g stroke="#42728d" stroke-width=".7" fill="none" opacity=".5"><ellipse cx="211" cy="240" rx="159" ry="49"/><ellipse cx="211" cy="240" rx="120" ry="36"/><path d="m58 224 248 46M102 202l244 46M128 194 242 286M220 191 91 273"/></g><g fill="url(#city)" stroke="#6a9ab6" stroke-width=".7"><path d="m90 194 25-13 25 10v56l-25 13-25-10zM155 163l29-15 31 13v98l-30 14-30-14zM244 183l25-13 26 11v68l-26 12-25-12zM298 210l20-10 21 9v39l-21 11-20-10z"/><path d="m116 181 0 78M184 149v124M269 170v91M318 200v59"/></g><path d="m131 151 47-22 11-59 31 54 81-42-39 76-32-4-24 25-9-27-50 11z" fill="url(#crow)" stroke="#c4efff" stroke-width="1"/><path d="m178 129 52 25 71-72m-104 70-8-82" fill="none" stroke="#e3faff" opacity=".6"/><circle cx="240" cy="140" r="2" fill="#071a27"/><path d="m89 123 17-7m-22 23 14-7m26-32 11-6" stroke="#608ca1"/><circle cx="301" cy="79" r="15" stroke="#80bfd6" stroke-dasharray="2 5" fill="none" opacity=".5"/></svg>`,
-`<svg viewBox="0 0 420 320" aria-hidden="true"><defs><linearGradient id="forest" x2="1" y2="1"><stop stop-color="#81ccb5"/><stop offset="1" stop-color="#235449"/></linearGradient><linearGradient id="house" x2="1" y2="1"><stop stop-color="#b0d9ca"/><stop offset="1" stop-color="#346861"/></linearGradient></defs><path d="m66 231 121-60 165 62-127 61z" fill="#133c38" stroke="#509485"/><path d="m95 235 123 33 92-36" fill="none" stroke="#77baaa" opacity=".6"/><g fill="url(#forest)" stroke="#80bba5" stroke-width=".5"><path d="m106 127-33 82h66zM308 101l-37 104h75zM143 90l-35 92h69z"/></g><g stroke="#689c84" stroke-width="4"><path d="M106 186v53M308 183v55M143 162v47"/></g><path d="m136 186 93-45 66 34-94 48z" fill="#88b4a2"/><path d="m136 186 65 37v31l-65-35z" fill="#396b60"/><path d="m201 223 94-48v36l-94 43z" fill="url(#house)"/><path d="m121 185 45-65 71 11 72 44-108 52z" fill="#427d71" stroke="#a1d3bd"/><path d="m166 120 35 107 108-52-72-44z" fill="#6da491"/><path d="m161 224v33m35-13v33m52-47v30m40-49v30" stroke="#a1c8b5" stroke-width="3"/><path d="m201 227 36-19v25l-36 16" fill="#254c47"/><circle cx="260" cy="89" r="25" fill="none" stroke="#83bdaa" opacity=".3"/><circle cx="260" cy="89" r="16" fill="#8fc3b0" opacity=".15"/></svg>`];
-function openProject(p){$('#dialog-kicker').textContent=`ATTEMPT ${pad(p.number)} / ${p.dateLabel}`;$('#dialog-title').textContent=p.title;$('#dialog-solution').textContent=p.solution;$('#dialog-facts').innerHTML=`<dt>Hackathon</dt><dd>${esc(p.event)}</dd><dt>Location</dt><dd>${esc(p.location||p.country)}</dd>${p.award?`<dt>Recognition</dt><dd>${esc(p.award)}</dd>`:''}${p.tags?.length?`<dt>Exploring</dt><dd>${esc(p.tags.join(' · '))}</dd>`:''}`;const link=$('#dialog-link');link.href=p.githubUrl||p.eventUrl||'http://127.0.0.1:18481/#journey';link.textContent=p.githubUrl?'Explore the code ↗':p.eventUrl?'Explore the event ↗':'See the full journey ↗';dialog.showModal()}
-function renderArchive(){const query=$('#search').value.trim().toLowerCase();const chosen=data.filter(p=>(filter==='all'||filter==='awarded'&&p.award||filter==='2026'&&p.startDate?.startsWith('2026'))&&`${p.title} ${p.event} ${p.solution} ${(p.tags||[]).join(' ')}`.toLowerCase().includes(query));$('#result-count').textContent=`${chosen.length} ${chosen.length===1?'attempt':'attempts'}${query?' matching your search':''}`;$('#project-list').innerHTML=chosen.length?chosen.map(p=>`<button class="archive-item" data-id="${p.number}"><span>${pad(p.number)}</span><div><h4>${esc(p.title)}</h4><p>${esc(p.event)}</p></div><time>${esc(p.dateLabel)}</time><span>↗</span></button>`).join(''):'<p class="empty-state">No attempts match that search. Try a project name, event, or a different filter.</p>';$('#project-list').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>openProject(data.find(p=>p.number===Number(b.dataset.id)))))}
-$('#archive-toggle').addEventListener('click',()=>{const open=$('#archive-panel').hidden;$('#archive-panel').hidden=!open;$('#archive-toggle').setAttribute('aria-expanded',String(open));$('#archive-toggle').innerHTML=open?'Close the archive <span>−</span>':'Browse all 81 attempts <span>+</span>';if(open){renderArchive();$('#search').focus({preventScroll:true})}});
-$('#search').addEventListener('input',renderArchive);document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(other=>{other.classList.toggle('active',other===b);other.setAttribute('aria-pressed',String(other===b))});renderArchive()}));
-$('.dialog-close').addEventListener('click',()=>dialog.close());dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close()}});
-try{const r=await fetch('assets/hackathons.json');if(!r.ok)throw Error('Data unavailable');data=(await r.json()).sort((a,b)=>b.number-a.number);$('#featured').innerHTML=data.slice(0,3).map((p,i)=>`<button class="feature-card" aria-label="Read attempt ${p.number}: ${esc(p.title)}"><div class="project-art"><div class="project-art-label"><span>ATTEMPT ${pad(p.number)}</span><span>${i===0?'LATEST':'2026'}</span></div>${artworks[i]}</div><div class="project-info"><p>${esc(p.event)}</p><h3>${esc(p.title)}</h3><span>${esc(p.categories?.[0]||p.tags?.[0]||'A new experiment')}<b>OPEN STORY ↗</b></span></div></button>`).join('');$('#featured').querySelectorAll('button').forEach((b,i)=>b.addEventListener('click',()=>openProject(data[i])))}catch{ $('#featured').innerHTML='<p>The archive could not load. Refresh to try again, or <a href="http://127.0.0.1:18481/#journey">visit the main journey</a>.</p>' }
+const $ = (s) => document.querySelector(s);
+const esc = (s) =>
+  String(s ?? "").replace(
+    /[&<>"']/g,
+    (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        c
+      ],
+  );
+const pad = (n) => String(n).padStart(3, "0");
+const dialog = $("#project-dialog");
+let data = [],
+  filter = "all";
+function openProject(p) {
+  $("#dialog-kicker").textContent = `ATTEMPT ${pad(p.number)} / ${p.dateLabel}`;
+  $("#dialog-title").textContent = p.title;
+  $("#dialog-solution").textContent = p.solution;
+  $("#dialog-facts").innerHTML =
+    `<dt>Hackathon</dt><dd>${esc(p.event)}</dd><dt>Location</dt><dd>${esc(p.location || p.country)}</dd>${p.award ? `<dt>Recognition</dt><dd>${esc(p.award)}</dd>` : ""}${p.tags?.length ? `<dt>Exploring</dt><dd>${esc(p.tags.join(" · "))}</dd>` : ""}`;
+  const link = $("#dialog-link");
+  link.href = p.githubUrl || p.eventUrl || "http://127.0.0.1:18481/#journey";
+  link.textContent = p.githubUrl
+    ? "Explore the code ↗"
+    : p.eventUrl
+      ? "Explore the event ↗"
+      : "See the full journey ↗";
+  dialog.showModal();
+}
+function renderArchive() {
+  const query = $("#search").value.trim().toLowerCase();
+  const chosen = data.filter(
+    (p) =>
+      (filter === "all" ||
+        (filter === "awarded" && p.award) ||
+        (filter === "2026" && p.startDate?.startsWith("2026"))) &&
+      `${p.title} ${p.event} ${p.solution} ${(p.tags || []).join(" ")}`
+        .toLowerCase()
+        .includes(query),
+  );
+  $("#result-count").textContent =
+    `${chosen.length} ${chosen.length === 1 ? "attempt" : "attempts"}${query ? " matching your search" : ""}`;
+  $("#project-list").innerHTML = chosen.length
+    ? chosen
+        .map(
+          (p) =>
+            `<button class="archive-item" data-id="${p.number}"><span>${pad(p.number)}</span><div><h4>${esc(p.title)}</h4><p>${esc(p.event)}</p></div><time>${esc(p.dateLabel)}</time><span>↗</span></button>`,
+        )
+        .join("")
+    : '<p class="empty-state">No attempts match that search. Try a project name, event, or a different filter.</p>';
+  $("#project-list")
+    .querySelectorAll("button")
+    .forEach((b) =>
+      b.addEventListener("click", () =>
+        openProject(data.find((p) => p.number === Number(b.dataset.id))),
+      ),
+    );
+}
+$("#archive-toggle").addEventListener("click", () => {
+  const open = $("#archive-panel").hidden;
+  $("#archive-panel").hidden = !open;
+  $("#archive-toggle").setAttribute("aria-expanded", String(open));
+  $("#archive-toggle").innerHTML = open
+    ? "Close the archive <span>−</span>"
+    : "Browse all 81 attempts <span>+</span>";
+  if (open) {
+    renderArchive();
+    $("#search").focus({ preventScroll: true });
+  }
+});
+$("#search").addEventListener("input", renderArchive);
+document.querySelectorAll("[data-filter]").forEach((b) =>
+  b.addEventListener("click", () => {
+    filter = b.dataset.filter;
+    document.querySelectorAll("[data-filter]").forEach((other) => {
+      other.classList.toggle("active", other === b);
+      other.setAttribute("aria-pressed", String(other === b));
+    });
+    renderArchive();
+  }),
+);
+$(".dialog-close").addEventListener("click", () => dialog.close());
+dialog.addEventListener("click", (e) => {
+  if (e.target === dialog) {
+    const r = dialog.getBoundingClientRect();
+    if (
+      e.clientX < r.left ||
+      e.clientX > r.right ||
+      e.clientY < r.top ||
+      e.clientY > r.bottom
+    )
+      dialog.close();
+  }
+});
+try {
+  const r = await fetch("assets/hackathons.json");
+  if (!r.ok) throw Error("Data unavailable");
+  data = (await r.json()).sort((a, b) => b.number - a.number);
+} catch {
+  $("#archive-status").innerHTML =
+    '<p>The archive could not load. Refresh to try again, or <a href="http://127.0.0.1:18481/#journey">visit the main journey</a>.</p>';
+}
 
-// A native canvas orbital sculpture. Each lit segment is one recorded attempt.
-// The final 19 unlit segments represent the unwritten part of the journey.
-const canvas=$('#orbit'),ctx=canvas.getContext('2d'),art=$('.archive-art'),motion=$('#motion-toggle');
-const reduced=matchMedia('(prefers-reduced-motion: reduce)');let paused=reduced.matches,visible=true,w=1,h=1,phase=0,last=0,pointerX=0,pointerY=0,px=0,py=0;
-function syncMotion(){motion.textContent=paused?'Play motion ▷':'Pause motion Ⅱ';motion.setAttribute('aria-pressed',String(paused))}syncMotion();motion.addEventListener('click',()=>{paused=!paused;syncMotion()});reduced.addEventListener('change',e=>{paused=e.matches;syncMotion()});
-new ResizeObserver(()=>{w=art.clientWidth;h=art.clientHeight;const ratio=Math.min(devicePixelRatio||1,2);canvas.width=w*ratio;canvas.height=h*ratio;ctx.setTransform(ratio,0,0,ratio,0,0)}).observe(art);
-new IntersectionObserver(entries=>{visible=entries[0].isIntersecting}).observe(art);
-art.addEventListener('pointermove',e=>{const r=art.getBoundingClientRect();pointerX=(e.clientX-r.left)/r.width-.5;pointerY=(e.clientY-r.top)/r.height-.5});art.addEventListener('pointerleave',()=>{pointerX=pointerY=0});
-function draw(t){requestAnimationFrame(draw);const dt=Math.min(t-last,50);last=t;if(!visible||document.hidden)return;if(!paused){phase+=dt*.000018;px+=(pointerX-px)*.035;py+=(pointerY-py)*.035}ctx.clearRect(0,0,w,h);const cx=w*.53,cy=h*.48,R=Math.min(w*.405,h*.63),tilt=-.34+px*.12,squash=.53+py*.055;
-const point=(a,r,depth=0)=>{const x=Math.cos(a)*r,y=Math.sin(a)*r*squash;return [cx+x*Math.cos(tilt)-y*Math.sin(tilt),cy+x*Math.sin(tilt)+y*Math.cos(tilt)+depth]};
-const pathRing=(radius,start=0,end=Math.PI*2,depth=0)=>{ctx.beginPath();for(let a=start;a<=end+.01;a+=.014){const p=point(a,radius,depth);a===start?ctx.moveTo(...p):ctx.lineTo(...p)} };
-let glow=ctx.createRadialGradient(cx,cy,0,cx,cy,R*1.18);glow.addColorStop(0,'#38205a0c');glow.addColorStop(.48,'#4f299933');glow.addColorStop(.75,'#38247816');glow.addColorStop(1,'#100a2200');ctx.fillStyle=glow;ctx.fillRect(0,0,w,h);
-// Fine calibration lines lend scale; their contrast stays below the main sculpture.
-ctx.strokeStyle='#a593dc0c';ctx.lineWidth=1;for(let x=20;x<w;x+=40){ctx.beginPath();ctx.moveTo(x,50);ctx.lineTo(x,h-45);ctx.stroke()}for(let y=70;y<h-40;y+=40){ctx.beginPath();ctx.moveTo(30,y);ctx.lineTo(w-30,y);ctx.stroke()}
-for(const scale of [1.09,1.18,1.27]){pathRing(R*scale);ctx.strokeStyle=scale===1.18?'#bfa1ff25':'#ac91dc13';ctx.lineWidth=.8;ctx.stroke()}
-// Glass extrusion under the segmented ring.
-for(let d=25;d>=1;d-=2){pathRing(R*.89,0,Math.PI*2,d);ctx.strokeStyle=`rgba(118,76,205,${.025+(26-d)*.001})`;ctx.lineWidth=R*.205;ctx.stroke()}
-for(const radius of [.70,.76,.98]){pathRing(R*radius,0,Math.PI*2,17);ctx.strokeStyle='#8f6ce469';ctx.lineWidth=.7;ctx.stroke()}
-// One hundred bevelled data slats form the orbit, with a visible future gap.
-for(let i=0;i<100;i++){const a=i/100*Math.PI*2+phase,da=Math.PI*2/100*.72,lit=i<81;const p0=point(a,R*.75),p1=point(a+da,R*.75),p2=point(a+da,R),p3=point(a,R);ctx.beginPath();ctx.moveTo(...p0);ctx.lineTo(...p1);ctx.lineTo(...p2);ctx.lineTo(...p3);ctx.closePath();const shine=.5+.5*Math.cos(a-1.2);const g=ctx.createLinearGradient(...p0,...p3);if(lit){g.addColorStop(0,'rgba(115,70,200,.7)');g.addColorStop(.18,`rgba(155,119,225,${.48+shine*.2})`);g.addColorStop(.74,`rgba(198,177,255,${.6+shine*.22})`);g.addColorStop(1,'#a079ed')}else{g.addColorStop(0,'#171523');g.addColorStop(1,'#333043')}ctx.fillStyle=g;ctx.fill();ctx.strokeStyle=lit?'#d8c6ff78':'#82728a37';ctx.lineWidth=.55;ctx.stroke();if(lit){ctx.beginPath();ctx.moveTo(...p2);ctx.lineTo(...p3);ctx.strokeStyle='#ebdeffc0';ctx.lineWidth=1;ctx.stroke()}}
-// The inner iris has concentric thin rim lights, leaving the count legible.
-for(const [r,col,lw] of [[.67,'#c7a6ff93',1],[.66,'#6c43bb4d',3],[.60,'#b899ff25',1]]){pathRing(R*r);ctx.strokeStyle=col;ctx.lineWidth=lw;ctx.stroke()}
-ctx.save();ctx.shadowBlur=14;ctx.shadowColor='#b284ff';pathRing(R*1.01,phase+.5,phase+2.5);ctx.strokeStyle='#d6baff';ctx.lineWidth=1.3;ctx.stroke();ctx.restore();
-// Small orbiting milestones and their leaders, independent of the 100 segments.
-for(let j=0;j<3;j++){const a=phase*.6+j*2.1+.5,p=point(a,R*1.18);ctx.save();ctx.shadowColor='#c3a4ff';ctx.shadowBlur=12;ctx.fillStyle='#dcc5ff';ctx.beginPath();ctx.arc(...p,2.3,0,Math.PI*2);ctx.fill();ctx.restore();ctx.strokeStyle='#ac8fe555';ctx.beginPath();ctx.moveTo(...p);ctx.lineTo(p[0]+18,p[1]-15);ctx.lineTo(p[0]+53,p[1]-15);ctx.stroke();ctx.font='8px monospace';ctx.fillStyle='#b9a5d6';ctx.fillText(['001 / BEGIN','024 / LEARN','081 / NOW'][j],p[0]+23,p[1]-21)}
-}requestAnimationFrame(draw);
+// The scene is decorative; all chapter actions remain accessible HTML controls.
+let selectedChapter = 0;
+function selectChapter(index) {
+  selectedChapter = index;
+  const project = data[index];
+  if (!project) return;
+  document.querySelectorAll("[data-chapter]").forEach((button, i) => {
+    button.classList.toggle("selected", i === index);
+    button.setAttribute("aria-pressed", String(i === index));
+  });
+  $("#active-number").textContent = pad(project.number);
+  $("#active-title").textContent = project.title;
+  $("#active-event").textContent = project.event;
+  $("#active-description").textContent = project.solution;
+  document.dispatchEvent(new CustomEvent("journey-chapter", { detail: index }));
+}
+document.querySelectorAll("[data-chapter]").forEach((button) => {
+  button.addEventListener("click", () =>
+    selectChapter(Number(button.dataset.chapter)),
+  );
+});
+$("#open-chapter").addEventListener("click", () => {
+  if (data[selectedChapter]) openProject(data[selectedChapter]);
+});
+selectChapter(0);
+import("./engine.js").catch(() => {
+  $(".engine-scene").classList.add("scene-fallback");
+  $("#scene-status").textContent = "ILLUSTRATED CHAPTER PREVIEW";
+  $("#motion-toggle").hidden = true;
+});

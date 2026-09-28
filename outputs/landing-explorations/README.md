@@ -45,3 +45,23 @@ The next pass is an uncommitted exploration, not approval to merge.
   project-specific lessons, testimonials, or speaking credentials.
 - Check each opening composition, project interaction, narrow-screen layout,
   readable content, and reduced-motion behavior before comparison.
+
+## Third design pass
+
+V2 is saved in `be88157` on `codex/landing-v2-checkpoint`. V3 remains an
+uncommitted review pass. No main-site integration or remote push is authorized.
+
+- **Museum:** tactile, spatially arranged project-artifact carousel. Original
+  generated artwork is labelled as conceptual, not actual product photography.
+  Inspired by the collection/wayfinding approach in
+  [Ordinary People's SeMoCA Craft Archives](https://ordinarypeople.info/work/semoca-craftarchives)
+  and the project-specific presentation of [Koto](https://koto.com/).
+- **Sculptural:** a kinetic installation of 100 modules with alternate spatial
+  arrangements and direct controls. Reference: [Lusion](https://lusion.co/).
+- **Dark:** an interactive 3D chapter display. Reference:
+  [Active Theory](https://activetheory.net/), with a readable interface retained
+  around the immersive visual rather than forcing visitors through a game.
+
+All three use real archive records. Their rendered objects are visual metaphors,
+not claims that the projects were physical products. Source names and links in
+each app's README explain the design references without copying their assets.

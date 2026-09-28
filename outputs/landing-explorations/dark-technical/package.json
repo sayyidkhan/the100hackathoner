@@ -1,1 +1,12 @@
-{"name":"hundred-dark-technical-exploration","private":true,"type":"module","scripts":{"start":"node server.mjs","check":"node --check app.js && node --check server.mjs"}}
+{
+  "name": "hundred-dark-technical-exploration",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "check": "node --check app.js && node --check engine.js && node --check server.mjs"
+  },
+  "dependencies": {
+    "three": "0.186.1"
+  }
+}

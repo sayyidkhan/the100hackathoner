@@ -1,6 +1,6 @@
-# Museum of 100 Attempts
+# Museum / The 100 Hackathoner — V3
 
-An isolated landing-page exploration for The 100 Hackathoner. Nothing in the production Astro app is changed.
+A standalone spatial-exhibition concept. The main Astro site is untouched.
 
 ## Preview
 
@@ -8,20 +8,63 @@ Run `npm start` here, then open http://127.0.0.1:18501. No dependencies to insta
 
 ## Direction
 
-A contemporary living exhibition of **The 100 Hackathoner**, with a monumental condensed masthead and one curated, interactive display. The approved off-white, ink, and electric-red brand palette stays intact; cobalt appears only in selected artwork. The opening contains no portrait and no duplicate progress grid. The immersive design skill informed exhibit hierarchy, explicit interaction states, and keyboard accessibility; the user-approved palette overrides its green/pink defaults.
+A living collection of **100 attempts / one life in progress**, not a generic developer portfolio. The opening establishes the 100-hackathon mission and real 81/100 progress before inviting visitors to explore three physical concept objects.
 
-The three switchable objects are contextual concept artifacts, not product screenshots: a dimensional storybook for **The Next 8 Seconds**, a folded crow above a city grid for **Itachi’s Crow**, and a visitor pass for **Long Taa Borneo Eco Stay**. Selecting a tab changes both the object and the exhibit caption; opening the object shows the matching real project details.
+The approved paper, ink, and electric-red palette remains intact. Cobalt is limited to details within artwork. A full-width spatial carousel replaces V2's large wordmark and boxed single-exhibit layout. Generated studio still lifes give each featured project a tangible object, with adjacent exhibits visible as an invitation to explore.
 
-The collection uses a local snapshot of all 81 source records and derives the 24 award-bearing records. Search, awarded filter, load more, and surprise-me work locally. Native modal dialogs support Escape and focus management. The narrative sections foreground Sayyid's engineer-to-operator journey and eventual book, rather than generic portfolio marketing.
+No portrait hero, duplicate progress grid, fabricated case-study outcomes, or invented speaking credentials.
 
-About, principles, judging, and contact links intentionally lead back to the existing site at port 18481. Project links lead to recorded GitHub or event URLs. Google Fonts is optional; local font fallbacks preserve the layout.
+## References and translation
 
-## Checks
+- [Ordinary People — SeMoCA Craft Archives](https://ordinarypeople.info/work/semoca-craftarchives): the documented identity builds a coherent archive system around organizing and stacking objects. This informed the numbered labels, spatial collection, and consistent wayfinding.
+- [Koto](https://koto.com/): work entries pair projects with concise ideas and clear categorization. This informed the project-specific “what if” captions and visual-first opening.
+- The immersive skill informed explicit interaction states, exhibit hierarchy, keyboard controls, and reduced-motion support. User-approved colors override its default green/pink palette.
 
-- `npm run check`: passed.
-- Preview HTML and JavaScript: HTTP 200.
-- Data: 81 records, 24 award-bearing; featured attempts 81, 80, 79 verified.
-- Responsive breakpoints: 1600px, 1000px, and 650px.
-- Keyboard focus, skip link, explicit button labels, native dialog, reduced-motion fallback included.
+The concepts are original interpretations, not copies of those sites.
 
-No commits, push, or merge performed.
+## Artwork
+
+Three local still lifes represent actual projects:
+
+1. **The Next 8 Seconds** — red open book, folded-paper landscape, house and cobalt path.
+2. **Itachi's Crow** — sculptural crow and miniature city.
+3. **Long Taa Borneo Eco Stay** — miniature longhouse and forest.
+
+These are labeled **concept objects**, not product screenshots. Native labels carry the actual project names and numbers. Asset provenance and prompts are in [assets/ASSET-NOTES.md](assets/ASSET-NOTES.md).
+
+## Interaction
+
+- Drag horizontally, use previous/next buttons, or choose pagination dots.
+- Select a side object to bring it to the center; select the active object to open its real project record.
+- Arrow-left/right keys also change the active exhibit when focus is in the stage.
+- Vertical mobile scrolling stays native through `touch-action: pan-y`; pointer capture begins only after a horizontal gesture.
+- Search, award filter, show-more, and random project selection use all 81 local records.
+- Native modal dialogs support Escape and focus return.
+- Reduced-motion preference removes transitions.
+
+## Content and routes
+
+The local JSON snapshot contains **81 attempts and 24 award-bearing records**. The memoir sections foreground the engineer-to-founder/operator transition and eventual book. The shipping quote is taken from the existing “What Deadline Pressure Teaches You” essay.
+
+About, principles, essays, judging and contact links intentionally return to the main site on port 18481. Project links use recorded GitHub or event URLs.
+
+## Files
+
+- `index.html` — semantic content and exhibition markup.
+- `style.css` — readable archive, document and modal foundations.
+- `exhibition.css` — readable V3 art direction and responsive spatial layout.
+- `app.js` — carousel gestures, collection filtering and dialogs.
+- `server.mjs` — standalone HTTP server, with image MIME types.
+- `assets/` — optimized JPG artwork plus original generated PNGs and provenance.
+
+## Verification
+
+- JavaScript and server syntax checks passed.
+- HTML, CSS, JavaScript and all three JPEG assets return HTTP 200.
+- JPEGs served as `image/jpeg`.
+- Source data: 81 attempts, 24 awarded; featured 81/80/79 matched.
+- Parent visual QA at desktop and 390px mobile passed.
+- Parent interaction QA confirmed next-exhibit selection and correct crow-project dialog.
+- Diff whitespace checks passed.
+
+No commit, push or merge performed for V3.
