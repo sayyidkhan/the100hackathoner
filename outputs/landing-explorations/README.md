@@ -27,3 +27,21 @@ Run `npm start` inside each directory to restart its preview. Each app runs inde
 4. Does the interaction still make sense on mobile and with a keyboard?
 
 Choose a direction first. Content and visual details can then be refined before integration into the main Astro site.
+
+## Second design pass
+
+The original three prototypes (including the approved red Museum palette) are
+saved in commit `232fb28` on `codex/landing-explorations-checkpoint`.
+The next pass is an uncommitted exploration, not approval to merge.
+
+- Lead with **The 100 Hackathoner**, Sayyid Khan, and the mission to complete 100
+  hackathons. Avoid generic portfolio headlines that could belong to anyone.
+- Museum keeps the approved off-white, ink, electric-red palette with sparse cobalt.
+- Sculptural explores a more substantial spatial experience inspired by
+  [Lusion](https://lusion.co/), with original geometry rather than copied assets.
+- Dark Technical explores a more immersive archive with the restrained luminous
+  material language of [DesignCode](https://designcode.io/).
+- Connect visuals to real projects and the living memoir. Never invent
+  project-specific lessons, testimonials, or speaking credentials.
+- Check each opening composition, project interaction, narrow-screen layout,
+  readable content, and reduced-motion behavior before comparison.

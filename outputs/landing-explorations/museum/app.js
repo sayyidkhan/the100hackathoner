@@ -1,6 +1,23 @@
 const projects=await fetch('./hackathons.json').then(r=>{if(!r.ok)throw Error('Collection unavailable');return r.json();});
 const $=s=>document.querySelector(s);
 const list=$('#project-list'),dialog=$('#project-dialog');
+const featuredCopy={
+  81:{title:'The Next 8 Seconds',category:'SOCIAL GOOD / ANTI-DRUG JAM 2026',description:'Draw your way through peer pressure. Find your way home.'},
+  80:{title:"Itachi’s Crow",category:'GENERATIVE AI / GPT-6 ASTRA HACKATHON',description:'Explore a 3D city with a flying crow. Imagine yourself there.'},
+  79:{title:'Long Taa Borneo Eco Stay',category:'CULTURE × AI / SINGAPORE × SARAWAK',description:'A bilingual visitor experience for a Sebup longhouse village.'}
+};
+document.querySelectorAll('[data-feature]').forEach(button=>button.addEventListener('click',()=>{
+  const number=button.dataset.feature,copy=featuredCopy[number];
+  document.querySelectorAll('[data-feature]').forEach(tab=>{tab.classList.toggle('selected',tab===button);tab.setAttribute('aria-pressed',String(tab===button));});
+  document.querySelectorAll('[data-scene]').forEach(scene=>{scene.hidden=scene.dataset.scene!==number;});
+  $('#featured-number').textContent=String(number).padStart(3,'0');
+  $('.exhibit-number').textContent=String(number).padStart(3,'0');
+  $('#featured-title').textContent=copy.title;
+  $('#featured-category').textContent=copy.category;
+  $('#featured-description').textContent=copy.description;
+  $('#featured-object').dataset.project=number;
+  $('#featured-object').setAttribute('aria-label',`Explore ${copy.title}`);
+}));
 let mode='all',visible=6;
 $('#all-count').textContent=projects.length;
 $('#award-count').textContent=projects.filter(p=>p.award).length;
