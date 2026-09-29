@@ -7,6 +7,7 @@ Three independent review apps. These are design experiments, not merged website 
 | Museum of 100 Attempts | http://127.0.0.1:18501/ | `museum` |
 | Sculptural 100 | http://127.0.0.1:18502/ | `sculptural` |
 | Dark technical | http://127.0.0.1:18503/ | `dark-technical` |
+| Museum Dark — Artwork / 3D | http://127.0.0.1:18504/ | `museum-dark` |
 
 Run `npm start` inside each directory to restart its preview. Each app runs independently on its own port. The existing Astro site remains at http://127.0.0.1:18481/.
 
@@ -48,8 +49,8 @@ The next pass is an uncommitted exploration, not approval to merge.
 
 ## Third design pass
 
-V2 is saved in `be88157` on `codex/landing-v2-checkpoint`. V3 remains an
-uncommitted review pass. No main-site integration or remote push is authorized.
+V2 is saved in `be88157` on `codex/landing-v2-checkpoint`. V3 is saved in
+`0e5ac90` on `codex/landing-v3-checkpoint`. No main-site integration or remote push was performed.
 
 - **Museum:** tactile, spatially arranged project-artifact carousel. Original
   generated artwork is labelled as conceptual, not actual product photography.
@@ -65,3 +66,14 @@ uncommitted review pass. No main-site integration or remote push is authorized.
 All three use real archive records. Their rendered objects are visual metaphors,
 not claims that the projects were physical products. Source names and links in
 each app's README explain the design references without copying their assets.
+
+## Museum Dark combination
+
+The new `museum-dark` app combines Museum's illustrated collection with a dark,
+interactive 3D studio. The Artwork / Explore in 3D toggle preserves the selected
+project and its story. Models reinterpret the three existing concept artworks;
+they are original procedural geometry, not exact image-to-3D conversions.
+
+This combination remains uncommitted for review. The three V3 previews and the
+main Astro website are unchanged. Sculptural 100 is retained only as an archived
+exploration, not part of this direction.
