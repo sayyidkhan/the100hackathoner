@@ -137,7 +137,7 @@ function preview(cell: GridCell) {
                     aria-label={describe(cell)}
                     aria-describedby={details.id}
                   >
-                    <span class="slot">{cell.slot}</span>
+                    <span class="slot">{String(cell.slot).padStart(2, "0")}</span>
                     <span class="build-preview" id={details.id} role="tooltip">
                       <span class="preview-kicker">
                         #{String(cell.slot).padStart(3, "0")}
@@ -314,51 +314,53 @@ function preview(cell: GridCell) {
 <style>
   .hundred-topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; margin-bottom: 10px; }
   .legend { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 0; padding: 0; list-style: none; }
-  .legend li { display: inline-flex; gap: 8px; align-items: center; color: var(--muted); font-size: .72rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; }
-  .swatch { width: 13px; height: 13px; border-radius: 3px; }
-  .swatch.complete { background: color-mix(in srgb, var(--teal) 70%, white); }
-  .swatch.award { background: var(--gold); }
+  .legend li { display: inline-flex; gap: 7px; align-items: center; color: var(--muted); font-size: 12px; font-weight: 400; }
+  .swatch { width: 9px; height: 9px; border: 1px solid var(--muted); }
+  .swatch.complete { background: #08766e; }
+  .swatch.award { background: #efb928; border-color: #8b6505; transform: rotate(45deg); }
   .swatch.current { background: var(--red); }
-  .swatch.future { border: 1px solid var(--line-strong); background: white; }
-  .view-toggle { display: inline-flex; overflow: hidden; border: 1px solid var(--line-strong); border-radius: 3px; background: white; }
-  .view-toggle button { min-height: 34px; padding: 7px 11px; border: 0; border-right: 1px solid var(--line-strong); background: transparent; color: var(--muted); cursor: pointer; font: inherit; font-size: .64rem; font-weight: 900; letter-spacing: .07em; text-transform: uppercase; }
+  .swatch.future { background: transparent; }
+  .view-toggle { display: inline-flex; overflow: hidden; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--raised); }
+  .view-toggle button { min-height: 34px; padding: 7px 11px; border: 0; border-right: 1px solid var(--line-strong); background: transparent; color: var(--muted); cursor: pointer; font: inherit; font-size: .64rem; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; }
   .view-toggle button:last-child { border-right: 0; }
   .view-toggle button.active { background: var(--black); color: white; }
   .view-toggle button:focus-visible { position: relative; z-index: 1; outline: 2px solid var(--blue); outline-offset: -2px; }
   .hundred-content { display: grid; grid-template-columns: minmax(0, 1fr) 128px; gap: 18px; align-items: start; }
   .hundred-display { min-width: 0; }
-  .grid { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; margin: 0; padding: 0; list-style: none; }
+  .grid { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 8px; margin: 0; padding: 0; list-style: none; }
   .cell { --preview-x: -50%; --preview-arrow: 50%; position: relative; aspect-ratio: 1; }
   .cell:hover, .cell:focus-within { z-index: 20; }
   .cell:nth-child(10n + 1), .cell:nth-child(10n + 2) { --preview-x: 0%; --preview-arrow: 24px; }
   .cell:nth-child(10n), .cell:nth-child(10n + 9) { --preview-x: -100%; --preview-arrow: calc(100% - 24px); }
-  .cell a, .cell > .slot { display: grid; width: 100%; height: 100%; place-items: center; border: 1px solid transparent; border-radius: 3px; font-size: clamp(.6rem, .9vw, .82rem); font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: -.02em; transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease; }
-  .cell a:hover, .cell a:focus-visible { box-shadow: 0 6px 18px rgba(14,18,18,.24); outline: none; transform: scale(1.14); }
-  .cell.complete a { background: color-mix(in srgb, var(--teal) 70%, white); color: #005f59; }
-  .cell.award a { border-color: color-mix(in srgb, var(--gold) 65%, var(--line)); background: var(--gold); color: var(--gold-ink); }
-  .cell.current a { background: var(--red); color: white; }
-  .cell.future > .slot { border-color: var(--line); background: white; color: var(--faint); font-weight: 800; }
+  .cell a, .cell > .slot { display: grid; width: 100%; height: 100%; place-items: center; border: 1px solid var(--line); border-radius: 8px; box-shadow: inset 0 1px 0 #ffffff24; font-size: clamp(.6rem, .9vw, .82rem); font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: -.02em; transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease; }
+  .cell .slot { font: 600 14px var(--mono); }
+  .cell a:hover, .cell a:focus-visible { border-color: var(--ink); outline: 2px solid var(--ink); outline-offset: 2px; transform: translateY(-3px); }
+  .cell.complete a { background: var(--checkpoint-complete); color: white; }
+  .cell.award a { border-color: var(--checkpoint-award-border); background: var(--checkpoint-award); color: var(--on-gold); }
+  .cell.award .slot::after { content: ""; position: absolute; width: 4px; height: 4px; right: 6px; top: 6px; background: var(--checkpoint-award-mark); transform: rotate(45deg); }
+  .cell.current a { background: var(--checkpoint-current); color: white; border-color: #b5162c; }
+  .cell.future > .slot { border-color: var(--line); border-style: dashed; background: transparent; color: var(--muted); box-shadow: none; }
   .cell.is-filtered { opacity: .14; pointer-events: none; }
   .build-preview { position: absolute; bottom: calc(100% + 11px); left: 50%; z-index: 8; display: grid; visibility: hidden; width: min(340px, calc(100vw - 36px)); gap: 7px; padding: 15px; border: 1px solid rgba(255,255,255,.2); border-radius: 3px; background: var(--black); box-shadow: 0 18px 38px rgba(5,5,5,.32); color: white; opacity: 0; pointer-events: none; text-align: left; transform: translate(var(--preview-x), 7px); transform-origin: var(--preview-arrow) 100%; transition: opacity 140ms ease, transform 140ms ease, visibility 0s linear 140ms; }
   .build-preview::after { position: absolute; top: 100%; left: var(--preview-arrow); width: 10px; height: 10px; background: var(--black); content: ""; transform: translate(-50%, -5px) rotate(45deg); }
   .cell:nth-child(-n + 10) .build-preview { top: calc(100% + 11px); bottom: auto; transform: translate(var(--preview-x), -7px); transform-origin: var(--preview-arrow) 0; }
   .cell:nth-child(-n + 10) .build-preview::after { top: auto; bottom: 100%; transform: translate(-50%, 5px) rotate(45deg); }
   .cell a:hover .build-preview, .cell a:focus-visible .build-preview { visibility: visible; opacity: 1; transform: translate(var(--preview-x), 0); transition-delay: 0s; }
-  .preview-kicker, .calendar-preview-kicker { color: var(--yellow); font-size: .62rem; font-weight: 900; letter-spacing: .08em; line-height: 1.3; text-transform: uppercase; }
+  .preview-kicker, .calendar-preview-kicker { color: var(--yellow); font-size: .62rem; font-weight: 500; letter-spacing: .08em; line-height: 1.3; text-transform: uppercase; }
   .build-preview strong { color: white; font-size: 1.05rem; letter-spacing: -.03em; line-height: 1.08; }
   .preview-event, .preview-solution { color: rgba(255,255,255,.72); font-size: .72rem; font-weight: 650; line-height: 1.45; }
-  .preview-event { color: rgba(255,255,255,.88); font-weight: 800; }
+  .preview-event { color: rgba(255,255,255,.88); font-weight: 500; }
   .preview-solution { display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
   .preview-facts { display: flex; flex-wrap: wrap; gap: 5px; }
-  .preview-facts span { padding: 3px 6px; border: 1px solid rgba(255,255,255,.18); border-radius: 2px; color: rgba(255,255,255,.76); font-size: .61rem; font-weight: 800; }
+  .preview-facts span { padding: 3px 6px; border: 1px solid rgba(255,255,255,.18); border-radius: 2px; color: rgba(255,255,255,.76); font-size: .61rem; font-weight: 500; }
   .preview-context { display: grid; gap: 3px; color: rgba(255,255,255,.58); font-size: .62rem; line-height: 1.4; }
-  .preview-context b { margin-right: 4px; color: rgba(255,255,255,.88); font-weight: 900; text-transform: uppercase; }
-  .preview-footer { display: grid; gap: 4px; padding-top: 7px; border-top: 1px solid rgba(255,255,255,.16); color: #7ee2d7; font-size: .62rem; font-weight: 900; letter-spacing: .03em; line-height: 1.35; text-transform: uppercase; }
+  .preview-context b { margin-right: 4px; color: rgba(255,255,255,.88); font-weight: 500; text-transform: uppercase; }
+  .preview-footer { display: grid; gap: 4px; padding-top: 7px; border-top: 1px solid rgba(255,255,255,.16); color: #7ee2d7; font-size: .62rem; font-weight: 500; letter-spacing: .03em; line-height: 1.35; text-transform: uppercase; }
   .preview-footer em { color: #ffd66c; font-style: normal; }
-  .preview-cta { color: rgba(255,255,255,.44); font-size: .58rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+  .preview-cta { color: rgba(255,255,255,.44); font-size: .58rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
   .year-tabs { display: grid; gap: 5px; }
-  .year-tabs-label { margin: 0 0 3px; color: var(--faint); font-size: .64rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
-  .year-tabs button { display: flex; min-height: 52px; align-items: center; justify-content: space-between; padding: 10px 12px; border: 1px solid var(--line); border-radius: 3px; background: white; color: var(--muted); cursor: pointer; font: inherit; font-size: .78rem; font-weight: 900; letter-spacing: .03em; transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 140ms ease; }
+  .year-tabs-label { margin: 0 0 3px; color: var(--faint); font-size: .64rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; }
+  .year-tabs button { display: flex; min-height: 52px; align-items: center; justify-content: space-between; padding: 10px 12px; border: 1px solid var(--line); border-radius: 3px; background: var(--raised); color: var(--muted); cursor: pointer; font: inherit; font-size: .78rem; font-weight: 500; letter-spacing: .03em; transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 140ms ease; }
   .year-tabs button:hover, .year-tabs button:focus-visible { border-color: var(--ink); color: var(--ink); outline: none; transform: translateX(-2px); }
   .year-tabs button.active { border-color: var(--black); background: var(--black); color: white; }
   .year-tabs button b { color: var(--faint); font-size: .7rem; }
@@ -366,24 +368,23 @@ function preview(cell: GridCell) {
   .calendar-views { display: none; width: 100%; }
   .hundred[data-hundred-view="calendar"] [data-hundred-sequence] { display: none; }
   .hundred[data-hundred-view="calendar"] [data-hundred-calendar] { display: grid; gap: 18px; }
-  .calendar-year { display: grid; gap: 16px; padding: 20px; border: 1px solid var(--line); background: white; }
+  .calendar-year { display: grid; gap: 16px; padding: 20px; border: 1px solid var(--line); background: var(--raised); }
   .calendar-year.is-filtered { display: none; }
   .calendar-year header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
   .calendar-year header strong { color: var(--ink); font-size: 1.1rem; letter-spacing: -.04em; }
-  .calendar-year header span { color: var(--faint); font-size: .68rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+  .calendar-year header span { color: var(--faint); font-size: .68rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
   .calendar-quarters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   .calendar-quarter { display: grid; gap: 10px; min-width: 0; padding: 14px; border: 1px solid var(--line); background: var(--surface); }
-  .calendar-quarter h3 { margin: 0; color: var(--ink); font-size: .76rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
+  .calendar-quarter h3 { margin: 0; color: var(--ink); font-size: .76rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
   .calendar-frame { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 7px; }
-  .calendar-weekdays { display: grid; grid-template-rows: repeat(7, minmax(0, 1fr)); gap: 3px; color: var(--faint); font-size: .54rem; font-weight: 800; line-height: 1; }
+  .calendar-weekdays { display: grid; grid-template-rows: repeat(7, minmax(0, 1fr)); gap: 3px; color: var(--faint); font-size: .54rem; font-weight: 500; line-height: 1; }
   .calendar-grid { display: grid; grid-auto-flow: column; grid-template-columns: repeat(var(--week-count), minmax(0, 1fr)); grid-template-rows: repeat(7, minmax(0, 1fr)); gap: 3px; aspect-ratio: var(--week-count) / 7; }
-  .calendar-day { position: relative; display: grid; place-items: center; border-radius: 2px; background: #eff0ec; color: white; font-size: clamp(.56rem, 1vw, .72rem); font-weight: 900; line-height: 1; }
+  .calendar-day { position: relative; display: grid; place-items: center; border-radius: 2px; background: var(--soft); color: white; font-size: clamp(.56rem, 1vw, .72rem); font-weight: 500; line-height: 1; }
   .calendar-day > a { display: grid; width: 100%; height: 100%; place-items: center; color: inherit; }
   .calendar-day.outside { background: transparent; }
-  .calendar-day.has-event { background: color-mix(in srgb, var(--teal) 70%, white); }
-  .calendar-day.has-event.intensity-2, .calendar-day.has-event.intensity-3 { background: var(--teal); }
-  .calendar-day.award { background: var(--gold); color: var(--gold-ink); }
-  .calendar-day.current { background: var(--red); color: white; }
+  .calendar-day.has-event { background: var(--checkpoint-complete); color: white; }
+  .calendar-day.award { background: var(--checkpoint-award); color: var(--on-gold); }
+  .calendar-day.current { background: var(--checkpoint-current); color: white; }
   .calendar-day:hover, .calendar-day:focus-visible { z-index: 10; outline: 2px solid var(--ink); outline-offset: 2px; transform: scale(1.12); }
   .calendar-preview { position: absolute; z-index: 12; display: none; width: min(230px, calc(100vw - 40px)); gap: 4px; padding: 10px 11px; border: 1px solid rgba(255,255,255,.18); background: var(--black); box-shadow: 0 10px 20px rgba(5,5,5,.22); color: white; text-align: left; }
   .calendar-preview.empty { width: min(200px, calc(100vw - 40px)); }
@@ -394,10 +395,10 @@ function preview(cell: GridCell) {
   .preview-right .calendar-preview { right: 0; }
   .calendar-preview strong { color: white; font-size: .84rem; letter-spacing: -.02em; line-height: 1.1; }
   .calendar-preview-event { color: rgba(255,255,255,.7); font-size: .64rem; font-weight: 650; line-height: 1.35; }
-  .calendar-preview-footer { display: flex; justify-content: space-between; gap: 8px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,.14); color: #7ee2d7; font-size: .54rem; font-weight: 900; letter-spacing: .04em; line-height: 1.3; text-transform: uppercase; }
+  .calendar-preview-footer { display: flex; justify-content: space-between; gap: 8px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,.14); color: #7ee2d7; font-size: .54rem; font-weight: 500; letter-spacing: .04em; line-height: 1.3; text-transform: uppercase; }
   .calendar-preview-footer em { color: #ffd66c; font-style: normal; }
   .calendar-day:hover .calendar-preview, .calendar-day:focus-visible .calendar-preview { display: grid; }
   @media (max-width: 820px) { .hundred-content { grid-template-columns: 1fr; } .year-tabs { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); } .year-tabs-label { grid-column: 1 / -1; } }
-  @media (max-width: 620px) { .hundred-topbar { align-items: flex-start; } .grid { gap: 4px; } .cell a, .cell > .slot { border-radius: 2px; font-size: .55rem; } .build-preview { display: none; } .calendar-quarters { grid-template-columns: 1fr; } .calendar-year { padding: 14px; } }
+  @media (max-width: 620px) { .hundred-topbar { align-items: flex-start; } .grid { gap: 4px; } .cell .slot { font-size: 10px; } .cell.award .slot::after { width: 3px; height: 3px; right: 3px; top: 3px; } .build-preview { display: none; } .calendar-quarters { grid-template-columns: 1fr; } .calendar-year { padding: 14px; } }
   @media (prefers-reduced-motion: reduce) { .cell a { transition: none; } .cell a:hover, .cell a:focus-visible { transform: none; } }
 </style>

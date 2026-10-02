@@ -1,1242 +1,463 @@
 ---
-import HeroCinematicBackdrop from "../components/HeroCinematicBackdrop.astro";
-import PageShell from "../components/PageShell.astro";
-import { getYear } from "../lib/format";
-import { getHackathons } from "../lib/hackathons";
-
-const hackathons = getHackathons();
-const completed = hackathons[0]?.number ?? 0;
-const total = 100;
-const remaining = total - completed;
-const featured = hackathons[0];
-const progressPercent = Math.round((completed / total) * 100);
-const years = [...new Set(hackathons.map((item) => getYear(item.startDate, item.dateLabel)).filter((year): year is number => year !== null))]
-  .sort((a, b) => b - a)
-  .map((year) => ({
-    value: year,
-    count: hackathons.filter((item) => getYear(item.startDate, item.dateLabel) === year).length,
-  }));
-
-function toIsoDate(date: Date) {
-  return date.toISOString().slice(0, 10);
-}
-
-function formatCalendarDate(isoDate: string) {
-  return new Intl.DateTimeFormat("en-SG", {
-    weekday: "short",
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    timeZone: "UTC",
-  }).format(new Date(`${isoDate}T00:00:00Z`));
-}
-
-const quarterNames = ["Jan – Mar", "Apr – Jun", "Jul – Sep", "Oct – Dec"];
-
-function calendarQuartersForYear(year: number) {
-  const eventsByDate = new Map<string, typeof hackathons>();
-
-  for (const event of hackathons) {
-    if (getYear(event.startDate, event.dateLabel) !== year || !event.startDate) continue;
-    const events = eventsByDate.get(event.startDate) ?? [];
-    events.push(event);
-    eventsByDate.set(event.startDate, events);
-  }
-
-  return quarterNames.map((label, quarter) => {
-    const firstMonth = quarter * 3;
-    const start = new Date(Date.UTC(year, firstMonth, 1));
-    start.setUTCDate(start.getUTCDate() - start.getUTCDay());
-    const end = new Date(Date.UTC(year, firstMonth + 3, 0));
-    end.setUTCDate(end.getUTCDate() + (6 - end.getUTCDay()));
-    const cells = [];
-
-    for (let date = new Date(start); date <= end; date.setUTCDate(date.getUTCDate() + 1)) {
-      const isoDate = toIsoDate(date);
-      cells.push({
-        isoDate,
-        isInQuarter:
-          date.getUTCFullYear() === year &&
-          date.getUTCMonth() >= firstMonth &&
-          date.getUTCMonth() < firstMonth + 3,
-        events: eventsByDate.get(isoDate) ?? [],
-      });
-    }
-
-    return { label, cells, weeks: cells.length / 7 };
-  });
-}
-
-const calendarYears = years.map(({ value, count }) => ({
-  year: value,
-  count,
-  quarters: calendarQuartersForYear(value),
-}));
-
-const checkpoints = Array.from({ length: total }, (_, index) => {
-  const number = index + 1;
-  const known = hackathons.find((item) => item.number === number);
-  return {
-    number,
-    title: known?.title ?? "",
-    event: known?.event ?? "",
-    dateLabel: known?.dateLabel ?? "",
-    solution: known?.solution ?? "",
-    tags: known?.tags.slice(0, 2) ?? [],
-    award: known?.award ?? "",
-    year: known ? getYear(known.startDate, known.dateLabel) : null,
-    status:
-      number === completed
-          ? "current"
-        : known?.award
-          ? "award"
-          : number < completed
-            ? "complete"
-          : "future",
-  };
-});
-
+import Header from "../components/Header.astro";
+import ThemeHead from "../components/ThemeHead.astro";
 ---
+<!doctype html>
+<html lang="en" data-view="artwork" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <ThemeHead />
+    <meta
+      name="description"
+      content="The 100 Hackathoner. Sayyid Khan's living record of the ideas, teams, wrong turns, and breakthroughs on the way from engineer to founder."
+    />
+    <title>The 100 Hackathoner</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%23e51b23'/%3E%3Ctext x='32' y='40' text-anchor='middle' font-family='Arial' font-weight='bold' font-size='25' fill='white'%3E100%3C/text%3E%3C/svg%3E"
+    />
 
-<PageShell
-  title="The 100 Hackathoner"
-  description="A public record of Sayyid Khan's journey to complete 100 hackathons by building, shipping, failing, winning, and learning in public."
->
-  <section class="hero">
-    <HeroCinematicBackdrop />
-    <div class="container hero-grid">
-      <div class="hero-copy">
-        <h1><span>The 100</span><span>Hackathoner</span></h1>
-        <p class="mission">
-          A public record of learning by shipping: ideas, teams, chaos, demos,
-          failures, wins, and the operating lessons behind one hundred
-          hackathons.
-        </p>
-        <div class="hero-actions">
-          <a class="button primary" href="/hackathons/">Explore the Journey</a>
-          <a class="button" href="/essays/">Read Field Notes</a>
-        </div>
-        <div class="hero-progress" aria-label={`${completed} of ${total} hackathons completed`}>
-          <div class="hero-progress-topline">
-            <span>Journey to 100</span>
-            <strong>{completed} / {total}</strong>
+    <link rel="stylesheet" href="/landing/styles.css" />
+  </head>
+  <body>
+    <a class="skip" href="#collection">Skip to collection</a>
+    <Header />
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-intro wrap">
+          <div>
+            <p class="eyebrow">A LIFE IN PROTOTYPES / SINCE 2016</p>
+            <h1 id="hero-title">
+              THE <span>100</span><br />HACKATHONER<span>.</span>
+            </h1>
+            <p class="hero-tagline">
+              One hundred hackathons.<br />A <em>thousand ways</em> to become someone new.
+            </p>
           </div>
-          <div class="meter" aria-hidden="true">
-            <span style={`width: ${progressPercent}%`}></span>
-          </div>
-          <div class="hero-progress-meta">
-            <span>{progressPercent}% complete</span>
-            <span>Current: #{String(completed).padStart(3, "0")}</span>
-            <span>{remaining} remaining</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="journey-map section" id="journey">
-    <div class="container">
-      <div class="section-heading">
-        <h2 class="serif">Journey Map</h2>
-        <p>
-          One hundred numbered attempts. Each checkpoint records what was built,
-          what broke, who showed up, and what became sharper after demo day.
-        </p>
-      </div>
-
-      <div class="map-panel" data-map-view="sequence">
-        <div class="map-legend">
-          <span><i class="complete"></i> Completed</span>
-          <span><i class="award"></i> Awarded</span>
-          <span><i class="current"></i> Current</span>
-          <span><i class="future"></i> Ahead</span>
-        </div>
-        <div class="map-summary">
-          <div class="map-summary-copy">
-            <span>Hackathons done</span>
-            <strong>{completed} / {total}</strong>
-            <span>{remaining} to go</span>
-          </div>
-          <div class="map-view-toggle" aria-label="Choose map view">
-            <button type="button" class="active" aria-pressed="true" data-map-view-button="sequence">Sequence</button>
-            <button type="button" aria-pressed="false" data-map-view-button="calendar">Calendar</button>
+          <div class="hero-note">
+            <p>
+              I’m Sayyid Khan. This is my living record of the ideas, teams, wrong
+              turns, and breakthroughs on the way from engineer to founder.
+            </p>
+            <a href="#collection">Explore the collection <span>↘</span></a>
           </div>
         </div>
-        <div class="map-content">
-          <div class="map-display">
-            <div class="checkpoint-grid" aria-label="One hundred hackathon checkpoints" data-sequence-view>
-            {
-              checkpoints.map((checkpoint) => (
-                <a
-                  class={`checkpoint ${checkpoint.status}`}
-                  data-checkpoint-year={checkpoint.year ?? ""}
-                  href={
-                    checkpoint.title
-                      ? `/hackathons/${checkpoint.number}/`
-                      : "/hackathons/"
-                  }
-                  aria-label={
-                    checkpoint.title
-                      ? `Hackathon ${checkpoint.number}: ${checkpoint.title}. View details.`
-                      : `Hackathon ${checkpoint.number}`
-                  }
-                >
-                  {String(checkpoint.number).padStart(2, "0")}
-                  {
-                    checkpoint.title && (
-                      <span class="checkpoint-preview" role="tooltip">
-                        <span class="preview-kicker">
-                          #{String(checkpoint.number).padStart(3, "0")}
-                          {checkpoint.dateLabel && ` · ${checkpoint.dateLabel}`}
-                        </span>
-                        <strong>{checkpoint.title}</strong>
-                        <span class="preview-event">{checkpoint.event}</span>
-                        {checkpoint.solution && <span class="preview-solution">{checkpoint.solution}</span>}
-                        <span class="preview-footer">
-                          {checkpoint.tags.length > 0 && checkpoint.tags.join(" · ")}
-                          {checkpoint.award && <em>{checkpoint.award}</em>}
-                        </span>
-                      </span>
-                    )
-                  }
-                </a>
-              ))
-            }
-            </div>
-            <div class="calendar-views" data-calendar-view>
-              {
-                calendarYears.map(({ year, count, quarters }) => (
-                  <section class="calendar-year" data-calendar-year={year} aria-label={`${year} hackathon calendar`}>
-                    <header>
-                      <strong>{year}</strong>
-                      <span>{count} hackathons</span>
-                    </header>
-                    <div class="calendar-quarters">
-                      {
-                        quarters.map(({ label, cells, weeks }) => (
-                          <section class="calendar-quarter" aria-label={`${label} ${year}`}>
-                            <h3>{label}</h3>
-                            <div class="calendar-frame">
-                              <div class="calendar-weekdays" aria-hidden="true">
-                                <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
-                              </div>
-                              <div class="calendar-grid" style={`--week-count: ${weeks}`}>
-                        {
-                          cells.map((cell, index) => {
-                            const hasAward = cell.events.some((event) => Boolean(event.award));
-                            const isCurrent = cell.events.some((event) => event.number === completed);
-                            const intensity = Math.min(cell.events.length, 3);
-                            const primary = cell.events[0];
-                            const calendarDate = formatCalendarDate(cell.isoDate);
-                            const weekdayIndex = index % 7;
-                            const weekIndex = Math.floor(index / 7);
-                            const previewVertical = weekdayIndex < 5 ? "preview-below" : "preview-above";
-                            const previewHorizontal = weekIndex < 3
-                              ? "preview-left"
-                              : weekIndex > weeks - 4
-                                ? "preview-right"
-                                : "preview-center";
 
-                            return cell.isInQuarter ? (
-                              <a
-                                class:list={[
-                                  "calendar-day",
-                                  cell.events.length > 0 && "has-event",
-                                  hasAward && "award",
-                                  isCurrent && "current",
-                                  `intensity-${intensity}`,
-                                  previewVertical,
-                                  previewHorizontal,
-                                ]}
-                                href={primary ? `/hackathons/${primary.number}/` : undefined}
-                                tabindex={primary ? undefined : 0}
-                                aria-label={
-                                  primary
-                                    ? `Hackathon ${primary.number}: ${primary.title}. View details.`
-                                    : `${calendarDate}. No hackathons recorded.`
-                                }
-                              >
-                                {cell.events.length > 1 && <span>{cell.events.length}</span>}
-                                <span class:list={["calendar-preview", !primary && "empty"]} role="tooltip">
-                                  {
-                                    primary ? (
-                                      <>
-                                      <span class="calendar-preview-kicker">
-                                        #{String(primary.number).padStart(3, "0")}
-                                        {primary.dateLabel && ` · ${primary.dateLabel}`}
-                                      </span>
-                                      <strong>{primary.title}</strong>
-                                      <span class="calendar-preview-event">{primary.event}</span>
-                                      <span class="calendar-preview-footer">
-                                        {primary.award || primary.tags.slice(0, 2).join(" · ")}
-                                        {cell.events.length > 1 && <em>+{cell.events.length - 1} more</em>}
-                                      </span>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <span class="calendar-preview-kicker">{calendarDate}</span>
-                                        <strong>No hackathons</strong>
-                                        <span class="calendar-preview-event">No contribution recorded for this date.</span>
-                                      </>
-                                    )
-                                  }
-                                </span>
-                              </a>
-                            ) : <span class="calendar-day outside" aria-hidden="true"></span>;
-                          })
-                        }
-                              </div>
-                            </div>
-                          </section>
-                        ))
-                      }
-                    </div>
-                  </section>
-                ))
-              }
-            </div>
-          </div>
-          <div class="map-year-tabs" aria-label="Filter hackathons by year" data-year-tabs>
-            <span class="year-tabs-label">View</span>
-            <button type="button" class="active" aria-pressed="true" data-year-filter="all">
-              <span>All</span><b>{completed}</b>
+        <div class="gallery-top wrap">
+          <p class="gallery-kicker">
+            <span class="live-mark" aria-hidden="true"></span> SELECTED ATTEMPTS
+            <span class="gallery-kicker-extra">/ OPEN COLLECTION</span>
+          </p>
+          <div
+            class="view-switch"
+            role="group"
+            aria-label="Exhibit display mode"
+          >
+            <button
+              type="button"
+              id="artwork-mode"
+              data-view-mode="artwork"
+              aria-pressed="true"
+            >
+              <span aria-hidden="true">▧</span> Artwork
             </button>
-            {
-              years.map(({ value, count }) => (
-                <button type="button" aria-pressed="false" data-year-filter={value}>
-                  <span>{value}</span><b>{count}</b>
-                </button>
-              ))
-            }
+            <button
+              type="button"
+              id="three-mode"
+              data-view-mode="3d"
+              aria-pressed="false"
+            >
+              <span aria-hidden="true">◇</span> Explore in 3D
+            </button>
           </div>
         </div>
-        <div class="map-note">
-          <strong>Current checkpoint</strong>
-          <span>
-            #{String(completed).padStart(3, "0")} {featured?.title}
-          </span>
+
+        <div
+          class="gallery"
+          id="gallery"
+          role="region"
+          aria-label="Selected hackathon exhibits"
+        >
+          <div
+            id="artwork-stage"
+            class="artwork-stage"
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Featured concept artworks"
+          >
+            <button
+              class="art-object is-active"
+              data-object="81"
+              aria-label="Open The Next 8 Seconds"
+            >
+              <img
+                class="art-image-light"
+                src="/landing/assets/storybook-concept-v3.jpg"
+                width="1536"
+                height="1024"
+                alt="Concept artwork: a red open book with a folded-paper landscape, house, and cobalt path"
+                draggable="false"
+              />
+              <img
+                class="art-image-dark"
+                src="/landing/assets/storybook-dark-v1.jpg"
+                width="1536"
+                height="1024"
+                alt="Concept artwork: a red open book with a folded-paper landscape, house, and cobalt path"
+                draggable="false"
+              />
+            </button>
+            <button
+              class="art-object is-after"
+              data-object="80"
+              aria-label="Select Itachi's Crow"
+            >
+              <img
+                class="art-image-light"
+                src="/landing/assets/crow-concept-v3.jpg"
+                width="1536"
+                height="1024"
+                alt="Concept artwork: a black origami crow flying above a miniature ivory city"
+                draggable="false"
+              />
+              <img
+                class="art-image-dark"
+                src="/landing/assets/crow-dark-v1.jpg"
+                width="1536"
+                height="1024"
+                alt="Concept artwork: a black origami crow flying above a miniature ivory city"
+                draggable="false"
+              />
+            </button>
+            <button
+              class="art-object is-before"
+              data-object="79"
+              aria-label="Select Long Taa Borneo Eco Stay"
+            >
+              <img
+                class="art-image-light"
+                src="/landing/assets/borneo-concept-v3.jpg"
+                width="1536"
+                height="1024"
+                alt="Concept artwork: a timber longhouse surrounded by folded-paper forest and a cobalt river"
+                draggable="false"
+              />
+              <img
+                class="art-image-dark"
+                src="/landing/assets/borneo-dark-v1.jpg"
+                width="1536"
+                height="1024"
+                alt="Concept artwork: a timber longhouse surrounded by folded-paper forest and a cobalt river"
+                draggable="false"
+              />
+            </button>
+          </div>
+          <div id="three-stage" class="three-stage" hidden>
+            <canvas
+              id="gallery-canvas"
+              tabindex="0"
+              aria-label="Interactive 3D concept object. Drag or use arrow keys to rotate."
+            ></canvas>
+            <div class="scene-tools">
+              <button type="button" id="reset-view">Reset view ↺</button
+              ><button type="button" id="pause-motion" aria-pressed="false">
+                Pause motion
+              </button>
+            </div>
+          </div>
+          <div class="gallery-edge edge-left" aria-hidden="true">
+            IDEAS BECOME OBJECTS.<br />ATTEMPTS BECOME STORIES.
+          </div>
+          <div class="gallery-edge edge-right" aria-hidden="true">
+            <span id="stage-number">081</span><br />ON DISPLAY
+          </div>
+          <button
+            type="button"
+            id="previous-exhibit"
+            class="gallery-arrow prev"
+            aria-label="Previous exhibit"
+          >
+            ←
+          </button>
+          <button
+            type="button"
+            id="next-exhibit"
+            class="gallery-arrow next"
+            aria-label="Next exhibit"
+          >
+            →
+          </button>
+          <p class="gallery-hint" id="gallery-hint">
+            DRAG TO EXPLORE · SELECT TO OPEN
+          </p>
         </div>
-      </div>
-    </div>
-  </section>
+        <p
+          class="mode-status wrap"
+          id="mode-status"
+          role="status"
+          aria-live="polite"
+        ></p>
 
-</PageShell>
+        <div class="exhibit-caption wrap">
+          <div class="caption-copy" aria-live="polite">
+            <p class="eyebrow" id="featured-event">081 / ANTI-DRUG JAM 2026</p>
+            <h2 id="featured-title">The Next 8 Seconds</h2>
+            <p id="featured-description">
+              An illustrated adventure through peer pressure. Sketch a solution.
+              Find your way home.
+            </p>
+          </div>
+          <button class="primary-button" id="open-story" type="button">
+            Open the story <span>↗</span>
+          </button>
+        </div>
 
-<script>
-  document.querySelectorAll<HTMLElement>("[data-map-view]").forEach((panel) => {
-    const tabs = panel.querySelector<HTMLElement>("[data-year-tabs]");
-    if (!tabs) return;
+        <div
+          class="exhibit-selector wrap"
+          role="group"
+          aria-label="Choose a featured attempt"
+        >
+          <button type="button" data-exhibit="81" aria-pressed="true">
+            <span class="exhibit-number">081</span
+            ><span>The Next 8 Seconds<small>SOCIAL GOOD / 2026</small></span
+            ><span class="select-mark" aria-hidden="true">↗</span>
+          </button>
+          <button type="button" data-exhibit="80" aria-pressed="false">
+            <span class="exhibit-number">080</span
+            ><span>Itachi’s Crow<small>GENERATIVE AI / 2026</small></span
+            ><span class="select-mark" aria-hidden="true">↗</span>
+          </button>
+          <button type="button" data-exhibit="79" aria-pressed="false">
+            <span class="exhibit-number">079</span
+            ><span>Long Taa Borneo<small>CULTURE × AI / 2026</small></span
+            ><span class="select-mark" aria-hidden="true">↗</span>
+          </button>
+        </div>
+        <p class="art-credit wrap">
+          Concept artwork &amp; interactive interpretations. Real projects,
+          imagined objects.
+        </p>
+      </section>
 
-    const cells = [...panel.querySelectorAll<HTMLElement>("[data-sequence-view] [data-checkpoint-year]")];
-    const calendarYears = [...panel.querySelectorAll<HTMLElement>("[data-calendar-year]")];
-    const buttons = [...tabs.querySelectorAll<HTMLButtonElement>("[data-year-filter]")];
-    const viewButtons = [...panel.querySelectorAll<HTMLButtonElement>("[data-map-view-button]")];
+      <section class="story-section wrap section" id="story">
+        <div>
+          <p class="eyebrow">NOT A TROPHY ROOM.</p>
+          <div class="journey-count">
+            <strong id="journey-count">81</strong
+            ><span>/ 100<br />HACKATHONS</span>
+          </div>
+          <img class="section-picture workbench-light" src="/landing/assets/hackathon-workbench.png" alt="Concept illustration: a paper-sculpted laptop, notebook and prototypes on a hackathon workbench" loading="lazy" width="1448" height="1086" />
+          <img class="section-picture workbench-dark" src="/landing/assets/hackathon-workbench-dark-v1.png" alt="Concept illustration: an ivory paper hackathon workbench softly lit against a charcoal background" loading="lazy" width="1448" height="1086" />
+        </div>
+        <div>
+          <h2>A record of<br /><span>showing up.</span></h2>
+          <p>
+            I’m Sayyid. I use hackathons to test ideas, meet people, and turn
+            uncertainty into something real. Each attempt is part of the change
+            from engineer to founder.
+          </p>
+          <a class="text-link" href="/about/"
+            >The person behind the projects ↗</a
+          >
+        </div>
+      </section>
 
-    buttons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const selectedYear = button.dataset.yearFilter ?? "all";
+      <section class="collection wrap section" id="collection">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">01 / THE PUBLIC RECORD</p>
+            <h2>Pick an attempt.<br /><span>Find a story.</span></h2>
+          </div>
+          <div>
+            <p>Every one belongs here.<br />Not only the wins.</p>
+            <button class="text-button" id="surprise" type="button">
+              Surprise me ↗
+            </button>
+          </div>
+        </div>
+        <div class="collection-controls">
+          <div class="filters" role="group" aria-label="Collection filter">
+            <button data-filter="all" aria-pressed="true">
+              All attempts <span id="all-count">81</span></button
+            ><button data-filter="awarded" aria-pressed="false">
+              Awarded <span id="award-count">24</span>
+            </button>
+          </div>
+          <label class="search"
+            ><span class="sr-only">Search the collection</span
+            ><input
+              type="search"
+              id="search"
+              placeholder="Search a project, theme, year…"
+          /></label>
+        </div>
+        <div class="archive-toolbar">
+          <div class="archive-view" role="group" aria-label="Collection layout">
+            <button type="button" data-collection-view="grid" aria-pressed="true">Grid</button>
+            <button type="button" data-collection-view="list" aria-pressed="false">List</button>
+          </div>
+        </div>
+        <p id="result-status" class="result-status" role="status"></p>
+        <div id="grid-collection" class="grid-collection" hidden>
+          <div class="attempt-wall">
+            <div class="grid-legend" aria-label="Attempt legend">
+              <span><i class="legend-done"></i>Completed</span>
+              <span><i class="legend-award"></i>Awarded</span>
+              <span><i class="legend-current"></i>Current</span>
+              <span><i class="legend-ahead"></i>Ahead</span>
+            </div>
+            <div id="attempt-grid" class="attempt-grid" role="group" aria-label="Journey to 100 hackathons"></div>
+            <p class="grid-help">100 places in the collection. An unfinished story.</p>
+          </div>
+          <aside class="attempt-preview" aria-labelledby="preview-title">
+            <div class="preview-top"><span class="eyebrow">FROM THE COLLECTION</span><span id="preview-state"></span></div>
+            <div id="preview-number" class="preview-number" aria-hidden="true">081</div>
+            <p id="preview-date" class="eyebrow"></p>
+            <h3 id="preview-title"></h3>
+            <p id="preview-event"></p>
+            <p id="preview-description"></p>
+            <p id="preview-award" hidden></p>
+            <button type="button" id="preview-open" class="text-button">Open the story <span aria-hidden="true">↗</span></button>
+          </aside>
+        </div>
+        <div class="collection-year-controls">
+          <div id="collection-years" class="collection-years" role="group" aria-label="Filter attempts by year"></div>
+        </div>
+        <div id="project-list" class="project-list" hidden></div>
+        <button type="button" class="secondary-button" id="load-more" hidden>
+          More from the collection ↓
+        </button>
+      </section>
 
-        buttons.forEach((item) => {
-          const isActive = item === button;
-          item.classList.toggle("active", isActive);
-          item.setAttribute("aria-pressed", String(isActive));
-        });
-
-        cells.forEach((cell) => {
-          const isMatch = selectedYear === "all" || cell.dataset.checkpointYear === selectedYear;
-          cell.classList.toggle("is-filtered", !isMatch);
-          cell.tabIndex = isMatch ? 0 : -1;
-        });
-
-        calendarYears.forEach((calendarYear) => {
-          const isMatch = selectedYear === "all" || calendarYear.dataset.calendarYear === selectedYear;
-          calendarYear.classList.toggle("is-filtered", !isMatch);
+      <section class="book-section wrap section">
+        <div class="section-visual">
+          <p class="eyebrow">02 / BEYOND THE NUMBER</p>
+          <figure class="memoir-book">
+            <div class="memoir-stage">
+            <div class="memoir-pages" aria-hidden="true">
+              <span class="page-kicker">FROM THE FIELD / 001</span>
+              <span class="page-heading">Keep<br />showing up.</span>
+              <div class="page-notes">
+                <span class="written-note note-one">Start with an idea.</span>
+                <span class="written-note note-two">Build something real.</span>
+                <span class="written-note note-three">Learn. Then go again.</span>
+                <svg class="book-underline" viewBox="0 0 260 24" fill="none" aria-hidden="true"><path pathLength="1" d="M3 15Q118 3 253 12" /></svg>
+              </div>
+              <span class="page-footnote">A LIFE IN PROTOTYPES</span>
+              <span class="page-number">01</span>
+            </div>
+            <div class="memoir-cover memoir-original" aria-label="Concept cover for The 100 Hackathoner by Sayyid Khan">
+              <span class="memoir-kicker">THE 100 HACKATHONER</span>
+              <strong class="memoir-mark">100</strong>
+              <span class="memoir-author">SAYYID KHAN</span>
+            </div>
+            <div class="memoir-cover memoir-forward" aria-label="Concept cover for The Forward Deployed Hackathoner by Sayyid Khan">
+              <span class="memoir-kicker">THE FORWARD DEPLOYED<br />HACKATHONER</span>
+              <strong class="memoir-mark" aria-hidden="true">↗</strong>
+              <span class="memoir-author">SAYYID KHAN</span>
+            </div>
+            </div>
+            <figcaption>FUTURE BOOKS · COVER CONCEPTS</figcaption>
+          </figure>
+        </div>
+        <div>
+          <h2>A hundred hackathons.<br /><span>More stories to tell.</span></h2>
+          <p>
+            The projects, the people, the failures, the turning points. The 100
+            Hackathoner is my living memoir of how building things changes the
+            person doing the building.
+          </p>
+          <fieldset class="book-titles">
+            <legend>ON THE HORIZON / WORKING TITLES</legend>
+            <label>
+              <input type="radio" name="book-title" value="memoir" checked />
+              <span><small>01 / THE MEMOIR</small>The 100 Hackathoner</span>
+              <span class="book-choice-arrow" aria-hidden="true">↗</span>
+            </label>
+            <label>
+              <input type="radio" name="book-title" value="forward" />
+              <span><small>02 / THE NEXT CHAPTER</small>The Forward Deployed Hackathoner</span>
+              <span class="book-choice-arrow" aria-hidden="true">↗</span>
+            </label>
+          </fieldset>
+        </div>
+      </section>
+      <section class="invitation wrap section">
+        <p class="eyebrow">03 / LET’S TAKE IT OUT OF THE BROWSER</p>
+        <div class="invitation-grid">
+          <div class="invitation-copy">
+            <h2>From the build.<br /><span>To the room.</span></h2>
+            <p>
+              Lessons from the road to 100 hackathons.<br />Building under pressure. AI in practice.<br />Turning experiments into opportunities.
+            </p>
+            <nav class="invitation-links" aria-label="Speaking and judging">
+              <a href="/about/#contact"><span><small>01 / SPEAKING & CONVERSATIONS</small>Invite me to your next event</span><span aria-hidden="true">↗</span></a>
+              <a href="/judging/"><span><small>02 / JUDGING & FEEDBACK</small>Meet me at the judging table</span><span aria-hidden="true">↗</span></a>
+            </nav>
+          </div>
+          <figure class="invitation-art">
+            <img src="/landing/assets/hackathon-stage.png" alt="Concept illustration: a red microphone on an ivory paper stage surrounded by folded audience seats" width="1280" height="1280" loading="lazy" />
+            <figcaption>IDEAS WORTH TAKING INTO THE ROOM.</figcaption>
+          </figure>
+        </div>
+      </section>
+    </main>
+    <footer class="wrap">
+      <a href="#">THE 100 HACKATHONER ↗</a
+      ><span>A living collection.</span
+      ><span>SAYYID KHAN / SINGAPORE</span>
+      <span class="footer-copyright">All rights reserved. <span id="copyright-year">{new Date().getFullYear()}</span></span>
+    </footer>
+    <dialog id="project-dialog" aria-labelledby="dialog-title">
+      <button
+        id="close-dialog"
+        type="button"
+        aria-label="Close project details"
+      >
+        ×
+      </button>
+      <p class="eyebrow" id="dialog-number"></p>
+      <h2 id="dialog-title"></h2>
+      <p id="dialog-event"></p>
+      <p id="dialog-solution"></p>
+      <div id="dialog-tags"></div>
+      <p id="dialog-award"></p>
+      <a
+        class="primary-button"
+        id="dialog-link"
+        target="_blank"
+        rel="noopener noreferrer"
+        >Explore this project ↗</a
+      >
+    </dialog>
+    <noscript
+      ><p class="wrap">
+        Enable JavaScript to change exhibits and explore the interactive
+        collection.
+        <a href="/hackathons/">Browse all hackathons.</a>
+      </p></noscript
+    >
+    <script is:inline src="/landing/app.js" type="module"></script>
+    <script>
+      const copyrightYear = document.querySelector('#copyright-year');
+      if (copyrightYear) copyrightYear.textContent = String(new Date().getFullYear());
+      const book = document.querySelector('.memoir-book');
+      const motionAllowed = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (book && motionAllowed) {
+        const observer = new IntersectionObserver(([entry]) => {
+          book.classList.toggle('is-visible', entry.isIntersecting);
+          if (entry.isIntersecting) book.classList.add('is-playing');
+        }, { threshold: 0.35 });
+        observer.observe(book);
+      }
+      document.querySelectorAll('input[name="book-title"]').forEach(input => {
+        input.addEventListener('change', () => {
+          book?.classList.remove('is-playing');
+          void book?.getBoundingClientRect();
+          if (motionAllowed) book?.classList.add('is-playing');
         });
       });
-    });
-
-    viewButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        const view = button.dataset.mapViewButton ?? "sequence";
-        panel.dataset.mapView = view;
-
-        viewButtons.forEach((item) => {
-          const isActive = item === button;
-          item.classList.toggle("active", isActive);
-          item.setAttribute("aria-pressed", String(isActive));
-        });
-      });
-    });
-  });
-</script>
-
-<style>
-  .hero {
-    --hero-height: clamp(720px, 78vh, 900px);
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-    min-height: var(--hero-height);
-    border-bottom: 1px solid rgba(218, 234, 240, 0.18);
-    padding: 86px 0 78px;
-    background: #05070b;
-  }
-
-  .hero-grid {
-    position: relative;
-    z-index: 2;
-    display: grid;
-    min-height: calc(var(--hero-height) - 164px);
-    align-items: center;
-    max-width: none;
-  }
-
-  .hero-copy {
-    display: grid;
-    grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.8fr);
-    column-gap: clamp(36px, 6vw, 120px);
-    align-items: end;
-  }
-
-  h1 {
-    grid-row: span 2;
-    max-width: 900px;
-    margin: 0;
-    color: #f5f7f7;
-    font-size: clamp(3.8rem, 6.4vw, 6.4rem);
-    font-weight: 950;
-    letter-spacing: -0.06em;
-    line-height: 0.82;
-    text-shadow: 0 8px 45px rgba(0, 0, 0, 0.45);
-  }
-
-  h1 span {
-    display: block;
-  }
-
-  .mission {
-    max-width: 560px;
-    margin: 0;
-    color: rgba(225, 236, 239, 0.76);
-    font-size: clamp(1.06rem, 1.8vw, 1.3rem);
-    line-height: 1.65;
-    text-shadow: 0 2px 22px rgba(0, 0, 0, 0.52);
-  }
-
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 28px;
-  }
-
-  .hero-actions .button:not(.primary) {
-    border-color: rgba(232, 241, 243, 0.64);
-    background: rgba(5, 7, 11, 0.34);
-    color: #f5f7f7;
-    backdrop-filter: blur(8px);
-  }
-
-  .hero-actions .button:not(.primary):hover {
-    border-color: #f5f7f7;
-    background: #f5f7f7;
-    color: #05070b;
-  }
-
-  .hero-progress {
-    grid-column: 1 / -1;
-    max-width: none;
-    margin-top: 34px;
-    padding-top: 16px;
-    border-top: 1px solid rgba(218, 234, 240, 0.28);
-  }
-
-  .hero-progress-topline {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    color: rgba(218, 234, 240, 0.6);
-    font-size: 0.78rem;
-    font-weight: 900;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  .hero-progress-topline strong {
-    color: #f5f7f7;
-  }
-
-  .meter {
-    margin-top: 12px;
-    height: 14px;
-    border: 1px solid rgba(218, 234, 240, 0.26);
-    background: rgba(218, 234, 240, 0.11);
-    box-shadow: 0 0 32px rgba(19, 88, 219, 0.11);
-  }
-
-  .meter span {
-    display: block;
-    height: 100%;
-    background: linear-gradient(90deg, var(--red), var(--blue), var(--teal));
-    box-shadow: 0 0 18px rgba(19, 88, 219, 0.34);
-    transform-origin: left center;
-  }
-
-  .hero-progress-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px 18px;
-    margin-top: 12px;
-    color: rgba(218, 234, 240, 0.48);
-    font-size: 0.72rem;
-    font-weight: 850;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .journey-map {
-    background: var(--bg-paper);
-  }
-
-  .map-panel {
-    border: 1px solid var(--line-strong);
-    background: var(--surface);
-    box-shadow: var(--shadow);
-  }
-
-  .map-legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 18px;
-    align-items: center;
-    padding: 18px 20px;
-    border-bottom: 1px solid var(--line);
-    color: var(--muted);
-    font-size: 0.78rem;
-    font-weight: 850;
-  }
-
-  .map-legend span {
-    display: inline-flex;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .map-legend i {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-  }
-
-  .map-legend .complete {
-    background: var(--teal);
-  }
-
-  .map-legend .award {
-    background: var(--yellow);
-  }
-
-  .map-legend .current {
-    background: var(--red);
-  }
-
-  .map-legend .future {
-    border: 1px solid var(--line-strong);
-    background: white;
-  }
-
-  .map-summary {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 14px 22px 0;
-    color: var(--muted);
-    font-size: 0.74rem;
-    font-weight: 850;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .map-summary-copy {
-    display: flex;
-    gap: 10px;
-    align-items: baseline;
-  }
-
-  .map-summary strong {
-    color: var(--ink);
-    font-size: 1rem;
-    letter-spacing: 0.02em;
-  }
-
-  .map-summary span:last-child {
-    color: var(--faint);
-  }
-
-  .map-view-toggle {
-    display: inline-flex;
-    flex: 0 0 auto;
-    overflow: hidden;
-    border: 1px solid var(--line-strong);
-    border-radius: 3px;
-    background: white;
-  }
-
-  .map-view-toggle button {
-    min-height: 31px;
-    padding: 6px 10px;
-    border: 0;
-    border-right: 1px solid var(--line-strong);
-    background: transparent;
-    color: var(--muted);
-    cursor: pointer;
-    font: inherit;
-    font-size: 0.64rem;
-    font-weight: 900;
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-  }
-
-  .map-view-toggle button:last-child {
-    border-right: 0;
-  }
-
-  .map-view-toggle button.active {
-    background: var(--black);
-    color: white;
-  }
-
-  .map-view-toggle button:focus-visible {
-    position: relative;
-    z-index: 1;
-    outline: 2px solid var(--blue);
-    outline-offset: -2px;
-  }
-
-  .map-content {
-    --map-display-height: 600px;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 128px;
-    gap: 0 18px;
-    align-items: start;
-    min-height: var(--map-display-height);
-    padding: 0 22px;
-  }
-
-  .map-display {
-    min-height: var(--map-display-height);
-    min-width: 0;
-  }
-
-  .checkpoint-grid {
-    display: grid;
-    grid-template-columns: repeat(10, minmax(0, 1fr));
-    gap: 6px;
-    width: min(100%, 680px);
-    padding: 8px 0 26px;
-  }
-
-  .map-year-tabs {
-    display: grid;
-    gap: 5px;
-    padding: 8px 0 26px;
-  }
-
-  .year-tabs-label {
-    margin: 0 0 3px;
-    color: var(--faint);
-    font-size: 0.64rem;
-    font-weight: 900;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .map-year-tabs button {
-    display: flex;
-    min-height: 52px;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 12px;
-    border: 1px solid var(--line);
-    border-radius: 3px;
-    background: white;
-    color: var(--muted);
-    cursor: pointer;
-    font: inherit;
-    font-size: 0.78rem;
-    font-weight: 900;
-    letter-spacing: 0.03em;
-    transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 140ms ease;
-  }
-
-  .map-year-tabs button:hover,
-  .map-year-tabs button:focus-visible {
-    border-color: var(--ink);
-    color: var(--ink);
-    outline: none;
-    transform: translateX(-2px);
-  }
-
-  .map-year-tabs button.active {
-    border-color: var(--black);
-    background: var(--black);
-    color: white;
-  }
-
-  .map-year-tabs button b {
-    color: var(--faint);
-    font-size: 0.7rem;
-  }
-
-  .map-year-tabs button.active b {
-    color: var(--yellow);
-  }
-
-  .checkpoint {
-    --preview-opacity: 0;
-    --preview-offset: 8px;
-    display: grid;
-    aspect-ratio: 1;
-    place-items: center;
-    position: relative;
-    min-height: 0;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    background: #eceee9;
-    color: var(--faint);
-    font-size: clamp(0.6rem, 1.1vw, 0.74rem);
-    font-weight: 900;
-    transition:
-      background 140ms ease,
-      color 140ms ease,
-      transform 140ms ease;
-  }
-
-  .checkpoint:hover,
-  .checkpoint:focus-visible {
-    --preview-opacity: 1;
-    --preview-offset: 0;
-    z-index: 2;
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--ink) 75%, transparent);
-    transform: scale(1.11);
-  }
-
-  .checkpoint:focus-visible {
-    outline: 2px solid var(--ink);
-    outline-offset: 3px;
-  }
-
-  .checkpoint.complete {
-    background: color-mix(in srgb, var(--teal) 70%, white);
-    color: #005f59;
-  }
-
-  .checkpoint.award {
-    border-color: color-mix(in srgb, var(--yellow) 65%, var(--line));
-    background: var(--yellow);
-    color: #4e3900;
-  }
-
-  .checkpoint.current {
-    background: var(--red);
-    color: white;
-  }
-
-  .checkpoint.future {
-    border-color: var(--line);
-    background: white;
-  }
-
-  .checkpoint.is-filtered {
-    opacity: 0.14;
-    pointer-events: none;
-  }
-
-  .calendar-views {
-    display: none;
-    width: 100%;
-    padding: 20px 0 26px;
-  }
-
-  .map-panel[data-map-view="calendar"] [data-sequence-view] {
-    display: none;
-  }
-
-  .map-panel[data-map-view="calendar"] [data-calendar-view] {
-    display: grid;
-    gap: 22px;
-    box-sizing: border-box;
-    max-height: 760px;
-    overflow-y: auto;
-    padding-right: 8px;
-  }
-
-  .calendar-year {
-    display: grid;
-    gap: 16px;
-    padding: 22px;
-    border: 1px solid var(--line);
-    background: white;
-  }
-
-  .calendar-year.is-filtered {
-    display: none;
-  }
-
-  .calendar-year header {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-  }
-
-  .calendar-year header strong {
-    color: var(--ink);
-    font-size: 1.1rem;
-    letter-spacing: -0.04em;
-  }
-
-  .calendar-year header span {
-    color: var(--faint);
-    font-size: 0.68rem;
-    font-weight: 900;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .calendar-quarters {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 18px;
-  }
-
-  .calendar-quarter {
-    display: grid;
-    gap: 10px;
-    min-width: 0;
-    padding: 16px;
-    border: 1px solid var(--line);
-    background: var(--surface);
-  }
-
-  .calendar-quarter h3 {
-    margin: 0;
-    color: var(--ink);
-    font-size: 0.76rem;
-    font-weight: 900;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .calendar-weekdays {
-    display: grid;
-    grid-template-rows: repeat(7, minmax(0, 1fr));
-    gap: 3px;
-    color: var(--faint);
-    font-size: 0.54rem;
-    font-weight: 800;
-    line-height: 1;
-  }
-
-  .calendar-frame {
-    display: grid;
-    grid-template-columns: 24px minmax(0, 1fr);
-    gap: 7px;
-  }
-
-  .calendar-grid {
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-columns: repeat(var(--week-count), minmax(0, 1fr));
-    grid-template-rows: repeat(7, minmax(0, 1fr));
-    gap: 3px;
-    aspect-ratio: var(--week-count) / 7;
-  }
-
-  .calendar-day {
-    --preview-opacity: 0;
-    --preview-offset: 8px;
-    position: relative;
-    display: grid;
-    place-items: center;
-    border-radius: 2px;
-    background: #eff0ec;
-    color: white;
-    font-size: clamp(0.56rem, 1vw, 0.72rem);
-    font-weight: 900;
-    line-height: 1;
-  }
-
-  .calendar-day.outside {
-    background: transparent;
-  }
-
-  .calendar-day.has-event {
-    background: color-mix(in srgb, var(--teal) 70%, white);
-  }
-
-  .calendar-day.has-event.intensity-2,
-  .calendar-day.has-event.intensity-3 {
-    background: var(--teal);
-  }
-
-  .calendar-day.award {
-    background: var(--yellow);
-    color: #4e3900;
-  }
-
-  .calendar-day.current {
-    background: var(--red);
-  }
-
-  .calendar-day:hover,
-  .calendar-day:focus-visible {
-    --preview-opacity: 1;
-    --preview-offset: 0;
-    z-index: 2;
-    outline: 2px solid var(--ink);
-    outline-offset: 2px;
-    transform: scale(1.12);
-  }
-
-  .calendar-preview {
-    position: absolute;
-    z-index: 6;
-    display: none;
-    width: min(230px, calc(100vw - 40px));
-    gap: 4px;
-    padding: 10px 11px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    background: var(--black);
-    box-shadow: 0 10px 20px rgba(5, 5, 5, 0.22);
-    color: white;
-    text-align: left;
-  }
-
-  .calendar-preview.empty {
-    width: min(200px, calc(100vw - 40px));
-  }
-
-  .preview-below .calendar-preview {
-    top: calc(100% + 10px);
-  }
-
-  .preview-above .calendar-preview {
-    bottom: calc(100% + 10px);
-  }
-
-  .preview-center .calendar-preview {
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
-  .preview-left .calendar-preview {
-    left: 0;
-  }
-
-  .preview-right .calendar-preview {
-    right: 0;
-  }
-
-  .calendar-preview-kicker {
-    color: var(--yellow);
-    font-size: 0.56rem;
-    font-weight: 900;
-    letter-spacing: 0.06em;
-    line-height: 1.25;
-    text-transform: uppercase;
-  }
-
-  .calendar-preview strong {
-    color: white;
-    font-size: 0.84rem;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-  }
-
-  .calendar-preview-event {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 0.64rem;
-    font-weight: 650;
-    line-height: 1.35;
-  }
-
-  .calendar-preview-footer {
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-    padding-top: 6px;
-    border-top: 1px solid rgba(255, 255, 255, 0.14);
-    color: #7ee2d7;
-    font-size: 0.54rem;
-    font-weight: 900;
-    letter-spacing: 0.04em;
-    line-height: 1.3;
-    text-transform: uppercase;
-  }
-
-  .calendar-preview-footer em {
-    color: #ffd66c;
-    font-style: normal;
-  }
-
-  .calendar-day:hover .calendar-preview,
-  .calendar-day:focus-visible .calendar-preview {
-    display: grid;
-  }
-
-  .checkpoint-preview {
-    position: absolute;
-    bottom: calc(100% + 12px);
-    left: 50%;
-    z-index: 4;
-    display: none;
-    width: min(272px, calc(100vw - 40px));
-    gap: 6px;
-    padding: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    background: var(--black);
-    box-shadow: 0 15px 32px rgba(5, 5, 5, 0.28);
-    color: white;
-    opacity: var(--preview-opacity);
-    pointer-events: none;
-    text-align: left;
-    transform: translate(-50%, var(--preview-offset));
-    transition:
-      opacity 140ms ease,
-      transform 140ms ease;
-  }
-
-  .checkpoint:hover .checkpoint-preview,
-  .checkpoint:focus-visible .checkpoint-preview {
-    display: grid;
-  }
-
-  .preview-kicker {
-    color: var(--yellow);
-    font-size: 0.62rem;
-    font-weight: 900;
-    letter-spacing: 0.08em;
-    line-height: 1.3;
-    text-transform: uppercase;
-  }
-
-  .checkpoint-preview strong {
-    color: white;
-    font-size: 1rem;
-    letter-spacing: -0.03em;
-    line-height: 1.05;
-  }
-
-  .preview-event,
-  .preview-solution {
-    color: rgba(255, 255, 255, 0.72);
-    font-size: 0.72rem;
-    font-weight: 650;
-    line-height: 1.45;
-  }
-
-  .preview-solution {
-    display: -webkit-box;
-    overflow: hidden;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-  }
-
-  .preview-footer {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding-top: 7px;
-    border-top: 1px solid rgba(255, 255, 255, 0.16);
-    color: #7ee2d7;
-    font-size: 0.64rem;
-    font-weight: 900;
-    letter-spacing: 0.03em;
-    line-height: 1.35;
-    text-transform: uppercase;
-  }
-
-  .preview-footer em {
-    color: #ffd66c;
-    font-style: normal;
-  }
-
-  .map-note {
-    display: flex;
-    gap: 18px;
-    justify-content: space-between;
-    padding: 18px 20px;
-    border-top: 1px solid var(--line);
-    background: var(--black);
-    color: white;
-  }
-
-  .map-note strong {
-    color: var(--yellow);
-    font-size: 0.78rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-
-  @keyframes hero-content-reveal {
-    from {
-      opacity: 0;
-      transform: translateY(24px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes hero-meter-reveal {
-    from {
-      transform: scaleX(0);
-    }
-
-    to {
-      transform: scaleX(1);
-    }
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    h1 span,
-    .mission,
-    .hero-actions,
-    .hero-progress {
-      animation: hero-content-reveal 700ms cubic-bezier(0.2, 0.72, 0.25, 1) both;
-    }
-
-    h1 span:nth-child(2) {
-      animation-delay: 80ms;
-    }
-
-    .mission {
-      animation-delay: 130ms;
-    }
-
-    .hero-actions {
-      animation-delay: 210ms;
-    }
-
-    .hero-progress {
-      animation-delay: 300ms;
-    }
-
-    .meter span {
-      animation: hero-meter-reveal 1.1s 650ms cubic-bezier(0.2, 0.72, 0.25, 1) both;
-    }
-  }
-
-  @media (max-width: 980px) {
-    h1 {
-      font-size: clamp(3.1rem, 7vw, 4.1rem);
-    }
-
-  }
-
-  @media (max-width: 720px) {
-    .hero-copy {
-      grid-template-columns: 1fr;
-    }
-
-    .hero-grid {
-      min-height: auto;
-    }
-
-    h1 {
-      grid-row: auto;
-    }
-
-    .mission {
-      margin-top: 28px;
-    }
-
-    .hero-progress {
-      grid-column: auto;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .hero {
-      min-height: 0;
-      padding: 48px 0;
-    }
-
-    h1 {
-      font-size: clamp(3rem, 14vw, 3.5rem);
-      line-height: 0.86;
-    }
-
-    .map-summary {
-      padding: 16px 14px 0;
-      align-items: flex-start;
-      flex-direction: column;
-    }
-
-    .map-content {
-      display: flex;
-      flex-direction: column;
-      min-height: 0;
-      padding: 0 14px;
-    }
-
-    .map-display {
-      min-height: 0;
-    }
-
-    .checkpoint-grid {
-      gap: 4px;
-      width: 100%;
-      padding: 16px 0;
-    }
-
-    .map-year-tabs {
-      display: flex;
-      width: 100%;
-      gap: 6px;
-      overflow-x: auto;
-      padding: 0 0 16px;
-    }
-
-    .year-tabs-label {
-      align-self: center;
-      margin: 0 2px 0 0;
-    }
-
-    .map-year-tabs button {
-      flex: 0 0 auto;
-    }
-
-    .calendar-views {
-      height: auto !important;
-      width: 100%;
-      padding: 16px 0;
-    }
-
-    .calendar-year {
-      padding: 14px;
-    }
-
-    .calendar-quarter {
-      padding: 7px;
-    }
-
-    .calendar-quarters {
-      grid-template-columns: 1fr;
-      gap: 10px;
-    }
-
-    .checkpoint {
-      font-size: 0.56rem;
-    }
-
-    .map-note {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  }
-</style>
+    </script>
+  </body>
+</html>

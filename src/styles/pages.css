@@ -1,0 +1,69 @@
+/* Shared reading hierarchy; page-specific CSS retains its functional layouts. */
+:root .site-pages main h1 { font-family: var(--body); font-size: clamp(2.8rem,5.8vw,6rem); font-weight: 500; letter-spacing: -.055em; line-height: 1.04; text-wrap: balance; }
+:root .site-pages main h2, :root .site-pages main h3 { font-weight: 500; line-height: 1.15; }
+:root .site-pages main .archive-hero { padding-top: 72px; }
+:root .site-pages main .archive-hero > p { max-width: 62ch; font-size: 1.1rem; line-height: 1.75; }
+:root .site-pages main .archive-hero > h1 + p { margin-top: 24px; }
+:root .site-pages main .archive-hero + .section { padding-top: 44px; }
+:root .site-pages main .meta, :root .site-pages main .record-category { font-family: var(--mono); font-weight: 500; }
+:root .site-pages main .switch, :root .site-pages main .archive-switch { padding: 4px; border-radius: 99px; background: var(--soft); border-color: var(--line); }
+:root .site-pages main .switch button, :root .site-pages main .archive-switch button { min-height: 44px; padding: 10px 20px; border-radius: 99px; font-size: .86rem; font-weight: 500; }
+:root .site-pages main button[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); }
+:root .site-pages main .empty-state { background: transparent; box-shadow: none; border: 1px solid var(--line); border-radius: 12px; padding: 32px; }
+:root .site-pages main .principle-card { border: 1px solid var(--line); border-radius: 12px; padding: 28px; background: var(--raised); }
+:root .site-pages main .principle-card:hover { border-color: var(--accent); }
+:root .site-pages main .principle-card > span { color: var(--accent); font-family: var(--mono); }
+:root .site-pages main .judging-row { padding-block: 36px; }
+:root .site-pages main .judging-row strong { background: var(--soft); color: var(--muted); border-radius: 99px; padding: 8px 14px; font-weight: 500; }
+:root .site-pages main .judging-row:hover h2, :root .site-pages main .essays a:hover h3 { color: var(--accent); }
+:root .site-pages main .essays a { padding-block: 36px; }
+:root .site-pages main time { font-family: var(--mono); font-weight: 400; }
+:root .site-pages main .currency-card, :root .site-pages main .category-currency-card { border: 1px solid var(--line); border-radius: 12px; box-shadow: none; }
+:root .site-pages main .currency-card-head { padding-block: 24px; }
+:root .site-pages main .currency-original { padding-block: 28px; }
+:root .site-pages main .currency-original dd { font-weight: 500; font-size: clamp(1.7rem,3vw,2.8rem); letter-spacing: -.04em; }
+:root .site-pages main .conversion-toggle, :root .site-pages main .fx-open { min-height: 44px; }
+:root .site-pages main .fx-dialog { border: 1px solid var(--line); border-radius: 16px; background: var(--raised); color: var(--ink); }
+:root .site-pages main .fx-dialog th { background: var(--soft); color: var(--muted); }
+:root .site-pages main .record-copy h3 { font-size: 1.2rem; }
+:root .site-pages main .record-number { font-family: var(--mono); }
+:root .site-pages main .prose { max-width: 780px; }
+:root .site-pages main .prose p, :root .site-pages main .prose li { font-size: 1.05rem; line-height: 1.85; }
+:root .site-pages main .prose a { color: var(--accent); font-weight: 500; text-decoration: underline; text-underline-offset: 4px; }
+:root .site-pages main .prose h1 { font-size: clamp(2.5rem,5.5vw,5rem); }
+:root .site-pages main .prose h2 { margin-top: 56px; font-size: clamp(1.65rem,3vw,2.6rem); }
+:root .site-pages main .about-hero { background: var(--bg); border-color: var(--line); }
+:root .site-pages main .about-hero::before { display: none; }
+:root .site-pages main .hero-grid { min-height: auto; padding-block: 72px 56px; }
+:root .site-pages main .hero-copy h1 em { font-family: var(--body); font-weight: 400; }
+:root .site-pages main .portrait { border-color: var(--line); border-radius: 12px; box-shadow: none; overflow: hidden; }
+:root .site-pages main .portrait::after { display: none; }
+:root .site-pages main .portrait-index { top: 16px; right: 18px; font-size: 3rem; font-weight: 500; color: #fff; text-shadow: 0 2px 12px #0008; }
+:root .site-pages main .proof-strip { border-color: var(--line); }
+:root .site-pages main .proof-strip strong { font-weight: 500; }
+:root .site-pages main .story, :root .site-pages main .career-section, :root .site-pages main .operating-section { background: var(--bg); color: var(--ink); border-color: var(--line); }
+:root .site-pages main .story h2, :root .site-pages main .operating-heading h2, :root .site-pages main .section-heading-row h2, :root .site-pages main .contact h2 { font-size: clamp(2.2rem,4.5vw,4.6rem); line-height: 1.08; letter-spacing: -.045em; color: var(--ink); }
+:root .site-pages main .story-copy > .lede { font-weight: 400; line-height: 1.5; }
+:root .site-pages main blockquote { border-left-width: 2px; font-family: var(--body); font-weight: 400; font-style: italic; }
+:root .site-pages main .operating-heading .meta { color: var(--accent); }
+:root .site-pages main .operating-heading > p:last-child, :root .site-pages main .principle-list p { color: var(--muted); }
+:root .site-pages main .principle-list li { border-color: var(--line); }
+:root .site-pages main .contact-section { border-top: 1px solid var(--line); background: var(--soft); color: var(--ink); }
+:root .site-pages main .contact .meta { color: var(--accent); }
+:root .site-pages main .contact-copy li { border-color: var(--line-strong); border-radius: 99px; font-weight: 500; }
+:root .site-pages main .contact form { border: 1px solid var(--line); border-radius: 16px; background: var(--raised); box-shadow: none; padding: 28px; }
+:root .site-pages main .contact input, :root .site-pages main .contact textarea { border-radius: 8px; background: var(--bg); color: var(--ink); }
+:root .site-pages main .contact label { font-weight: 500; }
+:root .site-pages main .calendar-day:not(.has-event) { color: var(--muted); }
+:root .site-pages main .hover-card { background: var(--black); color: #fff; }
+:root .site-pages main .frequency-bubble.peak { color: var(--on-ink); }
+:root .site-pages main .crew-tabs, :root .site-pages main .view-toggle { border-radius: 99px; padding: 4px; background: var(--soft); border-color: var(--line); }
+:root .site-pages main .crew-tabs button, :root .site-pages main .view-toggle button { min-height: 44px; border: 0; border-radius: 99px; }
+:root .site-pages main .year-tabs button { border-radius: 8px; }
+:root .site-pages main .gallery-controls label { min-height: 44px; border-radius: 99px; }
+@media (max-width: 650px) {
+  :root .site-pages main .archive-hero { padding-top: 42px; }
+  :root .site-pages main h1 { font-size: clamp(2.5rem,10vw,3.6rem); }
+  :root .site-pages main .hero-grid { padding-block: 42px; }
+  :root .site-pages main .contact form { padding: 20px; }
+}

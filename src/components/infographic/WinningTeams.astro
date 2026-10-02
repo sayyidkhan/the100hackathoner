@@ -1,0 +1,89 @@
+---
+import type { Hackathon } from "../../lib/hackathons";
+import { buildAwards } from "../../lib/insights";
+
+interface Props { items: Hackathon[]; }
+const { items } = Astro.props;
+const awardEntries = buildAwards(items);
+const awarded = items.filter((item) => item.award?.trim()).sort((a, b) => b.number - a.number);
+const sizes = [...new Set(awarded.map((item) => item.members.length))].sort((a, b) => a - b);
+const groups = sizes.map((size) => ({
+  size,
+  label: size === 0 ? "Team not recorded" : size === 1 ? "Solo" : `${size}-person teams`,
+  builds: awarded.filter((item) => item.members.length === size),
+}));
+const peak = Math.max(...groups.map((group) => group.builds.length), 1);
+---
+
+<div class="winning-teams">
+  <p class="hint">Select a team size to see its awarded builds and lineups.</p>
+  <ol class="composition" aria-label="Awarded builds by team size">
+    {groups.map((group) => (
+      <li>
+        <details>
+          <summary>
+            <span class="size-label">{group.label}</span>
+            <span class="track" aria-hidden="true"><span style={`--ratio:${group.builds.length / peak}`} /></span>
+            <span class="count">{group.builds.length}</span>
+            <span class="expand" aria-hidden="true">+</span>
+          </summary>
+          <div class="lineups">
+            <p>{group.builds.length} awarded build{group.builds.length === 1 ? "" : "s"}</p>
+            <ol>
+              {group.builds.map((item) => (
+                <li>
+                  <a href={`/hackathons/${item.number}/`}>
+                    <span class="record-number">#{String(item.number).padStart(3, "0")}</span>
+                    <strong>{item.title}</strong>
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                  <p class="result"><b>{awardEntries.find((entry) => entry.number === item.number)?.win ? "Win" : "Awarded"}</b> · {item.award}</p>
+                  <ul aria-label={`Team for ${item.title}`}>
+                    {item.members.map((member) => <li>{member}</li>)}
+                  </ul>
+                  {!item.members.length && <p class="missing">Member names not recorded.</p>}
+                </li>
+              ))}
+            </ol>
+          </div>
+        </details>
+      </li>
+    ))}
+  </ol>
+</div>
+
+<style>
+  .hint { margin: 0 0 20px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+  .composition, .lineups ol, .lineups ul { list-style: none; margin: 0; padding: 0; }
+  .composition { display: grid; gap: 8px; }
+  summary { display: grid; grid-template-columns: minmax(0, 150px) minmax(0, 1fr) 34px 20px; gap: 14px; align-items: center; min-height: 48px; padding: 8px 0; cursor: pointer; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+  .size-label { font-size: 14px; color: var(--ink); }
+  .track { height: 18px; background: var(--soft); border-radius: 2px; }
+  .track > span { display: block; height: 100%; width: calc(var(--ratio) * 100%); background: var(--checkpoint-award); border-radius: 2px; }
+  .count { color: var(--muted); font: 14px var(--mono); text-align: right; }
+  .expand { color: var(--award); font: 20px var(--mono); text-align: center; }
+  details[open] .expand { transform: rotate(45deg); }
+  .lineups { margin: 8px 0 16px; padding: 18px; border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: 8px; background: var(--raised); }
+  .lineups > p { margin: 0 0 16px; color: var(--muted); font: 11px/1.5 var(--mono); }
+  .lineups > ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .lineups > ol > li { min-width: 0; }
+  .lineups a { display: flex; gap: 10px; align-items: baseline; min-height: 44px; color: var(--ink); text-decoration: none; }
+  .lineups a strong { font-size: 14px; line-height: 1.5; font-weight: 500; overflow-wrap: anywhere; }
+  .record-number { flex-shrink: 0; color: var(--award); font: 11px var(--mono); }
+  .lineups a > span:last-child { margin-left: auto; color: var(--award); }
+  .lineups a:hover strong { text-decoration: underline; text-underline-offset: 3px; }
+  .lineups a:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  .result { margin: 4px 0 12px; font-size: 12px; line-height: 1.6; color: var(--muted); }
+  .result b { color: var(--award); font-weight: 500; }
+  .lineups ul { display: flex; flex-wrap: wrap; gap: 6px; }
+  .lineups ul li { padding: 5px 8px; border: 1px solid var(--line); border-radius: 4px; color: var(--ink); background: var(--surface); font-size: 11px; overflow-wrap: anywhere; }
+  .missing { color: var(--faint); font-size: 12px; }
+  @media (max-width: 620px) {
+    summary { grid-template-columns: minmax(0, 1fr) 30px 20px; gap: 6px 10px; }
+    .track { grid-column: 1 / -1; grid-row: 2; height: 14px; }
+    .lineups { padding: 14px; }
+    .lineups > ol { grid-template-columns: 1fr; }
+  }
+</style>

@@ -60,10 +60,16 @@ const principles = [
     </div>
 
     <div class="container proof-strip" aria-label="Journey at a glance">
-      <div><strong>{completed}</strong><span>Hackathons shipped</span></div>
+      <div class="journey-progress"><strong>{completed} / 100</strong><span>Hackathons shipped · The finish line</span></div>
       <div><strong>{awarded}</strong><span>Awarded builds</span></div>
-      <div><strong>10</strong><span>Years in motion</span></div>
-      <div><strong>100</strong><span>The finish line</span></div>
+      <div><strong>25</strong><span>Wins</span></div>
+    </div>
+  </section>
+
+  <section class="section years-section" aria-labelledby="years-heading">
+    <div class="container years-grid">
+      <div><p class="meta">Since 2016</p><h2 id="years-heading">10 years in motion.</h2></div>
+      <p>A decade of ideas tested, teams formed, and lessons carried into the next build. The journey keeps going—one hackathon at a time.</p>
     </div>
   </section>
 
@@ -174,31 +180,35 @@ const principles = [
   .about-hero::before { position: absolute; inset: 0 0 auto; height: 7px; content: ""; background: linear-gradient(90deg, var(--red) 0 58%, var(--yellow) 58% 74%, var(--blue) 74%); }
   .hero-grid { display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(360px, .72fr); gap: clamp(42px, 7vw, 100px); align-items: center; min-height: 690px; padding-block: 82px 54px; }
   .hero-copy { position: relative; z-index: 1; }
-  h1 { max-width: 850px; margin: 20px 0 0; color: var(--ink); font-size: clamp(3.7rem, 7.4vw, 7.6rem); font-weight: 950; letter-spacing: -.055em; line-height: .88; }
+  h1 { max-width: 850px; margin: 20px 0 0; color: var(--ink); font-size: clamp(3.7rem, 7.4vw, 7.6rem); font-weight: 500; letter-spacing: -.055em; line-height: .88; }
   h1 em { color: var(--red); font-family: Georgia, "Times New Roman", serif; font-weight: 500; }
   .hero-intro { max-width: 700px; margin: 32px 0 0; color: var(--muted); font-size: clamp(1.05rem, 1.5vw, 1.25rem); line-height: 1.7; }
   .hero-actions { display: flex; gap: 24px; align-items: center; margin-top: 34px; }
-  .text-link { border-bottom: 1px solid var(--ink); padding: 10px 0 6px; font-size: .86rem; font-weight: 850; }
+  .text-link { border-bottom: 1px solid var(--ink); padding: 10px 0 6px; font-size: .86rem; font-weight: 500; }
   .text-link span { margin-left: 6px; color: var(--red); }
 
   .portrait { position: relative; margin: 0; border: 1px solid var(--black); background: var(--black); box-shadow: 18px 18px 0 var(--yellow); }
   .portrait::after { position: absolute; inset: 14px; border: 1px solid rgb(255 255 255 / 24%); content: ""; pointer-events: none; }
   .portrait img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; }
-  .portrait-index { position: absolute; z-index: 2; top: -37px; right: -18px; color: var(--red); font-size: clamp(5rem, 9vw, 8rem); font-weight: 950; letter-spacing: -.08em; line-height: 1; }
-  .portrait figcaption { display: flex; justify-content: space-between; gap: 16px; padding: 13px 15px; background: var(--black); color: white; font-size: .7rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  .portrait-index { position: absolute; z-index: 2; top: -37px; right: -18px; color: var(--red); font-size: clamp(5rem, 9vw, 8rem); font-weight: 500; letter-spacing: -.08em; line-height: 1; }
+  .portrait figcaption { display: flex; justify-content: space-between; gap: 16px; padding: 13px 15px; background: var(--black); color: white; font-size: .7rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
   .portrait figcaption span:last-child { color: rgb(255 255 255 / 56%); }
 
-  .proof-strip { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line-strong); }
+  .proof-strip { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--line-strong); }
+  .proof-strip .journey-progress { grid-column: 1 / -1; border-bottom: 1px solid var(--line); }
+  .years-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
+  .years-grid p:last-child { color: var(--muted); }
+  .years-section { border-bottom: 1px solid var(--line); }
   .proof-strip div { display: grid; gap: 4px; padding: 24px 20px; border-left: 1px solid var(--line); }
   .proof-strip div:last-child { border-right: 1px solid var(--line); }
   .proof-strip strong { color: var(--ink); font-size: clamp(2rem, 4vw, 3.25rem); letter-spacing: -.05em; line-height: 1; }
-  .proof-strip span { color: var(--faint); font-size: .68rem; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; }
+  .proof-strip span { color: var(--faint); font-size: .68rem; font-weight: 500; letter-spacing: .09em; text-transform: uppercase; }
 
   .story { background: var(--surface-warm); }
   .story-grid { display: grid; grid-template-columns: minmax(280px, .72fr) minmax(0, 1.2fr); gap: clamp(48px, 9vw, 140px); align-items: start; }
   .story-heading { position: sticky; top: 140px; }
   .story h2, .operating-heading h2 { margin: 18px 0 0; color: var(--ink); font-size: clamp(3rem, 5.8vw, 6.3rem); line-height: .9; }
-  .story-copy > .lede { margin: 0; color: var(--ink); font-size: clamp(1.45rem, 2.4vw, 2.15rem); font-weight: 750; letter-spacing: -.025em; line-height: 1.28; }
+  .story-copy > .lede { margin: 0; color: var(--ink); font-size: clamp(1.45rem, 2.4vw, 2.15rem); font-weight: 500; letter-spacing: -.025em; line-height: 1.28; }
   .story-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 42px; }
   .story-columns p { margin: 0; color: var(--muted); line-height: 1.75; }
   blockquote { margin: 52px 0 0; padding: 24px 0 0 26px; border-top: 1px solid var(--line-strong); border-left: 6px solid var(--red); color: var(--ink); font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.35rem, 2.5vw, 2rem); line-height: 1.35; }
@@ -210,7 +220,7 @@ const principles = [
   .career-track { display: grid; grid-template-columns: repeat(5, 1fr); margin: 62px 0 0; padding: 0; list-style: none; }
   .career-track li { position: relative; min-width: 0; padding: 36px 24px 8px 0; border-top: 2px solid var(--black); }
   .career-track li::before { position: absolute; top: -7px; left: 0; width: 12px; height: 12px; border-radius: 50%; content: ""; background: var(--red); }
-  .career-label { margin: 0 0 20px; color: var(--red); font-size: .68rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+  .career-label { margin: 0 0 20px; color: var(--red); font-size: .68rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; }
   .career-track h3 { margin: 0; color: var(--ink); font-size: 1.1rem; line-height: 1.2; }
   .career-track li > p:last-child { margin: 12px 0 0; color: var(--muted); font-size: .88rem; line-height: 1.6; }
 
@@ -223,20 +233,20 @@ const principles = [
   .principle-list { margin: 0; padding: 0; list-style: none; }
   .principle-list li { display: grid; grid-template-columns: 58px 1fr; gap: 18px; padding: 25px 0; border-top: 1px solid rgb(255 255 255 / 20%); }
   .principle-list li:last-child { border-bottom: 1px solid rgb(255 255 255 / 20%); }
-  .principle-list > li > span { color: var(--red); font-size: .72rem; font-weight: 900; }
+  .principle-list > li > span { color: var(--red); font-size: .72rem; font-weight: 500; }
   .principle-list h3 { margin: 0; font-size: 1.35rem; }
   .principle-list p { margin: 8px 0 0; color: rgb(255 255 255 / 56%); line-height: 1.6; }
 
   .contact-section { scroll-margin-top: 120px; background: var(--yellow); color: var(--black); }
   .contact { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, .62fr); gap: clamp(44px, 8vw, 110px); align-items: start; }
   .contact .meta { color: var(--black); }
-  .contact h2 { max-width: 820px; margin: 18px 0 0; color: var(--black); font-size: clamp(3rem, 6vw, 6.2rem); font-weight: 950; letter-spacing: -.055em; line-height: .89; }
+  .contact h2 { max-width: 820px; margin: 18px 0 0; color: var(--black); font-size: clamp(3rem, 6vw, 6.2rem); font-weight: 500; letter-spacing: -.055em; line-height: .89; }
   .contact-copy > p:not(.meta) { max-width: 680px; margin: 28px 0 0; font-size: 1.08rem; line-height: 1.7; }
   .contact-copy ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 0; padding: 0; list-style: none; }
-  .contact-copy li { padding: 7px 10px; border: 1px solid var(--black); font-size: .72rem; font-weight: 850; text-transform: uppercase; }
+  .contact-copy li { padding: 7px 10px; border: 1px solid var(--black); font-size: .72rem; font-weight: 500; text-transform: uppercase; }
   form { display: grid; gap: 16px; border: 1px solid var(--black); background: var(--bg-paper); box-shadow: 12px 12px 0 var(--black); padding: 24px; }
-  label { display: grid; gap: 8px; color: var(--muted); font-size: .72rem; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
-  input, textarea { width: 100%; border: 1px solid var(--line-strong); border-radius: 0; background: white; color: var(--text); padding: 13px 12px; }
+  label { display: grid; gap: 8px; color: var(--muted); font-size: .72rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+  input, textarea { width: 100%; border: 1px solid var(--line-strong); border-radius: 0; background: var(--raised); color: var(--text); padding: 13px 12px; }
   input:focus, textarea:focus { outline: 2px solid var(--red); outline-offset: 1px; }
   textarea { resize: vertical; }
   form button { width: 100%; cursor: pointer; }
@@ -255,6 +265,7 @@ const principles = [
     h1 { font-size: clamp(3.35rem, 15vw, 5.5rem); }
     .portrait { width: min(88%, 460px); margin-inline: auto; box-shadow: 12px 12px 0 var(--yellow); }
     .proof-strip { grid-template-columns: 1fr 1fr; }
+    .years-grid { grid-template-columns: 1fr; gap: 16px; }
     .proof-strip div { border-bottom: 1px solid var(--line); }
     .story-heading { position: static; }
     .story-columns { grid-template-columns: 1fr; gap: 12px; }

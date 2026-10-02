@@ -1,0 +1,9 @@
+// Shared by the original pages and the landing page, including its mobile menu.
+export const mainNavigation = [
+  ["Journey", "/hackathons/"],
+  ["Awards", "/awards/"],
+  ["Judging", "/judging/"],
+  ["Principles", "/principles/"],
+  ["Field Notes", "/essays/"],
+  ["About", "/about/"],
+] as const;

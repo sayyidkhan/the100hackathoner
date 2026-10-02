@@ -1,5 +1,6 @@
 ---
 import type { Hackathon } from "../lib/hackathons";
+import { formatDateLabel } from "../lib/format";
 import {
   buildAwards,
   buildCollaborationStats,
@@ -23,6 +24,7 @@ import MonthPulse from "./infographic/MonthPulse.astro";
 import AwardWall from "./infographic/AwardWall.astro";
 import BarRanking from "./infographic/BarRanking.astro";
 import TeammateRanking from "./infographic/TeammateRanking.astro";
+import WinningTeams from "./infographic/WinningTeams.astro";
 import ThemeCategoryRanking from "./infographic/ThemeCategoryRanking.astro";
 
 interface Props {
@@ -41,8 +43,16 @@ const themeCategories = buildThemeCategoryStats(items);
 const people = buildCollaborationStats(items);
 const homeRunPeople = buildHomeRunCollaborationStats(items);
 const homeRunTeamCount = buildHomeRunTeamCount(items);
-const venues = buildVenueStats(items, 8);
-const countries = buildCountryStats(items);
+const soloBuilds = items.filter((item) => item.members.length <= 1)
+  .sort((a, b) => b.number - a.number);
+const venues = buildVenueStats(items, 8).map((stat) => ({
+  ...stat,
+  hackathons: items.filter((item) => item.location?.trim().toLowerCase() === stat.label.toLowerCase()),
+}));
+const countries = buildCountryStats(items).map((stat) => ({
+  ...stat,
+  hackathons: items.filter((item) => item.country?.trim().toLowerCase() === stat.label.toLowerCase()),
+}));
 const participationModes = buildParticipationModeStats(items);
 const durationStats = buildDurationStats(items);
 const durationOccurrences = buildDurationOccurrences(items);
@@ -164,6 +174,11 @@ const panels = [
     id: "crew",
     title: "Who builds it",
     copy: `${totals.soloBuilds} solo runs, ${totals.teamBuilds} with a team, and ${totals.collaborators} people who have shared a table along the way.`,
+  },
+  {
+    id: "winning-teams",
+    title: "Winning team composition",
+    copy: `${totals.awarded} awarded builds, grouped by team size. See who built together and which lineups earned recognition.`,
   },
   {
     id: "places",
@@ -325,12 +340,15 @@ const panelIndex = (id: string) =>
                   <b>{totals.teamBuilds}</b> with a team
                 </span>
               </div>
-              <div class="crew-tabs" role="group" aria-label="Teammate ranking">
+              <div class="crew-tabs" role="group" aria-label="Collaboration view">
                 <button type="button" aria-pressed="true" data-crew-tab="all">
                   All teammates
                 </button>
                 <button type="button" aria-pressed="false" data-crew-tab="home-runs">
                   Home runs
+                </button>
+                <button type="button" aria-pressed="false" data-crew-tab="solo">
+                  Solo
                 </button>
               </div>
               <div data-crew-panel="all">
@@ -353,8 +371,29 @@ const panelIndex = (id: string) =>
                   <p class="crew-empty">No teammates are linked to an awarded run yet.</p>
                 )}
               </div>
+              <div data-crew-panel="solo" hidden>
+                <p class="solo-heading">Solo builds · {soloBuilds.length} attempts</p>
+                <ol class="solo-builds" aria-label="Solo hackathon builds">
+                  {soloBuilds.map((item) => (
+                    <li>
+                      <a href={`/hackathons/${item.number}/`}>
+                        <span class="solo-number">#{String(item.number).padStart(3, "0")}</span>
+                        <span class="solo-record">
+                          <strong>{item.title}</strong>
+                          <span>{item.event}</span>
+                          <small>{formatDateLabel(item.dateLabel, item.startDate)}</small>
+                          {item.award && <em>Awarded · {item.award}</em>}
+                        </span>
+                        <span class="solo-arrow" aria-hidden="true">↗</span>
+                      </a>
+                    </li>
+                  ))}
+                </ol>
+              </div>
             </div>
           )}
+
+          {panel.id === "winning-teams" && <WinningTeams items={items} />}
 
           {panel.id === "places" && (
             <div class="places">
@@ -450,7 +489,7 @@ const panelIndex = (id: string) =>
     margin: 0;
     color: var(--ink);
     font-size: clamp(2.1rem, 4vw, 3.1rem);
-    font-weight: 950;
+    font-weight: 500;
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.06em;
     line-height: 0.92;
@@ -460,7 +499,7 @@ const panelIndex = (id: string) =>
     margin-top: 10px;
     color: var(--ink);
     font-size: 0.72rem;
-    font-weight: 900;
+    font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
@@ -469,7 +508,7 @@ const panelIndex = (id: string) =>
     margin: 5px 0 0;
     color: var(--faint);
     font-size: 0.76rem;
-    font-weight: 750;
+    font-weight: 500;
   }
 
   /* Panels -------------------------------------------------------------- */
@@ -492,7 +531,7 @@ const panelIndex = (id: string) =>
     display: block;
     color: var(--red);
     font-size: 0.78rem;
-    font-weight: 950;
+    font-weight: 500;
     letter-spacing: 0.14em;
   }
 
@@ -500,7 +539,7 @@ const panelIndex = (id: string) =>
     margin: 10px 0 0;
     color: var(--ink);
     font-size: clamp(1.7rem, 3.2vw, 2.5rem);
-    font-weight: 950;
+    font-weight: 500;
     letter-spacing: -0.05em;
     line-height: 0.98;
   }
@@ -521,7 +560,7 @@ const panelIndex = (id: string) =>
     margin: 0 0 14px;
     color: var(--faint);
     font-size: 0.7rem;
-    font-weight: 900;
+    font-weight: 500;
     letter-spacing: 0.12em;
     text-transform: uppercase;
   }
@@ -574,7 +613,7 @@ const panelIndex = (id: string) =>
     margin-bottom: 9px;
     color: var(--faint);
     font-size: 0.68rem;
-    font-weight: 950;
+    font-weight: 500;
     letter-spacing: 0.12em;
     text-transform: uppercase;
   }
@@ -591,7 +630,7 @@ const panelIndex = (id: string) =>
   .duration-stat strong {
     color: var(--ink);
     font-size: clamp(2.8rem, 6vw, 4.6rem);
-    font-weight: 950;
+    font-weight: 500;
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.08em;
     line-height: 0.78;
@@ -609,7 +648,7 @@ const panelIndex = (id: string) =>
     padding-bottom: 2px;
     color: var(--muted);
     font-size: 0.75rem;
-    font-weight: 850;
+    font-weight: 500;
   }
 
   .duration-scale {
@@ -663,7 +702,7 @@ const panelIndex = (id: string) =>
     background: var(--bg-paper);
     color: var(--faint);
     font-size: 0.75rem;
-    font-weight: 950;
+    font-weight: 500;
     letter-spacing: -0.08em;
     transform: translateX(-50%) rotate(-12deg);
   }
@@ -682,7 +721,7 @@ const panelIndex = (id: string) =>
     gap: 12px;
     color: var(--faint);
     font-size: 0.68rem;
-    font-weight: 900;
+    font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
@@ -710,7 +749,7 @@ const panelIndex = (id: string) =>
     justify-content: space-between;
     color: var(--faint);
     font-size: 0.64rem;
-    font-weight: 900;
+    font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
@@ -744,7 +783,7 @@ const panelIndex = (id: string) =>
     outline: none;
     background: var(--ink);
     box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 18%, transparent);
-    color: white;
+    color: var(--on-ink);
     transform: translate(-50%, -50%);
   }
 
@@ -772,7 +811,7 @@ const panelIndex = (id: string) =>
     left: 50%;
     color: var(--ink);
     font-size: 0.6rem;
-    font-weight: 950;
+    font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     transform: translateX(-50%);
@@ -781,7 +820,7 @@ const panelIndex = (id: string) =>
 
   .frequency-bubble b {
     font-size: 0.68rem;
-    font-weight: 950;
+    font-weight: 500;
     font-variant-numeric: tabular-nums;
     line-height: 1;
   }
@@ -794,10 +833,10 @@ const panelIndex = (id: string) =>
     padding: 6px 8px;
     border-radius: 3px;
     background: var(--ink);
-    color: white;
+    color: var(--on-ink);
     content: attr(data-tooltip);
     font-size: 0.65rem;
-    font-weight: 850;
+    font-weight: 500;
     letter-spacing: 0;
     line-height: 1;
     opacity: 0;
@@ -865,6 +904,8 @@ const panelIndex = (id: string) =>
 
   .crew-tabs {
     display: inline-flex;
+    max-width: 100%;
+    flex-wrap: wrap;
     gap: 3px;
     margin: 0 0 22px;
     padding: 3px;
@@ -882,14 +923,14 @@ const panelIndex = (id: string) =>
     cursor: pointer;
     font: inherit;
     font-size: 0.66rem;
-    font-weight: 950;
+    font-weight: 500;
     letter-spacing: 0.09em;
     text-transform: uppercase;
   }
 
   .crew-tabs button[aria-pressed="true"] {
     background: var(--ink);
-    color: white;
+    color: var(--on-ink);
   }
 
   .crew-tabs button:focus-visible {
@@ -903,19 +944,34 @@ const panelIndex = (id: string) =>
     font-size: 0.86rem;
   }
 
+  .solo-heading { margin: 0 0 14px; color: var(--faint); font: 11px/1.6 var(--mono); letter-spacing: .06em; text-transform: uppercase; }
+  .solo-builds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+  .solo-builds li { min-width: 0; }
+  .solo-builds a { display: flex; gap: 12px; height: 100%; padding: 18px; border: 1px solid var(--line); border-radius: 8px; background: var(--raised); text-decoration: none; }
+  .solo-number { flex-shrink: 0; color: var(--teal); font: 12px/1.6 var(--mono); }
+  .solo-record { display: grid; align-content: start; gap: 6px; min-width: 0; overflow-wrap: anywhere; }
+  .solo-record strong { color: var(--ink); font-size: 15px; line-height: 1.4; font-weight: 500; }
+  .solo-record > span { color: var(--muted); font-size: 12px; line-height: 1.5; }
+  .solo-record small { color: var(--faint); font: 10px/1.5 var(--mono); }
+  .solo-record em { color: var(--award); font-size: 11px; line-height: 1.5; font-style: normal; }
+  .solo-arrow { margin-left: auto; color: var(--teal); }
+  .solo-builds a:hover { border-color: var(--teal); }
+  .solo-builds a:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; }
+  @media (max-width: 620px) { .solo-builds { grid-template-columns: 1fr; } .solo-builds a { padding: 14px; } }
+
   .split span {
     display: flex;
     gap: 7px;
     align-items: baseline;
     padding: 15px 16px;
     font-size: 0.8rem;
-    font-weight: 850;
+    font-weight: 500;
     white-space: nowrap;
   }
 
   .split b {
     font-size: 1.25rem;
-    font-weight: 950;
+    font-weight: 500;
     letter-spacing: -0.04em;
   }
 
@@ -981,7 +1037,7 @@ const panelIndex = (id: string) =>
     justify-content: space-between;
     color: var(--faint);
     font-size: 0.7rem;
-    font-weight: 950;
+    font-weight: 500;
     letter-spacing: 0.12em;
     text-transform: uppercase;
   }
@@ -998,7 +1054,7 @@ const panelIndex = (id: string) =>
     margin: 22px 0 0;
     color: var(--ink);
     font-size: clamp(3.4rem, 7vw, 5.5rem);
-    font-weight: 950;
+    font-weight: 500;
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.07em;
     line-height: 0.78;
@@ -1008,7 +1064,7 @@ const panelIndex = (id: string) =>
     margin: 9px 0 24px;
     color: var(--muted);
     font-size: 0.76rem;
-    font-weight: 850;
+    font-weight: 500;
   }
 
   .mode-card ul {
@@ -1054,8 +1110,25 @@ const panelIndex = (id: string) =>
   }
 
   @media (max-width: 760px) {
-    .headline {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .headline > div {
+      min-width: 0;
+      padding: 16px 10px;
+    }
+
+    .headline dd {
+      font-size: clamp(1.75rem, 6vw, 2.1rem);
+    }
+
+    .headline dt {
+      font-size: 0.75rem;
+      letter-spacing: 0.02em;
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
+
+    .headline p {
+      font-size: 0.75rem;
+      line-height: 1.45;
     }
 
     .panel {

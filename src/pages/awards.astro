@@ -39,7 +39,7 @@ const categoryByCurrency = (["SGD", "USD"] as const).map((currency) => ({
   title="Prize Money & Awards | The 100 Hackathoner"
   description="A public breakdown of hackathon prize money, credits, subscriptions, and funding, shown as team totals and individual share."
 >
-  <main class="container awards-page">
+  <div class="container awards-page">
     <section class="intro">
       <p class="meta">Prize Money & Awards</p>
       <h1>What the builds earned.</h1>
@@ -187,7 +187,7 @@ const categoryByCurrency = (["SGD", "USD"] as const).map((currency) => ({
       </div>
       <button class="fx-open" type="button" aria-haspopup="dialog" aria-controls="fx-rate-dialog">View rate table <span aria-hidden="true">↗</span></button>
     </section>
-  </main>
+  </div>
 </PageShell>
 
 <style>
@@ -196,10 +196,10 @@ const categoryByCurrency = (["SGD", "USD"] as const).map((currency) => ({
   h1, h2, h3, p { margin-top: 0; }
   h1 { margin-bottom: 22px; color: var(--ink); font-size: clamp(3.3rem, 8vw, 7.4rem); line-height: .9; letter-spacing: -.055em; }
   .lead { margin: 0; color: var(--muted); font-size: 1.08rem; line-height: 1.7; }
-  .record-category { margin-bottom: 8px; color: var(--faint); font-size: .72rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+  .record-category { margin-bottom: 8px; color: var(--faint); font-size: .72rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; }
   dl { margin: 0; }
-  dt { color: var(--muted); font-size: .76rem; font-weight: 800; }
-  dd { margin: 6px 0 0; color: var(--ink); font-size: 1.08rem; font-weight: 950; font-variant-numeric: tabular-nums; }
+  dt { color: var(--muted); font-size: .76rem; font-weight: 500; }
+  dd { margin: 6px 0 0; color: var(--ink); font-size: 1.08rem; font-weight: 500; font-variant-numeric: tabular-nums; }
   .breakdown, .records { margin-top: 86px; }
   .fx-section { margin-top: 86px; }
   .section-title { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, .6fr); gap: 34px; align-items: end; margin-bottom: 26px; }
@@ -207,14 +207,14 @@ const categoryByCurrency = (["SGD", "USD"] as const).map((currency) => ({
   .section-title > p { margin-bottom: 0; color: var(--muted); line-height: 1.6; }
   .table-wrap { overflow-x: auto; border: 1px solid var(--line-strong); background: var(--bg-paper); }
   table { width: 100%; border-collapse: collapse; min-width: 660px; }
-  th { padding: 14px 18px; background: var(--ink); color: white; font-size: .75rem; letter-spacing: .08em; text-align: left; text-transform: uppercase; }
+  th { padding: 14px 18px; background: var(--ink); color: var(--on-ink); font-size: .75rem; letter-spacing: .08em; text-align: left; text-transform: uppercase; }
   th:nth-child(n+3), td:nth-child(n+3) { text-align: right; }
   td { padding: 17px 18px; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
-  td:first-child { font-weight: 850; }
-  td:nth-child(n+3) { color: var(--ink); font-weight: 900; }
+  td:first-child { font-weight: 500; }
+  td:nth-child(n+3) { color: var(--ink); font-weight: 500; }
   .record-list { border-top: 1px solid var(--line-strong); }
   .record { display: grid; grid-template-columns: 68px minmax(0, 1fr) minmax(220px, auto); gap: 18px; align-items: center; padding: 23px 0; border-bottom: 1px solid var(--line); }
-  .record-number { color: var(--red); font-size: .9rem; font-weight: 950; }
+  .record-number { color: var(--red); font-size: .9rem; font-weight: 500; }
   .record-copy h3 { margin-bottom: 6px; color: var(--ink); font-size: 1.05rem; }
   .record-copy h3 a:hover { color: var(--red); }
   .record-copy > p:last-child { margin-bottom: 0; color: var(--muted); font-size: .9rem; line-height: 1.5; }
@@ -234,7 +234,7 @@ const categoryByCurrency = (["SGD", "USD"] as const).map((currency) => ({
   .overview-heading h2 { margin: 0 0 10px; color: var(--ink); font-size: clamp(2.4rem, 5vw, 4.5rem); line-height: .95; letter-spacing: -.045em; }
   .overview-controls { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; }
   .overview-controls p { margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.5; }
-  .conversion-toggle { display: inline-flex; align-items: center; gap: 8px; flex: none; padding: 2px 0 4px; border: 0; border-bottom: 1px solid var(--red); background: transparent; color: var(--ink); cursor: pointer; font: inherit; font-size: .88rem; font-weight: 850; white-space: nowrap; }
+  .conversion-toggle { display: inline-flex; align-items: center; gap: 8px; flex: none; padding: 2px 0 4px; border: 0; border-bottom: 1px solid var(--red); background: transparent; color: var(--ink); cursor: pointer; font: inherit; font-size: .88rem; font-weight: 500; white-space: nowrap; }
   .conversion-toggle:hover, .conversion-toggle:focus-visible { color: var(--red); }
   .conversion-toggle:focus-visible { outline: 2px solid var(--red); outline-offset: 4px; }
   .conversion-icon { color: var(--red); font-size: 1.15rem; line-height: 1; }
@@ -245,16 +245,16 @@ const categoryByCurrency = (["SGD", "USD"] as const).map((currency) => ({
   .currency-card-head h3 { margin: 0; color: var(--red); font-size: 1.5rem; line-height: 1; }
   .currency-card-head span { color: var(--muted); font-size: .76rem; font-weight: 700; }
   .currency-combined { padding: 18px 22px 22px; border-top: 1px solid var(--line); background: color-mix(in srgb, var(--ink) 2%, var(--bg-paper)); }
-  .currency-combined > p { margin: 0 0 18px; color: var(--ink); font-size: .9rem; font-weight: 900; }
+  .currency-combined > p { margin: 0 0 18px; color: var(--ink); font-size: .9rem; font-weight: 500; }
   .currency-card dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 0; }
-  .currency-card dt { color: var(--muted); font-size: .77rem; font-weight: 800; }
+  .currency-card dt { color: var(--muted); font-size: .77rem; font-weight: 500; }
   .currency-card dd { margin: 6px 0 0; color: var(--ink); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
-  .currency-combined dd { font-size: 1.05rem; font-weight: 850; }
+  .currency-combined dd { font-size: 1.05rem; font-weight: 500; }
   .currency-original { padding: 20px 22px 24px; }
-  .currency-original > p { margin: 0 0 18px; color: var(--ink); font-size: .9rem; font-weight: 900; }
-  .currency-original dd { font-size: clamp(1.3rem, 2.35vw, 2.1rem); font-weight: 950; letter-spacing: -.025em; }
+  .currency-original > p { margin: 0 0 18px; color: var(--ink); font-size: .9rem; font-weight: 500; }
+  .currency-original dd { font-size: clamp(1.3rem, 2.35vw, 2.1rem); font-weight: 500; letter-spacing: -.025em; }
   .pending-note { margin-top: 16px; border-left: 3px solid var(--red); background: var(--bg-paper); }
-  .pending-note summary { display: flex; justify-content: space-between; gap: 12px; padding: 13px 17px; color: var(--ink); cursor: pointer; font-size: .88rem; font-weight: 800; list-style: none; }
+  .pending-note summary { display: flex; justify-content: space-between; gap: 12px; padding: 13px 17px; color: var(--ink); cursor: pointer; font-size: .88rem; font-weight: 500; list-style: none; }
   .pending-note summary::-webkit-details-marker { display: none; }
   .pending-note summary span { color: var(--red); white-space: nowrap; }
   .pending-note > p { margin: 0; padding: 0 17px 8px; color: var(--muted); font-size: .85rem; }
@@ -265,11 +265,11 @@ const categoryByCurrency = (["SGD", "USD"] as const).map((currency) => ({
   .category-currency-head h3 { margin: 0; color: var(--red); font-size: 1.4rem; line-height: 1; }
   .category-currency-head span { color: var(--muted); font-size: .76rem; font-weight: 700; }
   .category-column-head, .category-amount-row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 1fr); gap: 8px; align-items: center; padding: 12px 20px; }
-  .category-column-head { color: var(--muted); font-size: .73rem; font-weight: 850; }
+  .category-column-head { color: var(--muted); font-size: .73rem; font-weight: 500; }
   .category-amount-row { min-height: 58px; border-top: 1px solid var(--line); }
   .category-amount-row strong { color: var(--ink); font-size: .9rem; line-height: 1.25; }
-  .category-amount-row span { color: var(--ink); font-size: .95rem; font-weight: 850; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  .category-amount-row span:nth-child(3) { font-weight: 900; }
+  .category-amount-row span { color: var(--ink); font-size: .95rem; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .category-amount-row span:nth-child(3) { font-weight: 500; }
   .category-key { margin: 10px 0 0; color: var(--muted); font-size: .8rem; }
   @media (max-width: 700px) { .currency-grid { grid-template-columns: 1fr; } }
   @media (max-width: 700px) { .category-currency-grid { grid-template-columns: 1fr; } }
@@ -291,7 +291,7 @@ const categoryByCurrency = (["SGD", "USD"] as const).map((currency) => ({
 </style>
 
 <style is:global>
-  .fx-open { min-height: 40px; padding: 0 0 2px; border: 0; border-bottom: 1px solid currentColor; border-radius: 0; background: transparent; color: var(--ink); cursor: pointer; font: inherit; font-size: .88rem; font-weight: 800; white-space: nowrap; }
+  .fx-open { min-height: 40px; padding: 0 0 2px; border: 0; border-bottom: 1px solid currentColor; border-radius: 0; background: transparent; color: var(--ink); cursor: pointer; font: inherit; font-size: .88rem; font-weight: 500; white-space: nowrap; }
   .fx-open span { margin-left: 5px; color: var(--red); }
   .fx-open:hover, .fx-open:focus-visible { color: var(--red); }
   .fx-dialog { width: min(860px, calc(100vw - 32px)); max-height: min(760px, calc(100vh - 32px)); padding: 24px; border: 1px solid var(--line-strong); border-top: 6px solid var(--red); background: var(--bg-paper); box-shadow: var(--shadow); color: var(--ink); }

@@ -1,290 +1,87 @@
 ---
-const nav = [
-  ["Journey", "/hackathons/"],
-  ["Awards", "/awards/"],
-  ["Judging", "/judging/"],
-  ["Principles", "/principles/"],
-  ["Field Notes", "/essays/"],
-  ["About", "/about/"],
-];
-
+import { mainNavigation } from "../lib/navigation";
 const pathname = Astro.url.pathname;
+const isCurrent = (href: string) => pathname.startsWith(href);
 ---
-
-<header class="site-header">
-  <div class="beta-banner" aria-label="Site status">
-    <div class="container beta-inner">
-      <span>Open beta</span>
-      <p>
-        This site is still a work in progress. More notes and context are being
-        documented over the coming weeks.
-      </p>
-    </div>
-  </div>
-  <div class="container header-inner">
-    <a class="brand" href="/" aria-label="The 100 Hackathoner">
-      <span>100</span>
-      <strong>The 100 Hackathoner</strong>
-    </a>
-    <nav class="primary-nav" id="primary-nav" aria-label="Primary navigation">
-      {
-        nav.map(([label, href]) => (
-          <a href={href} class={pathname === href ? "active" : ""}>
-            {label}
-          </a>
-        ))
-      }
+<header class="masthead" id="site-header">
+  <a class="site-brand" href="/" aria-label="The 100 Hackathoner home">
+    <span class="site-mark">100</span><span>THE 100<br />HACKATHONER</span>
+  </a>
+  <nav class="desktop-navigation" aria-label="Main navigation">
+    {mainNavigation.map(([label, href]) => <a href={href} aria-current={isCurrent(href) ? "page" : undefined}>{label}</a>)}
+    <a class="site-invite" href="/about/#contact">Invite me <span aria-hidden="true">↗</span></a>
+  </nav>
+  <button type="button" id="theme-toggle" class="site-theme-toggle" aria-label="Switch to dark mode" title="Switch to dark mode">
+    <span id="theme-icon" aria-hidden="true">◐</span>
+  </button>
+  <a class="site-menu" href="#site-navigation" aria-controls="site-navigation">Menu <span aria-hidden="true">☰</span></a>
+    <nav class="mobile-navigation" id="site-navigation" aria-label="Main navigation">
+      <a class="menu-close" href="#site-header" aria-label="Close menu">Close menu <span aria-hidden="true">×</span></a>
+      {mainNavigation.map(([label, href]) => <a href={href} aria-current={isCurrent(href) ? "page" : undefined}>{label}<span aria-hidden="true">↗</span></a>)}
+      <a class="site-invite" href="/about/#contact">Invite me <span aria-hidden="true">↗</span></a>
     </nav>
-    <a class="invite" href="/about/#contact">Invite Me</a>
-    <button class="menu-toggle" type="button" aria-controls="primary-nav" aria-expanded="false">
-      Menu <span aria-hidden="true">☰</span>
-    </button>
-  </div>
 </header>
-
+<script is:inline>
+  (() => {
+    const toggle = document.querySelector("#theme-toggle");
+    const scheme = matchMedia("(prefers-color-scheme: dark)");
+    let preference = false;
+    try { preference = ["light", "dark"].includes(localStorage.getItem("museum-dark-theme")); } catch {}
+    const apply = (theme) => {
+      document.documentElement.dataset.theme = theme;
+      document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#100f12" : "#f6f5f0";
+      const label = `Switch to ${theme === "dark" ? "light" : "dark"} mode`;
+      toggle.setAttribute("aria-label", label);
+      toggle.title = label;
+      toggle.querySelector("span").textContent = theme === "dark" ? "☼" : "◐";
+      document.dispatchEvent(new CustomEvent("site:theme-change", { detail: theme }));
+    };
+    apply(document.documentElement.dataset.theme || "light");
+    toggle.addEventListener("click", () => {
+      const theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+      preference = true;
+      try { localStorage.setItem("museum-dark-theme", theme); } catch {}
+      apply(theme);
+    });
+    scheme.addEventListener("change", ({ matches }) => { if (!preference) apply(matches ? "dark" : "light"); });
+    window.addEventListener("storage", ({ key, newValue }) => {
+      if (key !== "museum-dark-theme") return;
+      preference = ["light", "dark"].includes(newValue);
+      apply(preference ? newValue : scheme.matches ? "dark" : "light");
+    });
+  })();
+</script>
 <style>
-  .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    border-bottom: 1px solid var(--line);
-    background: rgba(247, 245, 239, 0.98);
+  .masthead { position: relative; z-index: 30; width: min(1560px, calc(100% - 96px)); height: 92px; margin-inline: auto; display: flex; align-items: center; gap: 20px; border-bottom: 1px solid var(--line); color: var(--ink); font-family: var(--body); }
+  .site-brand { display: flex; align-items: center; gap: 12px; flex-shrink: 0; font-size: 11px; font-weight: 700; line-height: 1.3; letter-spacing: .05em; text-decoration: none; }
+  .site-mark { width: 45px; height: 45px; border: 1px solid var(--accent); border-radius: 50%; display: grid; place-items: center; color: var(--accent); font-size: 22px; font-weight: 600; letter-spacing: -2px; }
+  .desktop-navigation { display: flex; align-items: center; gap: 20px; margin-left: auto; font-size: 14px; }
+  nav a { color: var(--ink); white-space: nowrap; text-decoration: none; }
+  nav a:hover, nav a[aria-current="page"] { color: var(--accent); }
+  nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: 7px; text-decoration-thickness: 1px; }
+  .site-invite { display: inline-flex; align-items: center; gap: 24px; padding: 12px 18px; border: 1px solid var(--line); border-radius: 99px; }
+  .site-theme-toggle { display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0; padding: 0; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--ink); cursor: pointer; font-size: 20px; }
+  .site-theme-toggle:hover { border-color: var(--accent); }
+  /* Navigation works with HTML links and CSS alone, independently of all scripts. */
+  .site-menu, .mobile-navigation { display: none; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+  @media (max-width: 1200px) {
+    .desktop-navigation { display: none; }
+    .site-theme-toggle { margin-left: auto; }
+    .site-menu { display: flex; flex-shrink: 0; align-items: center; gap: 9px; min-height: 44px; padding: 10px 16px; border: 1px solid var(--line); border-radius: 99px; color: var(--ink); text-decoration: none; font-size: 13px; }
+    .mobile-navigation { position: absolute; top: calc(100% - 1px); right: 0; z-index: 1; gap: 2px; width: min(320px, 100%); max-height: calc(100dvh - 100px); overflow-y: auto; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--raised); box-shadow: 0 15px 35px #0003; font-size: 14px; }
+    .mobile-navigation { scroll-margin-top: 110px; }
+    .mobile-navigation:target { display: grid; }
+    .mobile-navigation a { display: flex; align-items: center; justify-content: space-between; gap: 20px; min-height: 44px; padding: 12px; }
+    .mobile-navigation a:hover { background: var(--soft); }
+    .mobile-navigation a > span { color: var(--muted); }
+    .mobile-navigation .site-invite { margin-top: 8px; }
+    .mobile-navigation .menu-close { border-bottom: 1px solid var(--line); color: var(--muted); margin-bottom: 6px; }
   }
-
-  .beta-banner {
-    border-bottom: 1px solid rgba(14, 18, 18, 0.1);
-    background: var(--yellow);
-    color: var(--black);
-  }
-
-  .beta-inner {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-    min-height: 34px;
-    padding-block: 7px;
-    text-align: center;
-  }
-
-  .beta-inner span {
-    flex: 0 0 auto;
-    padding: 3px 7px;
-    border: 1px solid var(--black);
-    border-radius: 3px;
-    background: var(--black);
-    color: white;
-    font-size: 0.68rem;
-    font-weight: 950;
-    line-height: 1;
-    text-transform: uppercase;
-  }
-
-  .beta-inner p {
-    margin: 0;
-    font-size: 0.82rem;
-    font-weight: 750;
-    line-height: 1.35;
-  }
-
-  .header-inner {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    gap: 24px;
-    align-items: center;
-    min-height: 68px;
-  }
-
-  .brand {
-    display: inline-flex;
-    gap: 12px;
-    align-items: center;
-    min-width: 0;
-  }
-
-  .brand span {
-    display: grid;
-    width: 36px;
-    height: 36px;
-    place-items: center;
-    border: 2px solid var(--red);
-    border-radius: 3px;
-    color: var(--red);
-    font-size: 0.78rem;
-    font-weight: 950;
-    line-height: 1;
-  }
-
-  .brand strong {
-    overflow: hidden;
-    color: var(--ink);
-    font-size: 0.95rem;
-    font-weight: 900;
-    letter-spacing: -0.01em;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .primary-nav {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 17px;
-    justify-content: center;
-  }
-
-  .primary-nav a,
-  .invite {
-    display: inline-flex;
-    align-items: center;
-    min-height: 34px;
-    color: var(--ink);
-    font-size: 0.78rem;
-    font-weight: 850;
-  }
-
-  .primary-nav a {
-    position: relative;
-    white-space: nowrap;
-  }
-
-  .primary-nav a::after {
-    position: absolute;
-    right: 0;
-    bottom: 1px;
-    left: 0;
-    height: 2px;
-    content: "";
-    background: var(--red);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 160ms ease;
-  }
-
-  .primary-nav a:hover::after,
-  .primary-nav a.active::after {
-    transform: scaleX(1);
-  }
-
-  .invite {
-    justify-content: center;
-    min-width: 92px;
-    padding: 0 13px;
-    border: 1px solid var(--black);
-    border-radius: 4px;
-    background: var(--black);
-    color: white;
-  }
-
-  .menu-toggle { display: none; }
-
-  @media (max-width: 1100px) {
-    .beta-inner {
-      justify-content: flex-start;
-      text-align: left;
-    }
-
-    .header-inner {
-      position: relative;
-      grid-template-columns: minmax(0, 1fr) auto auto;
-      gap: 12px;
-      padding: 12px 0;
-    }
-
-    .menu-toggle {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 40px;
-      padding: 0 12px;
-      border: 1px solid var(--line-strong);
-      border-radius: 4px;
-      background: transparent;
-      color: var(--ink);
-      cursor: pointer;
-      font: inherit;
-      font-size: .8rem;
-      font-weight: 850;
-    }
-
-    .menu-toggle:hover, .menu-toggle:focus-visible {
-      border-color: var(--red);
-      color: var(--red);
-    }
-
-    .menu-toggle span { font-size: 1rem; line-height: 1; }
-
-    .primary-nav {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      display: none;
-      width: min(340px, calc(100vw - 32px));
-      max-height: 70vh;
-      overflow-y: auto;
-      gap: 0;
-      justify-content: stretch;
-      padding: 10px;
-      border: 1px solid var(--line-strong);
-      background: var(--bg-paper);
-      box-shadow: var(--shadow);
-    }
-
-    .primary-nav.is-open { display: grid; }
-
-    .primary-nav a {
-      width: 100%;
-      min-height: 42px;
-      padding: 8px 12px;
-      font-size: .9rem;
-    }
-
-    .primary-nav a:hover, .primary-nav a.active {
-      background: color-mix(in srgb, var(--red) 7%, var(--bg-paper));
-    }
-
-    .primary-nav a::after { display: none; }
-  }
-
-  @media (max-width: 600px) {
-    .invite { display: none; }
-    .header-inner { grid-template-columns: minmax(0, 1fr) auto; }
-  }
-
-  @media (max-width: 480px) {
-    .beta-inner {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .beta-inner p {
-      font-size: 0.76rem;
-    }
-
-    .brand strong {
-      max-width: 180px;
-    }
+  @media (max-width: 1100px) { .masthead { width: calc(100% - 56px); } }
+  @media (max-width: 650px) {
+    .masthead { width: calc(100% - 36px); height: 78px; gap: 10px; }
+    .site-brand { font-size: 9px; gap: 8px; }
+    .site-mark { width: 37px; height: 37px; font-size: 19px; }
   }
 </style>
-
-<script>
-  const menuToggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
-  const primaryNav = document.querySelector<HTMLElement>("#primary-nav");
-  const closeMenu = () => {
-    primaryNav?.classList.remove("is-open");
-    menuToggle?.setAttribute("aria-expanded", "false");
-  };
-
-  menuToggle?.addEventListener("click", () => {
-    const isOpen = primaryNav?.classList.toggle("is-open") ?? false;
-    menuToggle.setAttribute("aria-expanded", String(isOpen));
-  });
-  document.addEventListener("click", (event) => {
-    if (event.target instanceof Node && !document.querySelector(".header-inner")?.contains(event.target)) closeMenu();
-  });
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeMenu();
-  });
-  window.matchMedia("(min-width: 1101px)").addEventListener("change", closeMenu);
-</script>

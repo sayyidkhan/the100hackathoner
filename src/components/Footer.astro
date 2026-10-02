@@ -11,9 +11,9 @@
 <style>
   .footer {
     border-top: 1px solid var(--line);
-    padding: 24px 0;
-    background: var(--black);
-    color: white;
+    padding: 36px 0;
+    background: var(--bg);
+    color: var(--ink);
   }
 
   .footer-inner {
@@ -25,9 +25,9 @@
 
   .footer-brand {
     display: inline-block;
-    color: white;
+    color: var(--ink);
     font-size: 0.92rem;
-    font-weight: 900;
+    font-weight: 500;
     letter-spacing: -0.02em;
   }
 
@@ -36,17 +36,17 @@
   }
 
   .footer-identity > span {
-    color: rgba(255, 255, 255, 0.52);
+    color: var(--muted);
     font-size: 0.8rem;
     line-height: 1.45;
     max-width: 43rem;
   }
 
   .footer-cta {
-    color: var(--yellow);
-    border-left: 1px solid rgba(255, 255, 255, 0.22);
+    color: var(--ink);
+    border-left: 1px solid var(--line);
     font-size: 0.9rem;
-    font-weight: 800;
+    font-weight: 500;
     letter-spacing: -0.01em;
     line-height: 1.25;
     padding-left: 32px;
@@ -64,10 +64,10 @@
   }
 
   .footer-cta:hover {
-    color: white;
+    color: var(--accent);
   }
 
-  @media (max-width: 760px) {
+  @media (max-width: 1000px) {
     .footer-inner {
       display: flex;
       align-items: flex-start;
@@ -81,7 +81,7 @@
 
     .footer-cta {
       border-left: 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.22);
+      border-top: 1px solid var(--line);
       padding: 12px 0 0;
     }
   }

@@ -1,0 +1,17 @@
+---
+import "../styles/tokens.css";
+---
+<meta name="theme-color" content="#f6f5f0" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
+<script is:inline>
+  (() => {
+    let saved;
+    try { saved = localStorage.getItem("museum-dark-theme"); } catch {}
+    const theme = saved === "light" || saved === "dark" ? saved
+      : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    document.documentElement.dataset.theme = theme;
+    document.querySelector('meta[name="theme-color"]').content = theme === "dark" ? "#100f12" : "#f6f5f0";
+  })();
+</script>

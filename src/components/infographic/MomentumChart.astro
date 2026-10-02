@@ -31,17 +31,6 @@ const line = points.map((point) => `${point.cx},${point.cy}`).join(" ");
 const area = `${PAD.left},${y(0)} ${line} ${points.at(-1)!.cx},${y(0)}`;
 const gridValues = [1, 2, 3].map((step) => (goal * step) / 4);
 const finalPoint = points.at(-1)!;
-const TOOLTIP_W = 188;
-const TOOLTIP_H = 70;
-
-const tooltipX = (point: (typeof points)[number]) =>
-  Math.min(
-    W - PAD.right - TOOLTIP_W,
-    Math.max(PAD.left, point.cx - TOOLTIP_W / 2),
-  );
-
-const tooltipY = (point: (typeof points)[number]) =>
-  Math.max(PAD.top + 4, point.cy - TOOLTIP_H - 14);
 
 // Contiguous runs of dormant years, used to shade and annotate the hiatus.
 const dormantRuns: { start: number; end: number }[] = [];
@@ -60,6 +49,7 @@ const halfStep = stats.length > 1 ? innerW / (stats.length - 1) / 2 : 0;
 ---
 
 <figure class="momentum">
+  <div class="chart-wrap">
   <svg viewBox={`0 0 ${W} ${H}`} role="group" aria-labelledby="momentum-caption">
     {
       dormantRuns.map((run) => (
@@ -95,13 +85,12 @@ const halfStep = stats.length > 1 ? innerW / (stats.length - 1) / 2 : 0;
     {
       points.map((point) => {
         const shipped = point.total - point.awarded;
-        const buildLabel = `${point.total} ${point.total === 1 ? "build" : "builds"}`;
         const label = point.dormant
           ? `${point.year}: dormant year, ${point.cumulative} cumulative hackathons`
           : `${point.year}: ${point.total} builds, ${point.awarded} awarded, ${shipped} shipped, ${point.days} days, ${point.cumulative} cumulative`;
 
         return (
-        <g class="point-target" tabindex="0" role="img" aria-label={label}>
+        <g class="point-target" tabindex="0" role="img" aria-label={label} data-year={point.year}>
           <circle class="hit-area" cx={point.cx} cy={point.cy} r="15" />
           <circle
             class:list={["dot", { dormant: point.dormant }]}
@@ -112,22 +101,6 @@ const halfStep = stats.length > 1 ? innerW / (stats.length - 1) / 2 : 0;
           <text class="year" x={point.cx} y={H - 16}>
             {point.year}
           </text>
-          <g
-            class="point-preview"
-            transform={`translate(${tooltipX(point)} ${tooltipY(point)})`}
-            aria-hidden="true"
-          >
-            <rect width={TOOLTIP_W} height={TOOLTIP_H} rx="3" />
-            <text class="preview-year" x="11" y="17">{point.year}</text>
-            <text class="preview-main" x="11" y="37">
-              {point.dormant
-                ? "No builds recorded"
-                : `${buildLabel} · ${point.awarded} awarded`}
-            </text>
-            <text class="preview-sub" x="11" y="56">
-              {shipped} shipped · {point.days || 0} days · {point.cumulative} cumulative
-            </text>
-          </g>
         </g>
         );
       })
@@ -149,14 +122,49 @@ const halfStep = stats.length > 1 ? innerW / (stats.length - 1) / 2 : 0;
       )
     }
   </svg>
+  {points.map((point) => (
+    <div class="point-preview" data-tooltip-year={point.year} role="tooltip" hidden>
+      <strong class="preview-year">{point.year}</strong>
+      <p class="preview-main">{point.dormant ? "No builds recorded" : `${point.total} ${point.total === 1 ? "build" : "builds"} · ${point.awarded} awarded`}</p>
+      <p class="preview-sub">{point.total - point.awarded} shipped · {point.days || 0} days · {point.cumulative} cumulative</p>
+    </div>
+  ))}
+  </div>
 
   <figcaption id="momentum-caption">
     Cumulative hackathons completed by the end of each year, against the target
-    of {goal}. Hover or focus a point for annual details.
+    of {goal}. Hover, tap, or focus a point for annual details.
   </figcaption>
 </figure>
 
+<script>
+  document.querySelectorAll<HTMLElement>(".momentum").forEach((chart) => {
+    const wrap = chart.querySelector<HTMLElement>(".chart-wrap")!;
+    const hide = () => chart.querySelectorAll<HTMLElement>(".point-preview").forEach((tip) => { tip.hidden = true; });
+    chart.querySelectorAll<SVGGElement>(".point-target").forEach((point) => {
+      const tip = chart.querySelector<HTMLElement>(`[data-tooltip-year="${point.dataset.year}"]`)!;
+      const show = () => {
+        hide();
+        tip.hidden = false;
+        const bounds = wrap.getBoundingClientRect();
+        const dot = point.querySelector(".dot")!.getBoundingClientRect();
+        const left = Math.max(8, Math.min(bounds.width - tip.offsetWidth - 8, dot.left + dot.width / 2 - bounds.left - tip.offsetWidth / 2));
+        tip.style.left = `${left}px`;
+        tip.style.top = `${Math.max(0, dot.top - bounds.top - tip.offsetHeight - 16)}px`;
+      };
+      point.addEventListener("pointerenter", show);
+      point.addEventListener("pointerleave", hide);
+      point.addEventListener("focus", show);
+      point.addEventListener("blur", hide);
+      point.addEventListener("click", show);
+      point.addEventListener("keydown", (event) => { if (event.key === "Escape") hide(); });
+    });
+  });
+</script>
+
 <style>
+  .momentum { margin: 0; }
+  .chart-wrap { position: relative; }
   svg {
     width: 100%;
     height: auto;
@@ -219,46 +227,43 @@ const halfStep = stats.length > 1 ? innerW / (stats.length - 1) / 2 : 0;
   }
 
   .point-preview {
-    visibility: hidden;
-    opacity: 0;
+    position: absolute;
+    z-index: 2;
+    width: min(320px, calc(100% - 16px));
+    padding: 18px 20px;
+    border: 1px solid #ffffff26;
+    border-radius: 10px;
+    background: var(--black);
+    box-shadow: 0 8px 24px #0003;
+    color: #fff;
     pointer-events: none;
-    transition: opacity 140ms ease;
   }
-
-  .point-preview rect {
-    fill: var(--black);
-    filter: drop-shadow(0 8px 12px rgba(5, 5, 5, 0.24));
-  }
-
-  .point-preview text {
-    font-family: inherit;
-    text-anchor: start;
-  }
+  .point-preview[hidden] { display: none; }
 
   .preview-year {
-    fill: var(--yellow);
-    font-size: 11px;
-    font-weight: 950;
+    display: block;
+    color: var(--yellow);
+    font-size: 16px;
+    font-weight: 500;
     letter-spacing: 0.08em;
   }
 
   .preview-main {
-    fill: rgba(255, 255, 255, 0.9);
-    font-size: 11px;
-    font-weight: 850;
+    margin: 8px 0 0;
+    color: #fff;
+    font-size: 16px;
+    line-height: 1.45;
+    font-weight: 500;
   }
 
   .preview-sub {
-    fill: #7ee2d7;
-    font-size: 9px;
-    font-weight: 800;
+    margin: 6px 0 0;
+    color: #7ee2d7;
+    font-size: 14px;
+    line-height: 1.5;
+    font-weight: 500;
   }
 
-  .point-target:hover .point-preview,
-  .point-target:focus-visible .point-preview {
-    visibility: visible;
-    opacity: 1;
-  }
 
   .point-target:hover .dot,
   .point-target:focus-visible .dot {
@@ -284,26 +289,26 @@ const halfStep = stats.length > 1 ? innerW / (stats.length - 1) / 2 : 0;
   .axis {
     fill: var(--faint);
     font-size: 15px;
-    font-weight: 800;
+    font-weight: 500;
   }
 
   .goal-label {
     fill: var(--red);
     font-size: 17px;
-    font-weight: 950;
+    font-weight: 500;
   }
 
   .year {
     fill: var(--muted);
     font-size: 16px;
-    font-weight: 850;
+    font-weight: 500;
     text-anchor: middle;
   }
 
   .total {
     fill: var(--ink);
     font-size: 30px;
-    font-weight: 950;
+    font-weight: 500;
     letter-spacing: -0.04em;
     text-anchor: end;
   }
@@ -311,7 +316,7 @@ const halfStep = stats.length > 1 ? innerW / (stats.length - 1) / 2 : 0;
   .annotation {
     fill: var(--faint);
     font-size: 15px;
-    font-weight: 850;
+    font-weight: 500;
     letter-spacing: 0.06em;
     text-anchor: middle;
     text-transform: uppercase;
@@ -325,6 +330,12 @@ const halfStep = stats.length > 1 ? innerW / (stats.length - 1) / 2 : 0;
   }
 
   @media (max-width: 620px) {
+    .point-preview {
+      position: static;
+      width: 100%;
+      margin-top: 12px;
+    }
+
     .year {
       font-size: 21px;
     }
@@ -335,14 +346,10 @@ const halfStep = stats.length > 1 ? innerW / (stats.length - 1) / 2 : 0;
       font-size: 19px;
     }
 
-    .point-preview {
-      display: none;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .dot,
-    .point-preview {
+    .dot {
       transition: none;
     }
   }

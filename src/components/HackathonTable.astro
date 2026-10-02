@@ -83,7 +83,7 @@ const { items } = Astro.props;
     border-bottom: 1px solid var(--line-strong);
     color: var(--faint);
     font-size: 0.68rem;
-    font-weight: 950;
+    font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
@@ -111,7 +111,7 @@ const { items } = Astro.props;
 
   .number {
     color: var(--ink);
-    font-weight: 950;
+    font-weight: 500;
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.03em;
   }
@@ -125,7 +125,7 @@ const { items } = Astro.props;
 
   .date time {
     color: var(--ink);
-    font-weight: 800;
+    font-weight: 500;
     white-space: nowrap;
   }
 
@@ -133,7 +133,7 @@ const { items } = Astro.props;
     margin-top: 3px;
     color: var(--faint);
     font-size: 0.72rem;
-    font-weight: 800;
+    font-weight: 500;
     letter-spacing: 0.04em;
     text-transform: uppercase;
   }
@@ -149,7 +149,7 @@ const { items } = Astro.props;
   .build strong {
     display: block;
     font-size: 0.95rem;
-    font-weight: 900;
+    font-weight: 500;
     letter-spacing: -0.025em;
     line-height: 1.15;
   }
@@ -159,7 +159,7 @@ const { items } = Astro.props;
     margin-top: 5px;
     color: var(--red);
     font-size: 0.66rem;
-    font-weight: 900;
+    font-weight: 500;
     letter-spacing: 0.08em;
     line-height: 1.35;
     text-transform: uppercase;
@@ -179,7 +179,7 @@ const { items } = Astro.props;
     padding: 4px 7px;
     border-radius: 3px;
     font-size: 0.68rem;
-    font-weight: 900;
+    font-weight: 500;
     letter-spacing: 0.06em;
     line-height: 1.2;
   }
@@ -193,7 +193,7 @@ const { items } = Astro.props;
   .format.remote {
     border-color: rgba(19, 88, 219, 0.28);
     background: rgba(19, 88, 219, 0.06);
-    color: #10399b;
+    color: var(--blue);
   }
 
   .location {
@@ -208,12 +208,12 @@ const { items } = Astro.props;
 
   .outcome.recognised {
     background: rgba(7, 155, 145, 0.13);
-    color: #06635d;
+    color: var(--teal);
   }
 
   .outcome.podium {
     background: var(--gold);
-    color: var(--gold-ink);
+    color: var(--on-gold);
   }
 
   @media (prefers-reduced-motion: reduce) {
