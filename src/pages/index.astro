@@ -1,6 +1,9 @@
 ---
 import Header from "../components/Header.astro";
 import ThemeHead from "../components/ThemeHead.astro";
+import { getHackathons } from "../lib/hackathons";
+import { buildTotals } from "../lib/insights";
+const journeyTotals = buildTotals(getHackathons());
 ---
 <!doctype html>
 <html lang="en" data-view="artwork" data-theme="light">
@@ -37,8 +40,8 @@ import ThemeHead from "../components/ThemeHead.astro";
           </div>
           <div class="hero-note">
             <p>
-              I’m Sayyid Khan. This is my living record of the ideas, teams, wrong
-              turns, and breakthroughs on the way from engineer to founder.
+              I’m Sayyid Khan. A builder becoming a founder,
+              one hackathon at a time.
             </p>
             <a href="#collection">Explore the collection <span>↘</span></a>
           </div>
@@ -47,7 +50,6 @@ import ThemeHead from "../components/ThemeHead.astro";
         <div class="gallery-top wrap">
           <p class="gallery-kicker">
             <span class="live-mark" aria-hidden="true"></span> SELECTED ATTEMPTS
-            <span class="gallery-kicker-extra">/ OPEN COLLECTION</span>
           </p>
           <div
             class="view-switch"
@@ -234,10 +236,6 @@ import ThemeHead from "../components/ThemeHead.astro";
             ><span class="select-mark" aria-hidden="true">↗</span>
           </button>
         </div>
-        <p class="art-credit wrap">
-          Concept artwork &amp; interactive interpretations. Real projects,
-          imagined objects.
-        </p>
       </section>
 
       <section class="story-section wrap section" id="story">
@@ -250,13 +248,26 @@ import ThemeHead from "../components/ThemeHead.astro";
           <img class="section-picture workbench-light" src="/landing/assets/hackathon-workbench.png" alt="Concept illustration: a paper-sculpted laptop, notebook and prototypes on a hackathon workbench" loading="lazy" width="1448" height="1086" />
           <img class="section-picture workbench-dark" src="/landing/assets/hackathon-workbench-dark-v1.png" alt="Concept illustration: an ivory paper hackathon workbench softly lit against a charcoal background" loading="lazy" width="1448" height="1086" />
         </div>
-        <div>
+        <div class="story-copy">
           <h2>A record of<br /><span>showing up.</span></h2>
           <p>
             I’m Sayyid. I use hackathons to test ideas, meet people, and turn
             uncertainty into something real. Each attempt is part of the change
             from engineer to founder.
           </p>
+          <dl class="story-snapshot" aria-label="The journey in numbers">
+            <div><dt>Solo runs</dt><dd>{journeyTotals.soloBuilds}</dd></div>
+            <div><dt>Team builds</dt><dd>{journeyTotals.teamBuilds}</dd></div>
+            <div><dt>Collaborators</dt><dd>{journeyTotals.collaborators}</dd></div>
+          </dl>
+          <div class="story-loop">
+            <p class="eyebrow">THE PRACTICE BEHIND THE NUMBER</p>
+            <ol aria-label="My building process">
+              <li><span>01</span> Test an idea</li>
+              <li><span>02</span> Build something real</li>
+              <li><span>03</span> Learn. Go again.</li>
+            </ol>
+          </div>
           <a class="text-link" href="/about/"
             >The person behind the projects ↗</a
           >
@@ -426,9 +437,7 @@ import ThemeHead from "../components/ThemeHead.astro";
       <a
         class="primary-button"
         id="dialog-link"
-        target="_blank"
-        rel="noopener noreferrer"
-        >Explore this project ↗</a
+        >View hackathon details ↗</a
       >
     </dialog>
     <noscript
@@ -444,6 +453,13 @@ import ThemeHead from "../components/ThemeHead.astro";
       if (copyrightYear) copyrightYear.textContent = String(new Date().getFullYear());
       const book = document.querySelector('.memoir-book');
       const motionAllowed = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const artObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          entry.target.classList.toggle('is-art-visible', entry.isIntersecting);
+        });
+      }, { threshold: 0.4 });
+      document.querySelectorAll('.workbench-light, .workbench-dark, .invitation-art img')
+        .forEach(image => artObserver.observe(image));
       if (book && motionAllowed) {
         const observer = new IntersectionObserver(([entry]) => {
           book.classList.toggle('is-visible', entry.isIntersecting);

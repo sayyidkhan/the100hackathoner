@@ -288,14 +288,8 @@ function openProject(number) {
     ? `Recognition: ${project.award}`
     : "";
   $("#dialog-award").hidden = !project.award;
-  const github = safeUrl(project.githubUrl);
-  const event = safeUrl(project.eventUrl);
-  $("#dialog-link").href = github || event || "/hackathons/";
-  $("#dialog-link").textContent = github
-    ? "View the project on GitHub ↗"
-    : event
-      ? "Visit the event ↗"
-      : "Explore the full journey ↗";
+  $("#dialog-link").href = `/hackathons/${project.number}/`;
+  $("#dialog-link").textContent = "View hackathon details ↗";
   dialogOpener = document.activeElement;
   dialog.showModal();
   scene?.setActive(false);

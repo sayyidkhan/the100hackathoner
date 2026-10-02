@@ -274,7 +274,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, them
 
   function updateCamera() {
     const idle = !paused && !reducedMotion.matches && !drag && performance.now() - lastInteraction > 1800;
-    const orbitOffset = idle ? Math.sin(elapsed * 0.15) * 0.035 : 0;
+    const orbitOffset = idle ? Math.sin(elapsed * 0.4) * 0.14 : 0;
     const angle = yaw + orbitOffset;
     camera.position.set(
       Math.sin(angle) * Math.cos(elevation) * distance,
@@ -340,8 +340,8 @@ export function createGalleryScene({ canvas, container, onError = () => {}, them
 
     function distanceForTarget(targetY) {
       let required = 1;
-      // Include the complete subtle idle-orbit envelope in the fit as well.
-      for (const angle of [yaw - 0.04, yaw, yaw + 0.04]) {
+      // Include the full automatic sway so the larger view never clips.
+      for (const angle of [yaw - 0.14, yaw, yaw + 0.14]) {
         const sinYaw = Math.sin(angle);
         const cosYaw = Math.cos(angle);
         for (const point of points) {
