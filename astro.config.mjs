@@ -1,7 +1,6 @@
 import { defineConfig } from "astro/config";
 
-const vercelHostname = process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL;
-const site = process.env.SITE_URL ?? (vercelHostname ? `https://${vercelHostname}` : "http://localhost:18481");
+const site = process.env.SITE_URL ?? (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "https://the100hackathoner.vercel.app");
 
 export default defineConfig({
   site,

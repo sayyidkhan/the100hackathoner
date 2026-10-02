@@ -1,0 +1,73 @@
+---
+import PageShell from "../components/PageShell.astro";
+---
+
+<PageShell title="Book Waitlist | The 100 Hackathoner" description="Follow Sayyid Khan's journey to 100 hackathons. Join the waitlist for book updates and practical lessons from building, shipping, and learning in public.">
+  <section class="section waitlist-section">
+    <div class="container waitlist-grid">
+      <div class="waitlist-copy">
+        <p class="meta">The next chapter</p>
+        <h1>100 hackathons.<br />Lessons worth keeping.</h1>
+        <p class="lede">I’m turning this journey into a book about the decisions, mistakes, and people behind the demos. Join the waitlist to hear when the next chapter is ready.</p>
+        <ul class="updates">
+          <li><strong>Lessons from the next build</strong><span>Practical notes on testing ideas, working with teams, and shipping under pressure.</span></li>
+          <li><strong>Book progress</strong><span>Updates as the stories and lessons take shape.</span></li>
+          <li><strong>Launch news</strong><span>Hear when the book is ready. There’s no release date to promise yet.</span></li>
+        </ul>
+        <a class="journey-link" href="/hackathons/">Explore the journey so far <span aria-hidden="true">↗</span></a>
+      </div>
+      <aside class="signup-card" aria-labelledby="signup-heading">
+        <p class="meta">Stay in the loop</p>
+        <h2 id="signup-heading">Join the waitlist.</h2>
+        <p>For now, I’m keeping the list manually by email. Fill this in to prepare a signup request, then send it from your email app.</p>
+        <form id="waitlist-form" action="mailto:sayyidkhan92@hotmail.com?subject=The%20100%20Hackathoner%20waitlist" method="post" enctype="text/plain">
+          <label for="waitlist-email">Your email</label>
+          <input id="waitlist-email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+          <label class="consent"><input type="checkbox" name="consent" value="yes" required /><span>I’d like occasional hackathon lessons and book updates from Sayyid.</span></label>
+          <button class="button primary" type="submit">Prepare signup email <span aria-hidden="true">↗</span></button>
+          <p class="form-note" id="waitlist-status" role="status">Your signup is complete only after you send the email. This page doesn’t store your details.</p>
+        </form>
+        <p class="email-fallback">No email app? Send “Join the waitlist” from your preferred address to <a href="mailto:sayyidkhan92@hotmail.com?subject=The%20100%20Hackathoner%20waitlist">sayyidkhan92@hotmail.com</a>.</p>
+        <p class="privacy-note">Your email is for these updates. You can leave the list by replying “unsubscribe” to an update.</p>
+      </aside>
+    </div>
+  </section>
+</PageShell>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>("#waitlist-form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const email = String(new FormData(form).get("email") ?? "").trim();
+    const body = `Please add me to The 100 Hackathoner waitlist.\n\nEmail: ${email}\n\nI consent to occasional hackathon lessons and book updates from Sayyid. I understand I can unsubscribe by replying to an update.`;
+    window.location.href = `mailto:sayyidkhan92@hotmail.com?subject=${encodeURIComponent("The 100 Hackathoner waitlist")}&body=${encodeURIComponent(body)}`;
+    const status = document.querySelector("#waitlist-status");
+    if (status) status.textContent = "Your email app should open with a signup draft. Send it to request a place on the waitlist. If nothing opens, use the email address below.";
+  });
+</script>
+
+<style>
+  .waitlist-section { min-height: 70vh; }
+  .waitlist-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr); gap: clamp(36px, 7vw, 110px); align-items: start; }
+  h1 { margin: 18px 0 0; }
+  .lede { max-width: 60ch; color: var(--muted); font-size: 1.15rem; line-height: 1.75; margin: 28px 0; }
+  .updates { list-style: none; margin: 36px 0; padding: 0; }
+  .updates li { display: grid; gap: 8px; padding: 20px 0; border-top: 1px solid var(--line); }
+  .updates strong { font-weight: 500; color: var(--ink); }
+  .updates span { color: var(--muted); line-height: 1.65; }
+  .journey-link, .email-fallback a { text-decoration: underline; text-underline-offset: 4px; }
+  .signup-card { border: 1px solid var(--line); border-radius: 16px; padding: clamp(24px, 3vw, 40px); background: var(--raised); }
+  .signup-card h2 { font-size: 2rem; margin: 18px 0; }
+  .signup-card > p:not(.meta) { color: var(--muted); line-height: 1.65; }
+  form { display: grid; gap: 14px; margin-top: 28px; }
+  label { font-size: .85rem; font-weight: 500; }
+  input[type="email"] { width: 100%; min-height: 48px; padding: 12px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--bg); color: var(--ink); }
+  .consent { display: flex; gap: 10px; align-items: start; font-weight: 400; line-height: 1.6; color: var(--muted); }
+  .consent input { width: 18px; height: 18px; flex-shrink: 0; margin-top: 3px; accent-color: var(--accent); }
+  button { width: 100%; cursor: pointer; }
+  .form-note, .email-fallback, .privacy-note { font-size: .8rem; line-height: 1.6; color: var(--muted); }
+  .form-note { margin: 0; }
+  .email-fallback { border-top: 1px solid var(--line); padding-top: 22px; margin-top: 24px; overflow-wrap: anywhere; }
+  a:focus-visible, input:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  @media (max-width: 800px) { .waitlist-grid { grid-template-columns: 1fr; } }
+</style>

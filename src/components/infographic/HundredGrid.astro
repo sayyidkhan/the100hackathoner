@@ -100,7 +100,7 @@ function preview(cell: GridCell) {
 }
 ---
 
-<div class="hundred" data-hundred-map data-hundred-view="sequence">
+<div class="hundred" data-hundred-map data-hundred-view="sequence" data-preview-records={JSON.stringify(items)}>
   <div class="hundred-topbar">
     <ul class="legend" aria-label="Board legend">
       <li><span class="swatch complete" />Completed</li>
@@ -114,6 +114,16 @@ function preview(cell: GridCell) {
     </div>
   </div>
 
+  <aside class="record-preview" data-record-preview aria-label="Selected hackathon preview">
+    <span class="record-number" data-record-number aria-hidden="true"></span>
+    <div class="record-heading">
+      <p data-record-date></p>
+      <h3 data-record-title></h3>
+    </div>
+    <a class="record-open" data-record-open href="/hackathons/">Open the story ↗</a>
+    <p class="record-solution" data-record-solution></p>
+    <p class="record-award" data-record-award></p>
+  </aside>
   <div class="hundred-content">
     <div class="hundred-display">
       <ol class="grid" aria-label="One hundred hackathon checkpoints" data-hundred-sequence>
@@ -135,7 +145,7 @@ function preview(cell: GridCell) {
                   <a
                     href={`/hackathons/${cell.slot}/`}
                     aria-label={describe(cell)}
-                    aria-describedby={details.id}
+                    data-preview-number={cell.slot}
                   >
                     <span class="slot">{String(cell.slot).padStart(2, "0")}</span>
                     <span class="build-preview" id={details.id} role="tooltip">
@@ -269,6 +279,29 @@ function preview(cell: GridCell) {
 
 <script>
   document.querySelectorAll<HTMLElement>("[data-hundred-map]").forEach((panel) => {
+    const records = JSON.parse(panel.dataset.previewRecords || '[]');
+    const showRecord = (number: number) => {
+      const record = records.find((item: { number: number }) => item.number === number);
+      if (!record) return;
+      const setText = (selector: string, value: string) => {
+        const element = panel.querySelector<HTMLElement>(selector);
+        if (element) element.textContent = value || '';
+      };
+      setText('[data-record-number]', String(number).padStart(3, '0'));
+      setText('[data-record-date]', [record.dateLabel, record.country].filter(Boolean).join(' / '));
+      setText('[data-record-title]', record.title);
+      setText('[data-record-solution]', record.solution || 'Project details not recorded.');
+      setText('[data-record-award]', record.award);
+      const link = panel.querySelector<HTMLAnchorElement>('[data-record-open]');
+      if (link) link.href = `/hackathons/${number}/`;
+
+    };
+    panel.querySelectorAll<HTMLAnchorElement>('[data-preview-number]').forEach(link => {
+      const update = () => showRecord(Number(link.dataset.previewNumber));
+      link.addEventListener('pointerenter', update);
+      link.addEventListener('focus', update);
+    });
+    if (records.length) showRecord(records[records.length - 1].number);
     const yearTabs = panel.querySelector<HTMLElement>("[data-hundred-year-tabs]");
     if (!yearTabs) return;
 
@@ -312,6 +345,25 @@ function preview(cell: GridCell) {
 </script>
 
 <style>
+  .record-preview { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 6px 18px; padding: 18px; margin-bottom: 24px; border: 1px solid var(--line); border-top: 2px solid var(--red); border-radius: 4px; background: var(--raised); }
+  .record-number { grid-row: 1; align-self: center; font-size: 42px; line-height: 1; letter-spacing: -.08em; color: var(--red); }
+  .record-heading { min-width: 0; }
+  .record-heading p { margin: 0; font-size: 12px; color: var(--muted); }
+  .record-heading [data-record-date] { font: 11px/1.6 var(--mono); }
+  .record-heading h3 { margin: 4px 0 0; font-size: 22px; line-height: 1.15; letter-spacing: -.04em; }
+  .record-open { align-self: center; min-height: 44px; display: flex; align-items: center; border-bottom: 1px solid var(--line); font-size: 14px; }
+  .record-solution, .record-award { grid-column: 2 / -1; margin: 0; }
+  .record-solution { font-size: 13px; line-height: 1.5; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .record-award { color: var(--yellow); font-size: 12px; }
+  .record-preview [data-record-award]:empty { display: none; }
+  .hundred .build-preview { display: none; }
+  @media (max-width: 620px) {
+    .record-preview { grid-template-columns: 48px minmax(0, 1fr); gap: 8px 12px; padding: 16px; }
+    .record-number { font-size: 34px; }
+    .record-heading h3 { font-size: 19px; }
+    .record-open { grid-column: 2; }
+    .record-solution, .record-award { grid-column: 1 / -1; }
+  }
   .hundred-topbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 16px; margin-bottom: 10px; }
   .legend { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 0; padding: 0; list-style: none; }
   .legend li { display: inline-flex; gap: 7px; align-items: center; color: var(--muted); font-size: 12px; font-weight: 400; }

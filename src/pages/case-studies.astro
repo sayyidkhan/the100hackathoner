@@ -1,0 +1,54 @@
+---
+import PageShell from "../components/PageShell.astro";
+import { getCaseStudies } from "../lib/case-studies";
+const studies = getCaseStudies();
+---
+
+<PageShell title="Case studies | The 100 Hackathoner" description="Three hackathon builds explored through their purpose, prototype scope, documented results, and the next questions to validate as an operator.">
+  <section class="hero container">
+    <p class="eyebrow">From prototype to possibility</p>
+    <h1>What a build can teach us.</h1>
+    <p class="intro">Three projects, their documented results, and the questions that matter after the demo. Each study separates the build record from proposed next steps.</p>
+  </section>
+  <section class="studies container" aria-label="Selected project case studies">
+    {studies.map((study) => (
+      <article>
+        <p class="eyebrow">Hackathon #{String(study.number).padStart(3, "0")} · {study.hackathon.dateLabel}</p>
+        <h2><a href={`/hackathons/${study.number}/#case-study`}>{study.hackathon.title}</a></h2>
+        <p class="angle">{study.angle}</p>
+        <p>{study.hackathon.solution}</p>
+        <div class="outcome"><span>Recorded result</span><p>{study.hackathon.award || "Project documented; no award recorded."}</p></div>
+        <a class="read" href={`/hackathons/${study.number}/#case-study`}>Read the case study →</a>
+      </article>
+    ))}
+  </section>
+  <section class="closing container">
+    <div><h2>Build the next useful prototype.</h2><p>Interested in a practical AI prototyping workshop or a collaboration? Start with the problem you want to test.</p></div>
+    <div class="actions"><a href="/contact/">Discuss a workshop →</a><a href="/hackathons/">Explore the full archive →</a></div>
+  </section>
+</PageShell>
+
+<style>
+  .hero { padding-top: 84px; padding-bottom: 48px; }
+  .eyebrow { margin: 0; color: var(--red); font-size: .75rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+  h1 { max-width: 1000px; margin: 20px 0 28px; color: var(--ink); font-size: clamp(3.8rem, 9vw, 8rem); font-weight: 500; letter-spacing: -.055em; line-height: .98; }
+  p { color: var(--muted); line-height: 1.75; }
+  .intro { max-width: 720px; font-size: 1.15rem; }
+  .studies { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; padding-bottom: 64px; }
+  article { display: flex; flex-direction: column; padding: 28px; border: 1px solid var(--line); border-top: 4px solid var(--red); background: var(--surface); }
+  article:nth-child(2) { border-top-color: var(--blue); }
+  article:nth-child(3) { border-top-color: var(--teal); }
+  h2 { margin: 24px 0 12px; color: var(--ink); font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 500; letter-spacing: -.035em; line-height: 1.08; }
+  h2 a:hover { color: var(--red); }
+  .angle { color: var(--ink); font-weight: 500; }
+  .outcome { margin-top: auto; padding-top: 24px; }
+  .outcome span { color: var(--faint); font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; }
+  .outcome p { font-size: .85rem; margin: 8px 0 24px; }
+  .read { color: var(--red); font-weight: 500; }
+  .closing { display: flex; justify-content: space-between; gap: 36px; padding-top: 28px; padding-bottom: 80px; border-top: 1px solid var(--line); }
+  .closing h2 { margin-top: 0; }
+  .closing p { max-width: 620px; }
+  .actions { display: flex; flex-direction: column; gap: 16px; align-self: center; flex-shrink: 0; }
+  .actions a { color: var(--red); border-bottom: 1px solid currentColor; }
+  @media (max-width: 1000px) { .studies { grid-template-columns: 1fr; } .closing { flex-direction: column; } .actions { align-self: flex-start; } }
+</style>

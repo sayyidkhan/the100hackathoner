@@ -17,7 +17,7 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
 
-<PageShell title={`${entry.data.title} | Principles`}>
+<PageShell title={`${entry.data.title} | Principles`} description={entry.data.statement}>
   <Prose>
     <p class="meta">Principle #{String(entry.data.number).padStart(3, "0")} · {entry.data.theme}</p>
     <h1>{entry.data.title}</h1>

@@ -755,9 +755,13 @@ img {
 }
 .book-section {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   gap: 60px;
 }
+.book-section > div { min-width: 0; }
+.book-section .primary-button { max-width: 100%; white-space: normal; justify-content: space-between; }
+.book-section .primary-button > span { flex-shrink: 0; }
+.book-titles label > span:first-of-type { min-width: 0; overflow-wrap: anywhere; }
 .book-section > div > p {
   max-width: 580px;
   margin-top: 28px;
@@ -1490,7 +1494,7 @@ body:has(dialog[open]) {
 }
 .grid-collection {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
+  grid-template-columns: minmax(0, 1fr);
   gap: 40px;
   align-items: start;
 }
@@ -1590,7 +1594,7 @@ button.attempt-tile:focus-visible { transform: translateY(-3px); border-color: v
   }
   .preview-top, .collection #preview-description, .collection #preview-award { display: none; }
   .preview-number { grid-column: 1; grid-row: 1 / 4; font-size: 48px; margin: 0; align-self: center; }
-  #preview-date, #preview-title, #preview-event { grid-column: 2; margin: 0 !important; }
+  #preview-date, #preview-title { grid-column: 2; margin: 0 !important; }
   #preview-title { font-size: 20px; }
   #preview-open { grid-column: 3; grid-row: 1 / 4; margin: 0; align-self: center; gap: 14px; }
 }
@@ -1600,8 +1604,55 @@ button.attempt-tile:focus-visible { transform: translateY(-3px); border-color: v
   .preview-number { font-size: 32px; }
   #preview-title { font-size: 17px; }
   #preview-open { grid-column: 2; grid-row: 4; font-size: 12px; padding: 8px 0; }
-  .collection #preview-date, .collection #preview-event { font-size: 10px; }
+  .collection #preview-date { font-size: 10px; }
   .grid-legend { gap: 12px; font-size: 11px; }
+}
+.collection .attempt-preview {
+  order: -1;
+  position: static;
+  display: grid;
+  grid-template-columns: 60px minmax(0, 1fr) auto;
+  gap: 6px 18px;
+  padding: 18px;
+  box-shadow: none;
+}
+.attempt-preview .preview-top { display: none; }
+.attempt-preview .preview-number { grid-column: 1; grid-row: 1 / 3; margin: 0; font-size: 44px; align-self: center; }
+.attempt-preview #preview-date, .attempt-preview #preview-title { grid-column: 2; margin: 0 !important; }
+.attempt-preview #preview-open { grid-column: 3; grid-row: 1 / 3; align-self: center; width: auto; gap: 20px; }
+.collection .attempt-preview #preview-description { display: block; grid-column: 2 / -1; margin: 4px 0 0; font-size: 13px; line-height: 1.5; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.collection .attempt-preview #preview-title { font-size: 22px; line-height: 1.2; }
+.collection .attempt-preview #preview-award { display: block; grid-column: 2 / -1; margin: 8px 0 0; }
+@media (max-width: 650px) {
+  .collection .attempt-preview { grid-template-columns: 48px minmax(0, 1fr); padding: 16px; gap: 6px 12px; }
+  .attempt-preview .preview-number { font-size: 34px; }
+  .attempt-preview #preview-open { grid-column: 2; grid-row: auto; justify-content: start; margin: 8px 0 0; }
+  .collection .attempt-preview #preview-description,
+  .collection .attempt-preview #preview-award { grid-column: 1 / -1; }
+}
+@media (max-width: 900px) {
+  .book-section {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+  .book-section .memoir-book {
+    width: min(220px, 70%);
+    margin: 28px auto 0;
+  }
+  .book-section .memoir-cover {
+    min-height: 0;
+    padding: 22px 18px;
+  }
+  .book-section .memoir-kicker { font-size: 9px; }
+  .book-section .memoir-author { font-size: 9px; }
+  .book-section .memoir-mark { font-size: 68px; }
+  .book-section .memoir-book figcaption { text-align: center; line-height: 1.5; margin-top: 20px; }
+  .book-section h2 { font-size: clamp(30px, 5.5vw, 42px); line-height: 1.12; }
+  .book-section > div > p { font-size: 15px; line-height: 1.7; margin-top: 20px; }
+  .book-section .primary-button { display: flex; width: 100%; margin-top: 20px; gap: 16px; padding: 15px 20px; font-size: 14px; }
+  .book-section .book-titles { margin: 28px 0 0; }
+  .book-section .book-titles legend { line-height: 1.5; }
+  .book-section .book-titles label { font-size: 16px; gap: 12px; padding-block: 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
   html {

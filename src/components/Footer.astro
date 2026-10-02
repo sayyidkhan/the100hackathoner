@@ -4,7 +4,12 @@
       <a class="footer-brand" href="/">The 100 Hackathoner</a>
       <span>A public record of ideas tested, teams formed, demos shipped, and lessons carried forward.</span>
     </div>
-    <a class="footer-cta" href="/about/#contact">Invite me to speak, judge, mentor, or build <span aria-hidden="true">↗</span></a>
+    <nav class="footer-actions" aria-label="Get involved">
+      <a class="footer-cta" href="/waitlist/">Join the book waitlist <span aria-hidden="true">↗</span></a>
+      <a class="footer-cta" href="/workshops/">AI prototyping workshops <span aria-hidden="true">↗</span></a>
+      <a class="footer-cta" href="/case-studies/">Read the case studies <span aria-hidden="true">↗</span></a>
+      <a class="footer-cta" href="/about/#contact">Invite me to collaborate <span aria-hidden="true">↗</span></a>
+    </nav>
   </div>
 </footer>
 
@@ -52,6 +57,7 @@
     padding-left: 32px;
     transition: color 160ms ease;
   }
+  .footer-actions { display: grid; gap: 12px; }
 
   .footer-cta span {
     display: inline-block;

@@ -28,17 +28,18 @@ const state = {
   filter: "all",
   year: "all",
   collectionView: "grid",
-  preview: 81,
+  preview: null,
   visible: 6,
   paused: matchMedia("(prefers-reduced-motion: reduce)").matches,
 };
 const dialog = $("#project-dialog");
-let projects = [];
+const projects = JSON.parse($("#collection-data").textContent);
+state.preview = projects[0]?.number ?? null;
 let scene;
 let scenePromise;
 let modeRequest = 0;
 let dialogOpener;
-let collectionStatus = "loading";
+let collectionStatus = "ready";
 document.addEventListener("site:theme-change", (event) => {
   state.theme = event.detail;
   scene?.setTheme(state.theme);
@@ -288,7 +289,7 @@ function openProject(number) {
     ? `Recognition: ${project.award}`
     : "";
   $("#dialog-award").hidden = !project.award;
-  $("#dialog-link").href = `/hackathons/${project.number}/`;
+  $("#dialog-link").href = `/hackathons/${project.number}/?from=landing`;
   $("#dialog-link").textContent = "View hackathon details ↗";
   dialogOpener = document.activeElement;
   dialog.showModal();
@@ -300,7 +301,7 @@ function matchingProjects() {
   const year = state.year;
   return projects.filter((project) =>
     (state.filter !== "awarded" || project.award) &&
-    (year === "all" || project.startDate.slice(0, 4) === year) &&
+    (year === "all" || (project.startDate || "").slice(0, 4) === year) &&
     [project.title, project.event, project.startDate, project.solution,
       ...(project.tags || []), ...(project.categories || [])]
       .join(" ").toLowerCase().includes(term),
@@ -314,10 +315,10 @@ function previewAttempt(number) {
   $("#preview-number").textContent = String(number).padStart(3, "0");
   $("#preview-date").textContent = `${project.dateLabel} / ${project.country}`;
   $("#preview-title").textContent = project.title;
-  $("#preview-event").textContent = project.event;
   $("#preview-description").textContent = project.solution || "A project from the collection.";
   $("#preview-award").textContent = project.award || "";
   $("#preview-award").hidden = !project.award;
+  $("#preview-open").href = `/hackathons/${project.number}/?from=landing`;
   $("#preview-state").textContent = number === Math.max(...projects.map(p => p.number))
     ? "CURRENT" : project.award ? "◇ AWARDED" : "COMPLETED";
   $$(".attempt-tile[data-number]").forEach((tile) => {
@@ -328,9 +329,9 @@ function previewAttempt(number) {
 function renderAttemptGrid(selected) {
   const matching = new Set(selected.map((project) => project.number));
   const byNumber = new Map(projects.map((project) => [project.number, project]));
-  const latest = Math.max(...byNumber.keys());
+  const latest = Math.max(0, ...byNumber.keys());
   const fragment = document.createDocumentFragment();
-  for (let number = 1; number <= 100; number++) {
+  for (let number = 1; number <= Math.max(100, latest); number++) {
     const project = byNumber.get(number);
     const available = project && matching.has(number);
     const tile = document.createElement(available ? "button" : "span");
@@ -353,11 +354,7 @@ function renderAttemptGrid(selected) {
           if (event.pointerType === "mouse") previewAttempt(number);
         });
         tile.addEventListener("focus", () => previewAttempt(number));
-        tile.addEventListener("click", (event) => {
-          previewAttempt(number);
-          // Touch selects a preview; its explicit action opens the full story.
-          if (event.pointerType !== "touch") openProject(number);
-        });
+        tile.addEventListener("click", () => previewAttempt(number));
       }
     }
     fragment.append(tile);
@@ -390,7 +387,6 @@ $("#attempt-grid").addEventListener("keydown", (event) => {
   }
   target?.focus({ preventScroll: true });
 });
-$("#preview-open").addEventListener("click", () => openProject(state.preview));
 $$("[data-collection-view]").forEach((button) => button.addEventListener("click", () => {
   state.collectionView = button.dataset.collectionView;
   $$("[data-collection-view]").forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
@@ -415,15 +411,15 @@ function renderCollection() {
   if (gridView) {
     renderAttemptGrid(selected);
     $("#result-status").textContent = selected.length
-      ? `${selected.length} of ${projects.length} recorded attempts · ${100 - projects.length} still to come`
+      ? `${selected.length} of ${projects.length} recorded attempts · ${Math.max(0, 100 - projects.length)} still to come`
       : "No attempts found. Try another year, filter, or search.";
     $("#load-more").hidden = true;
     return;
   }
   list.replaceChildren();
   for (const project of selected.slice(0, state.visible)) {
-    const row = document.createElement("button");
-    row.type = "button";
+    const row = document.createElement("a");
+    row.href = `/hackathons/${project.number}/?from=landing`;
     row.className = "project-row";
     row.setAttribute(
       "aria-label",
@@ -451,7 +447,11 @@ function renderCollection() {
     arrow.setAttribute("aria-hidden", "true");
     arrow.textContent = "↗";
     row.append(number, info, meta, arrow);
-    row.addEventListener("click", () => openProject(project.number));
+    row.addEventListener("click", (event) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      openProject(project.number);
+    });
     list.append(row);
   }
   $("#result-status").textContent = selected.length
@@ -506,45 +506,23 @@ dialog.addEventListener("click", (event) => {
 
 selectExhibit(81);
 updatePauseLabel();
-$("#result-status").textContent = "Opening the collection…";
-$("#load-more").hidden = true;
-fetch("/landing/hackathons.json")
-  .then((response) => {
-    if (!response.ok) throw new Error("Collection unavailable");
-    return response.json();
-  })
-  .then((records) => {
-    collectionStatus = "ready";
-    projects = records;
-    const yearChoices = ["all", ...new Set(records.map((project) => project.startDate.slice(0, 4)).sort().reverse())];
-    yearChoices.forEach((year) => {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.dataset.yearFilter = year;
-      button.setAttribute("aria-pressed", String(year === "all"));
-      const count = year === "all" ? records.length : records.filter((project) => project.startDate.startsWith(year)).length;
-      button.append(document.createTextNode(year === "all" ? "All years" : year));
-      const badge = document.createElement("span");
-      badge.textContent = count;
-      button.append(badge);
-      button.addEventListener("click", () => {
-        state.year = year;
-        $$("[data-year-filter]").forEach((item) => item.setAttribute("aria-pressed", String(item.dataset.yearFilter === year)));
-        state.visible = 6;
-        renderCollection();
-      });
-      $("#collection-years").append(button);
-    });
-    $("#all-count").textContent = records.length;
-    $("#journey-count").textContent = records.length;
-    $("#award-count").textContent = records.filter(
-      (project) => project.award,
-    ).length;
+const yearChoices = ["all", ...new Set(projects.map(project => (project.startDate || "").slice(0, 4)).filter(Boolean).sort().reverse())];
+yearChoices.forEach(year => {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.dataset.yearFilter = year;
+  button.setAttribute("aria-pressed", String(year === "all"));
+  const count = year === "all" ? projects.length : projects.filter(project => project.startDate?.startsWith(year)).length;
+  button.append(document.createTextNode(year === "all" ? "All years" : year));
+  const badge = document.createElement("span");
+  badge.textContent = count;
+  button.append(badge);
+  button.addEventListener("click", () => {
+    state.year = year;
+    $$("[data-year-filter]").forEach(item => item.setAttribute("aria-pressed", String(item.dataset.yearFilter === year)));
+    state.visible = 6;
     renderCollection();
-  })
-  .catch(() => {
-    collectionStatus = "failed";
-    $("#result-status").textContent =
-      "The archive could not load. Refresh to try again, or visit the main website.";
-    $("#surprise").disabled = true;
   });
+  $("#collection-years").append(button);
+});
+renderCollection();

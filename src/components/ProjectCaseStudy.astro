@@ -1,0 +1,67 @@
+---
+import type { CaseStudy } from "../lib/case-studies";
+import type { Hackathon } from "../lib/hackathons";
+
+interface Props {
+  study: CaseStudy;
+  hackathon: Hackathon;
+}
+const { study, hackathon } = Astro.props;
+const teamSize = hackathon.members.length;
+const duration = hackathon.duration && hackathon.durationUnit
+  ? `${hackathon.duration} ${hackathon.duration === 1 ? hackathon.durationUnit.toLowerCase().replace(/s$/, "") : hackathon.durationUnit.toLowerCase()}`
+  : null;
+---
+
+<section class="case-study" id="case-study" aria-labelledby="case-study-heading">
+  <p class="eyebrow">Case study · build to operator</p>
+  <h2 id="case-study-heading">{study.angle}</h2>
+  <p class="source-note">Build details and results below come from the hackathon record. The operator questions and proposed next steps are editorial analysis.</p>
+  <div class="facts">
+    <section>
+      <h3>Problem &amp; purpose</h3>
+      <p>{study.purpose}</p>
+    </section>
+    <section>
+      <h3>What the prototype covers</h3>
+      <p>{study.scope}</p>
+    </section>
+    <section>
+      <h3>Execution context</h3>
+      <p>
+        Built for {hackathon.event}{duration ? `; the recorded event duration was ${duration}` : ""},
+        with {teamSize === 1 ? "one recorded builder" : `${teamSize} recorded team members`}.
+        {hackathon.client && ` The catalog lists ${hackathon.client} as the client.`}
+        These are the recorded event constraints; the team's decision process is not documented.
+      </p>
+    </section>
+    <section>
+      <h3>Documented outcome</h3>
+      <p>{study.outcomeContext}</p>
+    </section>
+  </div>
+  <div class="operator">
+    <p class="eyebrow">Operator perspective · analysis</p>
+    <h3>{study.operatorQuestion}</h3>
+    <p class="validation-label">Proposed next validation</p>
+    <p>{study.nextValidation}</p>
+  </div>
+  <a class="all-studies" href="/case-studies/">Explore the other case studies →</a>
+</section>
+
+<style>
+  .case-study { margin-top: 64px; border-top: 1px solid var(--line); padding-top: 28px; }
+  .eyebrow { margin: 0; color: var(--red); font-size: .75rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; }
+  h2 { margin: 12px 0 20px; color: var(--ink); font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 500; letter-spacing: -.045em; line-height: 1.08; }
+  .source-note { color: var(--faint); font-size: .85rem; }
+  p { color: var(--muted); line-height: 1.75; }
+  .facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 36px; margin-top: 28px; }
+  h3 { margin: 0 0 10px; color: var(--ink); font-size: 1.15rem; font-weight: 500; line-height: 1.4; }
+  .facts p { margin: 0; }
+  .operator { margin-top: 32px; padding: 24px; background: var(--surface); border: 1px solid var(--line); }
+  .operator h3 { margin-top: 14px; font-size: 1.4rem; }
+  .validation-label { margin: 24px 0 6px; font-size: .75rem; color: var(--ink); letter-spacing: .06em; text-transform: uppercase; }
+  .operator p:last-child { margin: 0; }
+  .all-studies { display: inline-block; margin-top: 24px; color: var(--red); border-bottom: 1px solid currentColor; }
+  @media (max-width: 640px) { .facts { grid-template-columns: 1fr; } .operator { padding: 20px; } }
+</style>

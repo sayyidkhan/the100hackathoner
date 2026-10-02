@@ -5,5 +5,6 @@ export const mainNavigation = [
   ["Judging", "/judging/"],
   ["Principles", "/principles/"],
   ["Field Notes", "/essays/"],
+  ["Waitlist", "/waitlist/"],
   ["About", "/about/"],
 ] as const;

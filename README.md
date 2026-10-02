@@ -64,6 +64,23 @@ docs/                Planning and project notes
 data/                Workbook source and generated SQLite analysis database
 ```
 
+## Audience and discovery
+
+- `/waitlist/` prepares an email signup request to `sayyidkhan92@hotmail.com`.
+  Visitors must send the draft; the site does not store email addresses. Keep
+  the list manually until a mailing-list service or form backend is connected.
+- `/workshops/` describes the practical AI prototyping offer and prepares an inquiry.
+- `/case-studies/` links to evidence-backed studies for projects 79–81. Editorial
+  questions and proposed validation are distinguished from recorded outcomes.
+- `src/components/SeoHead.astro` supplies canonical and social metadata.
+  `public/images/social-card.png` is the shared 1200 × 630 preview image.
+- `/sitemap.xml` includes public routes and published collection entries;
+  `/robots.txt` advertises it. Set `SITE_URL` when moving to a custom domain.
+- Homepage artwork and judging photos generate responsive WebP images at build
+  time. Original assets remain available as source files.
+- Homepage collection links render at build time and work without JavaScript;
+  JavaScript enhances the embedded catalog with filters and previews.
+
 ## Common Edits
 
 Homepage:

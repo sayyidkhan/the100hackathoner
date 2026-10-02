@@ -1,5 +1,7 @@
 ---
 import PageShell from "../../components/PageShell.astro";
+import ProjectCaseStudy from "../../components/ProjectCaseStudy.astro";
+import { getCaseStudy } from "../../lib/case-studies";
 import { getHackathons, type Hackathon } from "../../lib/hackathons";
 
 export function getStaticPaths() {
@@ -10,6 +12,8 @@ export function getStaticPaths() {
 }
 
 const { hackathon } = Astro.props as { hackathon: Hackathon };
+const caseStudy = getCaseStudy(hackathon.number);
+const description = `Hackathon #${hackathon.number}: ${hackathon.title}, built for ${hackathon.event}. ${hackathon.solution || [hackathon.dateLabel, hackathon.award].filter(Boolean).join(". ")}`;
 const duration =
   hackathon.duration && hackathon.durationUnit
     ? `${hackathon.duration} ${hackathon.durationUnit}`
@@ -32,9 +36,9 @@ const socialPlatforms = [
 ].filter((platform) => platform.urls.length);
 ---
 
-<PageShell title={`${hackathon.title} | The 100 Hackathoner`}>
+<PageShell title={`${hackathon.title} | The 100 Hackathoner`} description={description}>
   <article class="record container">
-    <a class="back" href="/hackathons/">Back to journey</a>
+    <a class="back" id="record-back" href="/hackathons/">Back to journey</a>
     <p class="meta">Hackathon #{String(hackathon.number).padStart(3, "0")}</p>
     <h1>{hackathon.title}</h1>
     <p class="event">{hackathon.event}</p>
@@ -58,6 +62,8 @@ const socialPlatforms = [
         ))
       }
     </dl>
+
+    {caseStudy && <ProjectCaseStudy study={caseStudy} hackathon={hackathon} />}
 
     {
       (hackathon.githubUrl || hackathon.eventUrl) && (
@@ -96,6 +102,14 @@ const socialPlatforms = [
     }
   </article>
 </PageShell>
+
+<script>
+  const backLink = document.querySelector<HTMLAnchorElement>('#record-back');
+  if (backLink && new URLSearchParams(window.location.search).get('from') === 'landing') {
+    backLink.href = '/#collection';
+    backLink.textContent = 'Back to collection';
+  }
+</script>
 
 <style>
   .record {

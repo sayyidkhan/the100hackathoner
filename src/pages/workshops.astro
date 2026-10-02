@@ -1,0 +1,62 @@
+---
+import PageShell from "../components/PageShell.astro";
+const outcomes = [
+  ["Choose a useful problem", "Define the user, the task, and the evidence that would make a prototype worth taking further."],
+  ["Build a working prototype", "Turn a focused idea into an AI-assisted workflow or agent demo, with a clear human checkpoint."],
+  ["Test the assumptions", "Try realistic inputs, identify where the system fails, and separate a convincing demo from a useful product."],
+  ["Plan the next iteration", "Leave with a demo, a short list of risks, and a practical next step for validating the idea."],
+];
+---
+
+<PageShell title="Practical AI Prototyping Workshops | Sayyid Khan" description="Plan a hands-on AI prototyping workshop with Singapore-based engineer Sayyid Khan. Help your team move from a focused problem to a demo and a validation plan.">
+  <section class="section">
+    <div class="container workshop-hero">
+      <p class="meta">Learn through building</p>
+      <h1>From AI idea<br />to a working prototype.</h1>
+      <p class="lede">A hands-on workshop for teams who want to test a useful AI workflow, ship a small demo, and understand what to improve next.</p>
+      <a class="button primary" href="mailto:sayyidkhan92@hotmail.com?subject=AI%20prototyping%20workshop%20inquiry&amp;body=Hi%20Sayyid%2C%0A%0AI%27m%20planning%20a%20workshop.%0A%0AAudience%3A%0ATeam%20size%3A%0AProblem%20or%20goal%3A%0ATechnical%20experience%3A%0APreferred%20date%20and%20format%3A%0A">Discuss a workshop <span aria-hidden="true">↗</span></a>
+      <p class="email-note">Email <a href="mailto:sayyidkhan92@hotmail.com">sayyidkhan92@hotmail.com</a> with your audience, goal, and preferred format.</p>
+    </div>
+  </section>
+  <section class="section workshop-details" aria-labelledby="audience-heading">
+    <div class="container details-grid">
+      <div><p class="meta">Who it’s for</p><h2 id="audience-heading">A team with a problem to explore.</h2></div>
+      <div>
+        <p>Engineering and product teams, hackathon communities, and innovation groups looking to move beyond slides and build together.</p>
+        <p>The scope is adapted to participants’ experience. For a coding workshop, bring a laptop and basic programming knowledge; we’ll agree the tools and access requirements beforehand.</p>
+        <dl><div><dt>Format</dt><dd>A proposed half-day or full-day session, in person in Singapore or remote.</dd></div><div><dt>Approach</dt><dd>A short briefing, guided build time, peer demos, and a review of the next experiment.</dd></div><div><dt>Planning</dt><dd>We agree the problem, audience, scope, schedule, and fee before booking.</dd></div></dl>
+      </div>
+    </div>
+  </section>
+  <section class="section" aria-labelledby="outcomes-heading">
+    <div class="container">
+      <p class="meta">What we’ll work toward</p><h2 id="outcomes-heading">A demo and a clearer next step.</h2>
+      <ol class="outcomes">{outcomes.map(([title, copy], index) => <li><span class="meta">0{index + 1}</span><h3>{title}</h3><p>{copy}</p></li>)}</ol>
+      <div class="facilitator"><h3>Built around practical experience.</h3><p>I’m Sayyid Khan, a full-stack GenAI developer and agentic AI engineer at Sembcorp, with experience across consulting, freelance delivery, and banking. This workshop draws on the habit behind my hackathon journey: define a small experiment, build it, and learn from what happens.</p><a href="/hackathons/">See the builds behind the approach <span aria-hidden="true">↗</span></a></div>
+    </div>
+  </section>
+</PageShell>
+
+<style>
+  .workshop-hero { max-width: 1000px; }
+  h1 { margin: 18px 0; }
+  h2 { font-size: clamp(2rem, 3.6vw, 3.6rem); margin: 18px 0; }
+  .lede { max-width: 60ch; font-size: 1.2rem; line-height: 1.75; color: var(--muted); margin: 28px 0; }
+  .email-note { font-size: .85rem; color: var(--muted); margin-top: 20px; overflow-wrap: anywhere; }
+  a:not(.button) { text-decoration: underline; text-underline-offset: 4px; }
+  .workshop-details { border-block: 1px solid var(--line); background: var(--soft); }
+  .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 7vw, 100px); }
+  .details-grid p, .outcomes p, .facilitator p { color: var(--muted); line-height: 1.75; }
+  dl { margin-top: 30px; }
+  dl div { border-top: 1px solid var(--line); padding-block: 18px; }
+  dt { font-size: .85rem; font-weight: 500; }
+  dd { margin: 8px 0 0; color: var(--muted); line-height: 1.65; }
+  .outcomes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin: 36px 0 0; padding: 0; list-style: none; }
+  .outcomes li { border: 1px solid var(--line); border-radius: 12px; background: var(--raised); padding: 28px; }
+  .outcomes h3 { margin: 20px 0 12px; font-size: 1.3rem; }
+  .outcomes p { margin: 0; }
+  .facilitator { max-width: 760px; margin-top: 56px; }
+  .facilitator h3 { font-size: 1.5rem; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  @media (max-width: 760px) { .details-grid, .outcomes { grid-template-columns: 1fr; } }
+</style>

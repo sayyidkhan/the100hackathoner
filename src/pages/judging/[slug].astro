@@ -2,6 +2,8 @@
 import { getCollection, render } from "astro:content";
 import PageShell from "../../components/PageShell.astro";
 import Prose from "../../components/Prose.astro";
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
 
 export async function getStaticPaths() {
   const entries = await getCollection("judging");
@@ -17,9 +19,11 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 const galleryId = `gallery-${entry.slug}`;
 const galleryImages = entry.data.images ?? [];
+const photoSources = import.meta.glob<{ default: ImageMetadata }>("../../../public/images/judging/*.jpg", { eager: true });
+const optimizedSource = (src: string) => photoSources[`../../../public${src}`]?.default;
 ---
 
-<PageShell title={`${entry.data.event} | Judging Log`}>
+<PageShell title={`${entry.data.event} | Judging Log`} description={entry.data.lesson}>
   <Prose>
     <p class="meta">{entry.data.date} · {entry.data.role}</p>
     <h1>{entry.data.event}</h1>
@@ -44,7 +48,20 @@ const galleryImages = entry.data.images ?? [];
                       aria-label={`Show photo ${index + 1}`}
                     />
                     <figure class="gallery-slide">
-                      <img
+                      {optimizedSource(image.src) ? <Image
+                        src={optimizedSource(image.src)!}
+                        format="webp"
+                        quality={80}
+                        widths={[480, 800, 1200]}
+                        sizes="(max-width: 760px) 100vw, 920px"
+                        alt={image.alt}
+                        loading={index === 0 ? "eager" : "lazy"}
+                        class:list={{ "gallery-image--cover": image.fit === "cover" }}
+                        style={[
+                          image.position && `object-position: ${image.position}`,
+                          image.translateY && `transform: translateY(${image.translateY}%)`,
+                        ].filter(Boolean).join("; ")}
+                      /> : <img
                         class:list={{ "gallery-image--cover": image.fit === "cover" }}
                         src={image.src}
                         alt={image.alt}
@@ -55,7 +72,7 @@ const galleryImages = entry.data.images ?? [];
                         ]
                           .filter(Boolean)
                           .join("; ")}
-                      />
+                      />}
                       <div class="gallery-controls">
                         <label for={`${galleryId}-${previousIndex}`}>Previous</label>
                         <span class="gallery-count">{index + 1} / {galleryImages.length}</span>
