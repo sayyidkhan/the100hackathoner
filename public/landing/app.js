@@ -275,16 +275,48 @@ function openProject(number) {
   $("#dialog-number").textContent =
     `ATTEMPT ${String(project.number).padStart(3, "0")} / ${project.dateLabel}`;
   $("#dialog-title").textContent = project.title;
-  $("#dialog-event").textContent = `${project.event} · ${project.country}`;
+  $("#dialog-event").textContent = [project.event, project.country].filter(Boolean).join(" · ");
   $("#dialog-solution").textContent =
     project.solution || "A project from the collection.";
   $("#dialog-tags").replaceChildren(
-    ...(project.categories || []).map((category) => {
+    ...[...new Set([...(project.categories || []), ...(project.tags || [])])].map((category) => {
       const tag = document.createElement("span");
       tag.textContent = category;
       return tag;
     }),
   );
+  const facts = [
+    ["Duration", project.duration && project.durationUnit ? `${project.duration} ${project.durationUnit}` : ""],
+    ["Location", [project.location, project.country].filter(Boolean).join(", ")],
+    ["Team", (project.members || []).join(" · ")],
+    ["Organizer", (project.organizers || []).join(" · ")],
+    ["Client", project.client],
+  ].filter(([, value]) => value);
+  $("#dialog-facts").replaceChildren(...facts.map(([label, value]) => {
+    const row = document.createElement("div");
+    const term = document.createElement("dt");
+    const detail = document.createElement("dd");
+    term.textContent = label;
+    detail.textContent = value;
+    row.append(term, detail);
+    return row;
+  }));
+  $("#dialog-facts").hidden = facts.length === 0;
+  const resources = [
+    ["Source code", project.githubUrl],
+    ["Event page", project.eventUrl],
+    ...Object.entries(project.socialLinks || {}).flatMap(([platform, urls]) =>
+      urls.map((url, index) => [`${platform[0].toUpperCase()}${platform.slice(1)} post${urls.length > 1 ? ` ${index + 1}` : ""}`, url])),
+  ].filter(([, url]) => safeUrl(url));
+  $("#dialog-resources").replaceChildren(...resources.map(([label, url]) => {
+    const link = document.createElement("a");
+    link.href = safeUrl(url);
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = `${label} ↗`;
+    return link;
+  }));
+  $("#dialog-resources").hidden = resources.length === 0;
   $("#dialog-award").textContent = project.award
     ? `Recognition: ${project.award}`
     : "";
@@ -354,7 +386,10 @@ function renderAttemptGrid(selected) {
           if (event.pointerType === "mouse") previewAttempt(number);
         });
         tile.addEventListener("focus", () => previewAttempt(number));
-        tile.addEventListener("click", () => previewAttempt(number));
+        tile.addEventListener("click", () => {
+          previewAttempt(number);
+          openProject(number);
+        });
       }
     }
     fragment.append(tile);
@@ -363,6 +398,12 @@ function renderAttemptGrid(selected) {
   $(".attempt-preview").hidden = selected.length === 0;
   if (selected.length) previewAttempt(matching.has(state.preview) ? state.preview : selected[0].number);
 }
+
+$("#preview-open").addEventListener("click", (event) => {
+  if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+  event.preventDefault();
+  openProject(state.preview);
+});
 
 $("#attempt-grid").addEventListener("keydown", (event) => {
   const tile = event.target.closest("button[data-number]");

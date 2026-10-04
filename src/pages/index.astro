@@ -1,5 +1,6 @@
 ---
 import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
 import SeoHead from "../components/SeoHead.astro";
 import { Image, getImage } from "astro:assets";
 import workbenchLight from "../../public/landing/assets/hackathon-workbench.png";
@@ -296,8 +297,10 @@ const benchDark = await responsive(workbenchDark, [400, 720, 1100]);
           <aside class="attempt-preview" aria-labelledby="preview-title">
             <div class="preview-top"><span class="eyebrow">FROM THE COLLECTION</span><span id="preview-state">CURRENT</span></div>
             <div id="preview-number" class="preview-number" aria-hidden="true">{String(latest?.number ?? 0).padStart(3, "0")}</div>
-            <p id="preview-date" class="eyebrow">{latest?.dateLabel} / {latest?.country}</p>
-            <h3 id="preview-title">{latest?.title}</h3>
+            <div class="preview-heading">
+              <p id="preview-date" class="eyebrow">{latest?.dateLabel} / {latest?.country}</p>
+              <h3 id="preview-title">{latest?.title}</h3>
+            </div>
             <p id="preview-description">{latest?.solution}</p>
             <p id="preview-award" hidden></p>
             <a id="preview-open" class="text-button" href={`/hackathons/${latest?.number}/?from=landing`}>Open the story <span aria-hidden="true">↗</span></a>
@@ -387,13 +390,8 @@ const benchDark = await responsive(workbenchDark, [400, 720, 1100]);
         </div>
       </section>
     </main>
-    <footer class="wrap">
-      <a href="#">THE 100 HACKATHONER ↗</a
-      ><span>A living collection.</span
-      ><span>SAYYID KHAN / SINGAPORE</span>
-      <span class="footer-copyright">All rights reserved. <span id="copyright-year">{new Date().getFullYear()}</span></span>
-    </footer>
-    <dialog id="project-dialog" aria-labelledby="dialog-title">
+    <Footer />
+    <dialog id="project-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-solution">
       <button
         id="close-dialog"
         type="button"
@@ -404,9 +402,12 @@ const benchDark = await responsive(workbenchDark, [400, 720, 1100]);
       <p class="eyebrow" id="dialog-number"></p>
       <h2 id="dialog-title"></h2>
       <p id="dialog-event"></p>
+      <h3 class="dialog-section-label">What we built</h3>
       <p id="dialog-solution"></p>
       <div id="dialog-tags"></div>
+      <dl id="dialog-facts" aria-label="Hackathon overview"></dl>
       <p id="dialog-award"></p>
+      <nav id="dialog-resources" aria-label="Project resources"></nav>
       <a
         class="primary-button"
         id="dialog-link"
@@ -434,8 +435,6 @@ const benchDark = await responsive(workbenchDark, [400, 720, 1100]);
     </script>
     <script is:inline src="/landing/app.js" type="module"></script>
     <script>
-      const copyrightYear = document.querySelector('#copyright-year');
-      if (copyrightYear) copyrightYear.textContent = String(new Date().getFullYear());
       const book = document.querySelector('.memoir-book');
       const motionAllowed = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const artObserver = new IntersectionObserver(entries => {

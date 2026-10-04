@@ -1,94 +1,45 @@
-<footer class="footer">
-  <div class="container footer-inner">
-    <div class="footer-identity">
-      <a class="footer-brand" href="/">The 100 Hackathoner</a>
-      <span>A public record of ideas tested, teams formed, demos shipped, and lessons carried forward.</span>
-    </div>
-    <nav class="footer-actions" aria-label="Get involved">
-      <a class="footer-cta" href="/waitlist/">Join the book waitlist <span aria-hidden="true">↗</span></a>
-      <a class="footer-cta" href="/workshops/">AI prototyping workshops <span aria-hidden="true">↗</span></a>
-      <a class="footer-cta" href="/case-studies/">Read the case studies <span aria-hidden="true">↗</span></a>
-      <a class="footer-cta" href="/about/#contact">Invite me to collaborate <span aria-hidden="true">↗</span></a>
-    </nav>
-  </div>
+<footer class="site-footer">
+  <a href="/">THE 100 HACKATHONER ↗</a>
+  <span class="footer-description">A living collection.</span>
+  <span class="footer-location">SAYYID KHAN / SINGAPORE</span>
+  <span class="footer-copyright">All rights reserved. <span data-footer-year>{new Date().getFullYear()}</span></span>
 </footer>
 
+<script>
+  document.querySelectorAll('[data-footer-year]').forEach((element) => {
+    element.textContent = String(new Date().getFullYear());
+  });
+</script>
+
 <style>
-  .footer {
-    border-top: 1px solid var(--line);
-    padding: 36px 0;
-    background: var(--bg);
-    color: var(--ink);
-  }
-
-  .footer-inner {
-    display: grid;
-    grid-template-columns: minmax(160px, 0.7fr) minmax(280px, 1.8fr) minmax(270px, 1.2fr);
-    gap: 32px;
+  .site-footer {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-  }
-
-  .footer-brand {
-    display: inline-block;
-    color: var(--ink);
-    font-size: 0.92rem;
-    font-weight: 500;
-    letter-spacing: -0.02em;
-  }
-
-  .footer-identity {
-    display: contents;
-  }
-
-  .footer-identity > span {
+    gap: 20px;
+    width: min(1560px, calc(100% - 96px));
+    margin-inline: auto;
+    padding: 30px 0;
+    border-top: 1px solid var(--line);
+    background: var(--surface);
     color: var(--muted);
-    font-size: 0.8rem;
-    line-height: 1.45;
-    max-width: 43rem;
+    font: 10px/1.6 var(--mono);
   }
-
-  .footer-cta {
-    color: var(--ink);
-    border-left: 1px solid var(--line);
-    font-size: 0.9rem;
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    line-height: 1.25;
-    padding-left: 32px;
-    transition: color 160ms ease;
-  }
-  .footer-actions { display: grid; gap: 12px; }
-
-  .footer-cta span {
-    display: inline-block;
-    margin-left: 3px;
-    transition: transform 160ms ease;
-  }
-
-  .footer-cta:hover span {
-    transform: translate(2px, -2px);
-  }
-
-  .footer-cta:hover {
-    color: var(--accent);
-  }
-
-  @media (max-width: 1000px) {
-    .footer-inner {
-      display: flex;
-      align-items: flex-start;
-      flex-direction: column;
+  .site-footer a { color: var(--ink); text-decoration: none; }
+  .site-footer a:hover { color: var(--accent); }
+  .site-footer a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  .footer-copyright { display: none; }
+  @media (max-width: 1050px) { .site-footer { width: calc(100% - 56px); } }
+  @media (max-width: 650px) {
+    .site-footer {
+      width: calc(100% - 36px);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: 12px;
+      font-size: 9px;
     }
-
-    .footer-identity {
-      display: contents;
-    }
-
-    .footer-cta {
-      border-left: 0;
-      border-top: 1px solid var(--line);
-      padding: 12px 0 0;
-    }
+    .footer-description { grid-row: 2; grid-column: 1; }
+    .footer-location { grid-row: 1; grid-column: 2; text-align: right; }
+    .site-footer .footer-copyright { display: block; grid-row: 2; grid-column: 2; text-align: right; }
   }
 </style>
