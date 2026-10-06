@@ -1025,7 +1025,14 @@ dialog h2 {
 body:has(dialog[open]) {
   overflow: hidden;
 }
-#dialog-link { display: inline-flex; align-items: center; min-height: 44px; padding: 12px 20px; font-size: 14px; }
+#dialog-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: 24px;
+  padding: 14px 24px;
+  font-size: 14px;
+}
 @media (min-width: 1700px) {
   .gallery {
     height: 540px;
