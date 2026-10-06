@@ -1,0 +1,32 @@
+---
+interface Props { members: string[]; }
+const { members } = Astro.props;
+const names = [...new Set(members.map(name => name.trim()).filter(Boolean))];
+const isSayyid = (name: string) => /^(sayyid|sayyid khan)$/i.test(name);
+const teammates = names.filter(name => !isSayyid(name));
+const solo = names.length === 1 && isSayyid(names[0]);
+const creditedNames = solo ? ['Sayyid Khan'] : teammates;
+---
+
+<section class="project-team" aria-label="Project team">
+  {creditedNames.length > 0 ? (
+    <>
+      <p class="team-label">{solo ? 'Built solo' : 'Built with'}</p>
+      <ul role="list">
+        {creditedNames.map(name => (
+          <li>
+            <span class="member-name">{name}</span>
+          </li>
+        ))}
+      </ul>
+    </>
+  ) : <p class="team-label">Team details to come</p>}
+</section>
+
+<style>
+  .project-team { margin-top: 0; padding-top: 24px; }
+  .team-label { margin: 0; color: var(--muted); font-family: var(--body); font-size: var(--detail-label-size, .72rem); font-weight: 500; letter-spacing: .08em; line-height: 1.5; text-transform: uppercase; }
+  ul { display: flex; flex-wrap: wrap; gap: 8px 28px; list-style: none; margin: 8px 0 0; padding: 0; }
+  li { min-width: 0; max-width: 100%; color: var(--ink); }
+  .member-name { font-size: var(--detail-value-size, 1.1rem); font-weight: 500; line-height: 1.5; overflow-wrap: anywhere; }
+</style>

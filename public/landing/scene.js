@@ -42,7 +42,7 @@ const clamp = THREE.MathUtils.clamp;
  * Construct lazily, then call setActive(true) when the 3D view is displayed.
  * Inactive, offscreen and hidden-document states do not run a rendering loop.
  */
-export function createGalleryScene({ canvas, container, onError = () => {}, theme = 'dark' }) {
+export function createGalleryScene({ canvas, container, onError = () => {}, theme = 'dark', initialProject = 81, artifactFactory = createArtifact, projectIds = PROJECTS }) {
   if (!(canvas instanceof HTMLCanvasElement) || !container) {
     throw new TypeError('The gallery needs a canvas and its layout container.');
   }
@@ -292,6 +292,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, them
     if (!paused && !reducedMotion.matches && !drag) elapsed += delta;
     updateCamera();
     try {
+      currentModel?.userData.animate?.(elapsed);
       renderer.render(scene, camera);
     } catch (error) {
       reportError(error);
@@ -398,12 +399,12 @@ export function createGalleryScene({ canvas, container, onError = () => {}, them
   function setProject(id) {
     if (disposed || failed) return;
     const numericId = Number(id);
-    if (!PROJECTS.has(numericId)) throw new RangeError(`Unknown gallery artifact: ${id}`);
+    if (!projectIds.has(numericId)) throw new RangeError(`Unknown gallery artifact: ${id}`);
     if (currentId === numericId) return;
     let model = models.get(numericId);
     if (!model) {
       try {
-        model = createArtifact(THREE, numericId);
+        model = artifactFactory(THREE, numericId);
         if (!model?.isObject3D) throw new TypeError('createArtifact must return a Three.js object.');
       } catch (error) {
         reportError(error);
@@ -587,7 +588,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, them
 
   try {
     setTheme(theme);
-    setProject(81);
+    setProject(initialProject);
     resize();
   } catch (error) {
     if (!failed) reportError(error);

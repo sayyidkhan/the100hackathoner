@@ -1,0 +1,897 @@
+{
+  "updated": "2026-10-06",
+  "scope": "Research linked project repositories first, then create light/dark concept artwork and matching procedural 3D on detail pages. Work sequentially; flag missing context.",
+  "method": "Built-in image_gen for raster artwork; Three.js procedural geometry for interactive interpretations.",
+  "projects": [
+    {
+      "number": 81,
+      "title": "The Next 8 Seconds: Draw Your Way Home",
+      "source": "https://github.com/sayyidkhan/8-mins",
+      "status": "implemented"
+    },
+    {
+      "number": 80,
+      "title": "Itachi's Crow",
+      "source": "https://github.com/sayyidkhan/itachiscrow",
+      "status": "implemented"
+    },
+    {
+      "number": 79,
+      "title": "Long Taa Borneo Eco Stay",
+      "source": "https://github.com/sayyidkhan/longtaaborneo",
+      "status": "implemented"
+    },
+    {
+      "number": 78,
+      "title": "PeterIndex",
+      "source": "https://github.com/sayyidkhan/peterindex",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/peterindex/blob/HEAD/docs/product-brief.md",
+          "https://github.com/sayyidkhan/peterindex/blob/HEAD/site/db/schema.ts",
+          "https://github.com/sayyidkhan/peterindex/blob/HEAD/site/components/LandingPage.tsx"
+        ],
+        "finding": "Contacts, conversation memory, commitments and evidence-backed warm introductions. Archive and connected people lead to an opportunity doorway."
+      },
+      "assets": [
+        "public/landing/assets/projects/078-peterindex-light-v1.png",
+        "public/landing/assets/projects/078-peterindex-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/peterindex.js"
+    },
+    {
+      "number": 77,
+      "title": "Zo Memories",
+      "source": "https://github.com/sayyidkhan/zo-memories",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/zo-memories/blob/HEAD/README.md",
+          "https://github.com/sayyidkhan/zo-memories/blob/HEAD/docs/SUBMISSION.md",
+          "https://github.com/sayyidkhan/zo-memories/blob/HEAD/docs/DIRECTORS-CUT.md"
+        ],
+        "finding": "Repository product name Zo Moments. Shared private moments become editable collaborative storybooks; photo walls, two figures, a voice-wave card and a shared timeline."
+      },
+      "assets": [
+        "public/landing/assets/projects/077-zo-memories-light-v1.png",
+        "public/landing/assets/projects/077-zo-memories-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/zo-memories.js"
+    },
+    {
+      "number": 76,
+      "title": "Agrim Tycoon",
+      "source": "https://github.com/sayyidkhan/agrim-tycoon",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/agrim-tycoon/blob/HEAD/README.md",
+          "https://github.com/sayyidkhan/agrim-tycoon/blob/HEAD/docs/submission.md"
+        ],
+        "finding": "City management across community, academy and machine systems; local Gemma advises while the player decides. Three districts, decision lever and on-device chip."
+      },
+      "assets": [
+        "public/landing/assets/projects/076-agrim-tycoon-light-v1.png",
+        "public/landing/assets/projects/076-agrim-tycoon-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/agrim-tycoon.js"
+    },
+    {
+      "number": 75,
+      "title": "Buzo Atlas",
+      "source": "https://github.com/gigradarapp/gr-atlas",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/gigradarapp/gr-atlas/blob/HEAD/README.md",
+          "https://github.com/gigradarapp/gr-atlas/blob/HEAD/docs/HACKATHON_SUBMISSION.md"
+        ],
+        "finding": "Strategy and hackathon prototype coordinating cultural assets, rights, partnerships and allocation. Stage, artwork and venue connected to a ledger; no claim of an established family office."
+      },
+      "assets": [
+        "public/landing/assets/projects/075-buzo-atlas-light-v1.png",
+        "public/landing/assets/projects/075-buzo-atlas-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/buzo-atlas.js"
+    },
+    {
+      "number": 74,
+      "title": "The Cooperate Telepath",
+      "source": "https://github.com/sayyidkhan/the-corporate-telepath",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/the-corporate-telepath/blob/HEAD/src/App.tsx",
+          "https://github.com/sayyidkhan/the-corporate-telepath/blob/HEAD/server.ts"
+        ],
+        "finding": "Engineering, finance, legal and HR/operations perspectives analyze a proposal, then a synthesis agent produces an executive summary and checklist. Catalog spelling retained."
+      },
+      "assets": [
+        "public/landing/assets/projects/074-corporate-telepath-light-v1.png",
+        "public/landing/assets/projects/074-corporate-telepath-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/corporate-telepath.js"
+    },
+    {
+      "number": 73,
+      "title": "Zo Drive",
+      "source": "https://github.com/sayyidkhan/zo-drive",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/zo-drive/blob/HEAD/README.md",
+          "https://github.com/sayyidkhan/zo-drive/blob/HEAD/docs/VISION.md"
+        ],
+        "finding": "Private server file manager, previews, sharing, database runtimes and functions. Archive cabinet, open folder drawer, database discs and sharing lock."
+      },
+      "assets": [
+        "public/landing/assets/projects/073-zo-drive-light-v1.png",
+        "public/landing/assets/projects/073-zo-drive-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/zo-drive.js"
+    },
+    {
+      "number": 72,
+      "title": "Alien Homecoming",
+      "source": "https://github.com/sayyidkhan/alien-homecoming",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/alien-homecoming/blob/HEAD/README.md",
+          "https://github.com/sayyidkhan/alien-homecoming/blob/HEAD/src/components/game/Alien.tsx",
+          "https://github.com/sayyidkhan/alien-homecoming/blob/HEAD/src/game/realmPlanner.ts"
+        ],
+        "finding": "Lost Between Worlds: local player progression and shared generated realms. Lavender one-antenna alien, Home Echo keepsake, observatory, star tree and gate. House is a symbolic home destination."
+      },
+      "assets": [
+        "public/landing/assets/projects/072-alien-homecoming-light-v1.png",
+        "public/landing/assets/projects/072-alien-homecoming-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/alien-homecoming.js"
+    },
+    {
+      "number": 71,
+      "title": "Kingdom Of PAL",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 70,
+      "title": "zo relationship mapper",
+      "source": "https://github.com/sayyidkhan/zo-relationship-mapper",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/zo-relationship-mapper/blob/HEAD/README.md"
+        ],
+        "finding": "Career profile to live opportunities, selected roles to researched people and trust paths, then outreach drafts."
+      },
+      "assets": [
+        "public/landing/assets/projects/070-relationship-mapper-light-v1.png",
+        "public/landing/assets/projects/070-relationship-mapper-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/relationship-mapper.js"
+    },
+    {
+      "number": 69,
+      "title": "Zo Order Tracker",
+      "source": "https://github.com/sayyidkhan/zo-order-tracker",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/zo-order-tracker/blob/HEAD/README.md"
+        ],
+        "finding": "Small merchant storefront, order queue, uploaded payment proofs for manual merchant review."
+      },
+      "assets": [
+        "public/landing/assets/projects/069-order-tracker-light-v1.png",
+        "public/landing/assets/projects/069-order-tracker-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/order-tracker.js"
+    },
+    {
+      "number": 68,
+      "title": "Buzo 2.1",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 67,
+      "title": "SceneVerse AI",
+      "source": "https://github.com/sayyidkhan/agentic-vr-frontend",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/agentic-vr-frontend/blob/HEAD/README.md"
+        ],
+        "finding": "Paused video frame to scene context, character agents and director orchestration, voice interaction and stereo view."
+      },
+      "assets": [
+        "public/landing/assets/projects/067-sceneverse-light-v1.png",
+        "public/landing/assets/projects/067-sceneverse-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/sceneverse.js"
+    },
+    {
+      "number": 66,
+      "title": "Buzo 2.0",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 65,
+      "title": "Mums Can Build",
+      "source": "https://github.com/sayyidkhan/mums-can-build",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/mums-can-build/blob/HEAD/README.md"
+        ],
+        "finding": "Spoken ideas to clarified tasks, mock or Codex worker, and streamed progress."
+      },
+      "assets": [
+        "public/landing/assets/projects/065-mums-can-build-light-v1.png",
+        "public/landing/assets/projects/065-mums-can-build-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/mums-can-build.js"
+    },
+    {
+      "number": 64,
+      "title": "Data Center Destroyer",
+      "source": "https://github.com/sayyidkhan/data-center-destroyer",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/data-center-destroyer/blob/HEAD/README.md"
+        ],
+        "finding": "Voice-controlled tower defense with five tower types, a movable hero, single player and real-time PvP."
+      },
+      "assets": [
+        "public/landing/assets/projects/064-data-center-destroyer-light-v1.png",
+        "public/landing/assets/projects/064-data-center-destroyer-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/data-center-destroyer.js"
+    },
+    {
+      "number": 63,
+      "title": "Data Center Tycoon [Web + Mobile Edition]",
+      "source": "https://github.com/sayyidkhan/v0-data-center-tycoon",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/v0-data-center-tycoon/blob/HEAD/components/data-centre-game.tsx"
+        ],
+        "finding": "Grid-building game balancing revenue, power, heat, cooling and sustainability against an AI competitor; servers, solar, battery, cooling and optimizer assets."
+      },
+      "assets": [
+        "public/landing/assets/projects/063-data-center-tycoon-light-v1.png",
+        "public/landing/assets/projects/063-data-center-tycoon-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/data-center-tycoon.js"
+    },
+    {
+      "number": 62,
+      "title": "Ask Buzo",
+      "source": "https://github.com/gigradarapp/gr-ask-buzo",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/gigradarapp/gr-ask-buzo/blob/HEAD/docs/ask-buzo-poc-build-plan.md",
+          "https://github.com/gigradarapp/gr-ask-buzo/blob/HEAD/src/App.tsx"
+        ],
+        "finding": "Nightlife-planning POC with deterministic mock-data planner, clarification, main event, before/after stops, timing, budget and fallback options."
+      },
+      "assets": [
+        "public/landing/assets/projects/062-ask-buzo-light-v1.png",
+        "public/landing/assets/projects/062-ask-buzo-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/ask-buzo.js"
+    },
+    {
+      "number": 61,
+      "title": "Data Center Tycoon [Web Only]",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 60,
+      "title": "Guardian Agent",
+      "source": "https://github.com/sayyidkhan/guardian-agent",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/guardian-agent/blob/HEAD/README.md"
+        ],
+        "finding": "Configurable decision proxy returns approve/reject/escalate with reasoning; voice and chat consultations; profile boundaries and persistent decision log."
+      },
+      "assets": [
+        "public/landing/assets/projects/060-guardian-agent-light-v1.png",
+        "public/landing/assets/projects/060-guardian-agent-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/guardian-agent.js"
+    },
+    {
+      "number": 59,
+      "title": "Brain Org",
+      "source": "https://devfolio.co/projects/ontrack-ai-7d28",
+      "status": "source-unavailable",
+      "note": "Recorded submission link could not be read by web reader; needs accessible project context."
+    },
+    {
+      "number": 58,
+      "title": "HackAtlas",
+      "source": "https://devpost.com/software/1248526/joins/rd1pZGiClia_sxEWA0RNJg",
+      "status": "source-unavailable",
+      "note": "Recorded submission link could not be read by web reader; needs accessible project context."
+    },
+    {
+      "number": 57,
+      "title": "Medivoice",
+      "source": "https://github.com/sayyidkhan/agora-medihealth",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/agora-medihealth/blob/HEAD/README.md",
+          "https://github.com/sayyidkhan/agora-medihealth/blob/HEAD/presentation/slides.md"
+        ],
+        "finding": "Voice-first telehealth demo: patient interview, structured summary, doctor queue and explicit review or escalation."
+      },
+      "assets": [
+        "public/landing/assets/projects/057-medivoice-light-v1.png",
+        "public/landing/assets/projects/057-medivoice-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/medivoice.js"
+    },
+    {
+      "number": 56,
+      "title": "Bryan Feedback Agent",
+      "source": "https://github.com/gigradarapp/gr-bryan-feedback-agent",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/gigradarapp/gr-bryan-feedback-agent/blob/HEAD/docs/conversational-feedback-agent.md",
+          "https://github.com/gigradarapp/gr-bryan-feedback-agent/blob/HEAD/frontend/src/pages/Landing.tsx"
+        ],
+        "finding": "Telegram-style chat simulation collects post-event feedback, synthesizes themes/recommendations and includes points-to-vouchers demo."
+      },
+      "assets": [
+        "public/landing/assets/projects/056-bryan-feedback-light-v1.png",
+        "public/landing/assets/projects/056-bryan-feedback-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/bryan-feedback.js"
+    },
+    {
+      "number": 55,
+      "title": "Buzo",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 54,
+      "title": "Gigradar",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 53,
+      "title": "DevDuel Agent",
+      "source": "https://github.com/sayyidkhan/agent-forge-track2",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/agent-forge-track2/blob/HEAD/README.md"
+        ],
+        "finding": "Public-profile comparison across six dimensions, anime archetypes, roast-style commentary and winner reveal; entertainment concept."
+      },
+      "assets": [
+        "public/landing/assets/projects/053-devduel-light-v1.png",
+        "public/landing/assets/projects/053-devduel-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/devduel.js"
+    },
+    {
+      "number": 52,
+      "title": "AI LinkedIn Launch Studio",
+      "source": "https://github.com/sayyidkhan/agent-forge-track1",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/agent-forge-track1/blob/HEAD/README.md"
+        ],
+        "finding": "Topic and tone feed orchestration for post copy, branded image, short teaser video, displayed for copy/download."
+      },
+      "assets": [
+        "public/landing/assets/projects/052-linkedin-launch-light-v1.png",
+        "public/landing/assets/projects/052-linkedin-launch-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/linkedin-launch.js"
+    },
+    {
+      "number": 51,
+      "title": "Should I Quit",
+      "source": "https://github.com/sayyidkhan/shouldIquit",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/shouldIquit/blob/HEAD/README.md"
+        ],
+        "finding": "Career decision-support swarm with eight specialist agents and outcome feedback that reweights future opinions."
+      },
+      "assets": [
+        "public/landing/assets/projects/051-should-i-quit-light-v1.png",
+        "public/landing/assets/projects/051-should-i-quit-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/should-i-quit.js"
+    },
+    {
+      "number": 50,
+      "title": "MagiStock",
+      "source": "https://github.com/sayyidkhan/agentfields",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/agentfields/blob/HEAD/README.md"
+        ],
+        "finding": "Current hackathon deliverable is Portfolio Risk Governor backend: event-driven policies enable/disable/cap downstream execution, memory audit trail and manual overrides."
+      },
+      "assets": [
+        "public/landing/assets/projects/050-magistock-light-v1.png",
+        "public/landing/assets/projects/050-magistock-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/magistock.js"
+    },
+    {
+      "number": 49,
+      "title": "Stress Out,Bunny In",
+      "source": "https://github.com/sayyidkhan/art-x-tech-hackathon-2026",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/art-x-tech-hackathon-2026/blob/HEAD/README.md"
+        ],
+        "finding": "Interactive artwork rewards stillness; bunny resists sustained touch/gesture control, relaxes after release; no scores or goals."
+      },
+      "assets": [
+        "public/landing/assets/projects/049-stress-bunny-light-v1.png",
+        "public/landing/assets/projects/049-stress-bunny-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/stress-bunny.js"
+    },
+    {
+      "number": 48,
+      "title": "jollycard",
+      "source": "https://github.com/sayyidkhan/jollycards",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/jollycards/blob/HEAD/README.md"
+        ],
+        "finding": "Gemini generates short Christmas greetings tailored to recipient relationship and tone, with a preview gallery."
+      },
+      "assets": [
+        "public/landing/assets/projects/048-jollycards-light-v1.png",
+        "public/landing/assets/projects/048-jollycards-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/jollycards.js"
+    },
+    {
+      "number": 47,
+      "title": "Natalie's Tempeh",
+      "source": "https://github.com/sayyidkhan/nataliestempeh",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/nataliestempeh/blob/HEAD/README.md"
+        ],
+        "finding": "B2B edible tempeh hardware catalog; bulk quote cart, logo preview, Gemini flavor suggestions; quote submission simulated."
+      },
+      "assets": [
+        "public/landing/assets/projects/047-natalies-tempeh-light-v1.png",
+        "public/landing/assets/projects/047-natalies-tempeh-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/natalies-tempeh.js"
+    },
+    {
+      "number": 46,
+      "title": "Hedera Agents Hub",
+      "source": "https://github.com/sayyidkhan/HederaAgentsHub",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/HederaAgentsHub/blob/HEAD/README.md"
+        ],
+        "finding": "Hedera testnet agent economy with identity/reputation/validation registries, buyer/seller negotiation, x402 payment integration and HCS audit logs."
+      },
+      "assets": [
+        "public/landing/assets/projects/046-hedera-agents-light-v1.png",
+        "public/landing/assets/projects/046-hedera-agents-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/hedera-agents.js"
+    },
+    {
+      "number": 45,
+      "title": "Asterix",
+      "source": "https://github.com/sayyidkhan/asterix",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/asterix/blob/HEAD/README.md"
+        ],
+        "finding": "Cloudflare-based assessment system with natural-language generation, yes/no or multiple-choice items, three outcome categories and semantic search."
+      },
+      "assets": [
+        "public/landing/assets/projects/045-asterix-light-v1.png",
+        "public/landing/assets/projects/045-asterix-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/asterix.js"
+    },
+    {
+      "number": 44,
+      "title": "Vibewater Associates",
+      "source": "https://github.com/sayyidkhan/vibewater_associates",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/vibewater_associates/blob/HEAD/PROJECT_README.md"
+        ],
+        "finding": "Chat-first strategy builder, editable flowchart, configurable historical backtesting, drawdown analytics and strategy library."
+      },
+      "assets": [
+        "public/landing/assets/projects/044-vibewater-light-v1.png",
+        "public/landing/assets/projects/044-vibewater-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/vibewater.js"
+    },
+    {
+      "number": 43,
+      "title": "F1 Degens",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 42,
+      "title": "AstroDegen",
+      "source": "https://github.com/sayyidkhan/nosana-ci-agent-challenge",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/nosana-ci-agent-challenge/blob/HEAD/docs/ASTRO_DEGEN_PRD.md",
+          "https://github.com/sayyidkhan/nosana-ci-agent-challenge/blob/HEAD/src/mastra/agents/astrodegen/astrodegen-agent.ts"
+        ],
+        "finding": "Experimental assistant combines lunar phase with SMA/RSI market trend and emits signals. Concept does not imply validated predictive value or executed trades."
+      },
+      "assets": [
+        "public/landing/assets/projects/042-astrodegen-light-v1.png",
+        "public/landing/assets/projects/042-astrodegen-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/astrodegen.js"
+    },
+    {
+      "number": 41,
+      "title": "NAS.IO Hackathon 2025",
+      "source": "https://github.com/sayyidkhan/prompt-alchemist-beta",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/prompt-alchemist-beta/blob/HEAD/index.html"
+        ],
+        "finding": "Prompt Alchemist community landing page: fireside chats, prompt playbooks, mastery classes and practical workshops. Catalog entry is named for NAS.IO event."
+      },
+      "assets": [
+        "public/landing/assets/projects/041-prompt-alchemist-light-v1.png",
+        "public/landing/assets/projects/041-prompt-alchemist-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/prompt-alchemist.js"
+    },
+    {
+      "number": 40,
+      "title": "Sarawak AI Hackathon 2025",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 39,
+      "title": "chatgpt-6-nano",
+      "source": "https://github.com/sayyidkhan/gpt6-nano",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/gpt6-nano/blob/HEAD/src/App.tsx",
+          "https://github.com/sayyidkhan/gpt6-nano/blob/HEAD/src/responder.ts"
+        ],
+        "finding": "Local memory chatbot UI with keyword similarity retrieval, tags/ideas/people graph and templated unexpected connections; a prototype rather than a trained GPT model."
+      },
+      "assets": [
+        "public/landing/assets/projects/039-memory-graph-light-v1.png",
+        "public/landing/assets/projects/039-memory-graph-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/memory-graph.js"
+    },
+    {
+      "number": 38,
+      "title": "UpsacleAI [VR Edition]",
+      "source": "https://github.com/sayyidkhan/manus-im-hackathon",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/manus-im-hackathon/blob/main/README%202.md"
+        ],
+        "finding": "README 2 describes ScaleUp AI for SME/F&B consulting: financials, growth coaching, reviews, social tracking and trends. Shared core with Bolt edition; no verified VR implementation found. Sculpture interprets business perspectives without inventing VR features."
+      },
+      "assets": [
+        "public/landing/assets/projects/038-scaleup-perspectives-light-v1.png",
+        "public/landing/assets/projects/038-scaleup-perspectives-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/scaleup-perspectives.js"
+    },
+    {
+      "number": 37,
+      "title": "UpsacleAI [Bolt Edition]",
+      "source": "https://devpost.com/software/jslw-scaleupai-bolt-edition",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://devpost.com/software/jslw-scaleupai-bolt-edition",
+          "https://github.com/sayyidkhan/scaleupai-bolt"
+        ],
+        "finding": "Devpost links the ScaleUp AI Bolt repository. README describes SME/F&B financial analysis, growth coaching, reviews and trends. Shared core with #38; roadmap sculpture is a visual interpretation, not a claim of distinct version features or verified business outcomes."
+      },
+      "assets": [
+        "public/landing/assets/projects/037-scaleup-roadmap-light-v1.png",
+        "public/landing/assets/projects/037-scaleup-roadmap-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/scaleup-roadmap.js"
+    },
+    {
+      "number": 36,
+      "title": "UpsacleAI",
+      "source": "http://github.com/cheonglol/superai-next-hackathon-2025",
+      "status": "source-unavailable",
+      "research": {
+        "finding": "Linked GitHub repository returned HTTP 404 for README and HEAD tree. Need accessible source or project brief before generating."
+      }
+    },
+    {
+      "number": 35,
+      "title": "AnginOmbak",
+      "source": "https://github.com/sayyidkhan/anginombak",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/sayyidkhan/anginombak"
+        ],
+        "finding": "README describes Leaflet maps, Singapore location search, geolocation, social posts and media, vendor marketplace and Gemini adventure assistant Mr Ombak. Sculpture translates location discovery and community planning."
+      },
+      "assets": [
+        "public/landing/assets/projects/035-anginombak-light-v1.png",
+        "public/landing/assets/projects/035-anginombak-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/anginombak.js"
+    },
+    {
+      "number": 34,
+      "title": "LrnMate",
+      "source": "https://github.com/arav-behl/LrnMate/tree/main",
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://github.com/arav-behl/LrnMate"
+        ],
+        "finding": "README frames workplace learning from Confluence, manuals and training videos, search/translation, bite-sized text/video snippets, quizzes and manager feedback. Some capabilities are proposed goals. Artwork depicts the learning concept without asserting full implementation or on-prem privacy guarantees."
+      },
+      "assets": [
+        "public/landing/assets/projects/034-lrnmate-light-v1.png",
+        "public/landing/assets/projects/034-lrnmate-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/lrnmate.js"
+    },
+    {
+      "number": 33,
+      "title": "Structur3",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 32,
+      "title": "Instareadr",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 31,
+      "title": "GrowthGuru",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 30,
+      "title": "The Punisher",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 29,
+      "title": "MyNextGym",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 28,
+      "title": "Kitar-GO",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 27,
+      "title": "GrabHunt",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 26,
+      "title": "Amigo",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 25,
+      "title": "NeuroSurge",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 24,
+      "title": "MyNextGym",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 23,
+      "title": "PestOverflow",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 22,
+      "title": "ShoeObituaries",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 21,
+      "title": "WinWinCusine",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 20,
+      "title": "CO2unter",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 19,
+      "title": "Fasight",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 18,
+      "title": "Checker App",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 17,
+      "title": "iceigloo",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 16,
+      "title": "Goblin (E-Waste Collector)",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 15,
+      "title": "Weather Guru",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 14,
+      "title": "Smart Food Bridge",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 13,
+      "title": "Life-Worth Evaluator",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 12,
+      "title": "Nestash",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 11,
+      "title": "Warriors&Mages",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 10,
+      "title": "Swagmylife",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 9,
+      "title": "Mailbox IOT system",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 8,
+      "title": "Vainster",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 7,
+      "title": "Vanita",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 6,
+      "title": "SocialCapitalAsia",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 5,
+      "title": "SayWhat",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 4,
+      "title": "SocialCapitalAsia",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 3,
+      "title": "PropertyGuru Smart Algorithm",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 2,
+      "title": "Xueyiyi V2.0",
+      "source": null,
+      "status": "needs-source-context"
+    },
+    {
+      "number": 1,
+      "title": "Xueyiyi V1.0",
+      "source": null,
+      "status": "needs-source-context"
+    }
+  ],
+  "verification": {
+    "astroCheck": "0 errors, 0 warnings; vendor hints remain",
+    "astroBuild": "96 static pages built successfully",
+    "newModels": 34,
+    "geometry": "Finite vertices, nonzero bounds and floor placement verified for all 34 new models; at most 7 material draw calls per model.",
+    "browser": "All 37 completed detail pages opened their 3D view; representative narrow layout, theme switch, artwork switch, reset and pause controls verified.",
+    "sourceLimit": "41 catalog entries lack linked source context; links for #59, #58 and #36 could not be read. These remain pending.",
+    "homepage": "Existing gallery opened in 3D and switched from #81 to #80 with no console errors."
+  }
+}

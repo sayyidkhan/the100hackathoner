@@ -1,6 +1,11 @@
 ---
 import PageShell from "../../components/PageShell.astro";
 import ProjectCaseStudy from "../../components/ProjectCaseStudy.astro";
+import ProjectExhibit from "../../components/ProjectExhibit.astro";
+import ProjectNavigation from "../../components/ProjectNavigation.astro";
+import ProjectTransition from "../../components/ProjectTransition.astro";
+import ProjectTeam from "../../components/ProjectTeam.astro";
+import { projectArt } from "../../lib/project-art";
 import { getCaseStudy } from "../../lib/case-studies";
 import { getHackathons, type Hackathon } from "../../lib/hackathons";
 
@@ -12,6 +17,10 @@ export function getStaticPaths() {
 }
 
 const { hackathon } = Astro.props as { hackathon: Hackathon };
+const orderedProjects = [...getHackathons()].sort((a, b) => a.number - b.number);
+const projectIndex = orderedProjects.findIndex((project) => project.number === hackathon.number);
+const previous = orderedProjects[projectIndex - 1];
+const next = orderedProjects[projectIndex + 1];
 const caseStudy = getCaseStudy(hackathon.number);
 const description = `Hackathon #${hackathon.number}: ${hackathon.title}, built for ${hackathon.event}. ${hackathon.solution || [hackathon.dateLabel, hackathon.award].filter(Boolean).join(". ")}`;
 const duration =
@@ -25,7 +34,6 @@ const details = [
   ["Duration", duration],
   ["Focus", hackathon.tags.join(" · ")],
   ["Award", hackathon.award],
-  ["Team", hackathon.members.join(" · ")],
   ["Client", hackathon.client],
   ["Location", [hackathon.location, hackathon.country].filter(Boolean).join(", ")],
 ].filter(([, value]) => Boolean(value));
@@ -37,8 +45,12 @@ const socialPlatforms = [
 ---
 
 <PageShell title={`${hackathon.title} | The 100 Hackathoner`} description={description}>
+  <ProjectTransition />
   <article class="record container">
-    <a class="back" id="record-back" href="/hackathons/">Back to journey</a>
+    <div class="record-toolbar">
+      <a class="back" id="record-back" href="/hackathons/">Back to journey</a>
+      <ProjectNavigation previous={previous} next={next} position="top" />
+    </div>
     <p class="meta">Hackathon #{String(hackathon.number).padStart(3, "0")}</p>
     <h1>{hackathon.title}</h1>
     <p class="event">{hackathon.event}</p>
@@ -52,6 +64,8 @@ const socialPlatforms = [
       )
     }
 
+    {projectArt[hackathon.number] && <ProjectExhibit number={hackathon.number} title={hackathon.title} art={projectArt[hackathon.number]} />}
+
     <dl class="details">
       {
         details.map(([label, value]) => (
@@ -64,6 +78,8 @@ const socialPlatforms = [
     </dl>
 
     {caseStudy && <ProjectCaseStudy study={caseStudy} hackathon={hackathon} />}
+
+    <ProjectTeam members={hackathon.members} />
 
     {
       (hackathon.githubUrl || hackathon.eventUrl) && (
@@ -100,6 +116,7 @@ const socialPlatforms = [
         </section>
       )
     }
+    <ProjectNavigation previous={previous} next={next} position="bottom" />
   </article>
 </PageShell>
 
@@ -108,19 +125,35 @@ const socialPlatforms = [
   if (backLink && new URLSearchParams(window.location.search).get('from') === 'landing') {
     backLink.href = '/#collection';
     backLink.textContent = 'Back to collection';
+    document.querySelectorAll<HTMLAnchorElement>('[data-project-link]').forEach((link) => {
+      const url = new URL(link.href);
+      url.searchParams.set('from', 'landing');
+      link.href = url.href;
+    });
   }
 </script>
 
 <style>
   .record {
+    --detail-label-size: .72rem;
+    --detail-value-size: 1.1rem;
     max-width: 920px;
     padding-top: 104px;
     padding-bottom: 88px;
   }
 
-  .back {
-    display: inline-block;
+  .record-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
     margin-bottom: 48px;
+  }
+
+  .back {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     color: var(--red);
     font-size: 0.82rem;
     font-weight: 500;
@@ -181,9 +214,11 @@ const socialPlatforms = [
   }
 
   dt {
-    color: var(--faint);
-    font-size: 0.7rem;
+    color: var(--muted);
+    font-family: var(--body);
+    font-size: var(--detail-label-size);
     font-weight: 500;
+    line-height: 1.5;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -191,6 +226,7 @@ const socialPlatforms = [
   dd {
     margin: 8px 0 0;
     color: var(--ink);
+    font-size: var(--detail-value-size);
     font-weight: 500;
     line-height: 1.5;
   }
@@ -199,16 +235,23 @@ const socialPlatforms = [
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    margin-top: 42px;
+    margin-top: 24px;
   }
 
   .links a {
-    border: 1px solid var(--ink);
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
     color: var(--ink);
     font-size: 0.8rem;
     font-weight: 500;
-    padding: 11px 15px;
+    padding: 11px 20px;
   }
+
+  .links a:hover { border-color: var(--ink); background: var(--raised); }
+  .links a:focus-visible { outline: 2px solid var(--red); outline-offset: 3px; }
 
   .socials {
     margin-top: 68px;
@@ -266,6 +309,8 @@ const socialPlatforms = [
   .social-posts a:hover { color: var(--red); }
 
   @media (max-width: 640px) {
+    .record-toolbar { gap: 12px; margin-bottom: 36px; }
+    .back { font-size: .68rem; letter-spacing: .02em; }
     .details {
       grid-template-columns: 1fr;
       gap: 0;

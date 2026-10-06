@@ -1,0 +1,283 @@
+{
+  "69": {
+    "light": "Use case: stylized-concept. Create a landscape 3:2 editorial miniature sculpture for Zo Order Tracker, a small merchant storefront where customers choose goods, upload payment proof, and the shopkeeper manually reviews orders. Warm ivory paper and matte ceramic, bold vermilion red and cobalt blue accents, matching a refined paper-sculpture hackathon portfolio. A small ivory shop counter with a red-and-ivory striped awning, three tiny golden pastry disks and a blue drink cup; beside it a standing ivory order ledger with three blank ticket cards clipped along a red rail; a larger paper receipt held by an ivory shopkeeper figure for human review; two small parcels and blue order-status tokens on a shallow ivory rounded plinth. Strong simple silhouette, tactile folded paper edges, gentle ambient occlusion, three-quarter isometric view, all objects entirely within frame with generous negative space, seamless warm off-white studio background. No words, letters, numbers, logos, watermark, currency signs, credit cards, delivery trucks or automatic payment verification symbols. Soft editorial studio light, sculptural not a UI screenshot.",
+    "dark": "Use case: lighting-weather. Edit this Zo Order Tracker miniature only into a dark-mode studio edition. Keep all objects, framing, proportions, material textures, warm ivory shop, striped red awning, order tickets, human reviewer, pastries, blue drink, parcels and blue status tokens exactly the same. Replace only the backdrop and ground with deep warm charcoal #171715 and use soft warm focused studio lighting with gentle shadows and a subtle rim so the ivory, red and blue sculpture remains clearly legible. No added text, objects, logos or glow effects.",
+    "saved": [
+      "public/landing/assets/projects/069-order-tracker-light-v1.png",
+      "public/landing/assets/projects/069-order-tracker-dark-v1.png"
+    ]
+  },
+  "method": "Built-in image_gen for each light image and dark lighting edit; procedural Three.js geometry for the corresponding 3D interpretation.",
+  "67": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial miniature paper sculpture for SceneVerse AI, a web movie companion that turns a paused video frame into a scene where viewers speak with character agents. Warm ivory, vermilion red and cobalt blue palette. Main subject a red rectangular cinema frame standing upright on a low ivory plinth, inside a layered ivory paper mountain scene that spills forwards out of the frame. Two small simple ivory character figures stand within the scene, facing a third viewer figure outside. Cobalt blue curving voice paths connect them to a small red studio microphone in the foreground. A tiny ivory director chair and two blue pause bars on the cinema frame hint at scene orchestration and paused playback. Folded paper textures, matte ceramic figures, sophisticated architectural maquette, three-quarter isometric view, warm off-white seamless studio background, soft lighting and gentle shadows. All objects completely in frame with generous breathing room. No words, numbers, logos, watermark, photoreal people or recognizable movie characters. Sculptural conceptual artwork, no UI screenshot.",
+    "dark": "Use case: lighting-weather. Create the dark-mode studio edition of this exact SceneVerse miniature. Preserve the full composition and all red cinema frame, blue pause bars, ivory landscape, three figures, microphone and curving conversation paths, chair, plinth and detailed paper materials. Change only studio background and ground to deep warm charcoal #171715 with warm focused soft lighting and subtle edge light. Keep sculpture ivory with red and blue accents. No new objects, text, glowing neon or cropping.",
+    "saved": [
+      "public/landing/assets/projects/067-sceneverse-light-v1.png",
+      "public/landing/assets/projects/067-sceneverse-dark-v1.png"
+    ]
+  },
+  "65": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial paper sculpture for MumsCanBuild, a voice-first prototype that turns a spoken software idea into clarified task cards, a builder worker and streamed progress. An approachable ivory person speaks into a vermilion tabletop microphone. A flowing cobalt speech ribbon becomes three neatly arranged ivory task cards on a small red planning board. Beyond it a tiny ivory workbench holds an unfinished modular app window built from paper blocks, with a small blue mechanical builder arm placing the final block. A line of three blue milestone dots returns toward the speaker. Warm ivory paper, matte ceramic, red and cobalt accents, clean three-quarter isometric composition, generous negative space, warm off-white seamless studio backdrop, soft studio shadows. An elegant tactile architectural maquette; no lettering, logos, numbers, watermark, screens full of code or promises of autonomous deployment. All objects entirely visible.",
+    "dark": "Use case: lighting-weather. Change only the studio background and floor of this exact MumsCanBuild paper sculpture to deep warm charcoal #171715, using warm soft focused illumination and subtle rim lighting. Keep the ivory speaker, red microphone, blue speech ribbon, red task board, ivory workbench, blue builder arm, modular app window, milestone dots, framing and every object unchanged. No text, logos, neon, extra objects or cropping.",
+    "saved": [
+      "public/landing/assets/projects/065-mums-can-build-light-v1.png",
+      "public/landing/assets/projects/065-mums-can-build-dark-v1.png"
+    ]
+  },
+  "64": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial miniature of Data Center Destroyer, a voice-controlled competitive tower-defense game. A low ivory tabletop game board with a winding cobalt path between two little opposing server-rack fortresses. The left fortress has cobalt server vents, the right vermilion vents. Along the track are five small stylized turret types: cannon, blue laser prism, frost crystal, Tesla coil and missile tower. Tiny ivory pawn enemies advance along the path. A large red tabletop microphone stands in the foreground, with two sculpted blue sound arcs leading toward the defense towers. Tactile folded paper, matte ceramic and simple toy architecture, warm ivory with red and cobalt accents. Three-quarter isometric studio view, full object visible, plenty of negative space, soft warm light, warm off-white seamless backdrop. No text, logos, numbers, watermark, real violence or realistic weapons; clearly an elegant playful strategy-game maquette.",
+    "dark": "Use case: lighting-weather. Make a dark studio variant of this exact paper-and-ceramic tower defense diorama. Preserve the red microphone, ivory board, winding cobalt route, server fortresses, all five tower types, small pawns, composition and every material. Change only background and floor to deep warm charcoal #171715 and apply warm soft focused studio illumination, subtle edge light and gentle shadows. No text, no new objects, no cropping.",
+    "saved": [
+      "public/landing/assets/projects/064-data-center-destroyer-light-v1.png",
+      "public/landing/assets/projects/064-data-center-destroyer-dark-v1.png"
+    ]
+  },
+  "63": {
+    "light": "Use case: stylized-concept. A landscape 3:2 editorial miniature sculpture for Data Center Tycoon, a grid-building strategy game balancing server revenue, electrical power, heat, cooling and sustainability against an AI competitor. An ivory square tiled platform holds three server racks with small cobalt vents, a red cooling fan, two tilted cobalt solar panels, an ivory battery with a red cap, and a small blue AI chip. Thin blue connections run through the floor between these components. In the foreground a delicate red balance beam carries an ivory server block on one pan and an ivory folded leaf on the other, symbolizing scaling versus sustainability. Architectural paper maquette, matte ceramic, warm ivory, vermilion and cobalt palette. Three-quarter isometric studio composition with all objects visible and generous margin, soft light, warm off-white seamless background. No letters, numbers, currency symbols, logos or watermark. No combat, recognizable people or UI screenshot.",
+    "dark": "Use case: lighting-weather. Preserve this exact Data Center Tycoon miniature in every detail and composition: tiled platform, three server racks, two blue solar panels, red fan, battery, chip, red balance with server and leaf. Change only the studio ground and background to deep warm charcoal #171715 with warm focused soft studio lighting, subtle rim light and gentle shadows. Keep ivory paper and red/cobalt colors. No new objects or text, no cropping.",
+    "saved": [
+      "public/landing/assets/projects/063-data-center-tycoon-light-v1.png",
+      "public/landing/assets/projects/063-data-center-tycoon-dark-v1.png"
+    ]
+  },
+  "62": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial paper miniature for Ask Buzo, a conversational nightlife-planning prototype. An unfolded ivory city map on a low plinth. Three stops form one confident cobalt route: a tiny cafe table with two cups, a central vermilion concert stage with ivory curtains and blue music-note sculpture, then a quiet ivory rooftop under a red crescent moon. One secondary thinner route leads to a small fallback venue. A sculpted red speech bubble at the front becomes the start of the route; a small ivory clock and blank ticket represent timing and budget. Sophisticated folded paper and matte ceramic, warm ivory/red/cobalt, three-quarter isometric composition, soft shadows, warm off-white seamless studio background, full object in frame with generous margin. No text, numbers, logos, watermark, phone UI, alcohol bottles or claims of live booking.",
+    "dark": "Use case: lighting-weather. Preserve this exact Ask Buzo miniature, including ivory city map, red concert stage, blue routes, cafe, rooftop moon, speech bubble, clock and blank ticket. Change only studio floor and background to deep warm charcoal #171715. Warm focused studio lighting, subtle rim light, soft shadows, legible ivory/red/blue paper sculpture. No new objects, no text, no cropping.",
+    "saved": [
+      "public/landing/assets/projects/062-ask-buzo-light-v1.png",
+      "public/landing/assets/projects/062-ask-buzo-dark-v1.png"
+    ]
+  },
+  "60": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial paper sculpture of Guardian Agent, a decision proxy with configurable boundaries, voice consultation, decision logs and escalation to a person. A central ivory guardian profile card stands inside a sculpted vermilion protective arch. An incoming blue ribbon from a small ivory microphone splits into three tracks: an ivory check token, a red stop token, and a blue staircase leading upward to an ivory human figure. A small open paper ledger records the decisions beneath the arch. Show the human escalation path prominently; no magic mind reading. Warm ivory folded paper, matte ceramic, vermilion and cobalt, refined architectural model on low rounded ivory plinth, three-quarter isometric view, full composition visible with margin, soft warm studio lighting, off-white seamless backdrop. No text, letters, numbers, logos, recognizable people or watermark.",
+    "dark": "Use case: lighting-weather. Preserve all composition and sculpture details of this Guardian Agent miniature. Change only backdrop and floor to deep warm charcoal #171715, with warm focused soft studio lighting and subtle edge light. Keep ivory guardian, red arch, microphone, decision tracks, ledger, and blue stair to the human exactly unchanged. No added objects or text, no cropping.",
+    "saved": [
+      "public/landing/assets/projects/060-guardian-agent-light-v1.png",
+      "public/landing/assets/projects/060-guardian-agent-dark-v1.png"
+    ]
+  },
+  "57": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial paper miniature for MediVoice, a voice-first telehealth demo with AI symptom intake and explicit doctor review. On an ivory plinth, a seated ivory patient speaks into a red microphone, its cobalt sound ribbon becomes a neat paper case summary on a central clipboard. A separate ivory clinician at a small desk reviews that clipboard with a magnifying lens. A small red escalation stair links the patient directly to the clinician. Emphasize listening, structured notes and human review, not autonomous diagnosis. Warm ivory paper and matte ceramic, vermilion/cobalt accents, refined architectural maquette, full view with generous margin, three-quarter isometric composition, warm off-white studio backdrop, soft shadows. No words, numbers, red cross emblems, logos, medical claims, watermark or photoreal faces.",
+    "dark": "Use case: lighting-weather. Change only studio backdrop and floor to deep warm charcoal #171715. Preserve this exact MediVoice sculpture: patient, microphone, cobalt sound ribbons, clipboard, human doctor with red lens, red escalation stairs, ivory plinth, every object and framing. Use warm focused soft light, gentle shadows and subtle rim lighting. No text, additional objects or cropping.",
+    "saved": [
+      "public/landing/assets/projects/057-medivoice-light-v1.png",
+      "public/landing/assets/projects/057-medivoice-dark-v1.png"
+    ]
+  },
+  "56": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial miniature for Bryan Feedback Agent, a post-event conversational-feedback demo. A tiny ivory concert stage with closed red curtains in the background. Three ivory attendees stand beside large blank red and blue speech bubbles. Their blue paper paths converge into a central ivory sorting tray, from which three structured report cards rise on a red organizer board with abstract bars and theme dots. A small blank reward voucher and two ivory tokens sit beside the attendees. Communicate honest conversations becoming actionable organizer insights. Tactile folded paper and matte ceramic, warm ivory/vermilion/cobalt, three-quarter isometric maquette, warm off-white seamless studio background, soft shadows, generous margins, whole object visible. No words, numbers, logos, watermark, realistic people or surveillance imagery.",
+    "dark": "Use case: lighting-weather. Preserve this exact Bryan Feedback Agent miniature: closed red-curtain stage, three attendees and speech bubbles, blue input paths, sorting tray, report board, vouchers and tokens. Change only floor/backdrop to deep warm charcoal #171715, with warm focused soft studio illumination, subtle rim light and gentle shadows. No new objects, text or cropping.",
+    "saved": [
+      "public/landing/assets/projects/056-bryan-feedback-light-v1.png",
+      "public/landing/assets/projects/056-bryan-feedback-dark-v1.png"
+    ]
+  },
+  "53": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial paper sculpture for DevDuel Agent, a playful anime-inspired public professional profile comparison app. Two ivory profile cards on opposite sides of a tiny circular duel arena transform into two abstract folded-paper champion figures, one with a red cape and one cobalt cape. Between them a six-spoke radial stat wheel in ivory and blue represents six playful comparison dimensions. A tiny red commentary megaphone sits beside the arena, and a blank ivory winner pennant hangs above. Tactile folded paper and matte ceramic, warm ivory/red/cobalt palette, toy-like friendly rivalry with no physical fighting or actual people. Three-quarter isometric full object view, low ivory plinth, generous margin, soft warm light, off-white seamless studio backdrop. No words, numbers, logos, watermark or recognizable anime characters.",
+    "dark": "Use case: lighting-weather. Preserve this exact DevDuel miniature composition, ivory duel arena, red and cobalt paper champions, profile cards, six-part wheel, blank pennant and megaphone. Change only floor and studio backdrop to deep warm charcoal #171715, with warm soft focused light and subtle rim lighting. No new objects, no text, no cropping.",
+    "saved": [
+      "public/landing/assets/projects/053-devduel-light-v1.png",
+      "public/landing/assets/projects/053-devduel-dark-v1.png"
+    ]
+  },
+  "52": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial miniature for AI LinkedIn Launch Studio, turning one topic and tone into post copy, a branded image and a short teaser video for download. A red idea card feeds a blue paper conveyor into a tiny ivory creative studio. Three distinct artifacts emerge: an upright ivory page with abstract embossed lines, a red picture frame with a cobalt paper landscape, and a short curling ivory filmstrip with three blue picture frames. A little ivory studio lamp and red director clapper complete the scene. Clear one-input-to-three-output composition. Tactile folded paper, matte ceramic, warm ivory/vermilion/cobalt palette, refined three-quarter isometric maquette, low plinth, soft shadows, warm off-white seamless backdrop. Full object with generous margin. No actual text, logos, numbers, watermark or social-media UI.",
+    "dark": "Use case: lighting-weather. Keep every object and composition of this exact miniature launch studio unchanged: red idea card, blue conveyor, ivory studio, post page, red image frame, filmstrip, lamp, clapper and plinth. Change only studio backdrop and floor to deep warm charcoal #171715 and use warm focused soft lighting, gentle shadows and subtle edge light. No additional objects, text or cropping.",
+    "saved": [
+      "public/landing/assets/projects/052-linkedin-launch-light-v1.png",
+      "public/landing/assets/projects/052-linkedin-launch-dark-v1.png"
+    ]
+  },
+  "51": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial paper miniature for Should I Quit, a multi-agent career decision-support prototype. An ivory person stands at a fork in a cobalt path between a small office doorway and an open red doorway. Around the person a semicircle of eight little ivory advisory tiles shows simple sculpted symbols for savings, career, family, profile, peers, job search, news and a synthesis notebook. In the foreground a red balance beam and an open ivory journal with a looping blue feedback ribbon suggest weighing evidence and learning from outcomes. The person remains at the center choosing; no push toward either door. Warm ivory folded paper and matte ceramic, vermilion and cobalt accents, refined three-quarter isometric maquette on a low ivory plinth, soft studio shadows, warm off-white seamless background. Entire object visible, generous margins. No words, numbers, logos, currency signs, real people or watermark.",
+    "dark": "Use case: lighting-weather. Preserve every detail and composition of this Should I Quit paper sculpture: central person, two doors, forked blue path, advisory tiles, balance and journal with feedback ribbons. Change only background and studio floor to deep warm charcoal #171715, warm focused soft lighting with subtle rim illumination. No extra objects or text, no cropping.",
+    "saved": [
+      "public/landing/assets/projects/051-should-i-quit-light-v1.png",
+      "public/landing/assets/projects/051-should-i-quit-dark-v1.png"
+    ]
+  },
+  "50": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial paper miniature for MagiStock's Portfolio Risk Governor backend. A jagged cobalt market-signal ribbon enters an ivory control chamber. Three red mechanical gate levers regulate its output, representing enable, disable and cap. Beyond the gates the ribbon becomes a measured low path between ivory guardrails, leading to a small neutral server block. Beside the chamber an open ivory audit ledger and stacked memory cards record the decision. A red manual override handle is visibly separate. Sophisticated folded paper and matte ceramic engineering maquette, warm ivory/vermilion/cobalt palette, low ivory plinth, three-quarter isometric view, whole object visible with generous margin, warm off-white seamless studio background and soft shadows. No text, numbers, logos, currency, coins, rising-profit arrows or watermark.",
+    "dark": "Use case: lighting-weather. Make the dark studio edition of this exact MagiStock risk-governor miniature. Preserve all ivory chamber and platform, red gates and override handle, jagged blue signal, output guardrails, server, ledger and memory cards. Change only backdrop/floor to deep warm charcoal #171715 and use warm soft focused illumination, subtle rim light and gentle shadows. No new objects, text or cropping.",
+    "saved": [
+      "public/landing/assets/projects/050-magistock-light-v1.png",
+      "public/landing/assets/projects/050-magistock-dark-v1.png"
+    ]
+  },
+  "49": {
+    "light": "Use case: stylized-concept. Landscape 3:2 calm editorial paper sculpture for Stress Out, Bunny In, an interactive artwork where a bunny resists repeated control and becomes serene when the user lets go. One peaceful ivory rabbit lies resting on a small layered paper meadow, long soft ears relaxed, tiny closed ink eyes. A sculptural open ivory hand rests gently beside the meadow, palm released and no longer grasping. Three delicate cobalt ripple rings soften into a quiet blue pond; a tiny vermilion paper flower provides the single red accent. A few ivory grass tufts and two floating paper clouds on thin stems, generous quiet negative space. Warm ivory folded paper and soft matte ceramic, restrained cobalt and vermilion, no extra characters, no work or productivity props. Three-quarter isometric full composition, warm off-white seamless studio background, very soft light and shadows. No text, numbers, scores, timers, logos or watermark.",
+    "dark": "Use case: lighting-weather. Preserve this exact quiet paper meadow with resting ivory rabbit, released open hand, cobalt pond ripples, single red flower and clouds. Change only studio floor and backdrop to deep warm charcoal #171715. Use gentle warm soft focused light and subtle edge light, keeping the mood tranquil and ivory sculpture clearly legible. No new objects, text, dramatic effects or cropping.",
+    "saved": [
+      "public/landing/assets/projects/049-stress-bunny-light-v1.png",
+      "public/landing/assets/projects/049-stress-bunny-dark-v1.png"
+    ]
+  },
+  "48": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial miniature for JollyCards, an AI Christmas greeting-card generator tailored to recipient and tone. A large open ivory greeting card rises from a vermilion envelope; inside the card is a small folded ivory Christmas tree with cobalt baubles and a red star. Three smaller cards fan out beside it, each with a simple different embossed motif: family figures, a heart, a tiny briefcase. A cobalt ribbon winds through the cards, and a small red fountain-pen nib rests on the plinth. Warm tactile folded paper, matte ceramic, warm ivory/red/cobalt palette, intimate handmade holiday feel, three-quarter isometric whole object view with generous space, warm off-white seamless studio backdrop, soft shadows. No actual letters, greeting text, numbers, logos or watermark.",
+    "dark": "Use case: lighting-weather. Preserve this exact JollyCards sculpture and composition: red envelope, open ivory Christmas card and folded tree, cobalt ornaments and ribbon, recipient cards and red pen. Change only studio background and ground to deep warm charcoal #171715. Warm focused soft light, subtle rim light and gentle shadows. No new objects, text or cropping.",
+    "saved": [
+      "public/landing/assets/projects/048-jollycards-light-v1.png",
+      "public/landing/assets/projects/048-jollycards-dark-v1.png"
+    ]
+  },
+  "47": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial miniature for Natalie's Tempeh, a playful B2B demo for edible tempeh hardware merchandise at hackathons. An ivory serving tray holds golden beige tempeh pieces shaped like a RAM stick, a small GPU with two circular edible fan motifs, and a motherboard with raised soybean-textured components. Beside them an open vermilion gift box with a blank ivory brand label, a small cobalt recipe spoon, and an upright ivory quote-order clipboard with abstract lines and quantity dots. Clearly food made from textured soybeans, not real electronic hardware. Warm paper-packaging and matte ceramic style with convincing subtle tempeh texture, warm ivory/red/cobalt accents, three-quarter isometric full composition, low plinth, generous margin, warm off-white seamless studio background and soft shadows. No text, letters, numbers, logos, watermark or claims of a real shipped order.",
+    "dark": "Use case: lighting-weather. Preserve this exact Natalie's Tempeh image: edible soybean-textured RAM, GPU and motherboard on an ivory tray, red gift box with blank label, quote clipboard and cobalt spoon. Change only surrounding studio floor and background to deep warm charcoal #171715, with warm soft focused illumination and subtle edge light. Keep the food appetizing and golden beige, all composition and objects unchanged. No new objects or text.",
+    "saved": [
+      "public/landing/assets/projects/047-natalies-tempeh-light-v1.png",
+      "public/landing/assets/projects/047-natalies-tempeh-dark-v1.png"
+    ]
+  },
+  "46": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial paper miniature of Hedera Agents Hub, a testnet agent marketplace for discovery, negotiation, payment and audit records. Three small ivory geometric robot agents gather around a circular ivory exchange table: one buyer holds a blank red request card, two sellers offer a tiny neutral phone-shaped product. Cobalt paths connect each agent's ivory identity card to a central red registry column. At the front an open ivory ledger extends into linked paper record tiles, with a small sealed blue payment receipt. Warm ivory matte ceramic and folded paper, vermilion/cobalt accents, friendly sophisticated architectural maquette on low plinth. Three-quarter isometric full view, generous margin, soft warm studio shadows, warm off-white background. No logos, text, numbers, currency signs, coins, profit imagery or watermark.",
+    "dark": "Use case: lighting-weather. Preserve this exact Hedera Agents Hub miniature: three ivory robots at exchange table, red registry column, identity cards, cobalt paths, phone, red request card, ledger and receipt tiles. Change only floor/backdrop to deep warm charcoal #171715, with soft warm focused lighting, subtle rim light and gentle shadows. No new objects, text or cropping.",
+    "saved": [
+      "public/landing/assets/projects/046-hedera-agents-light-v1.png",
+      "public/landing/assets/projects/046-hedera-agents-dark-v1.png"
+    ]
+  },
+  "45": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial paper miniature for Asterix Assessment System, creating interactive yes/no and multiple-choice assessments from natural-language prompts and returning three outcome categories. A red speech bubble enters a small ivory assessment workshop. A fan of five upright question cards, blank except abstract option dots, follows a cobalt route that branches into exactly three distinct ivory outcome pedestals with red, blue and ivory badges. An ivory magnifying lens rests above a small card archive for finding similar assessments. Folded paper and matte ceramic, warm ivory/vermilion/cobalt, refined architectural maquette on low plinth. Full object, generous margin, three-quarter isometric view, warm off-white seamless studio backdrop, soft shadows. No text, letters, numbers, logos, grading claims about real people or watermark.",
+    "dark": "Use case: lighting-weather. Preserve this exact Asterix paper sculpture: assessment workshop, red speech bubble, question cards, blue branching route, exactly three outcome pedestals and archive with magnifying lens. Change only studio floor and backdrop to deep warm charcoal #171715 with warm focused soft light, subtle rim light and gentle shadows. No new objects or text, no cropping.",
+    "saved": [
+      "public/landing/assets/projects/045-asterix-light-v1.png",
+      "public/landing/assets/projects/045-asterix-dark-v1.png"
+    ]
+  },
+  "44": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial paper miniature for Vibewater Associates, a conversational algorithmic-strategy builder with editable flowcharts and historical backtesting. A red speech bubble unfolds into ivory modular flowchart blocks joined by cobalt routes on a tilted workboard. Beside it a small ivory test bench holds a paper chart with an uneven blue curve showing rises and falls, a red drawdown marker, and a row of tiny calendar tiles. Three ivory strategy folders sit in an archive at the front. A blue magnifying lens rests over the simulation results. Tactile paper and matte ceramic, warm ivory/vermilion/cobalt palette, refined architectural maquette, full object with generous margin, three-quarter isometric view, soft shadows and warm off-white seamless studio background. No words, numbers, logos, currencies, coins, guaranteed-growth arrows, watermark or automatic live-trading imagery.",
+    "dark": "Use case: lighting-weather. Preserve this exact Vibewater miniature: red speech bubble, ivory strategy flowchart, blue connections, backtest chart and red drawdown marker, calendar tiles, lens and folder archive. Change only studio background and floor to deep warm charcoal #171715 with warm soft focused illumination, subtle rim light and gentle shadows. No new objects, text or cropping.",
+    "saved": [
+      "public/landing/assets/projects/044-vibewater-light-v1.png",
+      "public/landing/assets/projects/044-vibewater-dark-v1.png"
+    ]
+  },
+  "42": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial paper miniature for AstroDegen, a playful experimental lunar-phase and crypto-trend assistant. A tiny ivory observatory with vermilion telescope looks toward a suspended ivory full moon. Four smaller half-lit moon-phase disks arc behind it. On the observatory desk an ivory card carries a jagged cobalt market curve, next to three neutral red/blue/ivory signal tokens and a small blank calendar. A cobalt orbital ribbon connects moons and analysis desk, suggesting a quirky hypothesis being explored, not proven causation. Refined folded paper and matte ceramic, warm ivory/red/cobalt palette, low ivory plinth, three-quarter isometric full view, generous margin, soft warm studio shadows, off-white seamless backdrop. No text, numbers, logos, currencies, coins, profit arrows or watermark.",
+    "dark": "Use case: lighting-weather. Preserve this exact AstroDegen miniature: ivory observatory, red telescope, suspended moon-phase disks, blue orbit, desk chart, three signal tokens and calendar. Change only studio background and ground to deep warm charcoal #171715, with warm focused soft light, subtle rim illumination and gentle shadows. No new objects, text, stars or cropping.",
+    "saved": [
+      "public/landing/assets/projects/042-astrodegen-light-v1.png",
+      "public/landing/assets/projects/042-astrodegen-dark-v1.png"
+    ]
+  },
+  "41": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial paper miniature for Prompt Alchemist, a community AI-learning site with fireside chats, prompt playbooks and practical classes. Three small ivory learners sit in a semicircle around a red sculptural campfire made from folded paper flames. Beside them an open ivory playbook on a cobalt stand unfolds into a small workshop board with blank prompt cards and connected idea shapes. A red pencil and three ivory stepping blocks suggest practice and growing skills. Warm ivory paper and matte ceramic, vermilion/cobalt accents, inviting refined architectural maquette, low ivory plinth, three-quarter isometric full composition, generous margin, warm off-white seamless studio backdrop, soft shadows. No words, numbers, logos, money, exaggerated success symbols or watermark.",
+    "dark": "Use case: lighting-weather. Preserve this exact Prompt Alchemist miniature: three learners, red paper campfire, open playbook workshop board, blue seats, practice steps and red pencil. Change only studio floor and background to deep warm charcoal #171715 with gentle warm focused soft lighting and subtle edge illumination. Keep all objects, framing and ivory/red/cobalt materials unchanged. No extra text or objects.",
+    "saved": [
+      "public/landing/assets/projects/041-prompt-alchemist-light-v1.png",
+      "public/landing/assets/projects/041-prompt-alchemist-dark-v1.png"
+    ]
+  },
+  "39": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial miniature for a multidimensional memory chatbot prototype, using local saved conversations, tags, ideas, people and an interactive knowledge graph. A red central query card stands above an ivory card archive. Around it a graceful three-dimensional network of cobalt wires connects small ivory memory cards and round concept nodes at different heights. One unexpected connection is a vermilion wire crossing between two distant clusters. A small blue magnifying lens hovers over an open ivory notebook at the front, suggesting recall. Refined folded paper, matte ceramic and delicate wire sculpture, warm ivory/vermilion/cobalt palette. Low ivory plinth, three-quarter isometric full object, generous margin, warm off-white studio backdrop and soft shadows. No text, model names, logos, numbers, robot brains, watermark or claims of training an actual frontier model.",
+    "dark": "Use case: lighting-weather. Preserve this exact memory-graph miniature with red query card, ivory archive, blue wired concept network, red unexpected connection, notebook and magnifying lens. Change only studio floor/background to deep warm charcoal #171715 with warm focused soft lighting, subtle rim light and gentle shadows. No new objects or text, no cropping.",
+    "saved": [
+      "public/landing/assets/projects/039-memory-graph-light-v1.png",
+      "public/landing/assets/projects/039-memory-graph-dark-v1.png"
+    ]
+  },
+  "38": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial paper sculpture of ScaleUp AI, a business-consulting prototype for small food businesses. A small ivory cafe with red awning sits at the center of an ivory circular decision table. Around its back, three freestanding folded-paper panels display abstract cobalt financial bars, blank customer-review cards and a simple trend curve. An ivory founder figure and a smaller blue adviser token face the table, with cobalt connection paths joining the panels and cafe. Sophisticated tactile paper and matte ceramic maquette, warm ivory, vermilion red and cobalt blue, three-quarter isometric view, warm off-white seamless studio backdrop, soft lighting and shadows, entire composition in frame with generous margin. No text, numbers, logos, watermark, VR headset, money piles or performance promises. Conceptual sculpture, not a UI screenshot.",
+    "dark": "Use case: lighting-weather. Preserve this exact ScaleUp AI sculpture, all cafe details, three business panels, founder and adviser, blue connections, circular base, framing and paper materials. Change only studio background and floor to deep warm charcoal #171715, with warm focused soft lighting and gentle rim illumination. No new objects, text, glow or cropping.",
+    "saved": [
+      "public/landing/assets/projects/038-scaleup-perspectives-light-v1.png",
+      "public/landing/assets/projects/038-scaleup-perspectives-dark-v1.png"
+    ]
+  },
+  "37": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial paper miniature for ScaleUp AI Bolt Edition, an SME business-consulting platform with financial analysis and a growth coach. An ivory workbench with an open financial ledger on the left, a small red magnifying lens above abstract blue bars. Across the center, a cobalt paper route climbs three low ivory steps carrying blank action cards. At the right a miniature ivory cafe with vermilion striped awning is the business those actions support. Two small ivory founder/adviser figures stand beside the roadmap. A few customer feedback cards lean against the ledger. Refined warm ivory folded paper and matte ceramic, vermilion and cobalt accents, three-quarter isometric view, all objects fully visible with generous margin, warm off-white seamless studio background and gentle shadows. No text, letters, numbers, logos, currency symbols, growth guarantees or watermark; conceptual sculpture not UI screenshot.",
+    "dark": "Use case: lighting-weather. Change only the studio background and floor of this exact ScaleUp AI Bolt miniature to deep warm charcoal #171715, with warm focused soft studio light, gentle shadows and subtle edge light. Preserve every object, composition, ivory paper materials, ledger and blue bars, red magnifying lens, blue roadmap and three action steps, cafe and two people. No new objects, words, neon or cropping.",
+    "saved": [
+      "public/landing/assets/projects/037-scaleup-roadmap-light-v1.png",
+      "public/landing/assets/projects/037-scaleup-roadmap-dark-v1.png"
+    ]
+  },
+  "35": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial miniature for AnginOmbak, a location-based adventure planner with local vendors, shared posts and a conversational guide. A folded ivory map on a low paper plinth, its edge meeting a layered cobalt wave. A bold vermilion map pin stands beside a tiny ivory local vendor stall with red awning. A winding cobalt route joins the pin, two small upright photo-story cards and a simple ivory explorer figure. An ivory speech bubble with three blue dots sits near the route as the planning guide. Subtle folded-paper wind curves above the wave. Sophisticated tactile warm ivory paper and matte ceramic, red and blue accents, three-quarter isometric composition, all objects fully visible with generous margin, off-white seamless studio backdrop, soft warm shadows. No text, letters, numbers, logos, watermark, currency or photoreal faces. Sculpture not UI screenshot.",
+    "dark": "Use case: lighting-weather. Preserve this exact AnginOmbak miniature, folded ivory map, cobalt waves and route, red pin, vendor stall, story cards, guide bubble, explorer and wind curls. Change only background and studio floor to deep warm charcoal #171715. Use warm focused soft studio light, gentle shadows and subtle rim lighting. Keep all composition, material textures and objects unchanged. No added objects, text, neon or cropping.",
+    "saved": [
+      "public/landing/assets/projects/035-anginombak-light-v1.png",
+      "public/landing/assets/projects/035-anginombak-dark-v1.png"
+    ]
+  },
+  "34": {
+    "light": "Use case: stylized-concept. Landscape 3:2 editorial miniature for LrnMate, a workplace learning assistant that turns company documents and training videos into short lessons, search answers and quizzes. On a warm ivory plinth, a tall stack of folded manuals and a red document binder on the left fan into a flowing cobalt ribbon. Along the ribbon are three small ivory lesson cards: abstract text lines, a red triangular play symbol, and a quiz card with simple square choices. At the right, two ivory learner and mentor figures stand beside a small open book on a table; blue feedback dots loop back to the document stack. Sophisticated architectural paper maquette and matte ceramic, warm ivory, vermilion red and cobalt blue, clean three-quarter isometric composition with ample margin and all objects visible, off-white seamless backdrop and soft studio shadows. No words, letters, numbers, logos, watermark or screen UI; no claim of implemented privacy guarantees.",
+    "dark": "Use case: lighting-weather. Preserve this exact LrnMate miniature: manuals and red binder, cobalt ribbon and three lesson cards, two people, open book and table, feedback dots, plinth and composition. Change only studio background and floor to deep warm charcoal #171715 with warm focused soft studio illumination, subtle rim light and gentle shadows. Keep ivory paper, red and blue materials unchanged. No new objects, text, neon or cropping.",
+    "saved": [
+      "public/landing/assets/projects/034-lrnmate-light-v1.png",
+      "public/landing/assets/projects/034-lrnmate-dark-v1.png"
+    ]
+  },
+  "78": {
+    "promptRecord": "Reconstructed creative brief; exact original generation wording was not retained.",
+    "lightBrief": "Ivory contact-card archive with a red featured card, small person islands, blue connection paths and red introduction doorway. Landscape 3:2 warm ivory paper/ceramic editorial sculpture, vermilion/cobalt accents, off-white studio backdrop, soft lighting, no text or logos.",
+    "darkBrief": "Preserve the matching light composition and sculpture; change studio background and ground to warm charcoal with focused soft warm light.",
+    "saved": [
+      "public/landing/assets/projects/078-peterindex-light-v1.png",
+      "public/landing/assets/projects/078-peterindex-dark-v1.png"
+    ]
+  },
+  "77": {
+    "promptRecord": "Reconstructed creative brief; exact original generation wording was not retained.",
+    "lightBrief": "Red-bound open scrapbook with ivory photo panels, two small people and a cobalt voice ribbon; private collaborative moments and storybooks. Landscape 3:2 warm ivory paper/ceramic editorial sculpture, vermilion/cobalt accents, off-white studio backdrop, soft lighting, no text or logos.",
+    "darkBrief": "Preserve the matching light composition and sculpture; change studio background and ground to warm charcoal with focused soft warm light.",
+    "saved": [
+      "public/landing/assets/projects/077-zo-memories-light-v1.png",
+      "public/landing/assets/projects/077-zo-memories-dark-v1.png"
+    ]
+  },
+  "76": {
+    "promptRecord": "Reconstructed creative brief; exact original generation wording was not retained.",
+    "lightBrief": "Ivory three-district miniature city representing community, academy and machines, with red academy, human decision lever and blue local AI chip. Landscape 3:2 warm ivory paper/ceramic editorial sculpture, vermilion/cobalt accents, off-white studio backdrop, soft lighting, no text or logos.",
+    "darkBrief": "Preserve the matching light composition and sculpture; change studio background and ground to warm charcoal with focused soft warm light.",
+    "saved": [
+      "public/landing/assets/projects/076-agrim-tycoon-light-v1.png",
+      "public/landing/assets/projects/076-agrim-tycoon-dark-v1.png"
+    ]
+  },
+  "75": {
+    "promptRecord": "Reconstructed creative brief; exact original generation wording was not retained.",
+    "lightBrief": "Open atlas ledger with miniature stage, art venue and blue allocation paths representing cultural assets, event rights and partnerships. Landscape 3:2 warm ivory paper/ceramic editorial sculpture, vermilion/cobalt accents, off-white studio backdrop, soft lighting, no text or logos.",
+    "darkBrief": "Preserve the matching light composition and sculpture; change studio background and ground to warm charcoal with focused soft warm light.",
+    "saved": [
+      "public/landing/assets/projects/075-buzo-atlas-light-v1.png",
+      "public/landing/assets/projects/075-buzo-atlas-dark-v1.png"
+    ]
+  },
+  "74": {
+    "promptRecord": "Reconstructed creative brief; exact original generation wording was not retained.",
+    "lightBrief": "Four ivory review stations for technical, finance, legal and people perspectives, a red proposal ring, blue connections and synthesis checklist. Landscape 3:2 warm ivory paper/ceramic editorial sculpture, vermilion/cobalt accents, off-white studio backdrop, soft lighting, no text or logos.",
+    "darkBrief": "Preserve the matching light composition and sculpture; change studio background and ground to warm charcoal with focused soft warm light.",
+    "saved": [
+      "public/landing/assets/projects/074-corporate-telepath-light-v1.png",
+      "public/landing/assets/projects/074-corporate-telepath-dark-v1.png"
+    ]
+  },
+  "73": {
+    "promptRecord": "Reconstructed creative brief; exact original generation wording was not retained.",
+    "lightBrief": "Ivory file cabinet with a prominent red folder, blue database and lock motif for a private file manager. Landscape 3:2 warm ivory paper/ceramic editorial sculpture, vermilion/cobalt accents, off-white studio backdrop, soft lighting, no text or logos.",
+    "darkBrief": "Preserve the matching light composition and sculpture; change studio background and ground to warm charcoal with focused soft warm light.",
+    "saved": [
+      "public/landing/assets/projects/073-zo-drive-light-v1.png",
+      "public/landing/assets/projects/073-zo-drive-dark-v1.png"
+    ]
+  },
+  "72": {
+    "promptRecord": "Reconstructed creative brief; exact original generation wording was not retained.",
+    "lightBrief": "Lavender bean-shaped alien with two eyes and antenna, ivory observatory, star grove and red realm portal on an ivory miniature base. Landscape 3:2 warm ivory paper/ceramic editorial sculpture, vermilion/cobalt accents, off-white studio backdrop, soft lighting, no text or logos.",
+    "darkBrief": "Preserve the matching light composition and sculpture; change studio background and ground to warm charcoal with focused soft warm light.",
+    "saved": [
+      "public/landing/assets/projects/072-alien-homecoming-light-v1.png",
+      "public/landing/assets/projects/072-alien-homecoming-dark-v1.png"
+    ]
+  },
+  "70": {
+    "promptRecord": "Reconstructed creative brief; exact original generation wording was not retained.",
+    "lightBrief": "Ivory resume card and opportunity steps joined by a red bridge to three people and an outreach envelope; cobalt relationship paths. Landscape 3:2 warm ivory paper/ceramic editorial sculpture, vermilion/cobalt accents, off-white studio backdrop, soft lighting, no text or logos.",
+    "darkBrief": "Preserve the matching light composition and sculpture; change studio background and ground to warm charcoal with focused soft warm light.",
+    "saved": [
+      "public/landing/assets/projects/070-relationship-mapper-light-v1.png",
+      "public/landing/assets/projects/070-relationship-mapper-dark-v1.png"
+    ]
+  }
+}

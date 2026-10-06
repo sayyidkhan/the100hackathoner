@@ -1,0 +1,81 @@
+---
+import type { Hackathon } from '../lib/hackathons';
+
+interface Props {
+  previous?: Hackathon;
+  next?: Hackathon;
+  position: 'top' | 'bottom';
+}
+const { previous, next, position } = Astro.props;
+const neighbors = [
+  { project: previous, direction: 'previous', label: 'Previous', arrow: '←', boundary: 'First project' },
+  { project: next, direction: 'next', label: 'Next', arrow: '→', boundary: 'Latest project' },
+];
+---
+
+<nav class:list={['project-navigation', position]} aria-label={`Project navigation (${position})`}>
+  {neighbors.map(({ project, direction, label, arrow, boundary }) => (
+    project ? (
+      <a class={direction} href={`/hackathons/${project.number}/`} rel={direction === 'previous' ? 'prev' : 'next'} data-project-link
+        aria-label={`${label} project: #${String(project.number).padStart(3, '0')} ${project.title}`}
+        title={project.title}>
+        {position === 'top' ? (
+          <span class="compact-label">
+            {direction === 'previous' && <span aria-hidden="true">{arrow}</span>}
+            {direction === 'previous' ? 'Prev' : 'Next'}
+            {direction === 'next' && <span aria-hidden="true">{arrow}</span>}
+          </span>
+        ) : (
+          <>
+            <span class="direction">{label} project <span class="number">/ {String(project.number).padStart(3, '0')}</span></span>
+            <span class="destination">
+              {direction === 'previous' && <span class="arrow" aria-hidden="true">{arrow}</span>}
+              <span class="project">{project.title}</span>
+              {direction === 'next' && <span class="arrow" aria-hidden="true">{arrow}</span>}
+            </span>
+          </>
+        )}
+      </a>
+    ) : (
+      <span class:list={['boundary', direction]}>
+        {position === 'top' ? (
+          <span class="compact-label" aria-label={boundary}>
+            {direction === 'previous' && <span aria-hidden="true">←</span>}
+            {direction === 'previous' ? 'Prev' : 'Next'}
+            {direction === 'next' && <span aria-hidden="true">→</span>}
+          </span>
+        ) : <span class="direction">{boundary}</span>}
+      </span>
+    )
+  ))}
+</nav>
+
+<style>
+  a { color: var(--ink); text-decoration: none; min-width: 0; }
+  a:hover { color: var(--red); }
+  a:focus-visible { outline: 2px solid var(--red); outline-offset: 5px; border-radius: 2px; }
+  .top { display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
+  .top > :last-child { border-left: 1px solid var(--line); padding-left: 20px; }
+  .compact-label { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; font-size: .8rem; }
+  .compact-label > span { font-size: 1.1rem; }
+  .boundary { color: var(--faint); }
+  .top .boundary { opacity: .5; }
+  .bottom { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; margin-top: 72px; padding-top: 28px; border-top: 1px solid var(--line); }
+  .bottom a { padding: 8px 0; }
+  .direction { display: block; color: var(--muted); font-family: var(--mono); font-size: .65rem; line-height: 1.5; letter-spacing: .06em; text-transform: uppercase; }
+  .number { white-space: nowrap; }
+  .destination { display: flex; align-items: baseline; gap: 14px; margin-top: 14px; }
+  .project { font-size: clamp(1.15rem, 2.5vw, 1.8rem); line-height: 1.2; letter-spacing: -.035em; overflow-wrap: anywhere; }
+  .arrow { flex-shrink: 0; font-size: 1.4rem; }
+  .bottom .next { text-align: right; }
+  .next .destination { justify-content: flex-end; }
+  @media (max-width: 640px) {
+    .top { gap: 12px; }
+    .top > :last-child { padding-left: 12px; }
+    .compact-label { gap: 6px; font-size: .75rem; }
+    .bottom { gap: 24px; margin-top: 56px; }
+    .destination { gap: 8px; }
+    .direction { font-size: .59rem; }
+    .arrow { font-size: 1.15rem; }
+  }
+</style>
