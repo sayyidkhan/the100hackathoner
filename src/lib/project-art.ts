@@ -65,6 +65,8 @@ import driveLight from '../../public/landing/assets/projects/073-zo-drive-light-
 import driveDark from '../../public/landing/assets/projects/073-zo-drive-dark-v1.png';
 import alienLight from '../../public/landing/assets/projects/072-alien-homecoming-light-v1.png';
 import alienDark from '../../public/landing/assets/projects/072-alien-homecoming-dark-v1.png';
+import palLight from '../../public/landing/assets/projects/071-kingdom-of-pal-light-v2.png';
+import palDark from '../../public/landing/assets/projects/071-kingdom-of-pal-dark-v2.png';
 import mapperLight from '../../public/landing/assets/projects/070-relationship-mapper-light-v1.png';
 import mapperDark from '../../public/landing/assets/projects/070-relationship-mapper-dark-v1.png';
 import orderLight from '../../public/landing/assets/projects/069-order-tracker-light-v1.png';
@@ -83,6 +85,7 @@ export interface ProjectArt {
 }
 
 export const projectArt: Record<number, ProjectArt> = {
+  71: { light: palLight, dark: palDark, alt: 'A sheikh in a white headscarf and seven specialist companions gather around a council table inside an ivory kingdom, with a community market and noticeboard.', caption: 'One sheikh, seven trusted companions, and a whole community to care for. A kingdom helping one person run a community business.', model: '/landing/artifacts/kingdom-of-pal.js' },
   34: { light: p34Light, dark: p34Dark, alt: "Company manuals become three lesson cards along a blue ribbon, leading to a learner and mentor.", caption: "Workplace knowledge becomes smaller lessons, practice and feedback.", model: '/landing/artifacts/lrnmate.js' },
   35: { light: p35Light, dark: p35Dark, alt: "A folded map with blue waves and routes, a red location pin, local stall, story cards and a guide bubble.", caption: "Local discoveries, shared stories and a guide for the next adventure.", model: '/landing/artifacts/anginombak.js' },
   37: { light: p37Light, dark: p37Dark, alt: "An open business ledger leads through blue action steps to a miniature cafe.", caption: "From business insights to a practical plan for the next step.", model: '/landing/artifacts/scaleup-roadmap.js' },

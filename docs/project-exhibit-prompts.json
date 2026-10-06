@@ -279,5 +279,21 @@
       "public/landing/assets/projects/070-relationship-mapper-light-v1.png",
       "public/landing/assets/projects/070-relationship-mapper-dark-v1.png"
     ]
+  },
+  "71": {
+    "light": "Use case: stylized-concept. Asset: landscape 3:2 concept artwork for Kingdom of PAL portfolio exhibit. Create a beautifully crafted tactile miniature kingdom made of warm ivory paper, matte ceramic and carved wood, red and cobalt blue accents, restrained brass. A friendly prince, visibly taller than his seven little fantasy companions, stands at the rear of a circular council table wearing an ivory robe, red cape and small brass crown. Exactly SEVEN smaller dwarf-like specialist companions surround the table: community messenger holding speech bubble, writer with quill and book, healer with tool bag, guardian with blue shield, strategist with small map, builder with hammer, reviewer with magnifying glass. Rounded sculptural characters, tiny expressive dark eyes, subtle beards, distinct hats, no Disney characters. One human founder leads a helpful team running a community business. Low ivory castle gateway and two crenellated towers behind, a small community noticeboard and little market stall in foreground, blue paths connect table to community. The table has a simple miniature village and blank ivory planning cards. Elevated three-quarter camera, full sculpture in frame, spacious balanced composition. Premium editorial still life with subtle paper texture, soft shadows, seamless warm off-white background #f6f5f0. Match a museum of handcrafted project miniatures. No text, labels, letters, logos, UI, code, wires, screens or technology diagrams. Characters and their everyday roles communicate the idea; this is metaphorical art.",
+    "dark": "Use case: lighting-weather. Edit this Kingdom of PAL artwork into its dark-theme companion. Preserve the exact composition, all eight characters (one prince and seven companions), castle, round table, village, objects, camera and handcrafted materials. Change only lighting and backdrop: seamless deep charcoal #100f12 studio background, warm amber lantern-like illumination on ivory characters and castle, restrained cobalt highlights, softly lit red cape and market canopy. Clear readable silhouettes, elegant nocturnal museum still life, no text, no new objects.",
+    "saved": [
+      "public/landing/assets/projects/071-kingdom-of-pal-light-v1.png",
+      "public/landing/assets/projects/071-kingdom-of-pal-dark-v1.png"
+    ]
+  },
+  "71-sheikh-v2": {
+    "light": "Use case: precise-object-edit. Correct only the central leader in this Kingdom of PAL miniature artwork: he is a SHEIKH, not a European prince or king. Remove the crown, brown princely hairstyle, sword and red royal cape. Depict a friendly adult sheikh with a neatly trimmed dark beard, ivory thobe, flowing white ghutra held with a black agal, and a tasteful sand-colored bisht with fine gold edging. One hand gestures warmly toward the council. Respectful, charming handcrafted miniature character, same size, position and sculptural style. Preserve all SEVEN smaller specialist companions, their props, council table, village, castle, market stall, composition, warm off-white background and light exactly. No crown or sword anywhere on the leader. No text or logos.",
+    "dark": "Use case: lighting-weather. Create the dark-theme companion of this exact Kingdom of PAL miniature with the SHEIKH. Preserve all eight characters, especially the sheikh's white ghutra, black agal, dark beard, ivory thobe and sand bisht; preserve seven companions, their tools, castle, market and composition. Only change lighting and backdrop: deep warm charcoal #100f12 studio background with gentle amber lantern-like illumination, soft rim lighting and clear ivory silhouettes. No crown, sword, text or new objects.",
+    "saved": [
+      "public/landing/assets/projects/071-kingdom-of-pal-light-v2.png",
+      "public/landing/assets/projects/071-kingdom-of-pal-dark-v2.png"
+    ]
   }
 }

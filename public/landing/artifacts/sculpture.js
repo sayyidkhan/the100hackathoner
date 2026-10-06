@@ -27,12 +27,14 @@ export function sculpture(THREE) {
     const head = mesh(new THREE.CylinderGeometry(.18, .18, .14, 24), color, group); head.rotation.x = Math.PI / 2; head.position.y = .72;
     return group;
   }
-  function finish(id) {
+  function finish(id, preserved = []) {
     root.updateMatrixWorld(true);
     const bounds = new THREE.Box3().setFromObject(root);
     const center = bounds.getCenter(new THREE.Vector3());
     for (const child of root.children) child.position.add(new THREE.Vector3(-center.x, -bounds.min.y, -center.z));
     root.updateMatrixWorld(true);
+    // Keep articulated groups intact while batching the static surroundings.
+    for (const group of preserved) root.remove(group);
     const batches = new Map();
     root.traverse(object => {
       if (!object.isMesh) return;
@@ -54,6 +56,10 @@ export function sculpture(THREE) {
       const m = new THREE.Mesh(geometry, b.material); m.castShadow = m.receiveShadow = true; root.add(m);
     }
     const used = new Set([...batches.values()].map(b => b.material));
+    for (const group of preserved) {
+      root.add(group);
+      group.traverse(object => { if (object.material) used.add(object.material); });
+    }
     Object.values(materials).forEach(m => { if (!used.has(m)) m.dispose(); });
     root.userData = { conceptual: true, artifactId: id };
     return root;

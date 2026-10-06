@@ -242,6 +242,16 @@ export function createGalleryScene({ canvas, container, onError = () => {}, them
     if (canRender() && frameId === null) frameId = requestAnimationFrame(render);
   }
 
+  function applyArtifactLighting() {
+    const palette = THEMES[currentTheme];
+    const scale = currentModel?.userData.studioLightScale ?? 1;
+    hemisphere.intensity = palette.hemisphere * scale;
+    key.intensity = palette.key * scale;
+    fill.intensity = palette.fill * scale;
+    rim.intensity = palette.rim * scale;
+    scene.environmentIntensity = palette.environment * scale;
+  }
+
   /** Change only the studio presentation, never the artifact or camera state. */
   function setTheme(name) {
     if (disposed || failed) return;
@@ -267,6 +277,8 @@ export function createGalleryScene({ canvas, container, onError = () => {}, them
     fill.intensity = palette.fill;
     rim.intensity = palette.rim;
     contactShadow.material.opacity = palette.shadowOpacity;
+    currentModel?.userData.setTheme?.(name);
+    applyArtifactLighting();
     // Paused views receive one fresh frame. Hidden/inactive views wait until
     // they are visible again; selection, orbit, and pause remain untouched.
     requestFrame();
@@ -305,6 +317,10 @@ export function createGalleryScene({ canvas, container, onError = () => {}, them
     if (!currentModel) return;
     if (remeasure || size.lengthSq() === 0) {
       bounds.setFromObject(currentModel);
+      if (currentModel.userData.framingBounds?.isBox3) {
+        currentModel.updateWorldMatrix(true, false);
+        bounds.union(currentModel.userData.framingBounds.clone().applyMatrix4(currentModel.matrixWorld));
+      }
       bounds.getSize(size);
     }
     const radius = Math.max(Math.hypot(size.x, size.z) * 0.5 + 0.13, 3.1);
@@ -424,6 +440,8 @@ export function createGalleryScene({ canvas, container, onError = () => {}, them
     currentModel = model;
     currentId = numericId;
     model.visible = true;
+    model.userData.setTheme?.(currentTheme);
+    applyArtifactLighting();
     yaw = INITIAL_YAW;
     elevation = INITIAL_ELEVATION;
     elapsed = 0;

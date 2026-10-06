@@ -154,7 +154,17 @@
       "number": 71,
       "title": "Kingdom Of PAL",
       "source": null,
-      "status": "needs-source-context"
+      "status": "implemented",
+      "research": {
+        "finding": "User-provided concept: a sheikh and seven specialist companions help one person operate a community business. Public artwork is metaphorical; private implementation is intentionally omitted."
+      },
+      "assets": [
+        "public/landing/assets/projects/071-kingdom-of-pal-light-v2.png",
+        "public/landing/assets/projects/071-kingdom-of-pal-dark-v2.png"
+      ],
+      "model": "public/landing/artifacts/kingdom-of-pal.js",
+      "animation": "28-second council story: visible task handoffs, articulated shoulder and head gestures, distinct specialist tool actions, walking courier with eased turns and stepping feet, market delivery sparkles, and waving flags. Deterministic gallery time supports pause, reset and reduced motion.",
+      "lighting": "Theme-aware amber lanterns and castle/village windows, local warm illumination and softer night studio light. Lamps switch off in light mode without resetting the animation."
     },
     {
       "number": 70,
@@ -892,6 +902,7 @@
     "geometry": "Finite vertices, nonzero bounds and floor placement verified for all 34 new models; at most 7 material draw calls per model.",
     "browser": "All 37 completed detail pages opened their 3D view; representative narrow layout, theme switch, artwork switch, reset and pause controls verified.",
     "sourceLimit": "41 catalog entries lack linked source context; links for #59, #58 and #36 could not be read. These remain pending.",
-    "homepage": "Existing gallery opened in 3D and switched from #81 to #80 with no console errors."
+    "homepage": "Existing gallery opened in 3D and switched from #81 to #80 with no console errors.",
+    "kingdomOfPal": "Project #71: revised light/dark sheikh artwork, articulated sheikh and seven companions, messenger delivery loop and tool motion; deterministic pause/reset and finite transforms checked; all 35 artifact factories pass geometry checks; Astro check and 96-page build pass."
   }
 }
