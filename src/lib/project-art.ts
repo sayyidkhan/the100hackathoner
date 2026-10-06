@@ -71,10 +71,13 @@ import mapperLight from '../../public/landing/assets/projects/070-relationship-m
 import mapperDark from '../../public/landing/assets/projects/070-relationship-mapper-dark-v1.png';
 import orderLight from '../../public/landing/assets/projects/069-order-tracker-light-v1.png';
 import orderDark from '../../public/landing/assets/projects/069-order-tracker-dark-v1.png';
-import sceneLight from '../../public/landing/assets/projects/067-sceneverse-light-v1.png';
-import sceneDark from '../../public/landing/assets/projects/067-sceneverse-dark-v1.png';
+import sceneLight from '../../public/landing/assets/projects/067-sceneverse-light-v3.png';
+import sceneDark from '../../public/landing/assets/projects/067-sceneverse-dark-v3.png';
 import mumsLight from '../../public/landing/assets/projects/065-mums-can-build-light-v1.png';
 import mumsDark from '../../public/landing/assets/projects/065-mums-can-build-dark-v1.png';
+
+import buzo21Light from '../../public/landing/assets/projects/068-buzo-21-light-v1.png';
+import buzo21Dark from '../../public/landing/assets/projects/068-buzo-21-dark-v1.png';
 
 export interface ProjectArt {
   light: ImageMetadata;
@@ -85,6 +88,7 @@ export interface ProjectArt {
 }
 
 export const projectArt: Record<number, ProjectArt> = {
+  68: { light: buzo21Light, dark: buzo21Dark, alt: 'An ivory concierge welcomes two visitors at a red desk beneath a globe, with blue paths connecting a music stage, networking pavilion and exhibition.', caption: 'One helpful conversation opens a world of live events.', model: '/landing/artifacts/buzo-21.js' },
   71: { light: palLight, dark: palDark, alt: 'A sheikh in a white headscarf and seven specialist companions gather around a council table inside an ivory kingdom, with a community market and noticeboard.', caption: 'One sheikh, seven trusted companions, and a whole community to care for. A kingdom helping one person run a community business.', model: '/landing/artifacts/kingdom-of-pal.js' },
   34: { light: p34Light, dark: p34Dark, alt: "Company manuals become three lesson cards along a blue ribbon, leading to a learner and mentor.", caption: "Workplace knowledge becomes smaller lessons, practice and feedback.", model: '/landing/artifacts/lrnmate.js' },
   35: { light: p35Light, dark: p35Dark, alt: "A folded map with blue waves and routes, a red location pin, local stall, story cards and a guide bubble.", caption: "Local discoveries, shared stories and a guide for the next adventure.", model: '/landing/artifacts/anginombak.js' },
@@ -110,7 +114,7 @@ export const projectArt: Record<number, ProjectArt> = {
   63: { light: p63Light, dark: p63Dark, alt: "A tiled data center holds servers, solar panels, cooling, a battery and an AI chip, beside a balance carrying a server and leaf.", caption: "Every new rack changes the balance between growth, power, heat and sustainability.", model: '/landing/artifacts/data-center-tycoon.js' },
   64: { light: p64Light, dark: p64Dark, alt: "A winding blue game path connects opposing server fortresses, with five defense towers and a red voice-command microphone.", caption: "Build the defense, send the next wave, and command it all by voice.", model: '/landing/artifacts/data-center-destroyer.js' },
   65: { light: mumsLight, dark: mumsDark, alt: 'A speaker and red microphone connect through a blue speech ribbon to task cards and a builder arm assembling a miniature app.', caption: 'Speak an idea, shape the task, and follow the build as it happens.', model: '/landing/artifacts/mums-can-build.js' },
-  67: { light: sceneLight, dark: sceneDark, alt: 'A red cinema frame opens into an ivory mountain world, where blue voice paths connect a viewer and microphone to two characters.', caption: 'Pause the scene. Step into the world. Start a conversation.', model: '/landing/artifacts/sceneverse.js' },
+  67: { light: sceneLight, dark: sceneDark, alt: 'A VR headset wearer talks with Neo, who holds out a red pill and a blue pill in separate open palms before a red movie frame.', caption: 'Step into the movie. Talk to Neo. Red pill or blue pill?', model: '/landing/artifacts/sceneverse.js' },
   69: { light: orderLight, dark: orderDark, alt: 'A miniature pastry shop with a red awning, order tickets, parcels and a shopkeeper reviewing a paper receipt.', caption: 'A simple storefront, a clear order queue, and a person checking the payment proof.', model: '/landing/artifacts/order-tracker.js' },
   70: { light: mapperLight, dark: mapperDark, alt: 'A resume and ranked opportunity steps lead across a red bridge to three people and a folded outreach envelope.', caption: 'From finding a role to knowing who to talk to, and why.', model: '/landing/artifacts/relationship-mapper.js' },
   72: { light: alienLight, dark: alienDark, alt: 'A lavender alien follows a cobalt path across ivory realm islands toward a red gate, with an observatory and a constellation tree.', caption: 'A trail of remembered things across unfamiliar worlds, searching for home.', model: '/landing/artifacts/alien-homecoming.js' },

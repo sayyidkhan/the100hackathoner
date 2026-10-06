@@ -204,7 +204,23 @@
       "number": 68,
       "title": "Buzo 2.1",
       "source": null,
-      "status": "needs-source-context"
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://www.linkedin.com/feed/update/urn:li:activity:7480285163512418306/",
+          "https://www.instagram.com/p/DZ3itBVzLwN/",
+          "https://www.instagram.com/p/DZ7AtfFndkJ/"
+        ],
+        "finding": "Instagram caption and carousel identify Buzo as an AI events concierge presented at the UCWS 2026 finals. The catalog describes live events worldwide. LinkedIn returned Post not found. These posts do not establish specific product features; venues and globe are visual metaphors.",
+        "reviewed": "2026-10-06"
+      },
+      "assets": [
+        "public/landing/assets/projects/068-buzo-21-light-v1.png",
+        "public/landing/assets/projects/068-buzo-21-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/buzo-21.js",
+      "animation": "Slow globe rotation, concierge greeting and conversational dots use the gallery clock and pause/reset controls.",
+      "lighting": "Warm stage, pavilion and exhibition lamps switch on with dark mode."
     },
     {
       "number": 67,
@@ -218,10 +234,12 @@
         "finding": "Paused video frame to scene context, character agents and director orchestration, voice interaction and stereo view."
       },
       "assets": [
-        "public/landing/assets/projects/067-sceneverse-light-v1.png",
-        "public/landing/assets/projects/067-sceneverse-dark-v1.png"
+        "public/landing/assets/projects/067-sceneverse-light-v3.png",
+        "public/landing/assets/projects/067-sceneverse-dark-v3.png"
       ],
-      "model": "public/landing/artifacts/sceneverse.js"
+      "model": "public/landing/artifacts/sceneverse.js",
+      "artDirection": "User-selected movie interaction: a VR headset wearer talks to Neo, who offers one red pill and one blue pill in separate open palms. Film frame and abstract green light backdrop establish the movie world.",
+      "animation": "Two-way conversation gestures, speech bubbles and voice cues. Both pills move with their palms. Pause/reset and dark-mode coat contrast supported."
     },
     {
       "number": 66,
