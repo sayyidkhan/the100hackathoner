@@ -78,6 +78,8 @@ import mumsDark from '../../public/landing/assets/projects/065-mums-can-build-da
 
 import buzo21Light from '../../public/landing/assets/projects/068-buzo-21-light-v1.png';
 import buzo21Dark from '../../public/landing/assets/projects/068-buzo-21-dark-v1.png';
+import buzo20Light from '../../public/landing/assets/projects/066-buzo-20-light-v1.png';
+import buzo20Dark from '../../public/landing/assets/projects/066-buzo-20-dark-v1.png';
 
 export interface ProjectArt {
   light: ImageMetadata;
@@ -88,6 +90,7 @@ export interface ProjectArt {
 }
 
 export const projectArt: Record<number, ProjectArt> = {
+  66: { light: buzo20Light, dark: buzo20Dark, alt: 'A red AI concierge kiosk connects a visitor to a concert, art exhibition and networking pavilion across a folded ivory map, with a brass compass and blue routes.', caption: 'Start with a conversation. Find your way to the next live experience.', model: '/landing/artifacts/buzo-20.js' },
   68: { light: buzo21Light, dark: buzo21Dark, alt: 'An ivory concierge welcomes two visitors at a red desk beneath a globe, with blue paths connecting a music stage, networking pavilion and exhibition.', caption: 'One helpful conversation opens a world of live events.', model: '/landing/artifacts/buzo-21.js' },
   71: { light: palLight, dark: palDark, alt: 'A sheikh in a white headscarf and seven specialist companions gather around a council table inside an ivory kingdom, with a community market and noticeboard.', caption: 'One sheikh, seven trusted companions, and a whole community to care for. A kingdom helping one person run a community business.', model: '/landing/artifacts/kingdom-of-pal.js' },
   34: { light: p34Light, dark: p34Dark, alt: "Company manuals become three lesson cards along a blue ribbon, leading to a learner and mentor.", caption: "Workplace knowledge becomes smaller lessons, practice and feedback.", model: '/landing/artifacts/lrnmate.js' },

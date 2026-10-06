@@ -245,7 +245,23 @@
       "number": 66,
       "title": "Buzo 2.0",
       "source": null,
-      "status": "needs-source-context"
+      "status": "implemented",
+      "research": {
+        "sources": [
+          "https://www.linkedin.com/feed/update/urn:li:activity:7471043781799178240/",
+          "https://www.instagram.com/p/DZc1D4HHbmy/",
+          "https://www.instagram.com/p/DZeIbzgRO-n/"
+        ],
+        "finding": "Instagram posts and carousel confirm the month-long remote UCWS semifinal entry, Buzo, and a top-20 finish among 200 teams. LinkedIn returned Post not found. The catalog identifies an AI concierge for live events worldwide; folded map, compass and venues are conceptual metaphors, not verified feature differences from Buzo 2.1.",
+        "reviewed": "2026-10-06"
+      },
+      "assets": [
+        "public/landing/assets/projects/066-buzo-20-light-v1.png",
+        "public/landing/assets/projects/066-buzo-20-dark-v1.png"
+      ],
+      "model": "public/landing/artifacts/buzo-20.js",
+      "animation": "Conversation dots, concierge wave, moving compass and route markers follow the gallery clock and pause/reset controls.",
+      "lighting": "Warm kiosk and venue lamps, lit windows and gently emissive blue routes in dark mode."
     },
     {
       "number": 65,
@@ -279,7 +295,11 @@
         "public/landing/assets/projects/064-data-center-destroyer-light-v1.png",
         "public/landing/assets/projects/064-data-center-destroyer-dark-v1.png"
       ],
-      "model": "public/landing/artifacts/data-center-destroyer.js"
+      "model": "public/landing/artifacts/data-center-destroyer.js",
+      "animation": "Seekable battle loop: eight armored intruders follow the lane, five defenses track targets with beams/projectiles and impact bursts, a blue hero patrols, roof fans spin and voice-command rings pulse. Shared gallery clock preserves pause, reset, reduced-motion and offscreen behavior.",
+      "detail": "Six server bays per rack, vents, status lights, cable bundles, cooling fans, distinct cannon/crystal/coil/missile defenses, tiled floor, fasteners and microphone grille.",
+      "lighting": "Blue/red server accent lights and emissive screens, status indicators and attack effects adapt to dark mode.",
+      "combat": "Deterministic 24-second waves: trucks spawn staggered, take three scheduled hits with health bars and recoil, break into debris with a blast and smoke, then disappear. Towers lock shots to hit locations and never attack destroyed trucks; new waves reset health."
     },
     {
       "number": 63,
