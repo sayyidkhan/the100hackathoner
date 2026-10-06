@@ -308,15 +308,21 @@
       "status": "implemented",
       "research": {
         "sources": [
-          "https://github.com/sayyidkhan/v0-data-center-tycoon/blob/HEAD/components/data-centre-game.tsx"
+          "https://github.com/sayyidkhan/v0-data-center-tycoon/blob/HEAD/components/data-centre-game.tsx",
+          "https://github.com/sayyidkhan/v0-data-center-tycoon/blob/HEAD/components/data-centre-3d-grid.tsx"
         ],
-        "finding": "Grid-building game balancing revenue, power, heat, cooling and sustainability against an AI competitor; servers, solar, battery, cooling and optimizer assets."
+        "finding": "Re-read game logic and 3D grid source: 8x8 building board with server revenue/power/heat, cooling capacity, solar generation, battery efficiency and AI optimizer power savings. Source models include detailed server blades, rotating cooling fans, solar-cell grids, charge indicators and orbiting optimizer rings.",
+        "reviewed": "2026-10-06"
       },
       "assets": [
         "public/landing/assets/projects/063-data-center-tycoon-light-v1.png",
         "public/landing/assets/projects/063-data-center-tycoon-dark-v1.png"
       ],
-      "model": "public/landing/artifacts/data-center-tycoon.js"
+      "model": "public/landing/artifacts/data-center-tycoon.js",
+      "detail": "Rebuilt 3D campus on an 8x8 board with six seven-bay racks, overhead cable bridge, three solar arrays with individual cells, two twin-fan cooling plants, battery cabinets, orbiting AI core and a mobile-edition screen. Replaces the abstract balance-scale model; existing concept artwork retained.",
+      "animation": "Gallery-clock fan rotation, server activity, battery charging, solar tracking, optimizer orbits, power packets and cold-aisle airflow; supports deterministic reset, pause and reduced motion.",
+      "lighting": "Cool night practicals and emissive server LEDs, charge bars and optimizer core keep the systems readable in dark mode.",
+      "revenue": "Spinning stamped gold coins and +$20.00 pop-ups rise from racks. A game-revenue counter accrues $120/s for six source-economy racks, displays dollars and cents, and follows pause/reset/reduced motion. Canvas text uploads are limited to 10 per second; sprite textures use the scene disposal lifecycle."
     },
     {
       "number": 62,
@@ -334,7 +340,10 @@
         "public/landing/assets/projects/062-ask-buzo-light-v1.png",
         "public/landing/assets/projects/062-ask-buzo-dark-v1.png"
       ],
-      "model": "public/landing/artifacts/ask-buzo.js"
+      "model": "public/landing/artifacts/ask-buzo.js",
+      "detail": "Rebuilt only the 3D to match the approved illustration: caf\u00e9 awning/chairs/cups, arched theatre with curtains and instruments, rooftop lounge with stairs/string lights/crescent, backup venue, river and two bridges, city blocks/trees, readable clock and ticket. Existing artwork unchanged.",
+      "animation": "Moving itinerary markers, conversational dots and a rotating clock hand use the gallery clock; pause/reset/reduced motion remain supported.",
+      "lighting": "Ten warm practical lights illuminate the caf\u00e9, theatre, rooftop string lights, windows and backup venue in dark mode."
     },
     {
       "number": 61,
