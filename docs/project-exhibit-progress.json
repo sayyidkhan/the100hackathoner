@@ -358,15 +358,19 @@
       "status": "implemented",
       "research": {
         "sources": [
-          "https://github.com/sayyidkhan/guardian-agent/blob/HEAD/README.md"
+          "https://github.com/sayyidkhan/guardian-agent/blob/HEAD/README.md",
+          "https://github.com/sayyidkhan/guardian-agent/blob/HEAD/docs/project-vision.md",
+          "https://github.com/sayyidkhan/guardian-agent/blob/HEAD/src/App.tsx"
         ],
-        "finding": "Configurable decision proxy returns approve/reject/escalate with reasoning; voice and chat consultations; profile boundaries and persistent decision log."
+        "finding": "The core promise is a trusted decision proxy when the owner is unavailable. A teammate consults the configured persona by voice or chat; defined boundaries determine approve, reject or escalate. The office depiction centres on the empty chair, active AI stand-in, rulebook, people profiles and three outcome trays."
       },
       "assets": [
-        "public/landing/assets/projects/060-guardian-agent-light-v1.png",
-        "public/landing/assets/projects/060-guardian-agent-dark-v1.png"
+        "public/landing/assets/projects/060-guardian-agent-light-v2.png",
+        "public/landing/assets/projects/060-guardian-agent-dark-v2.png"
       ],
-      "model": "public/landing/artifacts/guardian-agent.js"
+      "model": "public/landing/artifacts/guardian-agent.js",
+      "animation": "An 18-second consultation loop routes a request to approval, rejection and human handoff in turn. Waveform, conversation dots, colleague gestures and outcome pulses use the gallery clock with pause/reset/reduced-motion support.",
+      "lighting": "Warm desk lamp and wall practicals plus a blue proxy light switch on in dark mode."
     },
     {
       "number": 59,
