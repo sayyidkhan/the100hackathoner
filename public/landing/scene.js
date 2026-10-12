@@ -42,7 +42,7 @@ const clamp = THREE.MathUtils.clamp;
  * Construct lazily, then call setActive(true) when the 3D view is displayed.
  * Inactive, offscreen and hidden-document states do not run a rendering loop.
  */
-export function createGalleryScene({ canvas, container, onError = () => {}, theme = 'dark', initialProject = 81, artifactFactory = createArtifact, projectIds = PROJECTS }) {
+export function createGalleryScene({ canvas, container, onError = () => {}, onStoryChange = () => {}, theme = 'dark', initialProject = 81, artifactFactory = createArtifact, projectIds = PROJECTS }) {
   if (!(canvas instanceof HTMLCanvasElement) || !container) {
     throw new TypeError('The gallery needs a canvas and its layout container.');
   }
@@ -82,6 +82,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, them
   let currentModel = null;
   let currentId = null;
   let currentTheme = null;
+  let storyKey;
   let active = false;
   let paused = reducedMotion.matches;
   let inViewport = true;
@@ -305,6 +306,12 @@ export function createGalleryScene({ canvas, container, onError = () => {}, them
     updateCamera();
     try {
       currentModel?.userData.animate?.(elapsed);
+      const story = currentModel?.userData.story ?? null;
+      const nextStoryKey = story ? JSON.stringify([story.step, story.title, story.detail, story.tone]) : null;
+      if (storyKey !== nextStoryKey) {
+        storyKey = nextStoryKey;
+        onStoryChange(story);
+      }
       renderer.render(scene, camera);
     } catch (error) {
       reportError(error);
@@ -315,6 +322,8 @@ export function createGalleryScene({ canvas, container, onError = () => {}, them
 
   function fitCamera(remeasure = false) {
     if (!currentModel) return;
+    const showDisplayBase = currentModel.userData.displayBase !== false;
+    plinth.visible = showDisplayBase;
     if (remeasure || size.lengthSq() === 0) {
       bounds.setFromObject(currentModel);
       if (currentModel.userData.framingBounds?.isBox3) {
@@ -328,15 +337,20 @@ export function createGalleryScene({ canvas, container, onError = () => {}, them
     lowerDisc.scale.set(radius * 1.028, 1, radius * 1.028);
     seam.scale.setScalar(radius * 1.013);
 
-    // Exact perspective constraints: fit artifact bounds AND the full circular
-    // base. A world-space height estimate misses the near edge of the plinth.
+    // An asymmetric miniature can provide component bounds instead of fitting
+    // the empty upper corners of one large box. Older artifacts keep that box.
     const points = [];
-    for (const x of [bounds.min.x, bounds.max.x]) {
-      for (const y of [bounds.min.y, bounds.max.y]) {
-        for (const z of [bounds.min.z, bounds.max.z]) points.push({ x, y, z });
+    if (currentModel.userData.framingPoints?.length) {
+      currentModel.updateWorldMatrix(true, false);
+      for (const point of currentModel.userData.framingPoints) points.push(point.clone().applyMatrix4(currentModel.matrixWorld));
+    } else {
+      for (const x of [bounds.min.x, bounds.max.x]) {
+        for (const y of [bounds.min.y, bounds.max.y]) {
+          for (const z of [bounds.min.z, bounds.max.z]) points.push({ x, y, z });
+        }
       }
     }
-    for (let i = 0; i < 64; i += 1) {
+    for (let i = 0; showDisplayBase && i < 64; i += 1) {
       const angle = (i / 64) * Math.PI * 2;
       for (const y of [-0.32, 0]) {
         points.push({ x: Math.cos(angle) * radius * 1.03, y, z: Math.sin(angle) * radius * 1.03 });
@@ -428,8 +442,8 @@ export function createGalleryScene({ canvas, container, onError = () => {}, them
       }
       model.traverse(object => {
         if (object.isMesh) {
-          object.castShadow = true;
-          object.receiveShadow = true;
+          object.castShadow = !object.userData.noShadow;
+          object.receiveShadow = !object.userData.noShadow;
         }
       });
       model.position.y = 0.025;

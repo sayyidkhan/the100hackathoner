@@ -126,7 +126,7 @@ export function createArtifact(THREE) {
   for(const [x,y,z] of [[-1.25,1.95,-.9],[1.25,1.95,-.9],[ox,1.1,oz]]){
     const light=new THREE.PointLight(0x7abfff,0,2.6,2);light.position.set(x,y,z);lighting.add(light);
   }
-  const model=finish(63,preserved);
+  const model=finish(61,preserved);
   const revenue=createRevenue(THREE,racks);
   revenue.position.copy(packets.position);model.add(revenue);
   model.userData.framingBounds=new THREE.Box3(new THREE.Vector3(-3.25,0,-3.25),new THREE.Vector3(3.25,3.4,3.4));

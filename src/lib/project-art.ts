@@ -32,16 +32,24 @@ import p52Light from '../../public/landing/assets/projects/052-linkedin-launch-l
 import p52Dark from '../../public/landing/assets/projects/052-linkedin-launch-dark-v1.png';
 import p53Light from '../../public/landing/assets/projects/053-devduel-light-v1.png';
 import p53Dark from '../../public/landing/assets/projects/053-devduel-dark-v1.png';
-import p56Light from '../../public/landing/assets/projects/056-bryan-feedback-light-v1.png';
-import p56Dark from '../../public/landing/assets/projects/056-bryan-feedback-dark-v1.png';
+import p55Light from '../../public/landing/assets/projects/055-buzo-light-v1.png';
+import p55Dark from '../../public/landing/assets/projects/055-buzo-dark-v1.png';
+import p56Light from '../../public/landing/assets/projects/056-bryan-feedback-light-v2.png';
+import p56Dark from '../../public/landing/assets/projects/056-bryan-feedback-dark-v2.png';
 import p57Light from '../../public/landing/assets/projects/057-medivoice-light-v1.png';
 import p57Dark from '../../public/landing/assets/projects/057-medivoice-dark-v1.png';
+import p58Light from '../../public/landing/assets/projects/058-hackatlas-light-v1.png';
+import p58Dark from '../../public/landing/assets/projects/058-hackatlas-dark-v1.png';
+import p59Light from '../../public/landing/assets/projects/059-brain-org-light-v1.png';
+import p59Dark from '../../public/landing/assets/projects/059-brain-org-dark-v1.png';
 import p60Light from '../../public/landing/assets/projects/060-guardian-agent-light-v2.png';
 import p60Dark from '../../public/landing/assets/projects/060-guardian-agent-dark-v2.png';
 import p62Light from '../../public/landing/assets/projects/062-ask-buzo-light-v1.png';
 import p62Dark from '../../public/landing/assets/projects/062-ask-buzo-dark-v1.png';
-import p63Light from '../../public/landing/assets/projects/063-data-center-tycoon-light-v1.png';
-import p63Dark from '../../public/landing/assets/projects/063-data-center-tycoon-dark-v1.png';
+import p61Light from '../../public/landing/assets/projects/061-data-center-tycoon-light-v1.png';
+import p61Dark from '../../public/landing/assets/projects/061-data-center-tycoon-dark-v1.png';
+import p63Light from '../../public/landing/assets/projects/063-data-center-rivals-light-v1.png';
+import p63Dark from '../../public/landing/assets/projects/063-data-center-rivals-dark-v1.png';
 import p64Light from '../../public/landing/assets/projects/064-data-center-destroyer-light-v1.png';
 import p64Dark from '../../public/landing/assets/projects/064-data-center-destroyer-dark-v1.png';
 import type { ImageMetadata } from 'astro';
@@ -110,11 +118,15 @@ export const projectArt: Record<number, ProjectArt> = {
   51: { light: p51Light, dark: p51Dark, alt: "A person considers two doorways at a forked path, surrounded by advisory cards, a balance and a journal with a feedback loop.", caption: "Put the different perspectives on the table before choosing the next chapter.", model: '/landing/artifacts/should-i-quit.js' },
   52: { light: p52Light, dark: p52Dark, alt: "A red idea card travels into a miniature studio that produces an ivory post page, framed image and curling filmstrip.", caption: "One idea becomes a launch package: words, an image, and a short teaser.", model: '/landing/artifacts/linkedin-launch.js' },
   53: { light: p53Light, dark: p53Dark, alt: "Red and blue paper champions face off in a miniature arena, with profile cards, a six-part comparison wheel and commentary megaphone.", caption: "Professional profiles become a playful rivalry, complete with stats and commentary.", model: '/landing/artifacts/devduel.js' },
-  56: { light: p56Light, dark: p56Dark, alt: "Three attendees' speech bubbles feed a sorting tray and structured reports in front of a closed-curtain stage.", caption: "After the event, a short conversation becomes something the organizer can act on.", model: '/landing/artifacts/bryan-feedback.js' },
+  55: { light: p55Light, dark: p55Dark, alt: "A coral-edged Buzo phone connects a live-music club, rooftop lounge and DJ stage with glowing routes across a miniature Singapore nightlife scene.", caption: "Tell Buzo your vibe. Find the right events, then turn the shortlist into a night out.", model: '/landing/artifacts/buzo.js' },
+  56: { light: p56Light, dark: p56Dark, alt: "A floating ceramic Bryan robot with coral headphones and a glowing halo gathers feedback cards into an event insights panel on a circular stage.", caption: "After the event, a short conversation becomes something the organizer can act on.", model: '/landing/artifacts/bryan-feedback.js' },
   57: { light: p57Light, dark: p57Dark, alt: "A patient's spoken words become a case-summary clipboard for a clinician, with a red staircase representing direct escalation.", caption: "Listen first, structure the story, and keep the clinician in the decision.", model: '/landing/artifacts/medivoice.js' },
+  58: { light: p58Light, dark: p58Dark, alt: "A cobalt atlas globe connects builder profiles to a four-person hackathon team, with a seven-axis fit chart, project ideas and an invitation envelope.", caption: "Start with a hackathon brief. Find builders whose strengths fit together, then turn the match into a team.", model: '/landing/artifacts/hackatlas.js' },
+  59: { light: p59Light, dark: p59Dark, alt: "An office workflow queues at a red bottleneck beneath a cobalt brain; a diagnostic lens highlights the blockage and a blue route leads to completed work.", caption: "Make the bottleneck visible, reconnect the handoffs, and help work move again.", model: '/landing/artifacts/brain-org.js' },
   60: { light: p60Light, dark: p60Dark, alt: "An empty office chair sits beside a blue AI stand-in consulting a teammate, with a rulebook and three trays for approval, rejection and human handoff.", caption: "Your judgement, available even when you are not. Routine decisions keep moving; the important ones come back to you.", model: '/landing/artifacts/guardian-agent.js' },
+  61: { light: p61Light, dark: p61Dark, alt: "A tiled data center holds servers, solar panels, cooling, a battery and an AI chip, beside a balance carrying a server and leaf.", caption: "Every new rack changes the balance between growth, power, heat and sustainability.", model: '/landing/artifacts/data-center-tycoon.js' },
   62: { light: p62Light, dark: p62Dark, alt: "A red speech bubble starts a blue route across a city map connecting a cafe, concert stage, rooftop and fallback venue.", caption: "Turn a vague idea for tonight into a plan worth committing to.", model: '/landing/artifacts/ask-buzo.js' },
-  63: { light: p63Light, dark: p63Dark, alt: "A tiled data center holds servers, solar panels, cooling, a battery and an AI chip, beside a balance carrying a server and leaf.", caption: "Every new rack changes the balance between growth, power, heat and sustainability.", model: '/landing/artifacts/data-center-tycoon.js' },
+  63: { light: p63Light, dark: p63Dark, alt: "Two rival data center buildings, one cobalt and one vermilion, compete side by side with their own servers, cooling, solar power and revenue.", caption: "The advanced version: two data centers compete to grow their revenue while keeping power and cooling under control.", model: '/landing/artifacts/data-center-rivals.js' },
   64: { light: p64Light, dark: p64Dark, alt: "A winding blue game path connects opposing server fortresses, with five defense towers and a red voice-command microphone.", caption: "Build the defense, send the next wave, and command it all by voice.", model: '/landing/artifacts/data-center-destroyer.js' },
   65: { light: mumsLight, dark: mumsDark, alt: 'A speaker and red microphone connect through a blue speech ribbon to task cards and a builder arm assembling a miniature app.', caption: 'Speak an idea, shape the task, and follow the build as it happens.', model: '/landing/artifacts/mums-can-build.js' },
   67: { light: sceneLight, dark: sceneDark, alt: 'A VR headset wearer talks with Neo, who holds out a red pill and a blue pill in separate open palms before a red movie frame.', caption: 'Step into the movie. Talk to Neo. Red pill or blue pill?', model: '/landing/artifacts/sceneverse.js' },
