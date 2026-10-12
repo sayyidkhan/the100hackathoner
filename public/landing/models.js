@@ -1,7 +1,12 @@
+import { createArtifact as createStorybook } from './artifacts/storybook.js';
+import { createArtifact as createItachiCrow } from './artifacts/itachi-crow.js';
+
 /** Original procedural interpretations of the three Museum concept images.
  * These are symbolic project exhibits, not scans or product screenshots.
  */
 export function createArtifact(THREE, id) {
+  if (Number(id) === 81) return createStorybook(THREE);
+  if (Number(id) === 80) return createItachiCrow(THREE);
   const root = new THREE.Group();
   const material = (color, options = {}) => new THREE.MeshStandardMaterial({
     color, roughness: .76, metalness: 0, ...options
@@ -13,11 +18,6 @@ export function createArtifact(THREE, id) {
   const woodDark = material(0x776044);
   const red = material(0xa92119, { roughness: .86 });
   const cobalt = material(0x133fac, { roughness: .23, metalness: .25 });
-  const charcoal = material(0x161a21, { roughness: .56, metalness: .08, flatShading: true, side: THREE.DoubleSide });
-  let featherHighlight;
-  let sharinganRed;
-  let crowRig;
-  const crowWings = [];
 
   function mesh(geometry, surface, parent = root) {
     const object = new THREE.Mesh(geometry, surface);
@@ -155,110 +155,6 @@ export function createArtifact(THREE, id) {
     ribbon([[0,.26,1.7],[.12,.22,2.02],[.36,.08,2.23],[.68,.055,2.1]], .13, red);
   }
 
-  function crowCity() {
-    featherHighlight = material(0x232833, { roughness: .62, flatShading: true, side: THREE.DoubleSide });
-    const base = mesh(new THREE.CylinderGeometry(2.38, 2.42, .24, 72), cobalt);
-    base.position.y = .12;
-    const city = new THREE.Group();
-    root.add(city);
-    for (let row = -3; row <= 3; row++) for (let col = -3; col <= 3; col++) {
-      const x = col * .57;
-      const z = row * .54;
-      if (x * x + z * z > 4.4 || (col === 0 && row > -2)) continue;
-      const seed = Math.abs(row * 13 + col * 7);
-      const h = .25 + (seed % 7) * .115 + (row < 0 ? .2 : 0);
-      const w = .35 + seed % 3 * .035;
-      box(w, h, .39, x, .24 + h / 2, z, seed % 3 ? paperLight : paper, city);
-      box(w + .025, .04, .42, x, .24 + h, z, paperShade, city);
-      if (seed % 4 === 0) box(w * .58, .17, .24, x, .325 + h, z, paperLight, city);
-      for (let story = 0; story < Math.floor(h / .2); story++) for (const side of [-1, 1]) {
-        box(.028, .085, .008, x + side * w * .25, .38 + story * .19, z + .201, paperShade, city);
-      }
-      if (seed % 5 === 0) {
-        const tower = mesh(new THREE.CylinderGeometry(.055, .09, .38, 6), paperLight, city);
-        tower.position.set(x, .47 + h, z);
-        const spire = mesh(new THREE.ConeGeometry(.07, .23, 6), paper, city);
-        spire.position.set(x, .77 + h, z);
-      }
-    }
-    // A raised arcade creates depth through actual openings, not painted windows.
-    for (const x of [-.56,0,.56]) {
-      beam([x,.24,.45],[x,.78,.45],.06,paperLight,city);
-      box(.6,.09,.27,x,.8,.45,paperLight,city);
-    }
-    ribbon([[-.8,.27,1.95],[-.68,.28,1.2],[-.28,.28,.85],[.26,.29,.82],[.47,.3,.12],[.22,.29,-.43],[-.2,.3,-.96]],.043,red,city);
-    const bird = new THREE.Group();
-    bird.name = 'flying-crow';
-    crowRig = bird;
-    bird.position.set(.05,2.87,-.04);
-    bird.rotation.set(-.08,-.23,.03);
-    root.add(bird);
-    const body = mesh(new THREE.IcosahedronGeometry(.65, 1), charcoal, bird);
-    body.scale.set(.64,.67,1.18);
-    const head = mesh(new THREE.IcosahedronGeometry(.32, 0), charcoal, bird);
-    head.position.set(0,.15,.7);
-    head.scale.set(.9,1,1.05);
-    faces([[.17,.16,.85],[-.17,.16,.85],[0,-.12,1.3],[0,.33,.86]],[[0,1,2],[0,2,3],[1,3,2]],charcoal,bird);
-    sharinganRed = material(0xe32232, { emissive: 0xd50820, emissiveIntensity: .5, roughness: .45 });
-    const eyeInk = new THREE.MeshBasicMaterial({ color: 0x09070c });
-    // Raised graphic irises keep the three tomoe crisp when the exhibit is rotated.
-    const tomoeShape = new THREE.Shape();
-    tomoeShape.moveTo(0, -.012);
-    tomoeShape.bezierCurveTo(-.018, -.012, -.019, .013, -.002, .015);
-    tomoeShape.bezierCurveTo(.012, .02, .022, .012, .024, .003);
-    tomoeShape.bezierCurveTo(.012, .01, .014, -.012, 0, -.012);
-    const tomoeGeometry = new THREE.ShapeGeometry(tomoeShape, 12);
-    for (const side of [-1,1]) {
-      const eye = new THREE.Group();
-      eye.name = side < 0 ? 'left-sharingan' : 'right-sharingan';
-      eye.position.set(side*.247,.245,.795);
-      eye.quaternion.setFromUnitVectors(new THREE.Vector3(0,0,1), new THREE.Vector3(side*.8,.18,.58).normalize());
-      bird.add(eye);
-      const socket = mesh(new THREE.SphereGeometry(.091,24,12), eyeInk, eye);
-      socket.scale.z = .24;
-      const iris = mesh(new THREE.CircleGeometry(.08,48), sharinganRed, eye);
-      iris.position.z = .023;
-      const ring = mesh(new THREE.RingGeometry(.049,.052,48), eyeInk, eye);
-      ring.position.z = .025;
-      const pupil = mesh(new THREE.CircleGeometry(.021,24), eyeInk, eye);
-      pupil.position.z = .026;
-      for (let i=0;i<3;i++) {
-        const angle = i / 3 * Math.PI * 2 + Math.PI / 2;
-        const tomoe = mesh(tomoeGeometry, eyeInk, eye);
-        tomoe.name = 'tomoe';
-        tomoe.position.set(Math.cos(angle)*.05, Math.sin(angle)*.05, .027);
-        tomoe.rotation.z = angle - Math.PI / 2;
-      }
-      // Tiny eye markings should not cast shadows onto their own iris.
-      eye.traverse(object => { if (object.isMesh) { object.castShadow = false; object.receiveShadow = false; } });
-      const wing = new THREE.Group();
-      wing.name = side < 0 ? 'left-wing' : 'right-wing';
-      wing.position.set(side*.24,.25,-.18);
-      bird.add(wing);
-      crowWings.push({ wing, side });
-      // Each flight feather is an independent folded, ridged four-facet sheet.
-      for (let i=0;i<9;i++) {
-        const rootX=side*(.24+i*.07);
-        const endX=side*(2.64-i*.09);
-        const endY=1.31-i*.17;
-        const endZ=-.92+i*.19;
-        const width=.18;
-        faces([
-          [rootX,.25,-.18],[side*1.03,.84,-.36],
-          [endX,endY,endZ],[endX-side*.27,endY-.11,endZ+width],
-          [side*1.46,.78-i*.043,-.36+i*.08]
-        ],[[0,1,4],[1,2,4],[2,3,4],[3,0,4]],i%3===0?featherHighlight:charcoal,wing);
-      }
-      faces([[side*.2,.25,.1],[side*1.05,.85,-.32],[side*.88,.1,-.52],[side*.3,-.28,-.5]],[[0,1,2],[0,2,3]],charcoal,wing);
-      // Feather geometry was authored in bird space; articulate at the shoulder.
-      for (const feather of wing.children) feather.geometry.translate(-wing.position.x,-wing.position.y,-wing.position.z);
-    }
-    for (let i=0;i<5;i++) {
-      const x=(i-2)*.14;
-      faces([[x-.12,-.15,-.3],[x+.12,-.15,-.3],[x*1.5+.09,-.47,-1.32],[x*1.5,-.37,-1.61],[x*1.5-.09,-.47,-1.32]],[[0,1,3],[1,2,3],[0,3,4]],charcoal,bird);
-    }
-  }
-
   function borneo() {
     const oval = [];
     for(let i=0;i<80;i++){const a=i/80*Math.PI*2;oval.push([Math.cos(a)*2.95,Math.sin(a)*2.12]);}
@@ -349,8 +245,7 @@ export function createArtifact(THREE, id) {
     for(const [x,z,h,phase] of [[-2.42,-.8,2.25,.2],[-1.8,-1.52,2.45,1.2],[2.32,-1.14,1.94,.6],[-2.35,1.18,1.35,.7],[2.36,.95,1.15,1.4]])palm(x,.6,z,h,phase);
   }
 
-  if (Number(id) === 80) crowCity();
-  else if (Number(id) === 79) borneo();
+  if (Number(id) === 79) borneo();
   else storybook();
   root.updateMatrixWorld(true);
   const bounds = new THREE.Box3().setFromObject(root);
@@ -360,7 +255,6 @@ export function createArtifact(THREE, id) {
   root.updateMatrixWorld(true);
   // The detailed leaves, windows and timbers are baked into material batches.
   // This preserves their silhouettes while avoiding hundreds of draw calls.
-  if (crowRig) root.remove(crowRig);
   const batches = new Map();
   root.traverse(object => {
     if (!object.isMesh) return;
@@ -384,46 +278,7 @@ export function createArtifact(THREE, id) {
     geometry.computeBoundingSphere();
     mesh(geometry, batch.material);
   }
-  if (crowRig) root.add(crowRig);
   root.userData.conceptual = true;
   root.userData.artifactId = Number(id);
-  if (Number(id) === 80) {
-    const rest = crowRig.position.clone();
-    const cycle = 2.4;
-    root.userData.animate = elapsed => {
-      const phase = (Math.max(0,elapsed) % cycle) / cycle * Math.PI * 2;
-      // Broad, restrained strokes with a slight trailing twist and buoyant body.
-      const flap = -.08 + .32 * Math.cos(phase);
-      for (const { wing, side } of crowWings) {
-        wing.rotation.z = side * flap;
-        wing.rotation.y = side * Math.sin(phase) * .045;
-      }
-      crowRig.position.y = rest.y + Math.sin(phase) * .085;
-      crowRig.rotation.x = -.08 + Math.sin(phase) * .025;
-      crowRig.rotation.z = .03 + Math.sin(phase) * .012;
-    };
-    // Fit the whole wing stroke, not just the pose visible when the view opens.
-    const flightBounds = new THREE.Box3();
-    for (let i=0;i<64;i++) {
-      root.userData.animate(i / 64 * cycle);
-      flightBounds.union(new THREE.Box3().setFromObject(root));
-    }
-    flightBounds.expandByScalar(.04);
-    root.userData.framingBounds = flightBounds;
-    root.userData.animate(0);
-    // Lift only the bird's shadow tones at night; preserve the city and day palette.
-    charcoal.name = 'crow-charcoal';
-    featherHighlight.name = 'crow-feather-highlight';
-    root.userData.setTheme = theme => {
-      const night = theme === 'dark';
-      charcoal.color.setHex(night ? 0x364252 : 0x161a21);
-      featherHighlight.color.setHex(night ? 0x536278 : 0x232833);
-      charcoal.emissive.setHex(0x253248);
-      featherHighlight.emissive.setHex(0x2e3d53);
-      charcoal.emissiveIntensity = night ? .32 : 0;
-      featherHighlight.emissiveIntensity = night ? .25 : 0;
-      sharinganRed.emissiveIntensity = night ? .9 : .5;
-    };
-  }
   return root;
 }

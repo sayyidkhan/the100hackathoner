@@ -7,13 +7,48 @@
       "number": 81,
       "title": "The Next 8 Seconds: Draw Your Way Home",
       "source": "https://github.com/sayyidkhan/8-mins",
-      "status": "implemented"
+      "status": "implemented",
+      "model": "public/landing/artifacts/storybook.js",
+      "fidelity": "Rebuilt as a tactile paper sculpture: nine complete separated fanned sheets per half above a fine 28-layer bound stack, tall swept outer curls, a continuous cream gutter, broad asymmetric mountain folds, eleven folded-paper firs and a restrained sheet-paper cottage. Generated cotton-rag paper albedo and bump texture; crimson cloth covers and satin cobalt route preserved. Polish integrates the cottage into a gentle paper knoll, softens mountain tips, refines folded roof/door details and adds ribbon thickness, fabric texture and tapered binding/doorway connections.",
+      "presentation": "142,326 triangles in ten material batches. Offline 48-ray ambient occlusion plus 16-ray area-key visibility supply soft contact and cast shadows; geometry hashes validate the 854 KB bake before replacing live shadow reception. Refined cottage surface geometry smooths the baked shading. Broad studio lighting, a soft floor footprint, and a closer opening angle are scoped to this paper exhibit. Fully rotatable, with pause/reset and responsive framing retained.",
+      "verification": "Finite positions/UVs and unit normals; resource lifetime, async disposal, paused repaint, missing/stale-bake fallback, and binary hash validation checked. Zero tree/curl intersections; ribbon underside clearance at least .015 above paper and .002 above doorstep. Earlier desktop/mobile and both-theme checks retained; final polish visually checked on desktop, including rotation/reset, with no browser warnings/errors. Astro check: 0 errors, 0 warnings; production build: 96 pages.",
+      "assets": [
+        "public/landing/assets/storybook-paper-v1.jpg",
+        "public/landing/assets/storybook-ao-v1.bin"
+      ],
+      "bake": "node scripts/bake-storybook-ao.mjs --rays=48 --distance=0.9"
     },
     {
       "number": 80,
       "title": "Itachi's Crow",
       "source": "https://github.com/sayyidkhan/itachiscrow",
-      "status": "implemented"
+      "status": "implemented",
+      "model": "public/landing/artifacts/itachi-crow.js",
+      "helpers": [
+        "public/landing/artifacts/itachi-crow-bird.js",
+        "public/landing/artifacts/itachi-crow-city.js",
+        "public/landing/artifacts/itachi-crow-lighting.js"
+      ],
+      "refinement": {
+        "date": "2026-10-12",
+        "brief": "Refined directly against the supplied concept artwork: broad connected origami wings, a fuller faceted crow and visible tail over a varied vertical ivory city on a thick cobalt drum.",
+        "details": "Layered charcoal paper feathers on broad inner wings with distinct outer flight fingers, faceted torso and bill, centered rear tail, Sharingan eyes and tactile grain. Wider ivory city with fluted towers, stepped crowns, slim summit beacon, canal, bridges, boats and eight lanterns retained.",
+        "motion": "A deterministic 20.4-second flight phrase with measured wing strokes, delayed continuous outer-fold flex, banking glide, altitude drift, head scans and tail steering. The navigation pulse and three warm breadcrumbs climb the stairs to wake the destination beacon once per flight phrase. Two canal launches and trailing wakes complete a continuous 40.8-second circuit under the bridges; lanterns breathe gently.",
+        "presentation": "Three-quarter opening view (yaw .60, elevation .45) exposes the body, tail and wrist bends. The complete bird is oriented -.03 radians with a slight bank. Both themes, rotation and existing flight/navigation animations remain supported.",
+        "wings": "Rebuilt from Cornell Lab labelled American Crow wing reference and flight photography: ten graded primaries, eleven overlapping secondaries and two offset covert rows per wing. Curved longitudinal feather surfaces replace triangle-fan blades; rounded outer tips, a broad cambered inner wing and corrected wing pitch preserve crow proportions. A persistent 0.78-radian mid-span wrist bend separates the raised inner wing from the outer hand; deformation blends only around the joint and adds delayed flex during flight.",
+        "rig": "Corrected the orbit-dependent anatomy: both mirrored wings now inherit the torso orientation, eliminating separate wing/body yaw and unequal wing height scales. The tail attaches centrally at the rear with modest steering, replacing the sideways display roll. The complete bird retains a gentle bank as one coherent sculpture.",
+        "references": [
+          "https://www.birds.cornell.edu/crows/FishCrow.htm",
+          "https://www.allaboutbirds.org/guide/American_Crow/photo-gallery",
+          "https://www.rsi.ch/info/scienza-e-tecnologia/Il-sogno-di-Leonardo-ispira-il-volo-del-futuro--3512956.html"
+        ]
+      },
+      "verification": {
+        "geometry": "47,736 triangles across 57 meshes; 12,740 wing triangles. 613-pose checks verify finite, nondegenerate geometry without flipped triangles, continuous shared vertices and deterministic loop/seek. Local roof clearance at least .30 units.",
+        "framing": "Full-vertex framing checks across desktop, square-mobile and portrait-mobile views pass; worst vertical NDC .8726.",
+        "presentation": "Browser inspection from front, side and rear, plus motion/pause/reset checks without warnings or errors. The open local preview was fully reloaded. Shared disposal and reduced-motion behavior preserved.",
+        "build": "Astro check: 0 errors, 0 warnings; production build: 96 pages."
+      }
     },
     {
       "number": 79,

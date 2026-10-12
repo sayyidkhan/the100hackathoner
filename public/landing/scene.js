@@ -223,6 +223,26 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
   contactShadow.receiveShadow = true;
   scene.add(contactShadow);
 
+  // The paper exhibit is photographed under a broad studio source. A soft
+  // contact footprint avoids a hard, directional silhouette on the backdrop.
+  const footprintSize = 192, footprintPixels = new Uint8Array(footprintSize * footprintSize * 4);
+  for (let y = 0; y < footprintSize; y++) for (let x = 0; x < footprintSize; x++) {
+    const dx = Math.abs((x / (footprintSize - 1) - .5) * 8) - 2.8;
+    const dz = Math.abs((y / (footprintSize - 1) - .5) * 6.4) - 1.91;
+    const outside = Math.hypot(Math.max(dx, 0), Math.max(dz, 0));
+    footprintPixels[(y * footprintSize + x) * 4 + 3] = Math.round(255 * Math.exp(-outside * outside / .095));
+  }
+  const footprintTexture = new THREE.DataTexture(footprintPixels, footprintSize, footprintSize, THREE.RGBAFormat);
+  footprintTexture.magFilter = footprintTexture.minFilter = THREE.LinearFilter;
+  footprintTexture.needsUpdate = true;
+  const paperContact = new THREE.Mesh(new THREE.PlaneGeometry(8, 6.4), new THREE.MeshBasicMaterial({
+    map: footprintTexture, transparent: true, opacity: .23, depthWrite: false, toneMapped: false,
+  }));
+  paperContact.rotation.x = -Math.PI / 2;
+  paperContact.position.set(.10, -.32, .04);
+  paperContact.visible = false;
+  scene.add(paperContact);
+
   function canRender() {
     return active && inViewport && !document.hidden && !disposed && !failed;
   }
@@ -246,11 +266,34 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
   function applyArtifactLighting() {
     const palette = THEMES[currentTheme];
     const scale = currentModel?.userData.studioLightScale ?? 1;
+    const paper = currentModel?.userData.studioProfile === 'paper';
+    paperContact.visible = paper;
+    paperContact.material.opacity = currentTheme === 'light' ? .23 : .55;
+    // The aerial crow uses its own soft footprint below the blue drum, avoiding
+    // an oversized wing silhouette on the otherwise seamless exhibit backdrop.
+    contactShadow.material.opacity = paper || currentModel?.userData.studioProfile === 'crow' ? 0 : palette.shadowOpacity;
     hemisphere.intensity = palette.hemisphere * scale;
     key.intensity = palette.key * scale;
     fill.intensity = palette.fill * scale;
     rim.intensity = palette.rim * scale;
     scene.environmentIntensity = palette.environment * scale;
+    renderer.toneMappingExposure = palette.exposure;
+    key.position.set(...(paper ? [-5, 6, 2.5] : [-5, 9, 7]));
+    key.shadow.normalBias = paper ? .006 : .035;
+    key.shadow.bias = paper ? -.00008 : -.00025;
+    key.shadow.radius = paper ? 3 : 4;
+    Object.assign(key.shadow.camera, paper
+      ? { left: -4.5, right: 4.5, top: 5.5, bottom: -4.5 }
+      : { left: -7, right: 7, top: 8, bottom: -7 });
+    key.shadow.camera.updateProjectionMatrix();
+    if (paper) {
+      hemisphere.intensity = .38;
+      key.intensity = 2.8;
+      fill.intensity = .22;
+      rim.intensity = .7;
+      scene.environmentIntensity = .6;
+      renderer.toneMappingExposure = 1.02;
+    }
   }
 
   /** Change only the studio presentation, never the artifact or camera state. */
@@ -332,6 +375,10 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       }
       bounds.getSize(size);
     }
+    const groundLevel = currentModel.userData.groundLevel;
+    floor.position.y = Number.isFinite(groundLevel) ? currentModel.position.y + groundLevel - .012 : -.324;
+    contactShadow.position.y = floor.position.y + .002;
+    paperContact.position.y = floor.position.y + .003;
     const radius = Math.max(Math.hypot(size.x, size.z) * 0.5 + 0.13, 3.1);
     topDisc.scale.set(radius, 1, radius);
     lowerDisc.scale.set(radius * 1.028, 1, radius * 1.028);
@@ -447,6 +494,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
         }
       });
       model.position.y = 0.025;
+      model.userData.requestRender = requestFrame;
       models.set(numericId, model);
       scene.add(model);
     }
@@ -456,16 +504,16 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     model.visible = true;
     model.userData.setTheme?.(currentTheme);
     applyArtifactLighting();
-    yaw = INITIAL_YAW;
-    elevation = INITIAL_ELEVATION;
+    yaw = Number.isFinite(currentModel?.userData.initialYaw) ? currentModel.userData.initialYaw : INITIAL_YAW;
+    elevation = Number.isFinite(currentModel?.userData.initialElevation) ? currentModel.userData.initialElevation : INITIAL_ELEVATION;
     elapsed = 0;
     fitCamera(true);
     requestFrame();
   }
 
   function resetView() {
-    yaw = INITIAL_YAW;
-    elevation = INITIAL_ELEVATION;
+    yaw = Number.isFinite(currentModel?.userData.initialYaw) ? currentModel.userData.initialYaw : INITIAL_YAW;
+    elevation = Number.isFinite(currentModel?.userData.initialElevation) ? currentModel.userData.initialElevation : INITIAL_ELEVATION;
     elapsed = 0;
     lastInteraction = performance.now();
     fitCamera();
@@ -595,6 +643,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     events.abort();
     resizeObserver.disconnect();
     intersectionObserver.disconnect();
+    models.forEach(model => { model.userData.disposed = true; delete model.userData.requestRender; });
     canvas.style.touchAction = previousTouchAction;
     const geometries = new Set();
     const materials = new Set();

@@ -1,0 +1,97 @@
+{
+  "format": "BAO2",
+  "rays": 48,
+  "maxDistance": 0.9,
+  "keyRays": 16,
+  "keyPosition": [
+    -5,
+    6,
+    2.5
+  ],
+  "keyWidth": 1.5,
+  "cell": 0.018,
+  "epsilon": 0.0018,
+  "sampled": 78753,
+  "cacheHits": 348225,
+  "totalVertices": 426978,
+  "triangles": 142326,
+  "bytes": 854132,
+  "minAO": 1,
+  "maxAO": 255,
+  "averageAO": 129.94,
+  "minKey": 0,
+  "maxKey": 255,
+  "averageKey": 59.91,
+  "meshes": [
+    {
+      "index": 0,
+      "name": "Mesh",
+      "vertices": 7302,
+      "offset": 176,
+      "hash": 1099952981
+    },
+    {
+      "index": 1,
+      "name": "Mesh",
+      "vertices": 6312,
+      "offset": 14780,
+      "hash": 2227698999
+    },
+    {
+      "index": 2,
+      "name": "Mesh",
+      "vertices": 143586,
+      "offset": 27404,
+      "hash": 1737300398
+    },
+    {
+      "index": 3,
+      "name": "Mesh",
+      "vertices": 7416,
+      "offset": 314576,
+      "hash": 871712444
+    },
+    {
+      "index": 4,
+      "name": "Mesh",
+      "vertices": 234078,
+      "offset": 329408,
+      "hash": 2530627763
+    },
+    {
+      "index": 5,
+      "name": "Mesh",
+      "vertices": 1800,
+      "offset": 797564,
+      "hash": 3779487025
+    },
+    {
+      "index": 6,
+      "name": "Mesh",
+      "vertices": 1944,
+      "offset": 801164,
+      "hash": 1038109484
+    },
+    {
+      "index": 7,
+      "name": "Mesh",
+      "vertices": 600,
+      "offset": 805052,
+      "hash": 4067258519
+    },
+    {
+      "index": 8,
+      "name": "Mesh",
+      "vertices": 180,
+      "offset": 806252,
+      "hash": 924378989
+    },
+    {
+      "index": 9,
+      "name": "Mesh",
+      "vertices": 23760,
+      "offset": 806612,
+      "hash": 206709685
+    }
+  ]
+}
