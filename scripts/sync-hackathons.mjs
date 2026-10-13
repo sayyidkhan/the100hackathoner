@@ -1,6 +1,6 @@
 import { readSheet } from "read-excel-file/node";
 import { DatabaseSync } from "node:sqlite";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
 const workbookPath = resolve("data/Hackathon CV.xlsx");
@@ -492,6 +492,16 @@ const [rows, peopleRows, socialRows, themeMapRows] = await Promise.all([
   readOptionalSheet(workbookPath, "Theme Map"),
 ]);
 if (rows.length < 2) throw new Error("The workbook does not contain hackathon rows.");
+// Confirmed reconciliations take precedence over stale workbook values.
+const corrections = JSON.parse(await readFile(resolve("data/hackathon-corrections.json"), "utf8"));
+for (const row of rows.slice(1)) {
+  const correction = corrections[String(row[columns.number - 1])];
+  if (!correction) continue;
+  for (const [field, value] of Object.entries(correction)) {
+    if (!(field in columns)) throw new Error(`Unknown correction field: ${field}`);
+    row[columns[field] - 1] = value;
+  }
+}
 const peopleDirectory = parsePeopleDirectory(peopleRows);
 const resolveMemberName = buildMemberNameResolver(peopleDirectory);
 const workbookSocialLinks = parseSocialLinks(socialRows);

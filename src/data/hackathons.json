@@ -1390,7 +1390,7 @@
     "client": null,
     "country": "Singapore",
     "location": "SUSS",
-    "award": "1st Place — US$150 Wavespeed AI Credits",
+    "award": "2nd Place — US$150 Wavespeed AI Credits",
     "tags": [
       "Events"
     ],
@@ -1426,8 +1426,8 @@
       "facebook": []
     },
     "prize": {
-      "awardSummary": "1st Place — US$150 Wavespeed AI Credits",
-      "awardType": "1st Prize",
+      "awardSummary": "2nd Place — US$150 Wavespeed AI Credits",
+      "awardType": "2nd Prize",
       "additionalInfo": null,
       "teamMembers": 3,
       "allocation": "Per Team",
@@ -1509,7 +1509,7 @@
   },
   {
     "number": 52,
-    "title": "AI LinkedIn Launch Studio",
+    "title": "Prompt & Pixel: AI LinkedIn Launch Studio",
     "event": "AgentForce Hackathon 2026",
     "dateLabel": "28/2/2026",
     "startDate": "2026-02-28",
