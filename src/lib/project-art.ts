@@ -55,8 +55,8 @@ import p64Dark from '../../public/landing/assets/projects/064-data-center-destro
 import type { ImageMetadata } from 'astro';
 import bookLight from '../../public/landing/assets/storybook-concept-v3.jpg';
 import bookDark from '../../public/landing/assets/storybook-dark-v1.jpg';
-import crowLight from '../../public/landing/assets/crow-concept-v3.jpg';
-import crowDark from '../../public/landing/assets/crow-dark-v1.jpg';
+import crowLight from '../../public/landing/assets/crow-sharingan-light-v3.png';
+import crowDark from '../../public/landing/assets/crow-sharingan-dark-v3.png';
 import borneoLight from '../../public/landing/assets/borneo-concept-v3.jpg';
 import borneoDark from '../../public/landing/assets/borneo-dark-v1.jpg';
 import peterLight from '../../public/landing/assets/projects/078-peterindex-light-v1.png';
