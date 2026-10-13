@@ -47,7 +47,7 @@ export function createArtifact(THREE) {
   city.scale.set(islandScale, 1, islandScale);
   root.add(city);
   const bird = createCrowBird(THREE);
-  bird.position.set(.04, 3.50, -.03);
+  bird.position.set(.04, 5.30, -.03);
   // A banking profile reveals the long bill, tail and broad folded wing surfaces.
   bird.rotation.set(.035, -.03, -.10);
   root.add(bird);

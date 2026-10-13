@@ -224,12 +224,6 @@ export function createCrowBird(THREE) {
   facetedBody(head, [
     [-.035, .205, .21, .01], [.16, .255, .235, .07], [.36, .225, .185, .045], [.47, .135, .10, -.015],
   ], 8, 1);
-  // A shaped brow gives the small red iris a clear socket and expression.
-  for (const side of [-1, 1]) {
-    const a = v(side * .225, .145, .19), b = v(side * .238, .09, .37), c = v(side * .167, .19, .36);
-    if (side > 0) triangle(head, a, c, b, paperColors[2]);
-    else triangle(head, a, b, c, paperColors[2]);
-  }
   const beakTop = [v(-.142, .025, .415), v(.142, .025, .415), v(0, .125, .42), v(0, -.13, .99)];
   const beakBottom = [v(-.126, .012, .417), v(.126, .012, .417), v(0, -.085, .435), v(0, -.15, .96)];
   for (const [points, order, color] of [
@@ -255,11 +249,13 @@ export function createCrowBird(THREE) {
   for (const side of [-1, 1]) {
     const eye = new THREE.Group();
     eye.name = side < 0 ? 'left-sharingan' : 'right-sharingan';
-    eye.position.set(side * .224, .095, .285);
-    eye.quaternion.setFromUnitVectors(v(0, 0, 1), v(side * .89, .15, .43).normalize());
+    // Follow the skull side's shallow taper. The previous forward-facing
+    // tilt sank the front of the iris into the cheek and brow triangles.
+    eye.position.set(side * .236, .095, .270);
+    eye.quaternion.setFromUnitVectors(v(0, 0, 1), v(side * .9905, 0, .1372).normalize());
     head.add(eye);
     const socket = smallMesh(new THREE.CircleGeometry(.089, 32), ink, eye);
-    socket.scale.y = .83;
+    // A full circular socket frames the entire iris.
     const iris = smallMesh(new THREE.CircleGeometry(.075, 40), red, eye);
     iris.position.z = .004;
     const ring = smallMesh(new THREE.RingGeometry(.046, .049, 32), ink, eye);
@@ -289,7 +285,9 @@ export function createCrowBird(THREE) {
     const shoulder = new THREE.Group();
     shoulder.name = side < 0 ? 'raised-wing' : 'receding-wing';
     const origin = v(side * .27,.16,.12);
-    shoulder.position.copy(origin); wingPresentation.add(shoulder);
+    shoulder.position.copy(origin);
+    shoulder.scale.setScalar(.90); // Reduce wing size around the attached shoulder.
+    wingPresentation.add(shoulder);
     const local = (x,z,lift=0) => v(side*x,.22+(x-.27)*.10+lift,z < 0 ? z * 1.30 : z).sub(origin);
     const normal = v(-side*.10,1,0).normalize();
     const hub = local(1.70,.25);
@@ -425,13 +423,18 @@ export function createCrowBird(THREE) {
     const look = lookLeft - lookRight;
     const inspect = pulse(t, 9.0, .75, .9, .85);
     const headTilt = pulse(t, 1.45, .50, .9, .9) - pulse(t, 5.45, .55, 1.0, .95);
+    // Full shoulder stroke: raised recovery through horizontal to a deep
+    // downstroke. Keep the smaller flap signal for head/body follow-through.
+    const stroke = Math.cos(cycle) * (1 - glide * .82);
+    const shoulderAngle = .15 + stroke * 1.05;
+    const recovery = (Math.cos(cycle - .22) + 1) * .5;
     for (const { shoulder, hub, side, geometry, restPositions } of wings) {
-      shoulder.rotation.set(.45 + flap * .10,
-        side * (.025 + glide * .035), side * (.82 + flap + glide * .04));
+      shoulder.rotation.set(.35 + stroke * .10,
+        side * (.025 + glide * .035), side * shoulderAngle);
       // Keep the inner wing raised and hinge the outer wing down at the wrist.
       // Blend only around the joint: the hand is a distinct plane, not a
       // gentle whole-span curve. Identical vertices keep a closed shoulder.
-      const bend = side * (-.78 - delayed * .48 - glide * .06);
+      const bend = side * (-.22 - recovery * .48 - delayed * .16 - glide * .12);
       const positions = geometry.attributes.position;
       for (let i=0;i<positions.count;i++) {
         wingPoint.fromArray(restPositions,i*3);
@@ -450,13 +453,17 @@ export function createCrowBird(THREE) {
       Math.sin(orbit) * .09 + (Math.cos(cycle) - 1) * .022 * (1 - glide * .7), 0);
     head.rotation.set(.08 * Math.abs(look) + inspect * .23 - flap * .025,
       -look * .90, headTilt * .16 + inspect * .10);
-    // Pelvis-anchored steering: lag the wingbeat, counter the bank and gently
-    // fan the tail for the glide. Scale only the span, so the root never slides.
+    // Follow the full shoulder stroke, not the tiny body-follow-through flap.
+    // A 0.4-second lag lets the tail counter-pitch after each power stroke;
+    // feather spread opens on the downstroke and narrows during recovery.
+    // All motion stays anchored at the pelvis (the tail's local origin).
+    const tailPhase = cycle - tau * .4 / 3.4;
+    const tailStroke = Math.cos(tailPhase) * (1 - glide * .82);
     const tailSway = Math.sin(orbit * 2 - .45) - Math.sin(-.45);
-    tail.rotation.set(.08 - delayed * .36 + Math.sin(cycle - .7) * .035 + glide * .07,
+    tail.rotation.set(.10 - tailStroke * .40 + glide * .07,
       tailSway * .115 + bank * .13,
-      -bank * .065 + Math.sin(orbit * 2) * .035);
-    tail.scale.x = 1 + glide * .18 + settle * .08 + (1 - Math.cos(cycle - .45)) * .025;
+      -bank * .065 + Math.sin(tailPhase) * .055 * (1 - glide * .82));
+    tail.scale.x = 1.04 - tailStroke * .18 + glide * .18 + settle * .04;
   }
   function setTheme(theme) {
     const dark = theme === 'dark';
