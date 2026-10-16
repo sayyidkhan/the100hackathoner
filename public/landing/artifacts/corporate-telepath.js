@@ -227,5 +227,13 @@ export function createArtifact(T) {
   }
   batchBranch(root);
   root.userData={conceptual:true,artifactId:74,displayBase:false,groundLevel:0,studioProfile:'paper',initialYaw:.08,initialElevation:.43,framingPoints,animate,animationDuration:duration};
+  root.userData.annotations = [
+    { id: 'proposal', position: [0, 3.35, -1.60] },
+    { id: 'tech', position: [-2.95, 2.20, -1.48] },
+    { id: 'finance', position: [-3, 1.04, 1.78] },
+    { id: 'legal', position: [2.95, 2.60, -1.48] },
+    { id: 'operations', position: [3, 1.04, 1.78] },
+    { id: 'checklist', position: [0, .72, 2.80] },
+  ];
   return root;
 }

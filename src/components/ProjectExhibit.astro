@@ -3,13 +3,21 @@ import { getImage } from 'astro:assets';
 import type { ProjectArt } from '../lib/project-art';
 interface Props { number: number; title: string; art: ProjectArt; }
 const { number, title, art } = Astro.props;
-const hasLabels = number === 75 || number === 76;
+const hasLabels = [74, 75, 76].includes(number);
 async function variants(src: ProjectArt['light']) {
   const images = await Promise.all([480, 800, 1200, 1536].map(width => getImage({ src, width, format: 'webp', quality: 80 })));
   return { src: images[2].src, srcset: images.map((image, i) => `${image.src} ${[480, 800, 1200, 1536][i]}w`).join(', ') };
 }
 // Buzo Atlas labels follow gr-atlas/docs/PRODUCT_THESIS.md, “Four mechanisms”.
-const divisions = number === 75 ? [
+// Telepath roles and synthesis output match server.ts PERSPECTIVE_PROMPTS.
+const divisions = number === 74 ? [
+  { id: 'proposal', name: 'Feature Proposal', purpose: 'The concept to stress-test', x: 50, y: 19 },
+  { id: 'tech', name: 'Tech & Architecture', purpose: 'Data, APIs & technical edge cases', x: 21, y: 40 },
+  { id: 'finance', name: 'Finance & Accounting', purpose: 'Tax, refunds & ledger risks', x: 21, y: 70 },
+  { id: 'legal', name: 'Legal & Regulatory', purpose: 'Consumer rights & disclosures', x: 80, y: 40 },
+  { id: 'operations', name: 'HR & Operations', purpose: 'Training, workflows & staff impact', x: 80, y: 70 },
+  { id: 'checklist', name: 'Pre-Sprint Checklist', purpose: 'Synthesized risks & action items', x: 50, y: 81 },
+] : number === 75 ? [
   { id: 'partnerships', name: 'Strategic Partnerships', purpose: 'Connect artists, venues & brands', x: 79, y: 77 },
   { id: 'originals', name: 'Buzo Originals', purpose: 'Reusable event formats & rights', x: 25, y: 30 },
   { id: 'art', name: 'Digital Art', purpose: 'Artist collaborations & licences', x: 76, y: 28 },
@@ -71,7 +79,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
       </div>
       <p>Sandbox demo · Simulated activity · Each reward purchase needs approval.</p>
     </div>}
-    {hasLabels && <ol class="division-key" aria-label={number === 75 ? "Buzo Atlas pillars and their purposes" : "City divisions and their purposes"}>
+    {hasLabels && <ol class="division-key" aria-label={number === 74 ? "Telepath reviewers and workflow" : number === 75 ? "Buzo Atlas pillars and their purposes" : "City divisions and their purposes"}>
       {divisions.map((division, index) => <li><span class="division-number">{index + 1}</span><span><strong>{division.name}</strong><small>{division.purpose}</small></span></li>)}
     </ol>}
     <figcaption>{art.caption}<small>Concept artwork and a 3D interpretation of the project.</small></figcaption>
@@ -82,7 +90,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
 <style is:inline>
   .exhibit-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
   .project-exhibit .division-labels[hidden], .project-exhibit .division-key[hidden] { display: none !important; }
-  .project-exhibit:is([data-number='75'], [data-number='76']) .exhibit-scene, .project-exhibit:is([data-number='75'], [data-number='76']) .exhibit-art { position: relative; }
+  .project-exhibit:is([data-number='74'], [data-number='75'], [data-number='76']) .exhibit-scene, .project-exhibit:is([data-number='74'], [data-number='75'], [data-number='76']) .exhibit-art { position: relative; }
   .division-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
   .division-label { position: absolute; display: flex; gap: 8px; align-items: center; transform: translate(-50%, -50%); background: rgba(20, 24, 25, .92); color: #fff4df; border: 1px solid #c8a66b; border-radius: 7px; padding: 8px 10px; box-shadow: 0 3px 16px #0005; white-space: nowrap; }
   .division-number { display: inline-grid; place-items: center; flex: 0 0 22px; width: 22px; height: 22px; border: 1px solid #c8a66b; border-radius: 50%; color: #e3bd7b; font: 11px/1 var(--mono); }
@@ -91,10 +99,11 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
   .division-key { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; list-style: none; margin: 0; padding: 18px 22px; border-top: 1px solid var(--line); }
   .division-key li { display: flex; align-items: center; gap: 8px; }
   .division-key small { display: block; color: var(--muted); font-size: 10px; line-height: 1.5; margin-top: 3px; }
+  .project-exhibit[data-number='74'] .division-key { grid-template-columns: repeat(3, 1fr); }
   @media (max-width: 650px) {
     .division-copy { display: none; }
     .division-label { padding: 4px; border-radius: 50%; }
-    .division-key { grid-template-columns: repeat(2, 1fr); gap: 14px 10px; padding: 16px; }
+    .division-key, .project-exhibit[data-number='74'] .division-key { grid-template-columns: repeat(2, 1fr); gap: 14px 10px; padding: 16px; }
   }
 </style>
 <style>

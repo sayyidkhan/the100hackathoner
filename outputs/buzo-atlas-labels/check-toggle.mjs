@@ -2,7 +2,7 @@ import { chromium, expect } from '@playwright/test';
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const page = await browser.newPage({ viewport: { width: 1280, height: 1000 } });
 const errors=[];page.on('pageerror',e=>errors.push(e.message));
-for (const id of [75,76]) {
+for (const id of [74,75,76]) {
   await page.goto(`http://127.0.0.1:18481/hackathons/${id}/?from=landing`);
   const toggle=page.locator('[data-toggle-labels]');
   await expect(toggle).toHaveText('Hide labels');
@@ -26,8 +26,8 @@ for (const id of [75,76]) {
   await page.locator('[data-project-exhibit]').screenshot({path:`outputs/buzo-atlas-labels/toggle-${id}-mobile.png`});
   await page.setViewportSize({width:1280,height:1000});
 }
-await page.goto('http://127.0.0.1:18481/hackathons/74/?from=landing');
+await page.goto('http://127.0.0.1:18481/hackathons/73/?from=landing');
 await expect(page.locator('[data-toggle-labels]')).toHaveCount(0);
 if(errors.length)throw new Error(errors.join('\n'));
-console.log('Both exhibits: default visible, hide/show, mode switching, keyboard and mobile checks passed. Unlabelled exhibit has no toggle.');
+console.log('All three labelled exhibits: default visible, hide/show, mode switching, keyboard and mobile checks passed. Unlabelled exhibit has no toggle.');
 await browser.close();
