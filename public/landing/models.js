@@ -1,5 +1,6 @@
 import { createArtifact as createStorybook } from './artifacts/storybook.js';
 import { createArtifact as createItachiCrow } from './artifacts/itachi-crow.js';
+import { createArtifact as createBorneo } from './artifacts/long-taa-borneo.js';
 
 /** Original procedural interpretations of the three Museum concept images.
  * These are symbolic project exhibits, not scans or product screenshots.
@@ -7,6 +8,7 @@ import { createArtifact as createItachiCrow } from './artifacts/itachi-crow.js';
 export function createArtifact(THREE, id) {
   if (Number(id) === 81) return createStorybook(THREE);
   if (Number(id) === 80) return createItachiCrow(THREE);
+  if (Number(id) === 79) return createBorneo(THREE);
   const root = new THREE.Group();
   const material = (color, options = {}) => new THREE.MeshStandardMaterial({
     color, roughness: .76, metalness: 0, ...options
@@ -155,98 +157,7 @@ export function createArtifact(THREE, id) {
     ribbon([[0,.26,1.7],[.12,.22,2.02],[.36,.08,2.23],[.68,.055,2.1]], .13, red);
   }
 
-  function borneo() {
-    const oval = [];
-    for(let i=0;i<80;i++){const a=i/80*Math.PI*2;oval.push([Math.cos(a)*2.95,Math.sin(a)*2.12]);}
-    slab(oval,.2,0,paperShade);
-    slab(oval.map(([x,z])=>[x*.99,z*.99]),.035,.2,cobalt);
-    for(let side of [-1,1]) for(let layer=0;layer<7;layer++) {
-      const contour=[];
-      for(let i=0;i<=26;i++){
-        const z=-1.96+i/26*3.92;
-        const river=.48*Math.sin(z*1.8)+.1;
-        contour.push([river+side*(.45+layer*.065),z*(1-layer*.025)]);
-      }
-      for(let i=26;i>=0;i--){
-        const z=-1.96+i/26*3.92;
-        const edge=2.85*Math.sqrt(Math.max(.03,1-(z/2.14)**2));
-        contour.push([side*(edge-layer*.075),z*(1-layer*.025)]);
-      }
-      slab(contour,.065,.24+layer*.066,layer%2?paper:paperLight);
-    }
-    const building = new THREE.Group();
-    root.add(building);
-    const deckY=1.38;
-    box(4.2,.13,1.56,0,deckY,-.55,wood,building);
-    // Slender cross-braced stilts and structural beams under the veranda.
-    for(const x of [-1.9,-1.14,-.38,.38,1.14,1.9]) for(const z of [-1.1,.02]) {
-      beam([x,.4,z],[x,deckY,z],.035,wood,building);
-      if(x<1.8)beam([x,.55,z],[x+.76,1.27,z],.018,woodDark,building);
-    }
-    box(3.95,.88,.045,0,1.91,-1.08,paperShade,building);
-    box(.06,.88,1.02,-1.95,1.91,-.59,wood,building);
-    box(.06,.88,1.02,1.95,1.91,-.59,wood,building);
-    for(let i=0;i<50;i++) box(.023,.86,.014,-1.91+i*.078,1.91,-1.052,wood,building);
-    for(let i=0;i<6;i++) {
-      const x=-1.62+i*.65;
-      box(.5,.76,.035,x,1.86,-.19,woodDark,building);
-      box(.045,.88,.065,x-.27,1.91,-.15,wood,building);
-      box(.43,.04,.045,x,2.18,-.13,wood,building);
-      box(.43,.04,.045,x,1.52,-.13,wood,building);
-      for(let j=0;j<5;j++)box(.026,.61,.022,x-.19+j*.095,1.86,-.116,paperShade,building);
-    }
-    // Veranda railing, floorboards and six roof-bearing posts.
-    for(let i=0;i<42;i++)box(.018,.055,1.43,-2.03+i*.098,deckY+.075,-.55,paperShade,building);
-    beam([-2.02,1.84,.19],[2.02,1.84,.19],.023,wood,building);
-    for(let i=0;i<32;i++)beam([-1.98+i*.128,deckY+.08,.19],[-1.98+i*.128,1.84,.19],.012,wood,building);
-    for(const x of [-1.95,-1.17,-.39,.39,1.17,1.95])beam([x,deckY,.19],[x,2.48,.19],.024,wood,building);
-    const roofVertices=[[-2.25,2.33,-1.41],[2.25,2.33,-1.41],[-2.25,3.16,-.62],[2.25,3.16,-.62],[-2.25,2.33,.37],[2.25,2.33,.37]];
-    faces(roofVertices,[[0,1,2],[1,3,2],[2,3,4],[3,5,4],[0,2,4],[1,5,3]],paper,building);
-    for(let i=0;i<64;i++){
-      const x=-2.24+i*.071;
-      beam([x,2.34,-1.42],[x,3.17,-.62],.009,wood,building,4);
-      beam([x,3.17,-.62],[x,2.34,.38],.009,wood,building,4);
-    }
-    beam([-2.29,3.18,-.62],[2.29,3.18,-.62],.028,wood,building);
-    // Stairs connect the veranda to a bright red footbridge over the cobalt river.
-    for(let i=0;i<7;i++)box(.55,.06,.18,1.49,deckY-i*.115,.34+i*.145,wood,building);
-    const bridge = new THREE.Group();
-    bridge.position.set(1.53,.55,1.5);
-    bridge.rotation.y=-.32;
-    root.add(bridge);
-    box(1.82,.065,.4,0,0,0,red,bridge);
-    for(let i=0;i<8;i++)for(const side of [-1,1])beam([-.84+i*.24,-.12,side*.19],[-.84+i*.24,.28,side*.19],.012,red,bridge);
-    for(const side of [-1,1])beam([-.87,.28,side*.19],[.87,.28,side*.19],.014,red,bridge);
-
-    function palm(x,y,z,h,phase) {
-      const trunkPoints=[[x,y,z],[x+.07,y+h*.6,z-.03],[x+.15,y+h,z-.06]];
-      const curve = new THREE.CatmullRomCurve3(trunkPoints.map(p=>new THREE.Vector3(...p)));
-      mesh(new THREE.TubeGeometry(curve,10,.035,5,false),wood);
-      const crown=new THREE.Vector3(x+.15,y+h,z-.06);
-      for(let frond=0;frond<6;frond++){
-        const a=phase+frond/6*Math.PI*2;
-        const reach=.65+h*.11;
-        const tip=[crown.x+Math.cos(a)*reach,crown.y-.22,crown.z+Math.sin(a)*reach];
-        const midpoint=[crown.x+Math.cos(a)*reach*.48,crown.y+.18,crown.z+Math.sin(a)*reach*.48];
-        beam(crown.toArray(),midpoint,.012,paperShade);
-        beam(midpoint,tip,.009,paperShade);
-        for(let leaf=1;leaf<8;leaf++){
-          const t=leaf/8;
-          const base=new THREE.Vector3(crown.x+Math.cos(a)*reach*t,crown.y+Math.sin(t*Math.PI)*.22-t*.22,crown.z+Math.sin(a)*reach*t);
-          const length=.24*Math.sin(t*Math.PI)+.08;
-          for(const side of [-1,1]){
-            const perpendicular=new THREE.Vector3(-Math.sin(a),0,Math.cos(a)).multiplyScalar(side*length);
-            const end=base.clone().add(perpendicular).add(new THREE.Vector3(Math.cos(a)*.1,-.11,Math.sin(a)*.1));
-            faces([base.toArray(),[base.x+Math.cos(a)*.115,base.y+.016,base.z+Math.sin(a)*.115],end.toArray()],[[0,1,2]],paperLight);
-          }
-        }
-      }
-    }
-    for(const [x,z,h,phase] of [[-2.42,-.8,2.25,.2],[-1.8,-1.52,2.45,1.2],[2.32,-1.14,1.94,.6],[-2.35,1.18,1.35,.7],[2.36,.95,1.15,1.4]])palm(x,.6,z,h,phase);
-  }
-
-  if (Number(id) === 79) borneo();
-  else storybook();
+  storybook();
   root.updateMatrixWorld(true);
   const bounds = new THREE.Box3().setFromObject(root);
   const center = bounds.getCenter(new THREE.Vector3());
