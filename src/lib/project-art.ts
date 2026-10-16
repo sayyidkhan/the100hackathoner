@@ -27,8 +27,8 @@ import p49Light from '../../public/landing/assets/projects/049-stress-bunny-ligh
 import p49Dark from '../../public/landing/assets/projects/049-stress-bunny-dark-v1.png';
 import p50Light from '../../public/landing/assets/projects/050-magistock-light-v1.png';
 import p50Dark from '../../public/landing/assets/projects/050-magistock-dark-v1.png';
-import p51Light from '../../public/landing/assets/projects/051-should-i-quit-light-v1.png';
-import p51Dark from '../../public/landing/assets/projects/051-should-i-quit-dark-v1.png';
+import p51Light from '../../public/landing/assets/projects/051-should-i-quit-light-v2.png';
+import p51Dark from '../../public/landing/assets/projects/051-should-i-quit-dark-v2.png';
 import p52Light from '../../public/landing/assets/projects/052-linkedin-launch-light-v1.png';
 import p52Dark from '../../public/landing/assets/projects/052-linkedin-launch-dark-v1.png';
 import p53Light from '../../public/landing/assets/projects/053-devduel-light-v1.png';
@@ -117,7 +117,7 @@ export const projectArt: Record<number, ProjectArt> = {
   48: { light: p48Light, dark: p48Dark, alt: "An ivory Christmas card with a folded tree rises from a red envelope beside three recipient-themed cards and blue ribbon.", caption: "A little context about the person makes a warmer holiday greeting.", model: '/landing/artifacts/jollycards.js' },
   49: { light: p49Light, dark: p49Dark, alt: "A resting ivory rabbit lies beside a released open hand, quiet blue pond ripples and a single red flower.", caption: "Let go of the controls. Give the bunny\u2014and yourself\u2014a moment to rest.", model: '/landing/artifacts/stress-bunny.js' },
   50: { light: p50Light, dark: p50Dark, alt: "A jagged market signal passes three red control gates into a guarded path, beside an audit ledger, memory cards and override handle.", caption: "Market events become execution limits, with memory and an audit trail behind each decision.", model: '/landing/artifacts/magistock.js' },
-  51: { light: p51Light, dark: p51Dark, alt: "A person considers two doorways at a forked path, surrounded by advisory cards, a balance and a journal with a feedback loop.", caption: "Put the different perspectives on the table before choosing the next chapter.", model: '/landing/artifacts/should-i-quit.js' },
+  51: { light: p51Light, dark: p51Dark, alt: "A person stands at a multi-way blue crossroads connecting an office, a landscape doorway, a library, a workbench and a restful garden, with advisory cards and a reflection journal.", caption: "Put the different perspectives on the table before choosing the next chapter.", model: '/landing/artifacts/should-i-quit.js' },
   52: { light: p52Light, dark: p52Dark, alt: "A red idea card travels into a miniature studio that produces an ivory post page, framed image and curling filmstrip.", caption: "One idea becomes a launch package: words, an image, and a short teaser.", model: '/landing/artifacts/linkedin-launch.js' },
   53: { light: p53Light, dark: p53Dark, alt: "Red and blue paper champions face off in a miniature arena, with profile cards, a six-part comparison wheel and commentary megaphone.", caption: "Professional profiles become a playful rivalry, complete with stats and commentary.", model: '/landing/artifacts/devduel.js' },
   55: { light: p55Light, dark: p55Dark, alt: "A coral-edged Buzo phone connects a live-music club, rooftop lounge and DJ stage with glowing routes across a miniature Singapore nightlife scene.", caption: "Tell Buzo your vibe. Find the right events, then turn the shortlist into a night out.", model: '/landing/artifacts/buzo.js' },
