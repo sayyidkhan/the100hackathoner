@@ -567,7 +567,9 @@ try {
 
     const parsedDate = parseDateLabel(valueAt(columns.date));
     const duration = Number(valueAt(columns.duration));
-    const award = clean(valueAt(columns.award));
+    const rawAward = clean(valueAt(columns.award));
+    // Explicit no-prize entries are completed attempts, without award badges.
+    const award = /^no\s+(?:prize|award)s?\.?$/i.test(rawAward ?? "") ? null : rawAward;
     const sourceCode = cleanUrl(valueAt(columns.sourceCode));
     const eventUrl = cleanUrl(valueAt(columns.eventLink));
 
