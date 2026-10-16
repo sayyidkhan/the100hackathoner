@@ -60,16 +60,16 @@ import crowLight from '../../public/landing/assets/crow-sharingan-light-v3.png';
 import crowDark from '../../public/landing/assets/crow-sharingan-dark-v3.png';
 import borneoLight from '../../public/landing/assets/borneo-concept-v3.jpg';
 import borneoDark from '../../public/landing/assets/borneo-dark-v1.jpg';
-import peterLight from '../../public/landing/assets/projects/078-peterindex-light-v1.png';
-import peterDark from '../../public/landing/assets/projects/078-peterindex-dark-v1.png';
+import peterLight from '../../public/landing/assets/projects/078-peterindex-light-v2.png';
+import peterDark from '../../public/landing/assets/projects/078-peterindex-dark-v2.png';
 import zoLight from '../../public/landing/assets/projects/077-zo-memories-light-v1.png';
 import zoDark from '../../public/landing/assets/projects/077-zo-memories-dark-v1.png';
-import agrimLight from '../../public/landing/assets/projects/076-agrim-tycoon-light-v1.png';
-import agrimDark from '../../public/landing/assets/projects/076-agrim-tycoon-dark-v1.png';
+import agrimLight from '../../public/landing/assets/projects/076-agrim-tycoon-light-v3.png';
+import agrimDark from '../../public/landing/assets/projects/076-agrim-tycoon-dark-v3.png';
 import buzoLight from '../../public/landing/assets/projects/075-buzo-atlas-light-v1.png';
 import buzoDark from '../../public/landing/assets/projects/075-buzo-atlas-dark-v1.png';
-import telepathLight from '../../public/landing/assets/projects/074-corporate-telepath-light-v1.png';
-import telepathDark from '../../public/landing/assets/projects/074-corporate-telepath-dark-v1.png';
+import telepathLight from '../../public/landing/assets/projects/074-corporate-telepath-light-v2.png';
+import telepathDark from '../../public/landing/assets/projects/074-corporate-telepath-dark-v2.png';
 import driveLight from '../../public/landing/assets/projects/073-zo-drive-light-v1.png';
 import driveDark from '../../public/landing/assets/projects/073-zo-drive-dark-v1.png';
 import alienLight from '../../public/landing/assets/projects/072-alien-homecoming-light-v1.png';
@@ -136,12 +136,12 @@ export const projectArt: Record<number, ProjectArt> = {
   70: { light: mapperLight, dark: mapperDark, alt: 'A resume and ranked opportunity steps lead across a red bridge to three people and a folded outreach envelope.', caption: 'From finding a role to knowing who to talk to, and why.', model: '/landing/artifacts/relationship-mapper.js' },
   72: { light: alienLight, dark: alienDark, alt: 'A lavender alien follows a cobalt path across ivory realm islands toward a red gate, with an observatory and a constellation tree.', caption: 'A trail of remembered things across unfamiliar worlds, searching for home.', model: '/landing/artifacts/alien-homecoming.js' },
   73: { light: driveLight, dark: driveDark, alt: 'An ivory file cabinet with an open folder drawer, red document folder, blue database stack and a lock beside a sharing path.', caption: 'A personal home for files, with control over what leaves the door.', model: '/landing/artifacts/zo-drive.js' },
-  74: { light: telepathLight, dark: telepathDark, alt: 'Four review stations—chip, ledger, gavel and people—connect a central proposal to a single ivory checklist.', caption: 'Four perspectives turn a feature proposal into a shared checklist.', model: '/landing/artifacts/corporate-telepath.js' },
+  74: { light: telepathLight, dark: telepathDark, alt: 'A paper-and-brass feature review studio with engineering, finance, legal and people workstations surrounding a suspended proposal and a shared action plan.', caption: 'Four perspectives turn a feature proposal into a shared checklist.', model: '/landing/artifacts/corporate-telepath.js' },
   75: { light: buzoLight, dark: buzoDark, alt: 'A layered ivory atlas connects a concert stage, framed artwork and venue to an open red-spined ledger.', caption: 'Mapping the relationships, rights and decisions behind a cultural portfolio.', model: '/landing/artifacts/buzo-atlas.js' },
-  76: { light: agrimLight, dark: agrimDark, alt: 'An ivory city with civic, academy and server districts connected to a red decision lever and a blue local AI chip.', caption: 'Three competing worlds. An AI adviser. The final decision stays with the mayor.', model: '/landing/artifacts/agrim-tycoon.js' },
-  77: { light: zoLight, dark: zoDark, alt: 'A red scrapbook unfolds into walls of ivory travel-photo cards, with two small figures and a blue shared timeline.', caption: 'A shared home for moments that become a story together.', model: '/landing/artifacts/zo-memories.js' },
+  76: { light: agrimLight, dark: agrimDark, alt: 'Mayor Agrim, wearing glasses and a black hoodie, directs a community marketplace, modern glass academy and server district from a central city-planning table.', caption: 'One mayor. Three different worlds. Agrim commands the city from the center.', model: '/landing/artifacts/agrim-tycoon.js' },
+  77: { light: zoLight, dark: zoDark, alt: 'A red scrapbook unfolds into walls of ivory travel-photo cards, with two small figures and a blue shared timeline.', caption: 'Different perspectives. One shared story. Photos, films and voices woven into a living journal.', model: '/landing/artifacts/zo-memories.js' },
   81: { light: bookLight, dark: bookDark, alt: 'A red storybook opens into a paper landscape with a blue path leading home.', caption: 'Drawing a way through peer pressure, one choice at a time.', model: '/landing/artifacts/storybook.js' },
   80: { light: crowLight, dark: crowDark, alt: 'An origami crow soars above a miniature ivory city on a cobalt base.', caption: 'A bird’s-eye view turns an unfamiliar destination into a place to explore.', model: '/landing/artifacts/itachi-crow.js' },
   79: { light: borneoLight, dark: borneoDark, alt: 'A timber longhouse stands among paper forest and a winding blue river.', caption: 'A digital welcome to Long Taa and the landscape around it.', model: '/landing/models.js' },
-  78: { light: peterLight, dark: peterDark, alt: 'A red contact-card archive and ivory people connected by blue paths; a red route leads to an open doorway.', caption: 'Remember the conversation. Find the warm path to the next opportunity.', model: '/landing/artifacts/peterindex.js' },
+  78: { light: peterLight, dark: peterDark, alt: 'An open red relationship journal and raised portrait cards connected by blue paths, with a red introduction route leading to a warmly lit archway.', caption: 'Remember the conversation. Find the warm path to the next opportunity.', model: '/landing/artifacts/peterindex.js' },
 };

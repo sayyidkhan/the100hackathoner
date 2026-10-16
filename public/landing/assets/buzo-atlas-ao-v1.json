@@ -1,0 +1,111 @@
+{
+  "format": "BAO2",
+  "rays": 32,
+  "maxDistance": 0.9,
+  "keyRays": 16,
+  "keyPosition": [
+    -5,
+    6,
+    2.5
+  ],
+  "keyWidth": 1.5,
+  "cell": 0.025,
+  "epsilon": 0.0018,
+  "sampled": 142956,
+  "cacheHits": 517815,
+  "totalVertices": 660771,
+  "triangles": 221304,
+  "bytes": 1321750,
+  "minAO": 1,
+  "maxAO": 255,
+  "averageAO": 100.79,
+  "minKey": 0,
+  "maxKey": 255,
+  "averageKey": 90.25,
+  "meshes": [
+    {
+      "index": 0,
+      "name": "Mesh",
+      "vertices": 273144,
+      "offset": 208,
+      "hash": 2887346807
+    },
+    {
+      "index": 1,
+      "name": "Mesh",
+      "vertices": 232728,
+      "offset": 546496,
+      "hash": 1306606880
+    },
+    {
+      "index": 2,
+      "name": "Mesh",
+      "vertices": 64992,
+      "offset": 1011952,
+      "hash": 3452068275
+    },
+    {
+      "index": 3,
+      "name": "Mesh",
+      "vertices": 2340,
+      "offset": 1141936,
+      "hash": 231478399
+    },
+    {
+      "index": 4,
+      "name": "Mesh",
+      "vertices": 3288,
+      "offset": 1146616,
+      "hash": 684952754
+    },
+    {
+      "index": 5,
+      "name": "Mesh",
+      "vertices": 540,
+      "offset": 1153192,
+      "hash": 761427058
+    },
+    {
+      "index": 6,
+      "name": "Mesh",
+      "vertices": 768,
+      "offset": 1154272,
+      "hash": 3959792133
+    },
+    {
+      "index": 7,
+      "name": "Mesh",
+      "vertices": 81156,
+      "offset": 1155808,
+      "hash": 3049905131
+    },
+    {
+      "index": 8,
+      "name": "Mesh",
+      "vertices": 996,
+      "offset": 1318120,
+      "hash": 2945359601
+    },
+    {
+      "index": 9,
+      "name": "Mesh",
+      "vertices": 273,
+      "offset": 1320112,
+      "hash": 2821945455
+    },
+    {
+      "index": 10,
+      "name": "Mesh",
+      "vertices": 273,
+      "offset": 1320658,
+      "hash": 2821945455
+    },
+    {
+      "index": 11,
+      "name": "Mesh",
+      "vertices": 273,
+      "offset": 1321204,
+      "hash": 2821945455
+    }
+  ]
+}

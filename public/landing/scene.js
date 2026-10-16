@@ -42,7 +42,7 @@ const clamp = THREE.MathUtils.clamp;
  * Construct lazily, then call setActive(true) when the 3D view is displayed.
  * Inactive, offscreen and hidden-document states do not run a rendering loop.
  */
-export function createGalleryScene({ canvas, container, onError = () => {}, onStoryChange = () => {}, theme = 'dark', initialProject = 81, artifactFactory = createArtifact, projectIds = PROJECTS }) {
+export function createGalleryScene({ canvas, container, onError = () => {}, onStoryChange = () => {}, onAnnotations = (_points) => {}, theme = 'dark', initialProject = 81, artifactFactory = createArtifact, projectIds = PROJECTS }) {
   if (!(canvas instanceof HTMLCanvasElement) || !container) {
     throw new TypeError('The gallery needs a canvas and its layout container.');
   }
@@ -366,6 +366,13 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
         onStoryChange(story);
       }
       renderer.render(scene, camera);
+      if (currentModel?.userData.annotations) {
+        const points = currentModel.userData.annotations.map(({ id, position }) => {
+          const point = new THREE.Vector3(...position).applyMatrix4(currentModel.matrixWorld).project(camera);
+          return { id, x: (point.x + 1) * 50, y: (1 - point.y) * 50, visible: point.z > -1 && point.z < 1 };
+        });
+        onAnnotations(points);
+      }
     } catch (error) {
       reportError(error);
       return;
