@@ -1,4 +1,5 @@
 import p34Light from '../../public/landing/assets/projects/034-lrnmate-light-v1.png';
+import fitstakeLight from '../../public/landing/assets/projects/082-fitstake-light-v1.png';
 import p34Dark from '../../public/landing/assets/projects/034-lrnmate-dark-v1.png';
 import p35Light from '../../public/landing/assets/projects/035-anginombak-light-v1.png';
 import p35Dark from '../../public/landing/assets/projects/035-anginombak-dark-v1.png';
@@ -98,6 +99,7 @@ export interface ProjectArt {
 }
 
 export const projectArt: Record<number, ProjectArt> = {
+  82: { light: fitstakeLight, dark: fitstakeLight, alt: 'Two paper runners compete on red and blue lanes around a phone displaying progress and shared rewards.', caption: 'Two friends, one fitness challenge. Consistency unlocks a better reward for each player.', model: '/landing/artifacts/fitstake.js' },
   66: { light: buzo20Light, dark: buzo20Dark, alt: 'A red AI concierge kiosk connects a visitor to a concert, art exhibition and networking pavilion across a folded ivory map, with a brass compass and blue routes.', caption: 'Start with a conversation. Find your way to the next live experience.', model: '/landing/artifacts/buzo-20.js' },
   68: { light: buzo21Light, dark: buzo21Dark, alt: 'An ivory concierge welcomes two visitors at a red desk beneath a globe, with blue paths connecting a music stage, networking pavilion and exhibition.', caption: 'One helpful conversation opens a world of live events.', model: '/landing/artifacts/buzo-21.js' },
   71: { light: palLight, dark: palDark, alt: 'A sheikh in a white headscarf and seven specialist companions gather around a council table inside an ivory kingdom, with a community market and noticeboard.', caption: 'One sheikh, seven trusted companions, and a whole community to care for. A kingdom helping one person run a community business.', model: '/landing/artifacts/kingdom-of-pal.js' },

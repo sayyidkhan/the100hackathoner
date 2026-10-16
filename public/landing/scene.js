@@ -294,6 +294,16 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       scene.environmentIntensity = .6;
       renderer.toneMappingExposure = 1.02;
     }
+    if (currentModel?.userData.studioProfile === 'fitstake') {
+      hemisphere.intensity = .7;
+      key.intensity = 2.6;
+      fill.intensity = .7;
+      rim.intensity = 1.8;
+      scene.environmentIntensity = .55;
+      renderer.toneMappingExposure = 1;
+      key.shadow.normalBias = .009;
+      key.shadow.radius = 5;
+    }
   }
 
   /** Change only the studio presentation, never the artifact or camera state. */
@@ -520,6 +530,11 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     requestFrame();
   }
 
+  function setStoryStep(index) {
+    currentModel?.userData.setStep?.(index, elapsed);
+    requestFrame();
+  }
+
   function setActive(value) {
     if (disposed || failed) return;
     active = Boolean(value);
@@ -676,5 +691,5 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     dispose();
     throw error;
   }
-  return { setProject, setActive, setPaused, setTheme, resetView, dispose };
+  return { setProject, setActive, setPaused, setTheme, setStoryStep, resetView, dispose };
 }

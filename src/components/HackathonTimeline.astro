@@ -1,5 +1,7 @@
 ---
 import type { Hackathon } from "../lib/hackathons";
+import { getImage } from "astro:assets";
+import { projectArt } from "../lib/project-art";
 import {
   classifyAward,
   formatDateLabel,
@@ -16,6 +18,14 @@ interface Props {
 
 const { items, limit, showYears = true } = Astro.props;
 const visibleItems = limit ? items.slice(0, limit) : items;
+const highlights = new Map(await Promise.all(visibleItems.map(async (item) => {
+  const art = projectArt[item.number];
+  if (!art) return [item.number, null] as const;
+  const [light, dark] = await Promise.all([art.light, art.dark].map((src) =>
+    getImage({ src, width: 480, format: "webp", quality: 80 })
+  ));
+  return [item.number, { light: light.src, dark: dark.src, alt: art.alt }] as const;
+})));
 
 interface Row {
   item: Hackathon;
@@ -110,6 +120,10 @@ function gapBefore(index: number) {
                       {row.dateLabel ?? "Date not recorded"}
                     </time>
                     {row.duration && <span class="span">{row.duration}</span>}
+                    {highlights.get(row.item.number) && <span class="highlight">
+                      <img class="highlight-light" src={highlights.get(row.item.number)!.light} alt={highlights.get(row.item.number)!.alt} width="480" height="320" loading="lazy" decoding="async" />
+                      <img class="highlight-dark" src={highlights.get(row.item.number)!.dark} alt={highlights.get(row.item.number)!.alt} width="480" height="320" loading="lazy" decoding="async" />
+                    </span>}
                   </div>
 
                   <div class="body">
@@ -362,6 +376,12 @@ function gapBefore(index: number) {
     text-transform: uppercase;
   }
 
+  .highlight { display: block; width: 100%; max-width: 144px; margin-top: 9px; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-paper); }
+  .highlight img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
+  .highlight .highlight-dark { display: none; }
+  :global([data-theme='dark']) .highlight .highlight-light { display: none; }
+  :global([data-theme='dark']) .highlight .highlight-dark { display: block; }
+
   /* Middle body ------------------------------------------------------- */
 
   .event {
@@ -543,6 +563,9 @@ function gapBefore(index: number) {
       align-items: center;
       padding-left: 0;
     }
+
+    .highlight { flex-basis: 100%; max-width: none; width: 100%; margin-top: 2px; border: 0; background: transparent; }
+    .highlight img { max-width: 180px; border: 1px solid var(--line); border-radius: 8px; }
 
     .spine,
     .stamp::before {

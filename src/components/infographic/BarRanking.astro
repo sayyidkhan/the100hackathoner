@@ -28,7 +28,7 @@ const peak = Math.max(...items.map((item) => item.count), 1);
             <div class="breakdown">
               <p>{item.count} hackathon{item.count === 1 ? "" : "s"}</p>
               <ol aria-label={`Hackathons: ${item.label}`}>
-                {item.hackathons.map((hackathon) => (
+                {[...item.hackathons].sort((a, b) => a.number - b.number).map((hackathon) => (
                   <li>
                     <a href={`/hackathons/${hackathon.number}/`}>
                       <b>#{String(hackathon.number).padStart(3, "0")}</b>

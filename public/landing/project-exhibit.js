@@ -8,6 +8,9 @@ for (const exhibit of document.querySelectorAll('[data-project-exhibit]')) {
   const storyTitle = story?.querySelector('[data-story-title]');
   const storyDetail = story?.querySelector('[data-story-detail]');
   const modes = [...exhibit.querySelectorAll('[data-mode]')];
+  const walkthrough = exhibit.querySelector('[data-walkthrough]');
+  const stepButtons = [...exhibit.querySelectorAll('[data-story-select]')];
+  const autoSteps = exhibit.querySelector('[data-story-auto]');
   const pause = exhibit.querySelector('[data-pause]');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   let scene;
@@ -24,6 +27,7 @@ for (const exhibit of document.querySelectorAll('[data-project-exhibit]')) {
     storyStep.textContent = value.step;
     storyTitle.textContent = value.title;
     storyDetail.textContent = value.detail;
+    stepButtons.forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.storySelect) === value.index)));
   }
   function applyTheme() {
     exhibit.querySelector('[data-dark-art]').media = theme() === 'dark' ? 'all' : 'not all';
@@ -39,6 +43,7 @@ for (const exhibit of document.querySelectorAll('[data-project-exhibit]')) {
     artwork.hidden = mode !== 'artwork';
     stage.hidden = mode !== '3d';
     controls.hidden = mode !== '3d';
+    if (walkthrough) walkthrough.hidden = mode !== '3d';
     modes.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.mode === mode)));
     scene?.setActive(mode === '3d');
   }
@@ -76,6 +81,15 @@ for (const exhibit of document.querySelectorAll('[data-project-exhibit]')) {
     display(requested);
   }));
   exhibit.querySelector('[data-reset]').addEventListener('click', () => scene?.resetView());
+  stepButtons.forEach(button => button.addEventListener('click', () => {
+    scene?.setStoryStep(Number(button.dataset.storySelect));
+    autoSteps?.setAttribute('aria-pressed', 'false');
+  }));
+  autoSteps?.addEventListener('click', () => {
+    const enabled = autoSteps.getAttribute('aria-pressed') !== 'true';
+    scene?.setStoryStep(enabled ? null : Number(stepButtons.find(button => button.getAttribute('aria-pressed') === 'true')?.dataset.storySelect ?? 0));
+    autoSteps.setAttribute('aria-pressed', String(enabled));
+  });
   pause.addEventListener('click', () => { paused = !paused; pauseLabel(); });
   reduced.addEventListener('change', () => { paused = reduced.matches; pauseLabel(); });
   document.addEventListener('site:theme-change', applyTheme);

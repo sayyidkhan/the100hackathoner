@@ -2,33 +2,35 @@
 import type { Hackathon } from "../../lib/hackathons";
 import { buildAwards } from "../../lib/insights";
 
-interface Props { items: Hackathon[]; }
-const { items } = Astro.props;
+interface Props { items: Hackathon[]; awardedOnly?: boolean; }
+const { items, awardedOnly = true } = Astro.props;
 const awardEntries = buildAwards(items);
-const awarded = items.filter((item) => item.award?.trim()).sort((a, b) => b.number - a.number);
-const sizes = [...new Set(awarded.map((item) => item.members.length))].sort((a, b) => a - b);
+const builds = items.filter((item) => !awardedOnly || item.award?.trim()).sort((a, b) => a.number - b.number);
+const sizes = [...new Set(items.map((item) => item.members.length))].sort((a, b) => a - b);
 const groups = sizes.map((size) => ({
   size,
   label: size === 0 ? "Team not recorded" : size === 1 ? "Solo" : `${size}-person teams`,
-  builds: awarded.filter((item) => item.members.length === size),
+  builds: builds.filter((item) => item.members.length === size),
 }));
-const peak = Math.max(...groups.map((group) => group.builds.length), 1);
+// A shared scale and the same size rows make the two charts comparable.
+const peak = Math.max(...sizes.map((size) => items.filter((item) => item.members.length === size).length), 1);
 ---
 
-<div class="winning-teams">
-  <p class="hint">Select a team size to see its awarded builds and lineups.</p>
-  <ol class="composition" aria-label="Awarded builds by team size">
+<div class:list={["winning-teams", { awarded: awardedOnly }]}>
+  <h3>{awardedOnly ? "Winning team composition" : "Team composition"}</h3>
+  <p class="hint">{builds.length} {awardedOnly ? "awarded builds" : "hackathons"} · Select a size to see the lineups.</p>
+  <ol class="composition" aria-label={awardedOnly ? "Awarded builds by team size" : "All builds by team size"}>
     {groups.map((group) => (
       <li>
-        <details>
-          <summary>
+        {group.builds.length ? <details>
+          <summary class="size-row">
             <span class="size-label">{group.label}</span>
             <span class="track" aria-hidden="true"><span style={`--ratio:${group.builds.length / peak}`} /></span>
             <span class="count">{group.builds.length}</span>
             <span class="expand" aria-hidden="true">+</span>
           </summary>
           <div class="lineups">
-            <p>{group.builds.length} awarded build{group.builds.length === 1 ? "" : "s"}</p>
+            <p>{group.builds.length} {awardedOnly ? "awarded build" : "hackathon"}{group.builds.length === 1 ? "" : "s"}</p>
             <ol>
               {group.builds.map((item) => (
                 <li>
@@ -37,7 +39,7 @@ const peak = Math.max(...groups.map((group) => group.builds.length), 1);
                     <strong>{item.title}</strong>
                     <span aria-hidden="true">↗</span>
                   </a>
-                  <p class="result"><b>{awardEntries.find((entry) => entry.number === item.number)?.win ? "Win" : "Awarded"}</b> · {item.award}</p>
+                  {item.award && <p class="result"><b>{awardEntries.find((entry) => entry.number === item.number)?.win ? "Win" : "Awarded"}</b> · {item.award}</p>}
                   <ul aria-label={`Team for ${item.title}`}>
                     {item.members.map((member) => <li>{member}</li>)}
                   </ul>
@@ -46,28 +48,37 @@ const peak = Math.max(...groups.map((group) => group.builds.length), 1);
               ))}
             </ol>
           </div>
-        </details>
+        </details> : <div class="size-row empty">
+          <span class="size-label">{group.label}</span>
+          <span class="track" aria-hidden="true" />
+          <span class="count">0</span>
+          <span />
+        </div>}
       </li>
     ))}
   </ol>
 </div>
 
 <style>
+  .winning-teams { --composition-accent: var(--teal); min-width: 0; }
+  .winning-teams.awarded { --composition-accent: var(--gold); }
+  h3 { margin: 0 0 8px; font-size: 19px; font-weight: 500; letter-spacing: -.025em; }
   .hint { margin: 0 0 20px; color: var(--muted); font-size: 13px; line-height: 1.6; }
   .composition, .lineups ol, .lineups ul { list-style: none; margin: 0; padding: 0; }
   .composition { display: grid; gap: 8px; }
-  summary { display: grid; grid-template-columns: minmax(0, 150px) minmax(0, 1fr) 34px 20px; gap: 14px; align-items: center; min-height: 48px; padding: 8px 0; cursor: pointer; list-style: none; }
+  .size-row { display: grid; grid-template-columns: minmax(0, 120px) minmax(0, 1fr) 26px 18px; gap: 10px; align-items: center; min-height: 48px; padding: 8px 0; list-style: none; }
+  summary { cursor: pointer; }
   summary::-webkit-details-marker { display: none; }
-  summary:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: 4px; }
+  summary:focus-visible { outline: 2px solid var(--composition-accent); outline-offset: 3px; border-radius: 4px; }
   .size-label { font-size: 14px; color: var(--ink); }
   .track { height: 18px; background: var(--soft); border-radius: 2px; }
-  .track > span { display: block; height: 100%; width: calc(var(--ratio) * 100%); background: var(--checkpoint-award); border-radius: 2px; }
+  .track > span { display: block; height: 100%; width: calc(var(--ratio) * 100%); background: var(--composition-accent); border-radius: 2px; }
   .count { color: var(--muted); font: 14px var(--mono); text-align: right; }
-  .expand { color: var(--award); font: 20px var(--mono); text-align: center; }
+  .expand { color: var(--composition-accent); font: 20px var(--mono); text-align: center; }
   details[open] .expand { transform: rotate(45deg); }
-  .lineups { margin: 8px 0 16px; padding: 18px; border: 1px solid var(--line); border-left: 3px solid var(--gold); border-radius: 8px; background: var(--raised); }
+  .lineups { margin: 8px 0 16px; padding: 18px; border: 1px solid var(--line); border-left: 3px solid var(--composition-accent); border-radius: 8px; background: var(--raised); }
   .lineups > p { margin: 0 0 16px; color: var(--muted); font: 11px/1.5 var(--mono); }
-  .lineups > ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .lineups > ol { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .lineups > ol > li { min-width: 0; }
   .lineups a { display: flex; gap: 10px; align-items: baseline; min-height: 44px; color: var(--ink); text-decoration: none; }
   .lineups a strong { font-size: 14px; line-height: 1.5; font-weight: 500; overflow-wrap: anywhere; }
@@ -81,7 +92,7 @@ const peak = Math.max(...groups.map((group) => group.builds.length), 1);
   .lineups ul li { padding: 5px 8px; border: 1px solid var(--line); border-radius: 4px; color: var(--ink); background: var(--surface); font-size: 11px; overflow-wrap: anywhere; }
   .missing { color: var(--faint); font-size: 12px; }
   @media (max-width: 620px) {
-    summary { grid-template-columns: minmax(0, 1fr) 30px 20px; gap: 6px 10px; }
+    .size-row { grid-template-columns: minmax(0, 1fr) 30px 20px; gap: 6px 10px; }
     .track { grid-column: 1 / -1; grid-row: 2; height: 14px; }
     .lineups { padding: 14px; }
     .lineups > ol { grid-template-columns: 1fr; }

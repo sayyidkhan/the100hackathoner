@@ -9,6 +9,7 @@
 :root .site-pages main .switch, :root .site-pages main .archive-switch { padding: 4px; border-radius: 99px; background: var(--soft); border-color: var(--line); }
 :root .site-pages main .switch button, :root .site-pages main .archive-switch button { min-height: 44px; padding: 10px 20px; border-radius: 99px; font-size: .86rem; font-weight: 500; }
 :root .site-pages main button[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); }
+:root .site-pages main .cadence .year-select[aria-pressed="true"] { background: transparent; color: var(--ink); }
 :root .site-pages main .empty-state { background: transparent; box-shadow: none; border: 1px solid var(--line); border-radius: 12px; padding: 32px; }
 :root .site-pages main .principle-card { border: 1px solid var(--line); border-radius: 12px; padding: 28px; background: var(--raised); }
 :root .site-pages main .principle-card:hover { border-color: var(--accent); }

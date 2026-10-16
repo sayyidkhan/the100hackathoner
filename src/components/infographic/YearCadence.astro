@@ -1,337 +1,136 @@
 ---
 import type { YearStat } from "../../lib/insights";
 
-interface Props {
-  stats: YearStat[];
-}
-
+interface Props { stats: YearStat[]; }
 const { stats } = Astro.props;
 const peak = Math.max(...stats.map((stat) => stat.total), 1);
+const initial = stats.at(-1);
 ---
 
-<div class="cadence">
-  <ol class="cols" style={`--peak:${peak}`}>
-    {
-      stats.map((stat) => {
-        const shipped = stat.total - stat.awarded;
-        const buildLabel = `${stat.total} ${stat.total === 1 ? "build" : "builds"}`;
-        const tooltipId = `cadence-${stat.year}`;
-        const label = stat.dormant
-          ? `${stat.year}: dormant year, ${stat.cumulative} cumulative hackathons`
-          : `${stat.year}: ${stat.total} builds, ${stat.awarded} awarded, ${shipped} shipped, ${stat.days} days, ${stat.cumulative} cumulative`;
+<div class="cadence" data-cadence>
+  {initial && <div class="year-details" aria-label="Selected year details">
+    <div class="selected-year">
+      <span>Selected year</span>
+      <strong data-cadence-year>{initial.year}</strong>
+      <small data-cadence-status>{initial.dormant ? "No builds recorded" : "Active year"}</small>
+    </div>
+    <dl>
+      <div><dt>Builds</dt><dd data-cadence-total>{initial.total}</dd></div>
+      <div class="awarded-metric"><dt>Awarded</dt><dd data-cadence-awarded>{initial.awarded}</dd></div>
+      <div><dt>Build days</dt><dd data-cadence-days>{initial.days}</dd></div>
+      <div><dt>Cumulative</dt><dd data-cadence-cumulative>{initial.cumulative}</dd></div>
+    </dl>
+  </div>}
 
-        return (
-        <li
-          class:list={["col", { dormant: stat.dormant }]}
-          tabindex="0"
-          aria-label={label}
-          aria-describedby={tooltipId}
+  <ol class="cols" aria-label="Hackathons by year">
+    {stats.map((stat) => (
+      <li class:list={["col", { dormant: stat.dormant }]}>
+        <button
+          type="button"
+          class="year-select"
+          data-cadence-stat={JSON.stringify(stat)}
+          aria-pressed={stat.year === initial?.year ? "true" : "false"}
+          aria-label={`${stat.year}: ${stat.total} builds, ${stat.awarded} awarded, ${stat.days} build days, ${stat.cumulative} cumulative hackathons`}
         >
-          <span class="year-preview" id={tooltipId} role="tooltip">
-            <strong>{stat.year}</strong>
-            {stat.dormant ? (
-              <span>No builds recorded</span>
-            ) : (
-              <span>{buildLabel} · {stat.awarded} awarded</span>
-            )}
-            <span>{shipped} shipped · {stat.days || 0} days</span>
-            <em>{stat.cumulative} cumulative</em>
-          </span>
-
-          <div class="track">
-            <div
-              class="bar"
-              style={`--ratio:${stat.total / peak}`}
-              aria-hidden="true"
-            >
+          <span class="track" aria-hidden="true">
+            <span class="bar" style={`--ratio:${stat.total / peak}`}>
               <span class="count">{stat.total}</span>
-              {stat.awarded > 0 && (
-                <span
-                  class="award-segment"
-                  style={`--share:${stat.awarded / stat.total}`}
-                />
-              )}
-            </div>
-          </div>
-
+              {stat.awarded > 0 && <span class="award-segment" style={`--share:${stat.awarded / stat.total}`} />}
+            </span>
+          </span>
           <span class="year">{stat.year}</span>
           <span class="days">{stat.dormant ? "—" : `${stat.days}d`}</span>
-        </li>
-        );
-      })
-    }
+        </button>
+      </li>
+    ))}
   </ol>
 
   <ul class="legend" aria-label="Chart legend">
-    <li><span class="swatch shipped" />Shipped</li>
+    <li><span class="swatch other" />Other builds</li>
     <li><span class="swatch awarded" />Awarded</li>
     <li><span class="swatch dormant" />Dormant year</li>
   </ul>
-  <p class="chart-note">Days shown below each year · Hover, tap or focus a year for details</p>
+  <p class="chart-note">Hover, tap or focus a year to compare details above. Use arrow keys to move between years.</p>
 </div>
 
+<script>
+  for (const chart of document.querySelectorAll<HTMLElement>("[data-cadence]")) {
+    const buttons = [...chart.querySelectorAll<HTMLButtonElement>("[data-cadence-stat]")];
+    function selectYear(button: HTMLButtonElement) {
+      const stat = JSON.parse(button.dataset.cadenceStat!);
+      const values = { year: stat.year, total: stat.total, awarded: stat.awarded, days: stat.days, cumulative: stat.cumulative, status: stat.dormant ? "No builds recorded" : "Active year" };
+      for (const [key, value] of Object.entries(values)) {
+        const target = chart.querySelector(`[data-cadence-${key}]`);
+        if (target) target.textContent = String(value);
+      }
+      for (const item of buttons) item.setAttribute("aria-pressed", String(item === button));
+    }
+    buttons.forEach((button, index) => {
+      button.addEventListener("pointerenter", (event) => {
+        if (event.pointerType === "mouse" || event.pointerType === "pen") selectYear(button);
+      });
+      button.addEventListener("focus", () => selectYear(button));
+      button.addEventListener("click", () => selectYear(button));
+      button.addEventListener("keydown", (event) => {
+        const next = event.key === "ArrowRight" ? Math.min(index + 1, buttons.length - 1)
+          : event.key === "ArrowLeft" ? Math.max(index - 1, 0)
+          : event.key === "Home" ? 0
+          : event.key === "End" ? buttons.length - 1 : null;
+        if (next === null) return;
+        event.preventDefault();
+        buttons[next]?.focus();
+      });
+    });
+  }
+</script>
+
 <style>
-  .cadence {
-    --chart-h: 260px;
-  }
-
-  .cols {
-    display: grid;
-    grid-auto-columns: minmax(0, 1fr);
-    grid-auto-flow: column;
-    gap: 10px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .col {
-    --preview-x: -50%;
-    display: grid;
-    position: relative;
-    grid-template-rows: var(--chart-h) auto auto;
-    gap: 6px;
-    justify-items: center;
-    text-align: center;
-  }
-
-  .col:first-child,
-  .col:nth-child(2) {
-    --preview-x: 0%;
-  }
-
-  .col:last-child,
-  .col:nth-last-child(2) {
-    --preview-x: -100%;
-  }
-
-  .col:focus-visible {
-    border-radius: 3px;
-    outline: 2px solid var(--red);
-    outline-offset: 4px;
-  }
-
-  .year-preview {
-    position: absolute;
-    top: 38px;
-    left: 50%;
-    z-index: 5;
-    display: grid;
-    visibility: hidden;
-    width: min(190px, calc(100vw - 34px));
-    gap: 4px;
-    padding: 11px 12px;
-    border-radius: 3px;
-    background: var(--black);
-    box-shadow: 0 14px 28px rgba(5, 5, 5, 0.28);
-    color: white;
-    opacity: 0;
-    pointer-events: none;
-    text-align: left;
-    transform: translate(var(--preview-x), 7px);
-    transition:
-      opacity 140ms ease,
-      transform 140ms ease,
-      visibility 0s linear 140ms;
-  }
-
-  .year-preview strong {
-    color: var(--yellow);
-    font-size: 0.68rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-  }
-
-  .year-preview span,
-  .year-preview em {
-    color: rgba(255, 255, 255, 0.76);
-    font-size: 0.65rem;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 1.35;
-  }
-
-  .year-preview em {
-    padding-top: 5px;
-    border-top: 1px solid rgba(255, 255, 255, 0.16);
-    color: #7ee2d7;
-    font-weight: 500;
-    text-transform: uppercase;
-  }
-
-  .col:hover,
-  .col:focus-within {
-    z-index: 6;
-  }
-
-  .col:hover .year-preview,
-  .col:focus-visible .year-preview {
-    visibility: visible;
-    opacity: 1;
-    transform: translate(var(--preview-x), 0);
-    transition-delay: 0s;
-  }
-
-  .col:hover .bar,
-  .col:focus-visible .bar {
-    filter: brightness(1.22);
-    box-shadow: 0 8px 22px rgba(14, 18, 18, 0.18);
-  }
-
-  .count {
-    position: absolute;
-    bottom: calc(100% + 8px);
-    left: 0;
-    width: 100%;
-    color: var(--ink);
-    font-size: 1.05rem;
-    font-weight: 500;
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.04em;
-  }
-
-  .col.dormant .count {
-    color: var(--faint);
-  }
-
-  .track {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    align-items: flex-end;
-    justify-content: center;
-    border-bottom: 2px solid var(--line-strong);
-  }
-
-  .bar {
-    position: relative;
-    width: 100%;
-    max-width: 74px;
-    height: calc(var(--ratio) * 100%);
-    min-height: 2px;
-    background: var(--ink);
-    transform-origin: bottom;
-    transition:
-      filter 140ms ease,
-      box-shadow 140ms ease;
-  }
-
-  .col.dormant .bar {
-    min-height: 3px;
-    background: repeating-linear-gradient(
-      90deg,
-      var(--line-strong) 0 3px,
-      transparent 3px 7px
-    );
-  }
-
-  .award-segment {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: calc(var(--share) * 100%);
-    background: var(--gold);
-  }
-
-  .year {
-    color: var(--muted);
-    font-size: 0.76rem;
-    font-weight: 500;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .days {
-    color: var(--faint);
-    font-size: 0.68rem;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-  }
-
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px 22px;
-    margin: 22px 0 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .legend li {
-    display: inline-flex;
-    gap: 8px;
-    align-items: center;
-    color: var(--muted);
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0;
-  }
-
-  .swatch {
-    width: 13px;
-    height: 13px;
-    border-radius: 2px;
-  }
-
-  .swatch.shipped {
-    background: var(--ink);
-  }
-
-  .swatch.awarded {
-    background: var(--gold);
-  }
-
-  .swatch.dormant {
-    border: 1px dashed var(--faint);
-  }
-
-  .chart-note {
-    margin: 12px 0 0;
-    color: var(--faint);
-    font-size: 12px;
-    line-height: 1.6;
-  }
-
-  @keyframes grow {
-    from {
-      transform: scaleY(0);
-    }
-
-    to {
-      transform: scaleY(1);
-    }
-  }
-
+  .cadence { --chart-h: 260px; }
+  .year-details { display: flex; align-items: center; gap: 26px; margin-bottom: 44px; padding: 18px 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-paper); }
+  .selected-year { min-width: 100px; }
+  .selected-year > span { display: block; color: var(--muted); font: 10px/1.4 var(--mono); text-transform: uppercase; letter-spacing: .06em; }
+  .selected-year strong { display: block; margin-top: 3px; font-size: 28px; line-height: 1.1; font-weight: 500; letter-spacing: -.04em; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .selected-year small { display: block; margin-top: 5px; color: var(--muted); font-size: 10px; white-space: nowrap; }
+  .year-details dl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); flex: 1; gap: 16px; margin: 0; padding-left: 24px; border-left: 1px solid var(--line); }
+  .year-details dt { color: var(--muted); font-size: 11px; line-height: 1.4; }
+  .year-details dd { margin: 5px 0 0; color: var(--ink); font-size: 24px; line-height: 1.1; font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: -.04em; }
+  .year-details .awarded-metric dd { color: var(--award); }
+  .cols { display: grid; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; gap: 10px; margin: 0; padding: 0; list-style: none; }
+  .col { min-width: 0; }
+  .year-select { display: grid; grid-template-rows: var(--chart-h) auto auto; gap: 6px; justify-items: center; width: 100%; margin: 0; padding: 0 0 9px; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: transparent; color: var(--ink); font: inherit; text-align: center; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .year-select:focus-visible { outline: 2px solid var(--teal); outline-offset: 4px; border-radius: 3px; }
+  .year-select[aria-pressed='true'] { border-bottom-color: var(--teal); }
+  .track { display: flex; width: 100%; height: 100%; align-items: flex-end; justify-content: center; border-bottom: 1px solid var(--line-strong); }
+  .bar { position: relative; width: 100%; max-width: 74px; height: calc(var(--ratio) * 100%); min-height: 2px; background: var(--ink); }
+  .year-select[aria-pressed='true'] .bar { outline: 2px solid var(--teal); outline-offset: 3px; }
+  .count { position: absolute; bottom: calc(100% + 9px); left: 0; width: 100%; color: var(--ink); font-size: 1.05rem; font-weight: 500; font-variant-numeric: tabular-nums; letter-spacing: -.04em; }
+  .col.dormant .count { color: var(--faint); }
+  .col.dormant .bar { min-height: 3px; background: repeating-linear-gradient(90deg, var(--line-strong) 0 3px, transparent 3px 7px); }
+  .award-segment { position: absolute; inset: auto 0 0; height: calc(var(--share) * 100%); background: var(--gold); }
+  .year { color: var(--muted); font-size: .76rem; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .year-select[aria-pressed='true'] .year { color: var(--teal); }
+  .days { color: var(--faint); font-size: .68rem; font-weight: 500; letter-spacing: .04em; }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px 22px; margin: 20px 0 0; padding: 0; list-style: none; }
+  .legend li { display: inline-flex; gap: 8px; align-items: center; color: var(--muted); font-size: .72rem; font-weight: 500; }
+  .swatch { width: 13px; height: 13px; border-radius: 2px; }
+  .swatch.other { background: var(--ink); }
+  .swatch.awarded { background: var(--gold); }
+  .swatch.dormant { border: 1px dashed var(--faint); }
+  .chart-note { margin: 12px 0 0; color: var(--faint); font-size: 12px; line-height: 1.6; }
   @media (max-width: 760px) {
-    .cadence {
-      --chart-h: 190px;
-    }
-
-    .cols {
-      gap: 5px;
-    }
-
-    .count {
-      font-size: 0.8rem;
-    }
-
-    .year {
-      font-size: 9px;
-    }
-
-    .days {
-      font-size: 8px;
-      letter-spacing: 0;
-    }
+    .cadence { --chart-h: 190px; }
+    .year-details { align-items: start; gap: 16px; padding: 16px; margin-bottom: 36px; }
+    .selected-year { min-width: 78px; }
+    .selected-year strong { font-size: 25px; }
+    .selected-year small { font-size: 9px; white-space: normal; }
+    .year-details dl { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 12px; padding-left: 16px; }
+    .year-details dt { font-size: 10px; }
+    .year-details dd { font-size: 21px; }
+    .cols { gap: 5px; }
+    .count { font-size: .8rem; }
+    .year { font-size: 9px; }
+    .days { font-size: 8px; letter-spacing: 0; }
     .legend { gap: 10px 16px; }
     .legend li { font-size: 11px; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .bar,
-    .year-preview {
-      animation: none;
-      transition: none;
-    }
   }
 </style>

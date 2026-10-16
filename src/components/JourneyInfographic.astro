@@ -4,7 +4,9 @@ import { formatDateLabel } from "../lib/format";
 import {
   buildAwards,
   buildCollaborationStats,
-  buildCountryStats,
+  buildPlaceStats,
+  getPlaceLabel,
+  getVenueLabel,
   buildDurationOccurrences,
   buildDurationStats,
   buildGrid,
@@ -39,6 +41,9 @@ const yearStats = buildYearStats(items);
 const monthStats = buildMonthStats(items);
 const grid = buildGrid(items, goal);
 const awards = buildAwards(items);
+const awardWins = awards.filter((entry) => entry.win).length;
+const otherPodiumAwards = awards.filter((entry) => !entry.win && entry.tier === "podium").length;
+const otherAwards = awards.filter((entry) => !entry.win && entry.tier !== "podium").length;
 const themeCategories = buildThemeCategoryStats(items);
 const people = buildCollaborationStats(items);
 const homeRunPeople = buildHomeRunCollaborationStats(items);
@@ -47,11 +52,11 @@ const soloBuilds = items.filter((item) => item.members.length <= 1)
   .sort((a, b) => b.number - a.number);
 const venues = buildVenueStats(items, 8).map((stat) => ({
   ...stat,
-  hackathons: items.filter((item) => item.location?.trim().toLowerCase() === stat.label.toLowerCase()),
+  hackathons: items.filter((item) => getVenueLabel(item)?.toLowerCase() === stat.label.toLowerCase()),
 }));
-const countries = buildCountryStats(items).map((stat) => ({
+const places = buildPlaceStats(items).map((stat) => ({
   ...stat,
-  hackathons: items.filter((item) => item.country?.trim().toLowerCase() === stat.label.toLowerCase()),
+  hackathons: items.filter((item) => getPlaceLabel(item)?.toLowerCase() === stat.label.toLowerCase()),
 }));
 const participationModes = buildParticipationModeStats(items);
 const durationStats = buildDurationStats(items);
@@ -161,7 +166,7 @@ const panels = [
   {
     id: "trophies",
     title: "Trophy case",
-    copy: `${totals.awarded} builds finished with something to show for them — ${totals.podium} on a podium, ${totals.wins} outright wins.`,
+    copy: `${awards.length} awarded builds: ${awardWins} outright wins, ${otherPodiumAwards} other podium finishes, and ${otherAwards} other awards.`,
   },
   {
     id: "themes",
@@ -177,8 +182,8 @@ const panels = [
   },
   {
     id: "winning-teams",
-    title: "Winning team composition",
-    copy: `${totals.awarded} awarded builds, grouped by team size. See who built together and which lineups earned recognition.`,
+    title: "Team composition",
+    copy: `${totals.logged} hackathons and ${totals.awarded} awarded builds, compared by team size. Both charts use the same scale.`,
   },
   {
     id: "places",
@@ -342,13 +347,13 @@ const panelIndex = (id: string) =>
               </div>
               <div class="crew-tabs" role="group" aria-label="Collaboration view">
                 <button type="button" aria-pressed="true" data-crew-tab="all">
-                  All teammates
+                  All teammates <span class="crew-tab-count">{people.length}</span>
                 </button>
                 <button type="button" aria-pressed="false" data-crew-tab="home-runs">
-                  Home runs
+                  Home runs <span class="crew-tab-count">{homeRunPeople.length}</span>
                 </button>
                 <button type="button" aria-pressed="false" data-crew-tab="solo">
-                  Solo
+                  Solo <span class="crew-tab-count">{soloBuilds.length}</span>
                 </button>
               </div>
               <div data-crew-panel="all">
@@ -393,7 +398,10 @@ const panelIndex = (id: string) =>
             </div>
           )}
 
-          {panel.id === "winning-teams" && <WinningTeams items={items} />}
+          {panel.id === "winning-teams" && <div class="team-composition-views">
+            <WinningTeams items={items} awardedOnly={false} />
+            <WinningTeams items={items} />
+          </div>}
 
           {panel.id === "places" && (
             <div class="places">
@@ -402,8 +410,8 @@ const panelIndex = (id: string) =>
                 <BarRanking items={venues} labelWidth="minmax(0, 210px)" />
               </div>
               <div>
-                <p class="plot-note">By country</p>
-                <BarRanking items={countries} accent="gold" labelWidth="minmax(0, 110px)" />
+                <p class="plot-note">By country, region or remote</p>
+                <BarRanking items={places} accent="gold" labelWidth="minmax(0, 110px)" />
               </div>
             </div>
           )}
@@ -915,6 +923,9 @@ const panelIndex = (id: string) =>
   }
 
   .crew-tabs button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
     padding: 8px 11px;
     border: 0;
     border-radius: 2px;
@@ -926,6 +937,16 @@ const panelIndex = (id: string) =>
     font-weight: 500;
     letter-spacing: 0.09em;
     text-transform: uppercase;
+  }
+
+  .crew-tab-count {
+    min-width: 1.7em;
+    padding: 2px 5px;
+    border-radius: 999px;
+    background: color-mix(in srgb, currentColor 12%, transparent);
+    font: .65rem/1.2 var(--mono);
+    letter-spacing: 0;
+    text-align: center;
   }
 
   .crew-tabs button[aria-pressed="true"] {
@@ -988,6 +1009,8 @@ const panelIndex = (id: string) =>
   }
 
   /* Places -------------------------------------------------------------- */
+
+  .team-composition-views { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; }
 
   .places {
     display: grid;
@@ -1103,7 +1126,7 @@ const panelIndex = (id: string) =>
       max-width: 62ch;
     }
 
-    .places {
+    .places, .team-composition-views {
       grid-template-columns: minmax(0, 1fr);
       gap: 30px;
     }

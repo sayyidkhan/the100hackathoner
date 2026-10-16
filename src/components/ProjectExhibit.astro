@@ -26,7 +26,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     </div>
     <div class="exhibit-scene" data-scene hidden>
       <canvas tabindex="0" aria-label={`Interactive 3D concept for ${title}. Drag or use arrow keys to rotate.`}></canvas>
-      {(number === 55 || number === 58 || number === 59) && <div class="exhibit-story" data-story aria-live="off" hidden>
+      {(number === 55 || number === 58 || number === 59 || number === 82) && <div class="exhibit-story" data-story aria-live="off" hidden>
         <p class="exhibit-story-heading"><span class="exhibit-story-dot" aria-hidden="true"></span><span class="exhibit-story-step" data-story-step></span><span data-story-title></span></p>
         <p class="exhibit-story-detail" data-story-detail></p>
       </div>}
@@ -36,6 +36,13 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
       <button type="button" data-reset>Reset view</button>
       <button type="button" data-pause aria-pressed="false">Pause motion</button>
     </div>
+    {number === 82 && <div class="exhibit-walkthrough" data-walkthrough hidden>
+      <div class="walkthrough-steps" role="group" aria-label="FitStake walkthrough steps">
+        {['Challenge', 'Rewards', 'Card & cap', 'Compete', 'Settle'].map((label, index) => <button type="button" data-story-select={index} aria-pressed={index === 0 ? 'true' : 'false'}><span>{String(index + 1).padStart(2, '0')}</span> {label}</button>)}
+        <button type="button" data-story-auto aria-pressed="true">Auto-play steps</button>
+      </div>
+      <p>Sandbox demo · Simulated activity · Each reward purchase needs approval.</p>
+    </div>}
     <figcaption>{art.caption}<small>Concept artwork and a 3D interpretation of the project.</small></figcaption>
   </figure>
   <p class="exhibit-status" role="status" data-status></p>
@@ -70,5 +77,11 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
   figcaption small { display: block; margin-top: 8px; font-size: .75rem; color: var(--muted); }
   .exhibit-status { margin: 0; padding: 0 22px 16px; color: var(--muted); font-size: .8rem; }
   .exhibit-status:empty { display: none; }
+  .exhibit-walkthrough { padding: 16px 22px; border-top: 1px solid var(--line); }
+  .walkthrough-steps { display: flex; flex-wrap: nowrap; gap: 7px; overflow-x: auto; padding: 2px; }
+  .walkthrough-steps button { flex: 1 0 auto; white-space: nowrap; }
+  .walkthrough-steps span { font: .65rem var(--mono); margin-right: 5px; }
+  .exhibit-walkthrough p { color: var(--muted); font-size: .75rem; line-height: 1.5; margin: 12px 0 0; }
+  .project-exhibit[data-number='82'] .exhibit-story { right: 22px; max-width: 540px; }
   @media (max-width: 550px) { .exhibit-toolbar { align-items: flex-start; flex-direction: column; padding: 16px; } .exhibit-scene { aspect-ratio: 1; } .exhibit-story { top: 14px; left: 14px; max-width: calc(100% - 28px); } .exhibit-story-heading { gap: 6px; font-size: .78rem; } .exhibit-story-detail { margin-left: 12px; font-size: .65rem; } figcaption { padding: 16px; } .exhibit-controls span { flex-basis: 100%; } }
 </style>

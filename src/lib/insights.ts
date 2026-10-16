@@ -189,7 +189,7 @@ export function buildTotals(items: Hackathon[], goal = 100): Totals {
     events: new Set(items.map((item) => item.event.trim().toLowerCase())).size,
     venues: new Set(
       items
-        .map((item) => item.location?.trim().toLowerCase())
+        .map((item) => getVenueLabel(item)?.toLowerCase())
         .filter((value): value is string => Boolean(value)),
     ).size,
     countries: new Set(
@@ -387,18 +387,32 @@ export function buildThemeCategoryStats(items: Hackathon[]): ThemeCategoryStat[]
     .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
 }
 
+/** Group remote aliases consistently with the participation-mode summary. */
+export function getVenueLabel(item: Hackathon): string | null {
+  return isRemoteParticipation(item.location) ? "Remote" : item.location?.trim() || null;
+}
+
 export function buildVenueStats(items: Hackathon[], limit = 8): Ranked[] {
   return tally(
     items
-      .map((item) => item.location)
+      .map(getVenueLabel)
       .filter((value): value is string => Boolean(value)),
   ).slice(0, limit);
 }
 
-export function buildCountryStats(items: Hackathon[]): Ranked[] {
+/** Group remote participation separately, preserving the source country data. */
+export function getPlaceLabel(item: Hackathon): string | null {
+  if (isRemoteParticipation(item.location)) return "Remote";
+  if (item.country?.trim().toLowerCase() === "malaysia" && /\bsarawak\b/i.test(item.location ?? "")) {
+    return "Sarawak";
+  }
+  return item.country?.trim() || null;
+}
+
+export function buildPlaceStats(items: Hackathon[]): Ranked[] {
   return tally(
     items
-      .map((item) => item.country)
+      .map(getPlaceLabel)
       .filter((value): value is string => Boolean(value)),
   );
 }
