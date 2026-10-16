@@ -1,5 +1,58 @@
 [
   {
+    "number": 82,
+    "title": "FitStake",
+    "event": "Reap x 65labs Agentic Buildathon",
+    "dateLabel": "9 Oct 2026",
+    "startDate": "2026-10-09",
+    "duration": 1,
+    "durationUnit": "Days",
+    "solution": "A 1-vs-1 fitness challenge app with AI-recommended rewards and Reap agentic payments tied to participants’ progress.",
+    "client": "Reap",
+    "country": "Singapore",
+    "location": "SQ Collective x Gen-AI Labs, 65 Mohamed Sultan Rd, Singapore",
+    "award": "No prize",
+    "tags": [
+      "Fitness",
+      "Agentic Payments"
+    ],
+    "categories": [
+      "Health & Wellbeing",
+      "Finance & Commerce"
+    ],
+    "themeCategories": [
+      {
+        "theme": "Agentic Payments",
+        "category": "Finance & Commerce"
+      },
+      {
+        "theme": "Fitness",
+        "category": "Health & Wellbeing"
+      }
+    ],
+    "organizers": [
+      "65labs",
+      "Reap"
+    ],
+    "members": [
+      "Sayyid",
+      "malcolm",
+      "ben"
+    ],
+    "githubUrl": "https://github.com/sayyidkhan/fitstake",
+    "eventUrl": "https://luma.com/reap-65labs-hack?tk=ct18SG",
+    "socialLinks": {
+      "linkedin": [
+        "https://www.linkedin.com/posts/sayyidkhan92_hackathon-agenticai-agenticpayments-ugcPost-7516696461082836992-_vJ-/"
+      ],
+      "instagram": [
+        "https://www.instagram.com/p/DeijGMznSNn/"
+      ],
+      "facebook": []
+    },
+    "prize": null
+  },
+  {
     "number": 81,
     "title": "The Next 8 Seconds: Draw Your Way Home",
     "event": "Anti-Drug Jam 2026",
@@ -163,7 +216,9 @@
         "https://www.instagram.com/reel/Dc5ksn1xwM_/?utm_source=ig_web_copy_link&stkn=MzRlODBiNWFlZA==",
         "https://www.instagram.com/reel/Dc8Mz_8z325/"
       ],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/meetwanwei/posts/pfbid0VCBcsxbqSoXbprpPTRXozC7ATgj6vzxQxoE1QLCnXcMat63PQQCUbEK4ibgWh4Wql"
+      ]
     },
     "prize": {
       "awardSummary": "First Runner-Up — SG × Sarawak AI & Design Hackathon — US$200 Kimi AI Credits + Trophy",
@@ -1171,7 +1226,9 @@
       "instagram": [
         "https://www.instagram.com/p/DXg-YyWE5r6/"
       ],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/meetwanwei/posts/pfbid0jjHWhKWrctzWV38DchuzkJ3tNtAVQVRiL3CNjebRftgrX8f2Eg1zgWAK2tbssgerl"
+      ]
     },
     "prize": null
   },
@@ -2125,7 +2182,9 @@
         "https://www.instagram.com/reel/DOQFqH8kfeT/",
         "https://www.instagram.com/reel/DOVLDxsE37O/"
       ],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/meetwanwei/posts/pfbid02fC64ffhqpB8RDBYo11hz17WicCZDaaXkjpTUG7WmZN2Dqb9GJNEP8q9fH87ARNrQl"
+      ]
     },
     "prize": {
       "awardSummary": "Novel Hackathon Finisher — Trophy",
@@ -2225,7 +2284,9 @@
     "socialLinks": {
       "linkedin": [],
       "instagram": [],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/meetwanwei/posts/pfbid0hpDePCx4TwEv6X4meZFGeaDNuTvKwuBGPh526Dk9UPDXbGQcx81u5vRRMRVjavoWl"
+      ]
     },
     "prize": {
       "awardSummary": "2nd Place — Manus Pro Subscription (US$39/month each)",
@@ -2879,7 +2940,9 @@
       "instagram": [
         "https://www.instagram.com/p/Bxo5Ka1FLrR/"
       ],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid02384PfN15y2n6QGJpDhQfXpWBd3Awwbi3azfoptEfu6K4DDqGQTME56XoRNF459Z1l"
+      ]
     },
     "prize": {
       "awardSummary": "3rd Place — S$500 Cash",
@@ -2940,7 +3003,9 @@
     "socialLinks": {
       "linkedin": [],
       "instagram": [],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid02tsVvk3rWRKGWEnUdozMcJkjummCZ52YEuZY3tRgcyUBuGiuvKPcaXC9wePtfk4awl"
+      ]
     },
     "prize": null
   },
@@ -2985,7 +3050,9 @@
       "instagram": [
         "https://www.instagram.com/p/Bs2f8FHHXNo/"
       ],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid0pFAv6Z1WgvZpRv3mo5HSBKStwAfiFbu5ENAQerm2keCry85F3oVcxSAgGAER4ELFl"
+      ]
     },
     "prize": null
   },
@@ -3025,7 +3092,9 @@
     "socialLinks": {
       "linkedin": [],
       "instagram": [],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid02CYDgW956apDh6vS5rkroqZHDReuyuC8WigQRYaWjE4N88CoxpAggTqKSPHfwUniVl"
+      ]
     },
     "prize": null
   },
@@ -3117,7 +3186,10 @@
         "https://www.instagram.com/p/BpMRvP0g435/",
         "https://www.instagram.com/p/BpMd-mignvt/"
       ],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid0GRJUVpqfYh8v3TGgo1chLQejmF5BrcMV28WwCyVEUqiuc5tgtkdMCa5EwJ1Wzzosl",
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid0U9F9GsTbQvRFAGPqJj8no2Scec7FAvv344uzFx7vBcanYXsVRdo4DzhkeG7AEihBl"
+      ]
     },
     "prize": null
   },
@@ -3167,7 +3239,10 @@
       "instagram": [
         "https://www.instagram.com/p/Bo6FW7zg0Zj/"
       ],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid02r8P3RzqydDWjdVSBTWbzmxh5w6otxAkvsk4yqSYG5LY2obqFW3xdA1k3c9kN7A7ml",
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid0XfkiN31qdKWMbDrbnSQrUYRzD8ZFTUwFhM66rZUfKVZvU3Z48DQip8YpegHgjpwl"
+      ]
     },
     "prize": null
   },
@@ -3213,7 +3288,10 @@
         "https://www.instagram.com/p/Bngpa4igs3o/",
         "https://www.instagram.com/p/BngqOFTggiI/"
       ],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid02yN5KYrHsMAbJCTR6QnnykwpRyhL6EmGvm1Gb5PqXbRqGvE8fuSc5TX1VHUnhGTeHl",
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid0rH7p6CV1VJVQearxzSiYzVtvNdgAE9wZke1a958NA2VHnjmex1vqqNa8sWCrVPfJl"
+      ]
     },
     "prize": null
   },
@@ -3262,7 +3340,9 @@
       "instagram": [
         "https://www.instagram.com/p/BjogOfOA6tG/"
       ],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid02bJgJZMw1fENXuobQA37tSYs5LT55UpQSVD2viVVp85hpK1j74S34LgitXSTRGbjhl"
+      ]
     },
     "prize": {
       "awardSummary": "2nd Place — S$600 Cash",
@@ -3326,7 +3406,9 @@
     "socialLinks": {
       "linkedin": [],
       "instagram": [],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid031P3D6fyPnz9AMMiUkRgwJDxvgY2rKVYRf4uRbxSB3RvhWp69HW7a4ScTXEmUPkawl"
+      ]
     },
     "prize": null
   },
@@ -3376,7 +3458,9 @@
       "instagram": [
         "https://www.instagram.com/p/Bgvs2dLAeue/"
       ],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid08YUaE4nQB8T2iQpErGFfhgivhch2yHFAzkE7hUghCvzQRFSom2RwrmFjr1ZsULuAl"
+      ]
     },
     "prize": null
   },
@@ -3430,7 +3514,9 @@
       "instagram": [
         "https://www.instagram.com/p/BgWUFk4FOSa/"
       ],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid0Xat33M7cUWfScT1SdqyxFqd8KJ4BJ9R3WswJ5E3PjjuPGnNbJHVRH1pMku1RVyGJl"
+      ]
     },
     "prize": {
       "awardSummary": "3rd Place — S$100 Capitaland Voucher Each",
@@ -3495,7 +3581,9 @@
     "socialLinks": {
       "linkedin": [],
       "instagram": [],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid03ZwgHrQwG7GnWAYRUSaYZgujnXA7aeX99KJygABcoiSmRp6xHTepPaTkHs1M9dahl"
+      ]
     },
     "prize": null
   },
@@ -3544,7 +3632,11 @@
     "socialLinks": {
       "linkedin": [],
       "instagram": [],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid0AkMuVPaVJ3mMYbfBosv7ECbHCAuVC52VvoABN6MSUJkcE9JQTM9Ye6UYv5s7BcS4l",
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid0Q25FVnx4SpaoVkey3seYSqorseNZt8bHVRza8uheMBkUaYdBhokcNDac6JzawHx9l",
+        "https://www.facebook.com/sayyid.iskandar/videos/10213312919990264"
+      ]
     },
     "prize": null
   },
@@ -3595,7 +3687,10 @@
       "instagram": [
         "https://www.instagram.com/p/BZsdBDyAuNk/"
       ],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid0aBGBjBkAzz7p2g9as9mHpRwCHhfiZiCChneX1PgBXtJhM56TumXpqyjV27YJhJB9l",
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid0jcQTaYy48XkBSZLPBAVVtyXueuJXGCdUSuoMJWJDdhunTph6aCxCSFcyiaSiFTqwl"
+      ]
     },
     "prize": null
   },
@@ -3643,7 +3738,13 @@
     "socialLinks": {
       "linkedin": [],
       "instagram": [],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid02aqvRmi2EDB3n7ToYfyFX3BJsA4hwrzqCJ4dKEHgVeR9xLkDjBhGmeYdPcS8JMY1fl",
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid02oymiDX42WvPTV4h9rMKKgNsHByjdj3gUXFp5fwEr7Qic8byjMyRsgccTrtaVBoHcl",
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid02yZ73n5t1GsZz7USH3NZvSkmpsGs7Yk3DV6UU7aWqAmRDBhc69prZQKpyGtdVq1X6l",
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid0FBLFEGUBkNjnSkzyy8uaHp4AnkKKaRkRGpnUw4UrgEEJYUm5hMm8eeqtyF2V3P2ol",
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid0omyhn65dXJyzhuUS8fJqYHFhTLXv7hJBCPsqzvZTCxwtHtvFHtVng2i8a4V47kHRl"
+      ]
     },
     "prize": {
       "awardSummary": "Best Project",
@@ -3700,7 +3801,9 @@
     "socialLinks": {
       "linkedin": [],
       "instagram": [],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid0YHWL1WEfz9ENeK6XvwKpywbbHukJhTSJmUzxmPmuohjWXK4GM2ckM1enzRRuHGNHl"
+      ]
     },
     "prize": null
   },
@@ -3742,7 +3845,10 @@
     "socialLinks": {
       "linkedin": [],
       "instagram": [],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid026kQ2whd21UBFZF4GSUKfv9FKKAvpvcwcMUSdFRGK2K6KZSkyMbFU3UCdxU3suEv2l",
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid0uwy9BCTkt3XqZNcBiidhqdL2GSWbMeJNGDfiKniH3j4ti4TcVCLHwCTXjB51cR8Ql"
+      ]
     },
     "prize": null
   },
@@ -3792,7 +3898,9 @@
     "socialLinks": {
       "linkedin": [],
       "instagram": [],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid02NBhicQaWczUn66QfNweW7URQXUZKKAcsg3eTgoJCqCwJW9F6MJtmCUxpTPrwVxoQl"
+      ]
     },
     "prize": null
   },
@@ -3879,7 +3987,9 @@
     "socialLinks": {
       "linkedin": [],
       "instagram": [],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid02X4jiUxGYyFQLfWEU3hXSYcFXApxW1jkvmFrymrxJMs8SLy6DFkGs18d8r79RvMN3l"
+      ]
     },
     "prize": null
   },
@@ -3923,7 +4033,11 @@
     "socialLinks": {
       "linkedin": [],
       "instagram": [],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid02QfCpBUfGf9gB7XUei4Ae1drQUUNTGB4kZ9YapS9UFHoRgZraHtLAxAH8ZFwEhDUjl",
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid02xWVaKc162oHH24BsD74ahzCfmm8sxyfUve5BQx6QSGWP4ui1qZ8jFyFW5y7YATQDl",
+        "https://www.facebook.com/sayyid.iskandar/videos/10210289416564568"
+      ]
     },
     "prize": {
       "awardSummary": "1st Place — Best Use of IBM Bluemix — US$100,000 IBM Bluemix Credits — SmartWatch",
@@ -3993,7 +4107,10 @@
     "socialLinks": {
       "linkedin": [],
       "instagram": [],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid02Pe825qMCQjUtnq2pV3hrWkjA4M4d84rnu5A5EcKpJvVgUcryDreMbBctzf1tfRmUl",
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid02cFPjLu46modzujHU2tLgNSXrfdTdnXLLAm35UdVFj8UU7YsW9KQWLoXJinq2ahDxl"
+      ]
     },
     "prize": {
       "awardSummary": "Best Project",
@@ -4092,7 +4209,10 @@
     "socialLinks": {
       "linkedin": [],
       "instagram": [],
-      "facebook": []
+      "facebook": [
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid0JuMHrNyVuL8p2rXodooSC2BMtyKUoxQykEgWGwQWAahSV1WBTqc32gN6xbHj3vPHl",
+        "https://www.facebook.com/sayyid.iskandar/posts/pfbid0ogQdpWx2LUNArSKAKKimACFr4B4h9F45WdQcr5S6z5GY2zjj8iLgJ2sZNPWS5Jfzl"
+      ]
     },
     "prize": {
       "awardSummary": "1st Place — S$18,000 Seed Funding",
