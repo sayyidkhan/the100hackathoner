@@ -18,6 +18,17 @@ for (const exhibit of document.querySelectorAll('[data-project-exhibit]')) {
   let requested = 'artwork';
   let paused = reduced.matches;
   let failed = false;
+  const labelsToggle = exhibit.querySelector('[data-toggle-labels]');
+  const labelSurfaces = [...exhibit.querySelectorAll('.division-labels, .division-key')];
+  let labelsVisible = true;
+  labelsToggle?.addEventListener('click', () => {
+    labelsVisible = !labelsVisible;
+    labelSurfaces.forEach(surface => { surface.hidden = !labelsVisible; });
+    labelsToggle.textContent = labelsVisible ? 'Hide labels' : 'Show labels';
+    labelsToggle.setAttribute('aria-expanded', String(labelsVisible));
+    // Reproject using the restored label dimensions even when motion is paused.
+    scene?.setPaused(paused);
+  });
   const theme = () => document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
   function showStory(value) {
     if (!story) return;

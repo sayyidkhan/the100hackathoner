@@ -3,11 +3,18 @@ import { getImage } from 'astro:assets';
 import type { ProjectArt } from '../lib/project-art';
 interface Props { number: number; title: string; art: ProjectArt; }
 const { number, title, art } = Astro.props;
+const hasLabels = number === 75 || number === 76;
 async function variants(src: ProjectArt['light']) {
   const images = await Promise.all([480, 800, 1200, 1536].map(width => getImage({ src, width, format: 'webp', quality: 80 })));
   return { src: images[2].src, srcset: images.map((image, i) => `${image.src} ${[480, 800, 1200, 1536][i]}w`).join(', ') };
 }
-const divisions = [
+// Buzo Atlas labels follow gr-atlas/docs/PRODUCT_THESIS.md, “Four mechanisms”.
+const divisions = number === 75 ? [
+  { id: 'partnerships', name: 'Strategic Partnerships', purpose: 'Connect artists, venues & brands', x: 79, y: 77 },
+  { id: 'originals', name: 'Buzo Originals', purpose: 'Reusable event formats & rights', x: 25, y: 30 },
+  { id: 'art', name: 'Digital Art', purpose: 'Artist collaborations & licences', x: 76, y: 28 },
+  { id: 'concierge', name: 'Concierge IP & Technology', purpose: 'Reusable agents & workflows', x: 49, y: 60 },
+] : [
   { id: 'community', name: 'Community', purpose: 'Protect the people', x: 19, y: 47 },
   { id: 'academy', name: 'Builder Academy', purpose: 'Teach the builders', x: 50, y: 18 },
   { id: 'machines', name: 'Machine Systems', purpose: 'Keep the city running', x: 82, y: 35 },
@@ -18,9 +25,12 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
 <section class="project-exhibit" data-project-exhibit data-number={number} data-model={art.model} aria-label={`${title} concept exhibit`}>
   <div class="exhibit-toolbar">
     <p>THE PROJECT, REIMAGINED</p>
+    <div class="exhibit-actions">
+      {hasLabels && <button type="button" data-toggle-labels aria-expanded="true">Hide labels</button>}
     <div role="group" aria-label="Display mode" class="exhibit-modes">
       <button type="button" data-mode="artwork" aria-pressed="true">Artwork</button>
       <button type="button" data-mode="3d" aria-pressed="false">Explore in 3D</button>
+    </div>
     </div>
   </div>
   <figure>
@@ -29,7 +39,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
         <source data-dark-art media="(prefers-color-scheme: dark)" srcset={dark.srcset} sizes="(max-width: 920px) 100vw, 920px" type="image/webp" />
         <img src={light.src} srcset={light.srcset} sizes="(max-width: 920px) 100vw, 920px" width="1536" height="1024" alt={art.alt} loading="lazy" decoding="async" />
       </picture>
-      {number === 76 && <div class="division-labels" aria-hidden="true">
+      {hasLabels && <div class="division-labels" aria-hidden="true">
         {divisions.map((division, index) => <div class="division-label" data-division={division.id} style={`left:${division.x}%;top:${division.y}%`}>
           <span class="division-number">{index + 1}</span>
           <span class="division-copy"><strong>{division.name}</strong><small>{division.purpose}</small></span>
@@ -38,7 +48,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     </div>
     <div class="exhibit-scene" data-scene hidden>
       <canvas tabindex="0" aria-label={`Interactive 3D concept for ${title}. Drag or use arrow keys to rotate.`}></canvas>
-      {number === 76 && <div class="division-labels" aria-hidden="true">
+      {hasLabels && <div class="division-labels" aria-hidden="true">
         {divisions.map((division, index) => <div class="division-label" data-division={division.id} style={`left:${division.x}%;top:${division.y}%`}>
           <span class="division-number">{index + 1}</span>
           <span class="division-copy"><strong>{division.name}</strong><small>{division.purpose}</small></span>
@@ -61,7 +71,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
       </div>
       <p>Sandbox demo · Simulated activity · Each reward purchase needs approval.</p>
     </div>}
-    {number === 76 && <ol class="division-key" aria-label="City divisions and their purposes">
+    {hasLabels && <ol class="division-key" aria-label={number === 75 ? "Buzo Atlas pillars and their purposes" : "City divisions and their purposes"}>
       {divisions.map((division, index) => <li><span class="division-number">{index + 1}</span><span><strong>{division.name}</strong><small>{division.purpose}</small></span></li>)}
     </ol>}
     <figcaption>{art.caption}<small>Concept artwork and a 3D interpretation of the project.</small></figcaption>
@@ -70,7 +80,9 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
 </section>
 <script is:inline type="module" src="/landing/project-exhibit.js"></script>
 <style is:inline>
-  .project-exhibit[data-number='76'] .exhibit-scene, .project-exhibit[data-number='76'] .exhibit-art { position: relative; }
+  .exhibit-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .project-exhibit .division-labels[hidden], .project-exhibit .division-key[hidden] { display: none !important; }
+  .project-exhibit:is([data-number='75'], [data-number='76']) .exhibit-scene, .project-exhibit:is([data-number='75'], [data-number='76']) .exhibit-art { position: relative; }
   .division-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
   .division-label { position: absolute; display: flex; gap: 8px; align-items: center; transform: translate(-50%, -50%); background: rgba(20, 24, 25, .92); color: #fff4df; border: 1px solid #c8a66b; border-radius: 7px; padding: 8px 10px; box-shadow: 0 3px 16px #0005; white-space: nowrap; }
   .division-number { display: inline-grid; place-items: center; flex: 0 0 22px; width: 22px; height: 22px; border: 1px solid #c8a66b; border-radius: 50%; color: #e3bd7b; font: 11px/1 var(--mono); }

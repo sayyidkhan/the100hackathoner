@@ -170,13 +170,21 @@ export function createArtifact(THREE, { bake = false } = {}) {
   // Preserve texture coordinates on lettering; the rest batches by material.
   root.updateMatrixWorld(true);
   for(const group of labels)root.attach(group);
+  const annotationBounds=new THREE.Box3().setFromObject(root);
+  const annotationCenter=annotationBounds.getCenter(new THREE.Vector3());
+  const annotations=[
+    { id:'partnerships', position:[2.15, .55, 2.42] },
+    { id:'originals', position:[-2.15, 2.28, -1.28] },
+    { id:'art', position:[2.15, 2.40, -1.38] },
+    { id:'concierge', position:[0, .75, .85] },
+  ].map(annotation=>({...annotation,position:[annotation.position[0]-annotationCenter.x,annotation.position[1]-annotationBounds.min.y,annotation.position[2]-annotationCenter.z]}));
   const result=finish(75,[...labels,signals]);
   // Fit the actual height bands, rather than empty corners above the map.
   const bands=new Map(),point=new THREE.Vector3();result.updateMatrixWorld(true);
   result.traverse(object=>{if(!object.isMesh)return;const a=object.geometry.attributes.position;for(let i=0;i<a.count;i++){point.fromBufferAttribute(a,i).applyMatrix4(object.matrixWorld);const key=Math.floor(point.y/.18);if(!bands.has(key))bands.set(key,new THREE.Box3());bands.get(key).expandByPoint(point);}});
   const framingPoints=[];
   for(const b of bands.values())for(const x of [b.min.x-.03,b.max.x+.03])for(const y of [b.min.y-.03,b.max.y+.03])for(const z of [b.min.z-.03,b.max.z+.03])framingPoints.push(new THREE.Vector3(x,y,z));
-  result.userData={...result.userData,framingPoints,displayBase:false,groundLevel:0,studioProfile:'paper',initialYaw:.30,initialElevation:.60,
+  result.userData={...result.userData,annotations,framingPoints,displayBase:false,groundLevel:0,studioProfile:'paper',initialYaw:.30,initialElevation:.60,
     animate(time){beads.forEach((bead,i)=>bead.position.copy(curves[i].getPoint((time*.10+i/3)%1)));},
   };
   if(!bake && typeof document!=='undefined')applyBakedAO(THREE,result);
