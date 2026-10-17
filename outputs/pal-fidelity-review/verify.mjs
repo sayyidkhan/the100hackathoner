@@ -1,0 +1,35 @@
+import {chromium} from '@playwright/test';
+import assert from 'node:assert/strict';
+import {writeFile} from 'node:fs/promises';
+const browser=await chromium.launch({headless:true,channel:'chrome'});
+const page=await browser.newPage({viewport:{width:1440,height:1200}});
+const errors=[];page.on('pageerror',e=>errors.push(e.message));
+await page.goto('http://127.0.0.1:18485/hackathons/71',{waitUntil:'networkidle'});
+const stats=await page.evaluate(async()=>{
+  const THREE=await import('/landing/vendor/three.module.js');
+  const {createArtifact}=await import('/landing/artifacts/kingdom-of-pal.js');
+  const start=performance.now(),model=createArtifact(THREE),constructionMs=performance.now()-start;
+  await model.userData.bakedAOPromise;
+  let meshes=0,triangles=0,geometryBytes=0,finite=true;
+  model.traverse(o=>{if(o.isMesh){meshes++;triangles+=(o.geometry.index?.count??o.geometry.attributes.position.count)/3;geometryBytes+=o.geometry.index?.array.byteLength??0;for(const a of Object.values(o.geometry.attributes)){geometryBytes+=a.array.byteLength;for(const v of a.array)if(!Number.isFinite(v))finite=false;}}});
+  const phases=new Set();
+  for(let t=0;t<=56;t+=.125){model.userData.animate(t);phases.add(model.userData.councilPhase);model.updateMatrixWorld(true);model.traverse(o=>{if(!o.matrixWorld.elements.every(Number.isFinite))finite=false;});}
+  const materials=new Set(),geometries=new Set(),textures=new Set();
+  model.traverse(o=>{if(o.geometry)geometries.add(o.geometry);if(o.material)materials.add(o.material);});
+  for(const m of materials)for(const v of Object.values(m))if(v?.isTexture)textures.add(v);
+  const result={meshes,triangles,geometryMiB:+(geometryBytes/1048576).toFixed(2),constructionMs:+constructionMs.toFixed(1),finite,bakedAO:model.userData.bakedAOStatus,phases:[...phases]};
+  geometries.forEach(g=>g.dispose());materials.forEach(m=>m.dispose());textures.forEach(t=>t.dispose());return result;
+});
+assert.equal(stats.bakedAO,'ready');assert.equal(stats.finite,true);assert.ok(stats.meshes<160);assert.ok(stats.triangles<310000);assert.ok(stats.geometryMiB<16);assert.equal(stats.phases.length,11);
+await page.getByRole('button',{name:'Explore in 3D'}).click();await page.locator('[data-scene]').waitFor({state:'visible'});
+await page.locator('[data-scene]').scrollIntoViewIfNeeded();
+await page.getByRole('button',{name:'Pause motion',exact:true}).click();assert.equal(await page.locator('[data-pause]').getAttribute('aria-pressed'),'true');
+const canvas=page.locator('[data-scene] canvas');await canvas.focus();await page.keyboard.press('ArrowRight');await page.keyboard.press('ArrowUp');await page.locator('[data-reset]').click();
+await page.getByRole('button',{name:'Artwork',exact:true}).click();assert.equal(await page.locator('[data-scene]').isVisible(),false);
+await page.getByRole('button',{name:'Explore in 3D'}).click();assert.equal(await page.locator('[data-scene]').isVisible(),true);
+await page.emulateMedia({reducedMotion:'reduce'});await page.waitForTimeout(100);assert.equal(await page.locator('[data-pause]').isDisabled(),true);
+await page.setViewportSize({width:390,height:844});await page.waitForTimeout(100);
+assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true);
+assert.deepEqual(errors,[]);assert.equal(await page.locator('[data-status]').textContent(),'');
+await writeFile('outputs/pal-fidelity-review/verification.json',JSON.stringify({...stats,errors,checks:['two animation cycles','bake fingerprint','finite geometry','desktop and mobile','pause and reset','keyboard orbit','artwork toggle','reduced motion']},null,2)+'\n');
+console.log(JSON.stringify(stats));await browser.close();

@@ -30,9 +30,27 @@ const divisions = number === 74 ? [
 ];
 const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)]);
 ---
+{number === 70 && <link rel="stylesheet" href="/landing/relationship-mapper.css" />}
 <section class="project-exhibit" data-project-exhibit data-number={number} data-model={art.model} aria-label={`${title} concept exhibit`}>
+  {number === 70 && <header class="mapper-intro">
+    <div><p class="mapper-eyebrow"><span></span> ZO RELATIONSHIP MAPPER · 070</p>
+    <h2>Your next role<br />starts with <em>people.</em></h2>
+    <p class="mapper-description">Turn your experience into a focused opportunity search.<br />Discover who to approach, and what to say.</p></div>
+    <a class="mapper-launch" href="https://zo-relationship-mapper-sayyidkhan.zocomputer.io" target="_blank" rel="noopener noreferrer">Explore the app <span aria-hidden="true">↗</span></a>
+  </header>}
+  {number === 69 && <header class="order-intro">
+    <div><p class="order-eyebrow">ZORDER · THE SMALL BUSINESS EDITION</p>
+    <h2>Small shop.<br /><em>Every order in place.</em></h2></div>
+    <p class="order-intro-note">A storefront, a receipt,<br />and a little more order.<span>BUILT ON ZO COMPUTER ↗</span></p>
+  </header>}
+  {number === 72 && <header class="cosmic-intro">
+    <div><p class="cosmic-eyebrow"><span></span> AN INTERACTIVE STORYWORLD · 072</p>
+    <h2>Lost between <em>worlds.</em></h2>
+    <p class="cosmic-description">A little traveller. An impossible universe.<br />Three echoes to remember the way home.</p></div>
+    <a class="cosmic-launch" href="https://alien-homecoming.lovable.app/" target="_blank" rel="noopener noreferrer">Play the game <span aria-hidden="true">↗</span></a>
+  </header>}
   <div class="exhibit-toolbar">
-    <p>THE PROJECT, REIMAGINED</p>
+    <p>{number === 70 ? 'THE OPPORTUNITY ATLAS' : number === 72 ? 'EXPLORE THE THRESHOLD' : number === 69 ? 'INSIDE THE LITTLE SHOP' : 'THE PROJECT, REIMAGINED'}</p>
     <div class="exhibit-actions">
       {hasLabels && <button type="button" data-toggle-labels aria-expanded="true">Hide labels</button>}
     <div role="group" aria-label="Display mode" class="exhibit-modes">
@@ -62,7 +80,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
           <span class="division-copy"><strong>{division.name}</strong><small>{division.purpose}</small></span>
         </div>)}
       </div>}
-      {(number === 55 || number === 58 || number === 59 || number === 82) && <div class="exhibit-story" data-story aria-live="off" hidden>
+      {(number === 69 || number === 70 || number === 72 || number === 55 || number === 58 || number === 59 || number === 82) && <div class="exhibit-story" data-story aria-live="off" hidden>
         <p class="exhibit-story-heading"><span class="exhibit-story-dot" aria-hidden="true"></span><span class="exhibit-story-step" data-story-step></span><span data-story-title></span></p>
         <p class="exhibit-story-detail" data-story-detail></p>
       </div>}
@@ -72,6 +90,20 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
       <button type="button" data-reset>Reset view</button>
       <button type="button" data-pause aria-pressed="false">Pause motion</button>
     </div>
+    {number === 70 && <div class="mapper-walkthrough" data-walkthrough hidden>
+      <div class="mapper-steps" role="group" aria-label="Relationship Mapper walkthrough">
+        {['Your profile', 'Choose a role', 'Find people', 'Draft outreach'].map((label,index) => <button type="button" data-story-select={index} aria-pressed={index === 0 ? 'true' : 'false'}><span>{String(index+1).padStart(2,'0')}</span>{label}</button>)}
+        <button type="button" data-story-auto aria-pressed="true">Auto-play</button>
+      </div>
+      <p>Concept walkthrough · Illustrative cards, not live search results.</p>
+    </div>}
+    {number === 69 && <div class="exhibit-walkthrough order-walkthrough" data-walkthrough hidden>
+      <div class="walkthrough-steps" role="group" aria-label="Order workflow steps">
+        {['Browse', 'Upload proof', 'Review', 'Fulfil'].map((label, index) => <button type="button" data-story-select={index} aria-pressed={index === 0 ? 'true' : 'false'}><span>{String(index + 1).padStart(2, '0')}</span> {label}</button>)}
+        <button type="button" data-story-auto aria-pressed="true">Auto-play steps</button>
+      </div>
+      <p>Illustrative workflow · Payment proof is reviewed by the merchant.</p>
+    </div>}
     {number === 82 && <div class="exhibit-walkthrough" data-walkthrough hidden>
       <div class="walkthrough-steps" role="group" aria-label="FitStake walkthrough steps">
         {['Challenge', 'Rewards', 'Card & cap', 'Compete', 'Settle'].map((label, index) => <button type="button" data-story-select={index} aria-pressed={index === 0 ? 'true' : 'false'}><span>{String(index + 1).padStart(2, '0')}</span> {label}</button>)}
@@ -82,12 +114,46 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     {hasLabels && <ol class="division-key" aria-label={number === 74 ? "Telepath reviewers and workflow" : number === 75 ? "Buzo Atlas pillars and their purposes" : "City divisions and their purposes"}>
       {divisions.map((division, index) => <li><span class="division-number">{index + 1}</span><span><strong>{division.name}</strong><small>{division.purpose}</small></span></li>)}
     </ol>}
-    <figcaption>{art.caption}<small>Concept artwork and a 3D interpretation of the project.</small></figcaption>
+    {number === 70 ? <figcaption class="mapper-caption">
+      <div><span class="mapper-eyebrow">FROM FIT TO FIRST CONVERSATION</span><p>{art.caption}</p></div>
+      <div class="mapper-key"><span><i></i>Hiring managers</span><span><i></i>Mentors</span><span><i></i>Role colleagues</span></div>
+    </figcaption> : number === 72 ? <figcaption class="cosmic-caption">
+      <div><span class="cosmic-eyebrow">THE JOURNEY</span><p>{art.caption}</p><small>AI-painted realms, unexpected doorways, and a small traveller finding where they belong.</small></div>
+      <div class="cosmic-facts"><span><b>10</b>realm families</span><span><b>03</b>home echoes</span><span><b>01</b>way home</span></div>
+    </figcaption> : <figcaption>{art.caption}<small>Concept artwork and a 3D interpretation of the project.</small></figcaption>}
   </figure>
   <p class="exhibit-status" role="status" data-status></p>
 </section>
 <script is:inline type="module" src="/landing/project-exhibit.js"></script>
 <style is:inline>
+  .project-exhibit[data-number='69'] { --order-teal:#25463e; --order-gold:#a17842; border-radius:20px; }
+  .order-intro { display:flex; justify-content:space-between; align-items:flex-end; gap:24px; padding:32px 32px 28px; background:#eee6d5; color:#25463e; }
+  .order-eyebrow { margin:0 0 16px; font:9px/1.5 var(--mono); letter-spacing:.17em; color:#816641; }
+  .order-intro h2 { margin:0; font:500 clamp(32px,4.3vw,52px)/1.06 Georgia,serif; letter-spacing:-.045em; }
+  .order-intro h2 em { color:#ad523b; font-weight:400; }
+  .order-intro-note { margin:0 0 2px; font-size:12px; line-height:1.7; }
+  .order-intro-note span { display:block; margin-top:20px; font:8px/1.5 var(--mono); letter-spacing:.10em; color:#816641; }
+  .project-exhibit[data-number='69'] .exhibit-toolbar { padding:13px 24px; }
+  .project-exhibit[data-number='69'] .exhibit-toolbar p { font-size:9px; letter-spacing:.13em; }
+  .project-exhibit[data-number='69'] .exhibit-story { top:16px; left:20px; background:color-mix(in srgb,var(--bg) 90%,transparent); border:1px solid var(--line); padding:10px 14px; border-radius:10px; }
+  .project-exhibit[data-number='69'] .exhibit-story-heading { font-size:12px; }
+  .project-exhibit[data-number='69'] .exhibit-story-detail { font-size:10px; }
+  .project-exhibit[data-number='69'] .exhibit-walkthrough button { font-size:11px; padding:9px 12px; }
+  .project-exhibit[data-number='69'] .exhibit-walkthrough button[aria-pressed='true'] { background:#25463e; color:#f6e9d0; }
+  :root[data-theme='dark'] .order-intro { background:#172a28; color:#f0e1c5; }
+  :root[data-theme='dark'] .order-intro h2 em { color:#d58b6b; }
+  :root[data-theme='dark'] .order-eyebrow, :root[data-theme='dark'] .order-intro-note span { color:#c6a572; }
+  @media(max-width:650px) {
+    .order-intro { padding:24px 20px; }
+    .order-intro h2 { font-size:34px; }
+    .order-intro-note { display:none; }
+    .project-exhibit[data-number='69'] .exhibit-toolbar { padding:12px 16px; gap:10px; }
+    .project-exhibit[data-number='69'] .exhibit-story { top:10px; left:10px; padding:8px 10px; max-width:calc(100% - 20px); }
+    .project-exhibit[data-number='69'] .exhibit-story-detail { display:none; }
+    .project-exhibit[data-number='69'] .walkthrough-steps { flex-wrap:wrap; }
+    .project-exhibit[data-number='69'] .walkthrough-steps button { flex:1 0 40%; }
+  }
+
   .exhibit-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
   .project-exhibit .division-labels[hidden], .project-exhibit .division-key[hidden] { display: none !important; }
   .project-exhibit:is([data-number='74'], [data-number='75'], [data-number='76']) .exhibit-scene, .project-exhibit:is([data-number='74'], [data-number='75'], [data-number='76']) .exhibit-art { position: relative; }
@@ -104,6 +170,45 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     .division-copy { display: none; }
     .division-label { padding: 4px; border-radius: 50%; }
     .division-key, .project-exhibit[data-number='74'] .division-key { grid-template-columns: repeat(2, 1fr); gap: 14px 10px; padding: 16px; }
+  }
+
+  /* Alien Homecoming is a self-contained night-sky exhibit in either site theme. */
+  .project-exhibit[data-number='72'] { --ink: #f2e9ff; --bg: #100b20; --muted: #b8a9cb; --line: #bda6f020; --line-strong: #bda6f03b; --accent: #efc893; color: var(--ink); background: #100b20; border-color: #82609d45; border-radius: 24px; box-shadow: 0 24px 80px #160c2d20; }
+  .cosmic-intro { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 40px 38px 32px; background: radial-gradient(ellipse at 85% 10%, #693c673b, transparent 65%); }
+  .cosmic-eyebrow { margin: 0; font: 9px/1.6 var(--mono); letter-spacing: .16em; color: #d0b68d; }
+  .cosmic-eyebrow span { display: inline-block; width: 5px; height: 5px; border-radius: 50%; margin-right: 7px; background: #f6d49d; box-shadow: 0 0 12px #ffbe75; }
+  .cosmic-intro h2 { font: 500 clamp(32px, 5vw, 58px)/1.1 Georgia, serif; letter-spacing: -.04em; margin: 17px 0; }
+  .cosmic-intro h2 em { color: #d1b7e9; font-weight: 400; }
+  .cosmic-description { font-size: 13px; line-height: 1.65; color: #b8a9cb; margin: 0; }
+  .cosmic-launch { flex-shrink: 0; display: inline-flex; gap: 25px; align-items: center; color: #24152f; background: #edcfaa; padding: 13px 19px; text-decoration: none; border-radius: 30px; font-size: 12px; box-shadow: 0 0 30px #f8b86a17; }
+  .cosmic-launch:hover { background: #ffe4c3; }
+  .project-exhibit[data-number='72'] .exhibit-toolbar { padding: 13px 28px; background: #ffffff03; }
+  .project-exhibit[data-number='72'] .exhibit-toolbar p { color: #9d8bac; font-size: 9px; letter-spacing: .12em; }
+  .project-exhibit[data-number='72'] .exhibit-modes { background: #080610; border: 1px solid #bda6f020; border-radius: 30px; padding: 3px; }
+  .project-exhibit[data-number='72'] button { font-size: 11px; color: #c7b9d9; }
+  .project-exhibit[data-number='72'] .exhibit-modes button { border-color: transparent; }
+  :root .site-pages main .project-exhibit[data-number='72'] button[aria-pressed='true'] { color: #f7e7d3; background: #3f2e51; box-shadow: inset 0 0 0 1px #c7a3df30; }
+  .project-exhibit[data-number='72'] .exhibit-scene { background: radial-gradient(ellipse at 20% 30%, #55397360, transparent 55%), radial-gradient(ellipse at 80% 65%, #7f3e6540, transparent 55%), #0d0a1d; }
+  .project-exhibit[data-number='72'] .exhibit-story { top: 20px; left: 26px; text-shadow: 0 2px 10px #0c081e; background: #0c081e80; padding: 12px 15px; border: 1px solid #baa1de1f; border-radius: 12px; backdrop-filter: blur(12px); }
+  .project-exhibit[data-number='72'] .exhibit-story-heading { font-size: 11px; flex-wrap: wrap; }
+  .project-exhibit[data-number='72'] .exhibit-story-step { font-size: 8px; letter-spacing: .08em; color: #e4c492; }
+  .project-exhibit[data-number='72'] .exhibit-story-detail { font-size: 10px; }
+  .project-exhibit[data-number='72'] .exhibit-controls { background: #0b0817; padding: 12px 26px; }
+  .project-exhibit[data-number='72'] .exhibit-controls span { font-size: 10px; color: #9d8bac; }
+  .cosmic-caption { display: flex; justify-content: space-between; align-items: center; gap: 28px; padding: 28px !important; background: linear-gradient(110deg,#1e142b,#100b20); }
+  .cosmic-caption p { margin: 9px 0; font: 24px/1.25 Georgia, serif; }
+  .cosmic-caption small { max-width: 370px; font-size: 11px; line-height: 1.6; }
+  .cosmic-facts { display: flex; gap: 25px; flex-shrink: 0; }
+  .cosmic-facts span { display: block; font: 8px/1.6 var(--mono); color: #a99abb; white-space: nowrap; }
+  .cosmic-facts b { display: block; font: 25px/1.5 Georgia,serif; color: #e3c393; }
+  @media(max-width: 650px) {
+    .cosmic-intro { padding: 26px 20px; align-items: flex-start; flex-direction: column; gap: 20px; }
+    .cosmic-intro h2 { font-size: 37px; }
+    .cosmic-caption { align-items: flex-start; flex-direction: column; padding: 22px !important; gap: 20px; }
+    .cosmic-facts { width: 100%; gap: 0; justify-content: space-between; }
+    .project-exhibit[data-number='72'] .exhibit-toolbar { padding: 12px 18px; gap: 10px; }
+    .project-exhibit[data-number='72'] .exhibit-story { top: 10px; left: 10px; padding: 8px 10px; max-width: calc(100% - 20px); }
+    .project-exhibit[data-number='72'] .exhibit-story-detail { display:none; }
   }
 </style>
 <style>

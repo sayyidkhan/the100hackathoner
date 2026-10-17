@@ -17,12 +17,15 @@ export function getStaticPaths() {
 }
 
 const { hackathon } = Astro.props as { hackathon: Hackathon };
+const solution = hackathon.number === 72
+  ? 'An AI-painted adventure through impossible worlds. Find three Home Echoes and guide a lost alien home.'
+  : hackathon.solution;
 const orderedProjects = [...getHackathons()].sort((a, b) => a.number - b.number);
 const projectIndex = orderedProjects.findIndex((project) => project.number === hackathon.number);
 const previous = orderedProjects[projectIndex - 1];
 const next = orderedProjects[projectIndex + 1];
 const caseStudy = getCaseStudy(hackathon.number);
-const description = `Hackathon #${hackathon.number}: ${hackathon.title}, built for ${hackathon.event}. ${hackathon.solution || [hackathon.dateLabel, hackathon.award].filter(Boolean).join(". ")}`;
+const description = `Hackathon #${hackathon.number}: ${hackathon.title}, built for ${hackathon.event}. ${solution || [hackathon.dateLabel, hackathon.award].filter(Boolean).join(". ")}`;
 const duration =
   hackathon.duration && hackathon.durationUnit
     ? `${hackathon.duration} ${hackathon.durationUnit}`
@@ -56,10 +59,10 @@ const socialPlatforms = [
     <p class="event">{hackathon.event}</p>
 
     {
-      hackathon.solution && (
+      solution && (
         <section class="summary">
           <p class="meta">What We Built</p>
-          <p>{hackathon.solution}</p>
+          <p>{solution}</p>
         </section>
       )
     }

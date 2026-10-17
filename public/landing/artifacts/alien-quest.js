@@ -8,9 +8,11 @@ export function createCrystalQuest(THREE) {
   const body = character.ball(.32, 0, .46, 0, 'lavender');
   body.scale.set(1, 1.4, .84);
   for (const x of [-.14, .14]) {
-    const eye = character.ball(.042, x, .62, .266, 'ink');
-    eye.scale.y = 1.5;
-    character.ball(.08, x, .10, .06, 'lavender');
+    const eye = character.ball(.057, x, .62, .266, 'ink');
+    eye.scale.set(1,1.5,.62);
+    character.ball(.016, x-.012, .65, .303, 'ivory');
+    const cheek=character.ball(.036, x*1.46, .51, .24, 'paper');cheek.scale.set(1,.48,.25);
+    const foot=character.ball(.10, x, .10, .08, 'lavender');foot.scale.set(1,.8,1.4);
   }
   for (const side of [-1, 1]) {
     const arm = character.ball(.085, side * .32, .33, .02, 'lavender');
@@ -23,13 +25,13 @@ export function createCrystalQuest(THREE) {
   alien.name = 'collecting-alien';
   quest.add(alien);
 
-  const red = new THREE.MeshStandardMaterial({color:0xd9282d, roughness:.38, metalness:.12});
-  const blue = new THREE.MeshStandardMaterial({color:0x235ad2, roughness:.38, metalness:.12});
+  const red = new THREE.MeshStandardMaterial({color:0xb92d3b, roughness:.38, metalness:.12});
+  const blue = new THREE.MeshStandardMaterial({color:0x315e82, roughness:.38, metalness:.12});
   const baseMaterial = new THREE.MeshStandardMaterial({color:0xe7dbc2, roughness:.8});
   const crystalGeometry = new THREE.OctahedronGeometry(.17);
   const baseGeometry = new THREE.CylinderGeometry(.23,.26,.06,32);
   // Collection order: observatory, home gate, starting island.
-  const locations = [[-1.42,1.08,-.70],[.82,1.18,-.72],[.70,1.08,1.85]];
+  const locations = [[-1.42,1.08,-.70],[.82,1.18,-.72],[.70,1.22,1.85]];
   const crystals = locations.map(([x,y,z], index) => {
     const crystal = new THREE.Mesh(crystalGeometry, index === 2 ? red : blue);
     crystal.name = `quest-crystal-${index}`;
@@ -37,7 +39,7 @@ export function createCrystalQuest(THREE) {
     crystal.castShadow = true;
     quest.add(crystal);
     const base = new THREE.Mesh(baseGeometry,baseMaterial);
-    base.position.set(x,.73,z);
+    base.position.set(x,index===2?.96:.82,z);
     base.receiveShadow = true;
     quest.add(base);
     return crystal;
@@ -47,7 +49,7 @@ export function createCrystalQuest(THREE) {
     [[.40,.74,1.85],[0,.93,1.65],[.15,.94,.60],[-.9,.94,-.05],[-1.75,.74,-.68]],
     [[-1.75,.74,-.68],[-.9,.94,-.05],[0,.94,.55],[.9,.94,.12],[1.03,.85,-.63]],
     [[1.03,.85,-.63],[.9,.94,.12],[0,.94,.55],[.15,.94,.60],[0,.93,1.65],[.40,.74,1.85]],
-  ].map(points => new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(...p)), false, 'centripetal'));
+  ].map(points => new THREE.CatmullRomCurve3(points.map(p => new THREE.Vector3(p[0],.875,p[2])), false, 'centripetal'));
 
   const sparkMaterial = new THREE.MeshBasicMaterial({color:0xffcf72, transparent:true, depthWrite:false});
   const sparkGeometry = new THREE.OctahedronGeometry(.045);
@@ -69,7 +71,8 @@ export function createCrystalQuest(THREE) {
   const legTime = 6.5;
   const cycleTime = legTime * routes.length;
   quest.userData.animate = (elapsed) => {
-    const time = Math.max(0,elapsed) % cycleTime;
+    const cycle = Math.max(0,elapsed) % (cycleTime + 4);
+    const time = Math.max(0,cycle - 4);
     const leg = Math.floor(time / legTime);
     const local = time - leg * legTime;
     const progress = Math.min(local / walkTime,1);
@@ -89,7 +92,7 @@ export function createCrystalQuest(THREE) {
     const turn = Math.atan2(Math.sin(faceCrystal-heading),Math.cos(faceCrystal-heading));
     alien.rotation.y = heading + turn * Math.min(Math.max(pickupAge,0) / .25,1);
     // Start facing the visitor, including when reduced motion is enabled.
-    if (time < .5) alien.rotation.y *= THREE.MathUtils.smoothstep(time,0,.5);
+    if (time < 1.2) alien.rotation.y *= THREE.MathUtils.smoothstep(time,0,1.2);
     alien.rotation.z = walking ? Math.sin(local * 9) * .045 * Math.sin(Math.PI * progress) : 0;
     const stretch = walking ? hop * .45 : hop * .4;
     alien.scale.set(1 - stretch*.5,1 + stretch,1 - stretch*.5);
@@ -115,7 +118,7 @@ export function createCrystalQuest(THREE) {
       spark.scale.setScalar(1 - burst*.7);
     });
     ring.visible = bursting;
-    ring.position.set(target[0],.79,target[2]);
+    ring.position.set(target[0],leg===2?1:.85,target[2]);
     ring.scale.setScalar(1 + burst*2.3);
     ringMaterial.opacity = (1-burst)*.65;
     quest.userData.collected = leg + (walking ? 0 : 1);

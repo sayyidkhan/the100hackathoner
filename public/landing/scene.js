@@ -53,7 +53,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     renderer = new THREE.WebGLRenderer({
       canvas,
       antialias: true,
-      alpha: false,
+      alpha: true,
       powerPreference: 'high-performance',
     });
   } catch (error) {
@@ -267,11 +267,26 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     const palette = THEMES[currentTheme];
     const scale = currentModel?.userData.studioLightScale ?? 1;
     const paper = currentModel?.userData.studioProfile === 'paper';
-    paperContact.visible = paper;
+    const cosmos = currentModel?.userData.studioProfile === 'cosmos';
+    const mapper = currentModel?.userData.studioProfile === 'mapper';
+    floor.visible = !(cosmos || mapper);
+    if (cosmos || mapper) {
+      scene.background = null;
+      scene.fog.color.setHex(mapper ? 0x071c17 : 0x100b22);
+      renderer.setClearColor(mapper ? 0x071c17 : 0x100b22, 0);
+    } else {
+      scene.background = new THREE.Color(palette.background);
+      scene.fog.color.setHex(palette.background);
+      renderer.setClearColor(palette.background, 1);
+    }
+    key.color.setHex(cosmos ? 0xffd5b0 : 0xfff3de);
+    fill.color.setHex(cosmos ? 0xb69aff : 0xd4deff);
+    rim.color.setHex(cosmos ? 0x9a8aff : 0xfff8e8);
+    paperContact.visible = paper && currentModel?.userData.contactFootprint !== false;
     paperContact.material.opacity = currentTheme === 'light' ? .23 : .55;
     // The aerial crow uses its own soft footprint below the blue drum, avoiding
     // an oversized wing silhouette on the otherwise seamless exhibit backdrop.
-    contactShadow.material.opacity = paper || currentModel?.userData.studioProfile === 'crow' ? 0 : palette.shadowOpacity;
+    contactShadow.material.opacity = mapper || cosmos || paper || currentModel?.userData.studioProfile === 'crow' ? 0 : palette.shadowOpacity;
     hemisphere.intensity = palette.hemisphere * scale;
     key.intensity = palette.key * scale;
     fill.intensity = palette.fill * scale;
@@ -293,6 +308,21 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       rim.intensity = .7;
       scene.environmentIntensity = .6;
       renderer.toneMappingExposure = 1.02;
+    }
+    if (cosmos) {
+      hemisphere.intensity = .65; hemisphere.color.setHex(0xb9a4e0);
+      hemisphere.groundColor.setHex(0x27203d);
+      key.intensity = 2.0; fill.intensity = 1.0; rim.intensity = 2.8;
+      scene.environmentIntensity = .42;
+      renderer.toneMappingExposure = 1.05;
+    } else { hemisphere.color.setHex(0xf8f3e9); }
+    if (mapper) {
+      hemisphere.color.setHex(0xc7dfca); hemisphere.groundColor.setHex(0x112b23);
+      hemisphere.intensity = .8; key.intensity = 3.1; fill.intensity = 1.3; rim.intensity = 2.1;
+      key.color.setHex(0xffe2b7); fill.color.setHex(0xb5e4d0); rim.color.setHex(0xffe9c9);
+      key.position.set(-3, 7, 5); scene.environmentIntensity = .68;
+      renderer.toneMappingExposure = 1.03;
+      key.shadow.normalBias = .008; key.shadow.bias = -.00008;
     }
     if (currentModel?.userData.studioProfile === 'fitstake') {
       hemisphere.intensity = .7;
@@ -328,7 +358,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     if (currentTheme === name) return;
     const palette = THEMES[name];
     currentTheme = name;
-    scene.background.setHex(palette.background);
+    if (scene.background) scene.background.setHex(palette.background);
     scene.fog.color.setHex(palette.background);
     renderer.setClearColor(palette.background, 1);
     floor.material.color.setHex(palette.background);

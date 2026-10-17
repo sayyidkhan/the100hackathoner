@@ -1,0 +1,51 @@
+/* The exhibit keeps its jade palette inside either page theme. */
+.project-exhibit[data-number='70'] {
+  --ink:#f0eadb; --bg:#0a211b; --muted:#9db8ab; --line:#a9c1ac22; --line-strong:#b6cab144; --accent:#e8c685;
+  color:var(--ink); background:#0a211b; border:1px solid #66857555; border-radius:22px; box-shadow:0 24px 80px #122c1e20;
+}
+.mapper-intro {display:flex;align-items:center;justify-content:space-between;gap:28px;padding:38px 36px;background:radial-gradient(ellipse at 85% 0%,#6c8b6135,transparent 65%);}
+.mapper-eyebrow {margin:0;font:9px/1.6 var(--mono);letter-spacing:.13em;color:#d4bd89;}
+.mapper-eyebrow span {display:inline-block;width:5px;height:5px;background:#d8c68b;border-radius:50%;margin-right:7px;box-shadow:0 0 12px #f6d18980;}
+.mapper-intro h2 {font:500 clamp(32px,4.5vw,53px)/1.08 Georgia,serif;letter-spacing:-.035em;margin:18px 0;}
+.mapper-intro h2 em {color:#c9d9b8;font-weight:400;}
+.mapper-description {color:#a7bdac;font-size:12px;line-height:1.8;margin:0;}
+.mapper-launch {display:inline-flex;align-items:center;gap:25px;flex-shrink:0;padding:13px 19px;background:#e5cf9b;border-radius:30px;color:#193628;font-size:12px;text-decoration:none;}
+.mapper-launch:hover {background:#f2deb1;}
+.mapper-launch:focus-visible {outline:2px solid #f3dea1;outline-offset:5px;}
+.project-exhibit[data-number='70'] .exhibit-toolbar {padding:14px 26px;background:#ffffff03;}
+.project-exhibit[data-number='70'] .exhibit-toolbar p {color:#a5bcac;font-size:9px;letter-spacing:.12em;}
+.project-exhibit[data-number='70'] .exhibit-modes {padding:3px;background:#061810;border:1px solid #b3c9b422;border-radius:30px;}
+.project-exhibit[data-number='70'] button {color:#bed0bf;font-size:11px;}
+.project-exhibit[data-number='70'] .exhibit-modes button {border-color:transparent;}
+:root .site-pages main .project-exhibit[data-number='70'] button[aria-pressed='true'] {color:#f5e4bb;background:#34513e;box-shadow:inset 0 0 0 1px #c1c48b33;}
+.project-exhibit[data-number='70'] .exhibit-scene {background:radial-gradient(ellipse at 20% 0%,#6081663b,transparent 65%),radial-gradient(ellipse at 80% 90%,#94794520,transparent 60%),#081c16;}
+.project-exhibit[data-number='70'] .exhibit-story {top:18px;left:22px;padding:11px 15px;background:#061a14ba;backdrop-filter:blur(12px);border:1px solid #c3d3b422;border-radius:10px;max-width:calc(100% - 44px);text-shadow:none;}
+.project-exhibit[data-number='70'] .exhibit-story-heading {font-size:12px;}
+.project-exhibit[data-number='70'] .exhibit-story-step {color:#e3c685;font-size:9px;}
+.project-exhibit[data-number='70'] .exhibit-story-detail {font-size:10px;}
+.project-exhibit[data-number='70'] .exhibit-story-dot {background:#ddc383;box-shadow:0 0 9px #e7bd6350;}
+.project-exhibit[data-number='70'] .exhibit-controls {padding:12px 25px;background:#071b15;}
+.project-exhibit[data-number='70'] .exhibit-controls span {font-size:10px;}
+.mapper-walkthrough {padding:17px 25px;border-top:1px solid #a9c1ac22;background:#0d261d;}
+.mapper-steps {display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:7px;}
+.mapper-steps button {display:flex;align-items:center;gap:9px;justify-content:center;border-radius:9px;padding:11px 8px;}
+.mapper-steps button span {color:#cdb47b;font:9px var(--mono);}
+.mapper-walkthrough p {margin:12px 0 0;font:9px/1.5 var(--mono);color:#8ca696;}
+.mapper-caption {display:flex;gap:28px;align-items:center;justify-content:space-between;padding:27px !important;background:linear-gradient(115deg,#183329,#0a211b);}
+.mapper-caption p {font:23px/1.25 Georgia,serif;margin:10px 0 0;max-width:480px;}
+.mapper-key {display:grid;gap:9px;flex-shrink:0;font:10px/1.4 var(--mono);color:#b5c6b6;}
+.mapper-key span {display:flex;align-items:center;gap:8px;}
+.mapper-key i {display:inline-block;width:5px;height:5px;border:1px solid #d9ba7b;border-radius:50%;}
+@media(max-width:650px){
+  .mapper-intro {padding:26px 20px;align-items:flex-start;flex-direction:column;gap:20px;}
+  .mapper-intro h2 {font-size:37px;}
+  .project-exhibit[data-number='70'] .exhibit-toolbar {padding:12px 18px;gap:12px;}
+  .project-exhibit[data-number='70'] .exhibit-story {top:10px;left:10px;padding:9px 10px;max-width:calc(100% - 20px);}
+  .project-exhibit[data-number='70'] .exhibit-story-heading {font-size:10px;}
+  .project-exhibit[data-number='70'] .exhibit-story-detail {display:none;}
+  .mapper-walkthrough {padding:15px;}
+  .mapper-steps {grid-template-columns:1fr 1fr;}
+  .mapper-steps button:last-child {grid-column:1 / -1;}
+  .mapper-caption {align-items:flex-start;flex-direction:column;padding:22px !important;gap:20px;}
+  .mapper-key {display:flex;flex-wrap:wrap;gap:12px;font-size:9px;}
+}

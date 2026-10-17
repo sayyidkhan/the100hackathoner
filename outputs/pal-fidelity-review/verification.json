@@ -1,0 +1,21 @@
+{
+  "faces": 8,
+  "meshes": 151,
+  "triangles": 298662,
+  "geometryMiB": 13.7,
+  "bake": "matching",
+  "animationCycles": 2,
+  "phases": [
+    "sheikh",
+    "strategist",
+    "writer",
+    "builder",
+    "reviewer",
+    "guardian",
+    "healer",
+    "messenger",
+    "delivery",
+    "community-served",
+    "return"
+  ]
+}

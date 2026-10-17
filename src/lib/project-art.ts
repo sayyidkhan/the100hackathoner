@@ -70,16 +70,16 @@ import buzoLight from '../../public/landing/assets/projects/075-buzo-atlas-light
 import buzoDark from '../../public/landing/assets/projects/075-buzo-atlas-dark-v1.png';
 import telepathLight from '../../public/landing/assets/projects/074-corporate-telepath-light-v2.png';
 import telepathDark from '../../public/landing/assets/projects/074-corporate-telepath-dark-v2.png';
-import driveLight from '../../public/landing/assets/projects/073-zo-drive-light-v1.png';
-import driveDark from '../../public/landing/assets/projects/073-zo-drive-dark-v1.png';
-import alienLight from '../../public/landing/assets/projects/072-alien-homecoming-light-v1.png';
-import alienDark from '../../public/landing/assets/projects/072-alien-homecoming-dark-v1.png';
+import driveLight from '../../public/landing/assets/projects/073-zo-drive-light-v2.png';
+import driveDark from '../../public/landing/assets/projects/073-zo-drive-dark-v2.png';
+import alienLight from '../../public/landing/assets/projects/072-alien-homecoming-cosmos-v2.png';
+import alienDark from '../../public/landing/assets/projects/072-alien-homecoming-cosmos-v2.png';
 import palLight from '../../public/landing/assets/projects/071-kingdom-of-pal-light-v2.png';
 import palDark from '../../public/landing/assets/projects/071-kingdom-of-pal-dark-v2.png';
-import mapperLight from '../../public/landing/assets/projects/070-relationship-mapper-light-v1.png';
-import mapperDark from '../../public/landing/assets/projects/070-relationship-mapper-dark-v1.png';
-import orderLight from '../../public/landing/assets/projects/069-order-tracker-light-v1.png';
-import orderDark from '../../public/landing/assets/projects/069-order-tracker-dark-v1.png';
+import mapperLight from '../../public/landing/assets/projects/070-relationship-mapper-atlas-v2.png';
+import mapperDark from '../../public/landing/assets/projects/070-relationship-mapper-atlas-v2.png';
+import orderLight from '../../public/landing/assets/projects/069-order-tracker-light-v2.png';
+import orderDark from '../../public/landing/assets/projects/069-order-tracker-dark-v2.png';
 import sceneLight from '../../public/landing/assets/projects/067-sceneverse-light-v3.png';
 import sceneDark from '../../public/landing/assets/projects/067-sceneverse-dark-v3.png';
 import mumsLight from '../../public/landing/assets/projects/065-mums-can-build-light-v1.png';
@@ -132,10 +132,10 @@ export const projectArt: Record<number, ProjectArt> = {
   64: { light: p64Light, dark: p64Dark, alt: "A winding blue game path connects opposing server fortresses, with five defense towers and a red voice-command microphone.", caption: "Build the defense, send the next wave, and command it all by voice.", model: '/landing/artifacts/data-center-destroyer.js' },
   65: { light: mumsLight, dark: mumsDark, alt: 'A speaker and red microphone connect through a blue speech ribbon to task cards and a builder arm assembling a miniature app.', caption: 'Speak an idea, shape the task, and follow the build as it happens.', model: '/landing/artifacts/mums-can-build.js' },
   67: { light: sceneLight, dark: sceneDark, alt: 'A VR headset wearer talks with Neo, who holds out a red pill and a blue pill in separate open palms before a red movie frame.', caption: 'Step into the movie. Talk to Neo. Red pill or blue pill?', model: '/landing/artifacts/sceneverse.js' },
-  69: { light: orderLight, dark: orderDark, alt: 'A miniature pastry shop with a red awning, order tickets, parcels and a shopkeeper reviewing a paper receipt.', caption: 'A simple storefront, a clear order queue, and a person checking the payment proof.', model: '/landing/artifacts/order-tracker.js' },
-  70: { light: mapperLight, dark: mapperDark, alt: 'A resume and ranked opportunity steps lead across a red bridge to three people and a folded outreach envelope.', caption: 'From finding a role to knowing who to talk to, and why.', model: '/landing/artifacts/relationship-mapper.js' },
-  72: { light: alienLight, dark: alienDark, alt: 'A lavender alien follows a cobalt path across ivory realm islands toward a red gate, with an observatory and a constellation tree.', caption: 'A trail of remembered things across unfamiliar worlds, searching for home.', model: '/landing/artifacts/alien-homecoming.js' },
-  73: { light: driveLight, dark: driveDark, alt: 'An ivory file cabinet with an open folder drawer, red document folder, blue database stack and a lock beside a sharing path.', caption: 'A personal home for files, with control over what leaves the door.', model: '/landing/artifacts/zo-drive.js' },
+  69: { light: orderLight, dark: orderDark, alt: 'A detailed zorder pastry shop with a striped canopy, payment-proof upload screen, merchant reviewing a receipt, order board and packed takeaway orders.', caption: 'From a small storefront to an organised order book. Payment proof stays attached, and the merchant stays in control.', model: '/landing/artifacts/order-tracker.js' },
+  70: { light: mapperLight, dark: mapperDark, alt: 'A jade and brass relationship atlas connects a profile, ranked opportunity cards, three contact portraits and a contextual outreach draft.', caption: 'Find the role. Understand the people. Start a better conversation.', model: '/landing/artifacts/relationship-mapper.js' },
+  72: { light: alienLight, dark: alienDark, alt: 'A lavender traveller explores marble islands suspended in a violet cosmos, connected by graceful bridges to a luminous golden doorway.', caption: 'Lost between worlds. Draw your own way home.', model: '/landing/artifacts/alien-homecoming.js' },
+  73: { light: driveLight, dark: driveDark, alt: 'An ivory personal server workbench with a detailed file archive, native document cards, a brass sharing gateway, navy database modules and a functions terminal.', caption: 'Your files, documents, databases and functions. One private workspace, with sharing on your terms.', model: '/landing/artifacts/zo-drive.js' },
   74: { light: telepathLight, dark: telepathDark, alt: 'A paper-and-brass feature review studio with engineering, finance, legal and people workstations surrounding a suspended proposal and a shared action plan.', caption: 'Four perspectives turn a feature proposal into a shared checklist.', model: '/landing/artifacts/corporate-telepath.js' },
   75: { light: buzoLight, dark: buzoDark, alt: 'A layered ivory atlas connects a concert stage, framed artwork and venue to an open red-spined ledger.', caption: 'Mapping the relationships, rights and decisions behind a cultural portfolio.', model: '/landing/artifacts/buzo-atlas.js' },
   76: { light: agrimLight, dark: agrimDark, alt: 'Mayor Agrim, wearing glasses and a black hoodie, directs a community marketplace, modern glass academy and server district from a central city-planning table.', caption: 'One mayor. Three different worlds. Agrim commands the city from the center.', model: '/landing/artifacts/agrim-tycoon.js' },
