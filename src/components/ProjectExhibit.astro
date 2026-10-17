@@ -52,6 +52,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
   <div class="exhibit-toolbar">
     <p>{number === 70 ? 'THE OPPORTUNITY ATLAS' : number === 72 ? 'EXPLORE THE THRESHOLD' : number === 69 ? 'INSIDE THE LITTLE SHOP' : 'THE PROJECT, REIMAGINED'}</p>
     <div class="exhibit-actions">
+      {number === 72 && <a class="cosmic-launch cosmic-toolbar-launch" href="https://alien-homecoming.lovable.app/" target="_blank" rel="noopener noreferrer" aria-label="Open Alien Homecoming app (opens in a new tab)">Open app <span aria-hidden="true">↗</span></a>}
       {hasLabels && <button type="button" data-toggle-labels aria-expanded="true">Hide labels</button>}
     <div role="group" aria-label="Display mode" class="exhibit-modes">
       <button type="button" data-mode="artwork" aria-pressed="true">Artwork</button>
@@ -182,6 +183,8 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
   .cosmic-description { font-size: 13px; line-height: 1.65; color: #b8a9cb; margin: 0; }
   .cosmic-launch { flex-shrink: 0; display: inline-flex; gap: 25px; align-items: center; color: #24152f; background: #edcfaa; padding: 13px 19px; text-decoration: none; border-radius: 30px; font-size: 12px; box-shadow: 0 0 30px #f8b86a17; }
   .cosmic-launch:hover { background: #ffe4c3; }
+  .cosmic-launch:focus-visible { outline: 2px solid #f6d49d; outline-offset: 4px; }
+  .cosmic-toolbar-launch { gap: 10px; padding: 10px 15px; font-size: 11px; white-space: nowrap; }
   .project-exhibit[data-number='72'] .exhibit-toolbar { padding: 13px 28px; background: #ffffff03; }
   .project-exhibit[data-number='72'] .exhibit-toolbar p { color: #9d8bac; font-size: 9px; letter-spacing: .12em; }
   .project-exhibit[data-number='72'] .exhibit-modes { background: #080610; border: 1px solid #bda6f020; border-radius: 30px; padding: 3px; }
