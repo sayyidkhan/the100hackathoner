@@ -1,7 +1,6 @@
 // One visible work cycle, driven by the gallery clock (including pause/reset).
 export function animateCouncil(THREE, model, cast, flags) {
   const smooth=x=>{const t=THREE.MathUtils.clamp(x,0,1);return t*t*(3-2*t);};
-  const lerp=THREE.MathUtils.lerp;
   const turn=(a,b,t)=>a+Math.atan2(Math.sin(b-a),Math.cos(b-a))*smooth(t);
   const rigs=cast.map(g=>({g,rest:g.position.clone(),yaw:g.rotation.y,
     head:g.getObjectByName('head'),right:g.getObjectByName('right-arm'),left:g.getObjectByName('left-arm'),
@@ -16,11 +15,11 @@ export function animateCouncil(THREE, model, cast, flags) {
   const halo=new THREE.Mesh(new THREE.TorusGeometry(.34,.018,8,48),material);halo.name='active-companion';halo.rotation.x=Math.PI/2;model.add(halo);
   const sparks=Array.from({length:7},()=>{const m=new THREE.Mesh(new THREE.OctahedronGeometry(.045),material);model.add(m);return m;});
   const route=new THREE.CatmullRomCurve3([rigs[1].rest.clone(),new THREE.Vector3(-1.95,.25,-.55),
-    new THREE.Vector3(-2.53,.25,.05),new THREE.Vector3(-2.65,.25,.9),
-    new THREE.Vector3(-2.52,.25,1.55),new THREE.Vector3(-2.02,.25,2.30),new THREE.Vector3(-1.38,.25,2.38)],false,'centripetal');
+    new THREE.Vector3(-2.05,.28,.15),new THREE.Vector3(-1.95,.28,.9),
+    new THREE.Vector3(-1.80,.28,1.55),new THREE.Vector3(-1.75,.28,2.20),new THREE.Vector3(-2.20,.28,2.65)],false,'centripetal');
   const point=new THREE.Vector3(),tangent=new THREE.Vector3(),from=new THREE.Vector3(),to=new THREE.Vector3();
-  const market=new THREE.Vector3(-1.88,1.03,1.77);
-  const deliveryYaw=Math.atan2(market.x+1.38,market.z-2.38);
+  const market=new THREE.Vector3(-2.53,1.03,2.07);
+  const deliveryYaw=Math.atan2(market.x+2.20,market.z-2.65);
   const departureYaw=(()=>{route.getTangentAt(0,tangent);return Math.atan2(tangent.x,tangent.z);})();
   const arrivalYaw=(()=>{route.getTangentAt(1,tangent);return Math.atan2(tangent.x,tangent.z);})();
   const cycle=28;
@@ -40,7 +39,12 @@ export function animateCouncil(THREE, model, cast, flags) {
       r.left.rotation.set(-selected*.25,0,.12);
       for(const f of r.feet){f.position.y=.095;f.position.z=.04;f.rotation.x=0;}
       if(r.tool){r.tool.rotation.set(-selected*.45,0,Math.sin(t*Math.PI*8/7)*selected*.15);r.tool.position.y=.5+selected*.13;}
-      if(i===0){r.right.rotation.x=-.25-selected*.9;r.right.rotation.z=-.25-selected*.55;r.head.rotation.y=Math.sin(t*Math.PI/7)*.24;}
+      if(i===0){
+        r.g.rotation.set(0,r.yaw,0);
+        r.right.rotation.set(-selected*.08,selected*.08,selected*.12);
+        r.left.rotation.set(-selected*.04,0,-selected*.03);
+        r.head.rotation.set(-.035+selected*.035,.10+Math.sin(t*Math.PI/7)*.08,-.025);
+      }
       // Distinct gestures: hammer strikes, reading/inspection, shield salute.
       if(r.g.name==='builder'&&selected){const strike=Math.sin(t*Math.PI*8/7);r.tool.rotation.x=-.35+strike*.75*selected;r.right.rotation.x=-.35+strike*.6*selected;}
       if(r.g.name==='writer'&&selected){r.tool.rotation.z=Math.sin(t*Math.PI*12/7)*.12*selected;r.head.rotation.x=.20*selected;}
@@ -73,14 +77,17 @@ export function animateCouncil(THREE, model, cast, flags) {
     if(t<12){
       const previous=order[Math.max(0,phase-1)];
       from.copy(rigs[previous].rest);to.copy(rigs[active].rest);
-      from.y=previous===0?2.02:1.75;to.y=active===0?2.02:1.75;
+      from.y=previous===0?1.78:1.75;to.y=active===0?1.78:1.75;
+      // The taller sculpted host hands the card out beside his sleeve.
+      if(previous===0){from.x+=.76;from.z+=.30;}
+      if(active===0){to.x+=.76;to.z+=.30;}
       const travel=smooth(local/.55);task.position.lerpVectors(from,to,travel);task.position.y+=Math.sin(travel*Math.PI)*.25;
       task.scale.setScalar(.95+emphasis*.12);
     } else if(t<18.6){task.position.copy(courier.g.position);task.position.y+=1.5;task.scale.setScalar(1);}
     else if(t<19.4){from.copy(courier.g.position);from.y+=1.5;task.position.lerpVectors(from,market,smooth((t-18.6)/.8));task.scale.setScalar(1);}
     else {task.position.copy(market);task.scale.setScalar(1-smooth((t-19.4)/.4));}
     task.rotation.set(-.12,Math.sin(t*Math.PI/7)*.2,Math.sin(t*Math.PI/3.5)*.07);
-    task.visible=t<19.8;
+    task.visible=t>=1.5&&t<19.8;
     const focus=working?rigs[active].g:courier.g;
     halo.position.copy(focus.position);halo.position.y=.265;halo.scale.setScalar(1+Math.sin(t*Math.PI*2)*.08);
     halo.visible=t<20;

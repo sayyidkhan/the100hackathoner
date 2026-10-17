@@ -6,11 +6,12 @@
 // node scripts/bake-storybook-ao.mjs [--rays=48] [--distance=0.9]
 //   [--cell=0.018] [--out=public/landing/assets/storybook-ao-v1.bin]
 //   [--limit=1000]  (benchmark only: computes at most this many unique samples)
+// node scripts/bake-storybook-ao.mjs --model=pal
+//   Pal uses shallow contact occlusion, retaining live animated shadows.
 import { writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as THREE from '../public/landing/vendor/three.module.js';
-import { createArtifact } from '../public/landing/artifacts/storybook.js';
 import { geometryAOHash } from '../public/landing/artifacts/storybook-surface.js';
 
 const rootPath = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -19,14 +20,17 @@ const options = Object.fromEntries(process.argv.slice(2).map(arg => {
   if (!match) throw new Error(`Expected --name=value, received ${arg}`);
   return [match[1], match[2]];
 }));
-const rays = Number(options.rays ?? 48);
-const maxDistance = Number(options.distance ?? .9);
-const keyRays = 16;
+if (options.model && !['storybook', 'pal'].includes(options.model)) throw new Error('Unknown bake model.');
+const pal = options.model === 'pal';
+const { createArtifact } = await import(pal ? '../public/landing/artifacts/kingdom-of-pal.js' : '../public/landing/artifacts/storybook.js');
+const rays = Number(options.rays ?? (pal ? 24 : 48));
+const maxDistance = Number(options.distance ?? (pal ? .2 : .9));
+const keyRays = pal ? 0 : 16; // Pal keeps live shadows for its articulated cast.
 const keyPosition = new THREE.Vector3(-5, 6, 2.5);
 const keyWidth = 1.5;
-const cell = Number(options.cell ?? .018);
+const cell = Number(options.cell ?? (pal ? .012 : .018));
 const limit = options.limit === undefined ? Infinity : Number(options.limit);
-const output = resolve(rootPath, options.out ?? 'public/landing/assets/storybook-ao-v1.bin');
+const output = resolve(rootPath, options.out ?? `public/landing/assets/${pal ? 'pal' : 'storybook'}-ao-v1.bin`);
 if (!Number.isInteger(rays) || rays < 4 || rays > 256) throw new Error('rays must be an integer from 4 to 256.');
 if (!(maxDistance > 0 && maxDistance < 10) || !(cell > 0 && cell < .1)) throw new Error('Invalid distance or cache cell.');
 if (!(limit > 0)) throw new Error('limit must be positive.');
@@ -150,7 +154,7 @@ const keyNormal = new THREE.Vector3(0, 1, 0).sub(keyPosition).normalize();
 const keyRight = new THREE.Vector3(0, 1, 0).cross(keyNormal).normalize();
 const keyUp = new THREE.Vector3().crossVectors(keyNormal, keyRight);
 const keySamples = [];
-for (let row = 0; row < 4; row++) for (let col = 0; col < 4; col++) {
+for (let row = 0; keyRays && row < 4; row++) for (let col = 0; col < 4; col++) {
   keySamples.push(keyPosition.clone()
     .addScaledVector(keyRight, ((col + .5) / 4 - .5) * keyWidth)
     .addScaledVector(keyUp, ((row + .5) / 4 - .5) * keyWidth));
@@ -187,7 +191,7 @@ function sampleAO(x, y, z, nx, ny, nz) {
     const distance = Math.hypot(lx, ly, lz);
     if (trace(ox, oy, oz, lx / distance, ly / distance, lz / distance, distance) >= distance - epsilon) visibleKeySamples++;
   }
-  const result = [value, Math.round(255 * visibleKeySamples / keyRays)];
+  const result = [value, keyRays ? Math.round(255 * visibleKeySamples / keyRays) : 255];
   cache.set(key, result);
   if (performance.now() > nextProgress) {
     console.log(`Sampled ${sampled.toLocaleString()} unique vertices (${(sampled * (rays + keyRays)).toLocaleString()} rays), ${(performance.now() - started).toFixed(0)}ms elapsed.`);

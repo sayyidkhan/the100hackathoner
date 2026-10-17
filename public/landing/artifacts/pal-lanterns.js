@@ -34,11 +34,11 @@ export function addKingdomLanterns(THREE, model) {
     add(new THREE.BoxGeometry(.048,.085,.016),windowMaterial,x,1.07,z+.104);
     glow(x,1.08,z+.13,.32);
   }
-  lantern(-1.88,1.09,1.53);
-  lantern(2.14,1.48,1.58);
+  lantern(-2.53,1.09,1.83);
+  lantern(-2.81,1.48,.06);
   for(const x of [-.78,.78])lantern(x,.40,2.20);
   const lights=[];
-  for(const [x,y,z,power,range] of [[-2.12,1.45,-.85,2.4,3],[2.12,1.45,-.85,2.4,3],[-1.88,1.08,1.73,1.65,2.8],[0,1.62,.15,1.5,2.6],[2.14,1.4,1.7,1.4,2.5]]){
+  for(const [x,y,z,power,range] of [[-2.12,1.45,-.85,2.4,3],[2.12,1.45,-.85,2.4,3],[-2.53,1.08,2.03,1.65,2.8],[0,1.62,.15,1.5,2.6],[-2.81,1.4,.18,1.4,2.5]]){
     const light=new THREE.PointLight(0xffb455,power,range,2);light.position.set(x,y,z);illumination.add(light);lights.push({light,power});
   }
   let night=false;

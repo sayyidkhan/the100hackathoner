@@ -304,6 +304,21 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       key.shadow.normalBias = .009;
       key.shadow.radius = 5;
     }
+    if (currentModel?.userData.studioProfile === 'pal') {
+      // Warm side lighting keeps the carved stone and cloth relief legible.
+      hemisphere.intensity = .55 * scale;
+      key.intensity = 2.9 * scale;
+      fill.intensity = .42 * scale;
+      rim.intensity = 1.1 * scale;
+      scene.environmentIntensity = .4 * scale;
+      key.position.set(-3.5, 7, 5);
+      key.shadow.normalBias = .008;
+      key.shadow.bias = -.00008;
+      key.shadow.radius = 3;
+      Object.assign(key.shadow.camera, { left: -4.2, right: 4.2, top: 4.8, bottom: -4.2 });
+      key.shadow.camera.updateProjectionMatrix();
+      renderer.toneMappingExposure = currentTheme === 'dark' ? 1.05 : .97;
+    }
   }
 
   /** Change only the studio presentation, never the artifact or camera state. */
@@ -507,7 +522,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       model.traverse(object => {
         if (object.isMesh) {
           object.castShadow = !object.userData.noShadow;
-          object.receiveShadow = !object.userData.noShadow;
+          object.receiveShadow = !object.userData.noShadow && !object.userData.noReceiveShadow;
         }
       });
       model.position.y = 0.025;
