@@ -44,6 +44,7 @@ export interface Hackathon {
   organizers: string[];
   members: string[];
   githubUrl: string | null;
+  projectUrl: string | null;
   eventUrl: string | null;
   socialLinks: {
     linkedin: string[];

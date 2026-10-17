@@ -1,0 +1,7 @@
+/* Standard exhibit card; the dark studio belongs only to the artwork and canvas. */
+.project-exhibit[data-number='50'] .exhibit-scene {
+  background: radial-gradient(ellipse at 48% 38%, #263c565c, transparent 70%), #091422;
+}
+@media (max-width: 650px) {
+  .project-exhibit[data-number='50'] .exhibit-scene { aspect-ratio: 1.4; }
+}

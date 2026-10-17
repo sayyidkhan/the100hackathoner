@@ -184,9 +184,43 @@ export function createArtifact(THREE, { bake = false } = {}) {
   result.traverse(object=>{if(!object.isMesh)return;const a=object.geometry.attributes.position;for(let i=0;i<a.count;i++){point.fromBufferAttribute(a,i).applyMatrix4(object.matrixWorld);const key=Math.floor(point.y/.18);if(!bands.has(key))bands.set(key,new THREE.Box3());bands.get(key).expandByPoint(point);}});
   const framingPoints=[];
   for(const b of bands.values())for(const x of [b.min.x-.03,b.max.x+.03])for(const y of [b.min.y-.03,b.max.y+.03])for(const z of [b.min.z-.03,b.max.z+.03])framingPoints.push(new THREE.Vector3(x,y,z));
-  result.userData={...result.userData,annotations,framingPoints,displayBase:false,groundLevel:0,studioProfile:'paper',initialYaw:.30,initialElevation:.60,
-    animate(time){beads.forEach((bead,i)=>bead.position.copy(curves[i].getPoint((time*.10+i/3)%1)));},
+  // A small pool of emissive signals brings the existing sculpted atlas to life.
+  // Sprites do not change the baked geometry or camera framing.
+  const pixels=new Uint8Array(64*64*4);
+  for(let y=0;y<64;y++)for(let x=0;x<64;x++){
+    const i=(y*64+x)*4,d=Math.hypot((x-31.5)/31.5,(y-31.5)/31.5);
+    pixels[i]=pixels[i+1]=pixels[i+2]=255;pixels[i+3]=Math.round(Math.pow(Math.max(0,1-d),2.5)*255);
+  }
+  const glowMap=new THREE.DataTexture(pixels,64,64);glowMap.needsUpdate=true;
+  function glow(x,y,z,size,opacity=.8){
+    const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:glowMap,color:0xffc783,transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,toneMapped:false,opacity}));
+    sprite.position.set(x,y,z);sprite.scale.setScalar(size);result.add(sprite);return sprite;
+  }
+  const glowMaterial=new THREE.MeshStandardMaterial({color:0xffd5a0,emissive:0xffb45d,emissiveIntensity:1.8,roughness:.35});
+  const routeGlows=beads.map(bead=>{bead.material=glowMaterial;return glow(0,0,0,.35);});
+  const landmarks=[glow(0,.88,.45,1.6),glow(-2.15,1.15,-1.0,1.8),glow(2.15,1.3,-1.1,1.8),glow(2.15,.9,2.05,1.5)];
+  for(let i=0;i<5;i++)glow(-2.73+i*.29,1.79,-1.37,.24);
+  const tour=[
+    {title:'Learn from the whole portfolio',detail:'Bring reports, rights and operating signals into shared context.'},
+    {title:'Coordinate the people behind it',detail:'Connect artists, venues and partners around the next activation.'},
+    {title:'Prepare the next decision',detail:'Surface dependencies and trade-offs for a human-reviewed allocation.'},
+  ];
+  let selectedStep=null,stepStart=0;
+  result.userData={...result.userData,annotations,framingPoints,displayBase:false,groundLevel:0,studioProfile:'atlas',initialYaw:.30,initialElevation:.60,
+    setStep(index,time){selectedStep=Number.isInteger(index)?Math.max(0,Math.min(2,index)):null;stepStart=time;},
+    animate(time){
+      const index=selectedStep??Math.floor(Math.max(0,time-stepStart)/8)%3;
+      beads.forEach((bead,i)=>{
+        const progress=(time*.10+i/3)%1;
+        bead.position.copy(curves[i].getPoint(index===0?1-progress:progress));
+        bead.position.y+=.03;routeGlows[i].position.copy(bead.position);
+        routeGlows[i].material.opacity=index===1?1:.6;
+      });
+      landmarks.forEach((light,i)=>{light.material.opacity=(index===0&&i===0)||(index===1&&i>0)||index===2?.8:.18;});
+      result.userData.story={step:`0${index+1} / 03`,index,title:tour[index].title,detail:tour[index].detail,tone:index===2?'complete':'thinking'};
+    },
   };
+  result.userData.animate(0);
   if(!bake && typeof document!=='undefined')applyBakedAO(THREE,result);
   return result;
 }

@@ -5,6 +5,7 @@ import ProjectExhibit from "../../components/ProjectExhibit.astro";
 import ProjectNavigation from "../../components/ProjectNavigation.astro";
 import ProjectTransition from "../../components/ProjectTransition.astro";
 import ProjectTeam from "../../components/ProjectTeam.astro";
+import ProjectCertificates from "../../components/ProjectCertificates.astro";
 import { projectArt } from "../../lib/project-art";
 import { getCaseStudy } from "../../lib/case-studies";
 import { getHackathons, type Hackathon } from "../../lib/hackathons";
@@ -67,9 +68,10 @@ const socialPlatforms = [
       )
     }
 
-    {projectArt[hackathon.number] && <ProjectExhibit number={hackathon.number} title={hackathon.title} art={projectArt[hackathon.number]} />}
+    {projectArt[hackathon.number] && <ProjectExhibit number={hackathon.number} title={hackathon.title} art={projectArt[hackathon.number]} projectUrl={hackathon.projectUrl} />}
 
-    <dl class="details">
+    <div class="event-overview">
+      <dl class="details">
       {
         details.map(([label, value]) => (
           <div>
@@ -78,15 +80,20 @@ const socialPlatforms = [
           </div>
         ))
       }
-    </dl>
+      </dl>
+      <ProjectCertificates number={hackathon.number} />
+    </div>
 
     {caseStudy && <ProjectCaseStudy study={caseStudy} hackathon={hackathon} />}
 
     <ProjectTeam members={hackathon.members} />
 
     {
-      (hackathon.githubUrl || hackathon.eventUrl) && (
+      (hackathon.projectUrl || hackathon.githubUrl || hackathon.eventUrl) && (
         <div class="links" aria-label="Hackathon links">
+          {hackathon.projectUrl && (
+            <a href={hackathon.projectUrl} rel="noreferrer" target="_blank">Live project</a>
+          )}
           {hackathon.githubUrl && (
             <a href={hackathon.githubUrl} rel="noreferrer" target="_blank">Source code</a>
           )}
@@ -203,11 +210,29 @@ const socialPlatforms = [
     line-height: 1.3;
   }
 
+  .event-overview { margin-top: 64px; }
+
+  .event-overview:has(.certificates) {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 40px;
+    padding: 28px 0;
+    border-block: 1px solid var(--line);
+  }
+
+  .event-overview:has(.certificates) .details { grid-template-columns: 1fr; border-top: 0; }
+  .event-overview:has(.certificates) .details > div { display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 16px; padding: 13px 0; }
+  .event-overview:has(.certificates) .details > div:first-child { padding-top: 0; }
+  .event-overview:has(.certificates) .details > div:last-child { padding-bottom: 0; border-bottom: 0; }
+  .event-overview:has(.certificates) dt { padding-top: 4px; }
+  .event-overview:has(.certificates) dd { margin: 0; font-size: 1rem; }
+
   .details {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0 42px;
-    margin: 64px 0 0;
+    margin: 0;
     border-top: 1px solid var(--line);
   }
 
@@ -312,6 +337,8 @@ const socialPlatforms = [
   .social-posts a:hover { color: var(--red); }
 
   @media (max-width: 640px) {
+    .event-overview:has(.certificates) { grid-template-columns: 1fr; gap: 24px; padding: 20px 0; }
+    .event-overview:has(.certificates) .details > div { grid-template-columns: 82px minmax(0, 1fr); gap: 12px; }
     .record-toolbar { gap: 12px; margin-bottom: 36px; }
     .back { font-size: .68rem; letter-spacing: .02em; }
     .details {

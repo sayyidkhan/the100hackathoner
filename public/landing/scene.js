@@ -1,5 +1,6 @@
 import * as THREE from './vendor/three.module.js';
 import { createArtifact } from './models.js';
+import { createNightlifePost } from './nightlife-post.js';
 
 const BACKGROUND = 0x100f12;
 const THEMES = {
@@ -49,6 +50,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
   if (!Object.hasOwn(THEMES, theme)) throw new RangeError(`Unknown gallery theme: ${theme}`);
 
   let renderer;
+  let nightlifePost;
   try {
     renderer = new THREE.WebGLRenderer({
       canvas,
@@ -116,6 +118,13 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
   environmentPanel(7, 7, 0xfff4df, 4, [-5, 8, 5]);
   environmentPanel(4, 7, 0xe5e9ff, 2, [6, 4, 2]);
   environmentPanel(3, 8, 0xffffff, 5, [1, 5, -7]);
+  if (initialProject === 50) {
+    // Broad front softboxes reveal the observatory's machined brass faces;
+    // the usual overhead studio leaves these near-vertical metals black.
+    environmentScene.background.setHex(0x414b5b);
+    environmentPanel(8, 3, 0xffe4bf, 2.8, [-1, 3.6, 9]);
+    environmentPanel(5, 2, 0xc9e7ff, 1.5, [5, 1, 6]);
+  }
   const pmrem = new THREE.PMREMGenerator(renderer);
   let environment;
   try {
@@ -266,14 +275,16 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
   function applyArtifactLighting() {
     const palette = THEMES[currentTheme];
     const scale = currentModel?.userData.studioLightScale ?? 1;
+    const atlas = currentModel?.userData.studioProfile === 'atlas';
     const paper = currentModel?.userData.studioProfile === 'paper';
     const cosmos = currentModel?.userData.studioProfile === 'cosmos';
-    const mapper = currentModel?.userData.studioProfile === 'mapper';
-    floor.visible = !(cosmos || mapper);
-    if (cosmos || mapper) {
+    const magistock = currentModel?.userData.studioProfile === 'magistock';
+    const mapper = currentModel?.userData.studioProfile === 'mapper' || magistock;
+    floor.visible = !(cosmos || mapper || atlas);
+    if (cosmos || mapper || atlas) {
       scene.background = null;
-      scene.fog.color.setHex(mapper ? 0x071c17 : 0x100b22);
-      renderer.setClearColor(mapper ? 0x071c17 : 0x100b22, 0);
+      scene.fog.color.setHex(atlas ? 0x0c1724 : mapper ? 0x071c17 : 0x100b22);
+      renderer.setClearColor(atlas ? 0x0c1724 : mapper ? 0x071c17 : 0x100b22, 0);
     } else {
       scene.background = new THREE.Color(palette.background);
       scene.fog.color.setHex(palette.background);
@@ -286,7 +297,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     paperContact.material.opacity = currentTheme === 'light' ? .23 : .55;
     // The aerial crow uses its own soft footprint below the blue drum, avoiding
     // an oversized wing silhouette on the otherwise seamless exhibit backdrop.
-    contactShadow.material.opacity = mapper || cosmos || paper || currentModel?.userData.studioProfile === 'crow' ? 0 : palette.shadowOpacity;
+    contactShadow.material.opacity = atlas || mapper || cosmos || paper || currentModel?.userData.studioProfile === 'crow' ? 0 : palette.shadowOpacity;
     hemisphere.intensity = palette.hemisphere * scale;
     key.intensity = palette.key * scale;
     fill.intensity = palette.fill * scale;
@@ -316,6 +327,38 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       scene.environmentIntensity = .42;
       renderer.toneMappingExposure = 1.05;
     } else { hemisphere.color.setHex(0xf8f3e9); }
+    if (currentModel?.userData.artifactId === 66) {
+      const night = currentTheme === 'dark';
+      floor.visible = false;
+      scene.background = null;
+      renderer.setClearColor(night ? 0x11191f : 0xf1e8da, 0);
+      hemisphere.color.setHex(night ? 0xbacde6 : 0xfff7e7);
+      hemisphere.groundColor.setHex(night ? 0x292c38 : 0x9b8d76);
+      hemisphere.intensity = night ? .27 : .6;
+      key.color.setHex(night ? 0xffd0a0 : 0xfff0d9);
+      key.intensity = night ? 1.1 : 2.5;
+      fill.color.setHex(night ? 0x9dbfe8 : 0xe2eaff);
+      fill.intensity = night ? .34 : .48;
+      rim.intensity = night ? 1.1 : .9;
+      scene.environmentIntensity = night ? .30 : .55;
+      renderer.toneMappingExposure = night ? .98 : 1.02;
+    }
+    if (currentModel?.userData.artifactId === 76) {
+      // Daylight on warm stone; at night, amber key light and a cool skyline.
+      // Keep the paper profile's tight shadow framing in both themes.
+      const night = currentTheme === 'dark';
+      hemisphere.color.setHex(night ? 0xc4d5ed : 0xfff8ed);
+      hemisphere.groundColor.setHex(night ? 0x38312c : 0x9a8e76);
+      hemisphere.intensity = night ? .28 : .8;
+      key.color.setHex(night ? 0xffd29a : 0xfff1d9);
+      key.intensity = night ? 1.1 : 2.65;
+      fill.color.setHex(night ? 0x9fc9ed : 0xdceaff);
+      fill.intensity = night ? .4 : .65;
+      rim.color.setHex(night ? 0xffd6a2 : 0xfff7e5);
+      rim.intensity = night ? 1.35 : 1.05;
+      scene.environmentIntensity = night ? .3 : .55;
+      renderer.toneMappingExposure = night ? .96 : .98;
+    }
     if (mapper) {
       hemisphere.color.setHex(0xc7dfca); hemisphere.groundColor.setHex(0x112b23);
       hemisphere.intensity = .8; key.intensity = 3.1; fill.intensity = 1.3; rim.intensity = 2.1;
@@ -323,6 +366,36 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       key.position.set(-3, 7, 5); scene.environmentIntensity = .68;
       renderer.toneMappingExposure = 1.03;
       key.shadow.normalBias = .008; key.shadow.bias = -.00008;
+    }
+    if (magistock) {
+      hemisphere.color.setHex(0xc5ddf3); hemisphere.groundColor.setHex(0x142135);
+      key.color.setHex(0xffdfb8); fill.color.setHex(0x98c9f3); rim.color.setHex(0xb6e7ff);
+      key.intensity = 3.5; fill.intensity = 1.2; rim.intensity = 2.5;
+      scene.environmentIntensity = 1.3; renderer.toneMappingExposure = 1.1;
+    }
+    if (atlas) {
+      hemisphere.color.setHex(0xc4d7ee); hemisphere.groundColor.setHex(0x17263b);
+      hemisphere.intensity=.32; key.intensity=1.65; fill.intensity=.38; rim.intensity=1.65;
+      key.color.setHex(0xffdfb0); fill.color.setHex(0xa5c2ef); rim.color.setHex(0xffcb83);
+      key.position.set(-5,6,2.5); scene.environmentIntensity=.28; renderer.toneMappingExposure=1.0;
+      key.shadow.normalBias=.006; key.shadow.bias=-.00008; key.shadow.radius=3;
+    }
+    if (currentModel?.userData.studioProfile === 'nightlife') {
+      // The same architecture has a daylight environment and an amber night scene.
+      const night=currentTheme==='dark';
+      if(night){scene.background=new THREE.Color(0x202127);renderer.setClearColor(0x202127,1);}
+      hemisphere.color.setHex(night?0xb5cadb:0xe6f1ff);
+      hemisphere.groundColor.setHex(night?0x594329:0xb6a892);
+      hemisphere.intensity=night?.28:.85;
+      key.intensity=night?1.05:2.65;fill.intensity=night?.35:.75;rim.intensity=night?1.35:1.05;
+      key.color.setHex(night?0xffd8a7:0xfff3df);
+      fill.color.setHex(night?0xa7c8de:0xd6eaff);rim.color.setHex(night?0xffb76d:0xffffff);
+      key.position.set(...(night?[-3.5,6,4]:[-4.5,8,5]));
+      scene.environmentIntensity=night?.65:.75;
+      renderer.toneMappingExposure=night?1.08:1.0;
+      key.shadow.normalBias=.008;key.shadow.bias=-.00008;key.shadow.radius=4;
+      Object.assign(key.shadow.camera,{left:-5,right:5,top:5.5,bottom:-4.5});
+      key.shadow.camera.updateProjectionMatrix();
     }
     if (currentModel?.userData.studioProfile === 'fitstake') {
       hemisphere.intensity = .7;
@@ -385,7 +458,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
 
   function updateCamera() {
     const idle = !paused && !reducedMotion.matches && !drag && performance.now() - lastInteraction > 1800;
-    const orbitOffset = idle ? Math.sin(elapsed * 0.4) * 0.14 : 0;
+    const orbitOffset = idle && currentModel?.userData.autoOrbit !== false ? Math.sin(elapsed * 0.4) * 0.14 : 0;
     const angle = yaw + orbitOffset;
     camera.position.set(
       Math.sin(angle) * Math.cos(elevation) * distance,
@@ -410,7 +483,10 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
         storyKey = nextStoryKey;
         onStoryChange(story);
       }
-      renderer.render(scene, camera);
+      if(currentModel?.userData.studioProfile==='nightlife'&&currentTheme==='dark'){
+        nightlifePost??=createNightlifePost(THREE,renderer);
+        nightlifePost.render(scene,camera);
+      }else renderer.render(scene, camera);
       if (currentModel?.userData.annotations) {
         const points = currentModel.userData.annotations.map(({ id, position }) => {
           const point = new THREE.Vector3(...position).applyMatrix4(currentModel.matrixWorld).project(camera);
@@ -728,6 +804,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     geometries.forEach(geometry => geometry.dispose());
     materials.forEach(material => material.dispose());
     textures.forEach(texture => texture.dispose());
+    nightlifePost?.dispose();
     environment.dispose();
     key.shadow.map?.dispose();
     renderer.dispose();

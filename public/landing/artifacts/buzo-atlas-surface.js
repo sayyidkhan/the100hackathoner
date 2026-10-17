@@ -1,11 +1,21 @@
 // Vertex ambient occlusion is baked offline against the complete paper world.
 // Ambient visibility shapes indirect light; a broad studio key supplies soft
 // baked direct shadows. Both use local geometry rather than a screen-space blur.
-export function geometryAOHash(geometry) {
+export function geometryAOHash(geometry, quantization = 0) {
   let hash = 2166136261;
   for (const attribute of [geometry.getAttribute('position'), geometry.getAttribute('normal'), geometry.index]) {
     if (!attribute) continue;
     const array = attribute.array;
+    // WebKit and V8 can differ in the final bits of trigonometric geometry.
+    // Opt-in quantization preserves topology checks without rejecting an
+    // equivalent model because of sub-millimetre floating-point differences.
+    if (quantization) {
+      for (const value of array) {
+        const integer = Math.round(value * (attribute === geometry.index ? 1 : quantization));
+        for (let byte = 0; byte < 4; byte++) hash = Math.imul(hash ^ ((integer >>> (byte * 8)) & 255), 16777619) >>> 0;
+      }
+      continue;
+    }
     const bytes = new Uint8Array(array.buffer, array.byteOffset, array.byteLength);
     for (const byte of bytes) hash = Math.imul(hash ^ byte, 16777619) >>> 0;
   }
@@ -46,7 +56,7 @@ function addAmbientOcclusion(material) {
   material.needsUpdate = true;
 }
 
-export function applyBakedAO(THREE, root) {
+export function applyBakedAO(THREE, root, assetPath = '../assets/buzo-atlas-ao-v1.bin', quantization = 0) {
   if (root.userData.bakedAOPromise) return root.userData.bakedAOPromise;
   const meshes = [];
   root.traverse(mesh => {
@@ -62,7 +72,7 @@ export function applyBakedAO(THREE, root) {
   root.userData.bakedAOStatus = 'loading';
   root.userData.bakedAOPromise = (async () => {
     try {
-      const response = await fetch(new URL('../assets/buzo-atlas-ao-v1.bin', import.meta.url), { cache: 'no-cache' });
+      const response = await fetch(new URL(assetPath, import.meta.url), { cache: 'no-cache' });
       if (!response.ok) {
         if (!root.userData.disposed) root.userData.bakedAOStatus = 'unavailable';
         return false;
@@ -83,9 +93,11 @@ export function applyBakedAO(THREE, root) {
         const count = view.getUint32(16 + i * 16, true);
         const offset = view.getUint32(20 + i * 16, true);
         const hash = view.getUint32(24 + i * 16, true);
+        const actualHash = geometryAOHash(meshes[i].geometry, quantization);
         valid = count === meshes[i].geometry.getAttribute('position').count
           && offset === expectedOffset && offset + count * 2 <= buffer.byteLength
-          && hash === geometryAOHash(meshes[i].geometry);
+          && hash === actualHash;
+        if (!valid) console.warn('Atlas bake mismatch ' + JSON.stringify({ mesh: i, count, actualCount: meshes[i].geometry.getAttribute('position').count, hash, actualHash }));
         records.push({ count, offset }); expectedOffset += count * 2;
       }
       if (!valid) {

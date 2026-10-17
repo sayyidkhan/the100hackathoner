@@ -1,8 +1,12 @@
 ---
 import { getImage } from 'astro:assets';
 import type { ProjectArt } from '../lib/project-art';
-interface Props { number: number; title: string; art: ProjectArt; }
-const { number, title, art } = Astro.props;
+interface Props { number: number; title: string; art: ProjectArt; projectUrl?: string | null; }
+const { number, title, art, projectUrl: catalogProjectUrl } = Astro.props;
+// Published homepage listed by github.com/sayyidkhan/v0-data-center-tycoon.
+// Use the standard exhibit card for projects without a deployment URL.
+// Expanded promotional treatments are reserved for deployed projects.
+const projectUrl = catalogProjectUrl ?? (number === 63 ? 'https://v0-data-center-tycoon.vercel.app/' : null);
 const hasLabels = [74, 75, 76].includes(number);
 async function variants(src: ProjectArt['light']) {
   const images = await Promise.all([480, 800, 1200, 1536].map(width => getImage({ src, width, format: 'webp', quality: 80 })));
@@ -30,30 +34,47 @@ const divisions = number === 74 ? [
 ];
 const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)]);
 ---
+{number === 67 && <link rel="stylesheet" href="/landing/sceneverse.css" />}
+{number === 63 && <link rel="stylesheet" href="/landing/data-center-tycoon.css" />}
+{number === 75 && <link rel="stylesheet" href="/landing/buzo-atlas.css" />}
 {number === 70 && <link rel="stylesheet" href="/landing/relationship-mapper.css" />}
+{number === 50 && <link rel="stylesheet" href="/landing/magistock.css" />}
 <section class="project-exhibit" data-project-exhibit data-number={number} data-model={art.model} aria-label={`${title} concept exhibit`}>
+  {number === 63 && <header class="tycoon-intro">
+    <div><p class="tycoon-eyebrow"><span></span> DATA CENTER TYCOON · WEB + MOBILE · 063</p>
+    <h2>Build an empire.<br /><em>Keep it in balance.</em></h2>
+    <p class="tycoon-description">More servers. More ambition. Every decision counts.<br />Grow your revenue while balancing power, cooling and sustainability.</p></div>
+    {projectUrl && <a class="tycoon-launch" href={projectUrl} target="_blank" rel="noopener noreferrer">Play the game <span aria-hidden="true">↗</span></a>}
+  </header>}
   {number === 70 && <header class="mapper-intro">
     <div><p class="mapper-eyebrow"><span></span> ZO RELATIONSHIP MAPPER · 070</p>
     <h2>Your next role<br />starts with <em>people.</em></h2>
     <p class="mapper-description">Turn your experience into a focused opportunity search.<br />Discover who to approach, and what to say.</p></div>
-    <a class="mapper-launch" href="https://zo-relationship-mapper-sayyidkhan.zocomputer.io" target="_blank" rel="noopener noreferrer">Explore the app <span aria-hidden="true">↗</span></a>
+    {projectUrl && <a class="mapper-launch" href={projectUrl} target="_blank" rel="noopener noreferrer">Explore the app <span aria-hidden="true">↗</span></a>}
   </header>}
   {number === 69 && <header class="order-intro">
     <div><p class="order-eyebrow">ZORDER · THE SMALL BUSINESS EDITION</p>
-    <h2>Small shop.<br /><em>Every order in place.</em></h2></div>
-    <p class="order-intro-note">A storefront, a receipt,<br />and a little more order.<span>BUILT ON ZO COMPUTER ↗</span></p>
+    <h2>Small shop.<br /><em>Every order in place.</em></h2>
+    <p class="order-intro-note">A storefront, a receipt,<br />and a little more order.<span>BUILT ON ZO COMPUTER</span></p></div>
+    {projectUrl && <a class="order-launch" href={projectUrl} target="_blank" rel="noopener noreferrer">Explore the app <span aria-hidden="true">↗</span></a>}
   </header>}
   {number === 72 && <header class="cosmic-intro">
     <div><p class="cosmic-eyebrow"><span></span> AN INTERACTIVE STORYWORLD · 072</p>
     <h2>Lost between <em>worlds.</em></h2>
     <p class="cosmic-description">A little traveller. An impossible universe.<br />Three echoes to remember the way home.</p></div>
-    <a class="cosmic-launch" href="https://alien-homecoming.lovable.app/" target="_blank" rel="noopener noreferrer">Play the game <span aria-hidden="true">↗</span></a>
+    {projectUrl && <a class="cosmic-launch" href={projectUrl} target="_blank" rel="noopener noreferrer">Play the game <span aria-hidden="true">↗</span></a>}
+  </header>}
+  {number === 75 && <header class="atlas-intro">
+    <div><p class="atlas-eyebrow"><span></span> BUZO ATLAS · THE CULTURE ECONOMY · 075</p>
+    <h2>A world of culture.<br /><em>Connected by Atlas.</em></h2>
+    <p class="atlas-description">The people, rights and ideas behind the next great night.<br /> One shared map to learn, coordinate and decide.</p></div>
+    {projectUrl && <a class="atlas-launch" href={projectUrl} target="_blank" rel="noopener noreferrer">Explore the app <span aria-hidden="true">↗</span></a>}
   </header>}
   <div class="exhibit-toolbar">
-    <p>{number === 70 ? 'THE OPPORTUNITY ATLAS' : number === 72 ? 'EXPLORE THE THRESHOLD' : number === 69 ? 'INSIDE THE LITTLE SHOP' : 'THE PROJECT, REIMAGINED'}</p>
+    <p>{number === 63 ? 'INSIDE THE DATA CENTER EMPIRE' : number === 75 ? 'THE LIVING CULTURAL ATLAS' : number === 70 ? 'THE OPPORTUNITY ATLAS' : number === 72 ? 'EXPLORE THE THRESHOLD' : number === 69 ? 'INSIDE THE LITTLE SHOP' : 'THE PROJECT, REIMAGINED'}</p>
     <div class="exhibit-actions">
-      {number === 72 && <a class="cosmic-launch cosmic-toolbar-launch" href="https://alien-homecoming.lovable.app/" target="_blank" rel="noopener noreferrer" aria-label="Open Alien Homecoming app (opens in a new tab)">Open app <span aria-hidden="true">↗</span></a>}
-      {hasLabels && <button type="button" data-toggle-labels aria-expanded="true">Hide labels</button>}
+      {number === 72 && projectUrl && <a class="cosmic-launch cosmic-toolbar-launch" href={projectUrl} target="_blank" rel="noopener noreferrer" aria-label="Open Alien Homecoming app (opens in a new tab)">Open app <span aria-hidden="true">↗</span></a>}
+      {hasLabels && <button type="button" data-toggle-labels aria-expanded={number === 75 ? 'false' : 'true'}>{number === 75 ? 'Show labels' : 'Hide labels'}</button>}
     <div role="group" aria-label="Display mode" class="exhibit-modes">
       <button type="button" data-mode="artwork" aria-pressed="true">Artwork</button>
       <button type="button" data-mode="3d" aria-pressed="false">Explore in 3D</button>
@@ -66,7 +87,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
         <source data-dark-art media="(prefers-color-scheme: dark)" srcset={dark.srcset} sizes="(max-width: 920px) 100vw, 920px" type="image/webp" />
         <img src={light.src} srcset={light.srcset} sizes="(max-width: 920px) 100vw, 920px" width="1536" height="1024" alt={art.alt} loading="lazy" decoding="async" />
       </picture>
-      {hasLabels && <div class="division-labels" aria-hidden="true">
+      {hasLabels && <div class="division-labels" aria-hidden="true" hidden={number === 75}>
         {divisions.map((division, index) => <div class="division-label" data-division={division.id} style={`left:${division.x}%;top:${division.y}%`}>
           <span class="division-number">{index + 1}</span>
           <span class="division-copy"><strong>{division.name}</strong><small>{division.purpose}</small></span>
@@ -75,7 +96,10 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     </div>
     <div class="exhibit-scene" data-scene hidden>
       <canvas tabindex="0" aria-label={`Interactive 3D concept for ${title}. Drag or use arrow keys to rotate.`}></canvas>
-      {hasLabels && <div class="division-labels" aria-hidden="true">
+      {number === 67 && <div class="scene-speech" data-scene-speech hidden aria-live="off">
+        <strong data-speech-speaker></strong><p data-speech-text></p>
+      </div>}
+      {hasLabels && <div class="division-labels" aria-hidden="true" hidden={number === 75}>
         {divisions.map((division, index) => <div class="division-label" data-division={division.id} style={`left:${division.x}%;top:${division.y}%`}>
           <span class="division-number">{index + 1}</span>
           <span class="division-copy"><strong>{division.name}</strong><small>{division.purpose}</small></span>
@@ -91,6 +115,28 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
       <button type="button" data-reset>Reset view</button>
       <button type="button" data-pause aria-pressed="false">Pause motion</button>
     </div>
+    {number === 54 && <div class="exhibit-walkthrough gigradar-walkthrough" data-walkthrough hidden>
+      <div class="exhibit-story" data-story aria-live="off" hidden>
+        <p class="exhibit-story-heading"><span class="exhibit-story-dot" aria-hidden="true"></span><span class="exhibit-story-step" data-story-step></span><span data-story-title></span></p>
+        <p class="exhibit-story-detail" data-story-detail></p>
+      </div>
+      <div class="walkthrough-steps" role="group" aria-label="Gigradar walkthrough steps">
+        {['Ask nearby', 'Discover', 'Verify', 'Imagine after'].map((label, index) => <button type="button" data-story-select={index} aria-pressed={index === 0 ? 'true' : 'false'}><span>{String(index + 1).padStart(2, '0')}</span> {label}</button>)}
+        <button type="button" data-story-auto aria-pressed="true">Auto-play steps</button>
+      </div>
+      <p>Artist’s impression · Illustrative venues and activity preview, inspired by the hackathon demo.</p>
+    </div>}
+    {number === 67 && <div class="exhibit-walkthrough sceneverse-walkthrough" data-walkthrough hidden>
+      <div class="exhibit-story" style="position: static; max-width: none; margin-bottom: 16px;" data-story aria-live="off" hidden>
+        <p class="exhibit-story-heading"><span class="exhibit-story-dot" aria-hidden="true"></span><span class="exhibit-story-step" data-story-step></span><span data-story-title></span></p>
+        <p class="exhibit-story-detail" data-story-detail></p>
+      </div>
+      <div class="walkthrough-steps" role="group" aria-label="SceneVerse experience">
+        {['Watch', 'Enter the scene', 'Ask Maya', 'Ask Riven'].map((label,index) => <button type="button" data-story-select={index} aria-pressed={index === 0 ? 'true' : 'false'}>{label}</button>)}
+        <button type="button" data-story-auto aria-pressed="true">Auto-play</button>
+      </div>
+      <p>Illustrative dialogue · Stay seated, say “Enter the scene”, then ask the movie characters.</p>
+    </div>}
     {number === 70 && <div class="mapper-walkthrough" data-walkthrough hidden>
       <div class="mapper-steps" role="group" aria-label="Relationship Mapper walkthrough">
         {['Your profile', 'Choose a role', 'Find people', 'Draft outreach'].map((label,index) => <button type="button" data-story-select={index} aria-pressed={index === 0 ? 'true' : 'false'}><span>{String(index+1).padStart(2,'0')}</span>{label}</button>)}
@@ -115,7 +161,13 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     {hasLabels && <ol class="division-key" aria-label={number === 74 ? "Telepath reviewers and workflow" : number === 75 ? "Buzo Atlas pillars and their purposes" : "City divisions and their purposes"}>
       {divisions.map((division, index) => <li><span class="division-number">{index + 1}</span><span><strong>{division.name}</strong><small>{division.purpose}</small></span></li>)}
     </ol>}
-    {number === 70 ? <figcaption class="mapper-caption">
+    {number === 63 ? <figcaption class="tycoon-caption">
+      <div><span class="tycoon-eyebrow">THE BALANCING ACT</span><p>Every rack raises the stakes.</p><small>{art.caption}</small></div>
+      <div class="tycoon-facts" aria-label="Three operating priorities"><span><b>Grow</b>revenue</span><span><b>Power</b>the servers</span><span><b>Cool</b>the campus</span></div>
+    </figcaption> : number === 75 ? <figcaption class="atlas-caption">
+      <div><span class="atlas-eyebrow">FROM SCATTERED SIGNALS TO SHARED CONTEXT</span><p>Every connection opens a possibility.</p><small>{art.caption}</small></div>
+      <div class="atlas-facts"><span><b>04</b>connected pillars</span><span><b>03</b>operating jobs</span><span><b>01</b>shared atlas</span></div>
+    </figcaption> : number === 70 ? <figcaption class="mapper-caption">
       <div><span class="mapper-eyebrow">FROM FIT TO FIRST CONVERSATION</span><p>{art.caption}</p></div>
       <div class="mapper-key"><span><i></i>Hiring managers</span><span><i></i>Mentors</span><span><i></i>Role colleagues</span></div>
     </figcaption> : number === 72 ? <figcaption class="cosmic-caption">
@@ -128,11 +180,14 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
 <script is:inline type="module" src="/landing/project-exhibit.js"></script>
 <style is:inline>
   .project-exhibit[data-number='69'] { --order-teal:#25463e; --order-gold:#a17842; border-radius:20px; }
-  .order-intro { display:flex; justify-content:space-between; align-items:flex-end; gap:24px; padding:32px 32px 28px; background:#eee6d5; color:#25463e; }
+  .order-intro { display:flex; justify-content:space-between; align-items:center; gap:28px; padding:32px 32px 28px; background:#eee6d5; color:#25463e; }
   .order-eyebrow { margin:0 0 16px; font:9px/1.5 var(--mono); letter-spacing:.17em; color:#816641; }
   .order-intro h2 { margin:0; font:500 clamp(32px,4.3vw,52px)/1.06 Georgia,serif; letter-spacing:-.045em; }
   .order-intro h2 em { color:#ad523b; font-weight:400; }
-  .order-intro-note { margin:0 0 2px; font-size:12px; line-height:1.7; }
+  .order-intro-note { margin:18px 0 0; font-size:12px; line-height:1.7; }
+  .order-launch { display:inline-flex; align-items:center; gap:25px; flex-shrink:0; padding:13px 19px; background:#e5cf9b; border-radius:30px; color:#193628; font-size:12px; text-decoration:none; }
+  .order-launch:hover { background:#f2deb1; }
+  .order-launch:focus-visible { outline:2px solid var(--order-gold); outline-offset:5px; }
   .order-intro-note span { display:block; margin-top:20px; font:8px/1.5 var(--mono); letter-spacing:.10em; color:#816641; }
   .project-exhibit[data-number='69'] .exhibit-toolbar { padding:13px 24px; }
   .project-exhibit[data-number='69'] .exhibit-toolbar p { font-size:9px; letter-spacing:.13em; }
@@ -145,9 +200,8 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
   :root[data-theme='dark'] .order-intro h2 em { color:#d58b6b; }
   :root[data-theme='dark'] .order-eyebrow, :root[data-theme='dark'] .order-intro-note span { color:#c6a572; }
   @media(max-width:650px) {
-    .order-intro { padding:24px 20px; }
+    .order-intro { padding:26px 20px; align-items:flex-start; flex-direction:column; gap:20px; }
     .order-intro h2 { font-size:34px; }
-    .order-intro-note { display:none; }
     .project-exhibit[data-number='69'] .exhibit-toolbar { padding:12px 16px; gap:10px; }
     .project-exhibit[data-number='69'] .exhibit-story { top:10px; left:10px; padding:8px 10px; max-width:calc(100% - 20px); }
     .project-exhibit[data-number='69'] .exhibit-story-detail { display:none; }
@@ -167,6 +221,37 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
   .division-key li { display: flex; align-items: center; gap: 8px; }
   .division-key small { display: block; color: var(--muted); font-size: 10px; line-height: 1.5; margin-top: 3px; }
   .project-exhibit[data-number='74'] .division-key { grid-template-columns: repeat(3, 1fr); }
+  /* Agrim's artwork and live city share the site's day/night presentation. */
+  .project-exhibit[data-number='76'] {
+    --city-label-bg: #fffaf0f5;
+    --city-label-ink: #292b25;
+    --city-label-muted: #5d584d;
+    --city-label-gold: #806025;
+    --city-label-border: #a88a50;
+    --city-label-shadow: 0 3px 16px #3e301c24;
+  }
+  :root[data-theme='dark'] .project-exhibit[data-number='76'] {
+    --city-label-bg: #141819f5;
+    --city-label-ink: #fff4df;
+    --city-label-muted: #e0d5c1;
+    --city-label-gold: #e3bd7b;
+    --city-label-border: #c8a66b;
+    --city-label-shadow: 0 3px 16px #0005;
+  }
+  .project-exhibit[data-number='76'] .division-label {
+    background: var(--city-label-bg);
+    color: var(--city-label-ink);
+    border-color: var(--city-label-border);
+    box-shadow: var(--city-label-shadow);
+  }
+  .project-exhibit[data-number='76'] .division-copy small { color: var(--city-label-muted); }
+  .project-exhibit[data-number='76'] .division-number {
+    color: var(--city-label-gold);
+    border-color: var(--city-label-gold);
+  }
+  .project-exhibit[data-number='76'] button:hover { border-color: var(--city-label-gold); }
+  .project-exhibit[data-number='76'] button:focus-visible,
+  .project-exhibit[data-number='76'] canvas:focus-visible { outline-color: var(--city-label-gold); }
   @media (max-width: 650px) {
     .division-copy { display: none; }
     .division-label { padding: 4px; border-radius: 50%; }
@@ -215,6 +300,9 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
   }
 </style>
 <style>
+  .project-exhibit[data-number='66'] .exhibit-scene { aspect-ratio: 5 / 4; background: radial-gradient(ellipse at 45% 32%, #fffaf1 0%, #eee6d9 65%, #e2d8c8 100%); }
+  :global([data-theme='dark']) .project-exhibit[data-number='66'] .exhibit-scene { background: radial-gradient(ellipse at 45% 36%, #283139 0%, #172128 58%, #0e151b 100%); }
+  @media (max-width: 640px) { .project-exhibit[data-number='66'] .exhibit-scene { aspect-ratio: 1; } }
   .project-exhibit { margin-top: 48px; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
   .exhibit-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; border-bottom: 1px solid var(--line); }
   .exhibit-toolbar p { margin: 0; font: 10px/1.5 var(--mono); letter-spacing: .08em; color: var(--muted); }
@@ -248,6 +336,9 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
   .walkthrough-steps button { flex: 1 0 auto; white-space: nowrap; }
   .walkthrough-steps span { font: .65rem var(--mono); margin-right: 5px; }
   .exhibit-walkthrough p { color: var(--muted); font-size: .75rem; line-height: 1.5; margin: 12px 0 0; }
+  .sceneverse-walkthrough .exhibit-story, .gigradar-walkthrough .exhibit-story { position: static; max-width: none; margin-bottom: 16px; }
+  .project-exhibit[data-number='67'] .exhibit-scene { aspect-ratio: 3 / 2; }
+  @media (max-width: 550px) { .project-exhibit[data-number='67'] .exhibit-scene { aspect-ratio: 1.15; } .project-exhibit[data-number='67'] .exhibit-story-detail { max-width: 280px; } }
   .project-exhibit[data-number='82'] .exhibit-story { right: 22px; max-width: 540px; }
   @media (max-width: 550px) { .exhibit-toolbar { align-items: flex-start; flex-direction: column; padding: 16px; } .exhibit-scene { aspect-ratio: 1; } .exhibit-story { top: 14px; left: 14px; max-width: calc(100% - 28px); } .exhibit-story-heading { gap: 6px; font-size: .78rem; } .exhibit-story-detail { margin-left: 12px; font-size: .65rem; } figcaption { padding: 16px; } .exhibit-controls span { flex-basis: 100%; } }
 </style>

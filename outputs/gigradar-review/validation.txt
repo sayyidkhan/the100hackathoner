@@ -1,0 +1,11 @@
+Validation — 2026-10-17
+
+Astro check: 0 errors, 0 warnings (existing repository hints remain).
+Astro production build: passed, 97 pages.
+JavaScript syntax and diff whitespace checks: passed.
+Geometry smoke check: finite bounds, all four story chapters, manual selection, autoplay reset, light/dark material updates.
+Browser: 3D loaded without console errors; verified manual Verify and Imagine after chapters, pause/resume state, keyboard input and reset control.
+Responsive: inspected at 390 x 844; page scroll width equals viewport width (390px), canvas is 352px wide. Scene silhouette framing refined for narrow screens. Viewport reset afterward.
+Artwork: light and dark variants both inspected in the page.
+
+2D images are generated artist impressions. The Three.js asset is a simplified, real geometry interpretation of the same district. Venue examples and the activity preview are illustrative.

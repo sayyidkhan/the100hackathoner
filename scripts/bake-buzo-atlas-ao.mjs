@@ -6,11 +6,12 @@
 // node scripts/bake-buzo-atlas-ao.mjs [--rays=48] [--distance=0.9]
 //   [--cell=0.018] [--out=public/landing/assets/buzo-atlas-ao-v1.bin]
 //   [--limit=1000]  (benchmark only: computes at most this many unique samples)
+// Night atlas: --model=buzo-atlas-world --rays=16 --cell=0.035
+//   --out=public/landing/assets/buzo-atlas-world-ao-v2.bin
 import { writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as THREE from '../public/landing/vendor/three.module.js';
-import { createArtifact } from '../public/landing/artifacts/buzo-atlas.js';
 import { geometryAOHash } from '../public/landing/artifacts/buzo-atlas-surface.js';
 
 const rootPath = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -30,6 +31,9 @@ const output = resolve(rootPath, options.out ?? 'public/landing/assets/buzo-atla
 if (!Number.isInteger(rays) || rays < 4 || rays > 256) throw new Error('rays must be an integer from 4 to 256.');
 if (!(maxDistance > 0 && maxDistance < 10) || !(cell > 0 && cell < .1)) throw new Error('Invalid distance or cache cell.');
 if (!(limit > 0)) throw new Error('limit must be positive.');
+const modelName = options.model ?? 'buzo-atlas';
+if (!['buzo-atlas', 'buzo-atlas-world', 'buzo-20', 'buzo-21', 'agrim-tycoon'].includes(modelName)) throw new Error('Unsupported miniature model.');
+const { createArtifact } = await import(`../public/landing/artifacts/${modelName}.js`);
 const started = performance.now();
 const model = await createArtifact(THREE, { bake: true });
 model.userData.animate?.(0);
@@ -210,7 +214,7 @@ for (const mesh of meshes) {
     minKey = Math.min(minKey, key); maxKey = Math.max(maxKey, key); sumKey += key;
   }
   totalVertices += position.count;
-  records.push({ bytes, vertices: position.count, hash: geometryAOHash(mesh.geometry), name: mesh.name || mesh.type });
+  records.push({ bytes, vertices: position.count, hash: geometryAOHash(mesh.geometry, modelName !== 'buzo-atlas' ? 10000 : 0), name: mesh.name || mesh.type });
 }
 if (limit !== Infinity) {
   console.log(JSON.stringify({ benchmark: true, sampled, raysCast: sampled * (rays + keyRays), cacheHits, totalVertices, elapsedSeconds: +((performance.now() - started) / 1000).toFixed(2) }));
@@ -233,7 +237,7 @@ if (limit !== Infinity) {
   });
   await mkdir(dirname(output), { recursive: true });
   await writeFile(output, binary);
-  const stats = { format: 'BAO2', rays, maxDistance, keyRays, keyPosition: keyPosition.toArray(), keyWidth, cell, epsilon, sampled, cacheHits, totalVertices, triangles: ids.length, bytes: binary.length, minAO, maxAO, averageAO: +(sumAO / totalVertices).toFixed(2), minKey, maxKey, averageKey: +(sumKey / totalVertices).toFixed(2), meshes: metadata };
+  const stats = { format: 'BAO2', signatureQuantization: modelName !== 'buzo-atlas' ? 10000 : 0, rays, maxDistance, keyRays, keyPosition: keyPosition.toArray(), keyWidth, cell, epsilon, sampled, cacheHits, totalVertices, triangles: ids.length, bytes: binary.length, minAO, maxAO, averageAO: +(sumAO / totalVertices).toFixed(2), minKey, maxKey, averageKey: +(sumKey / totalVertices).toFixed(2), meshes: metadata };
   await writeFile(output.replace(/\.bin$/, '') + '.json', JSON.stringify(stats, null, 2) + '\n');
   console.log(JSON.stringify({ ...stats, meshes: metadata.length, output, elapsedSeconds: +((performance.now() - started) / 1000).toFixed(2) }, null, 2));
 }

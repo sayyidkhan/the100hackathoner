@@ -7,6 +7,8 @@ for (const exhibit of document.querySelectorAll('[data-project-exhibit]')) {
   const storyStep = story?.querySelector('[data-story-step]');
   const storyTitle = story?.querySelector('[data-story-title]');
   const storyDetail = story?.querySelector('[data-story-detail]');
+  const speechBubble = stage.querySelector('[data-scene-speech]');
+  let speakingId = null;
   const modes = [...exhibit.querySelectorAll('[data-mode]')];
   const walkthrough = exhibit.querySelector('[data-walkthrough]');
   const stepButtons = [...exhibit.querySelectorAll('[data-story-select]')];
@@ -19,8 +21,8 @@ for (const exhibit of document.querySelectorAll('[data-project-exhibit]')) {
   let paused = reduced.matches;
   let failed = false;
   const labelsToggle = exhibit.querySelector('[data-toggle-labels]');
-  const labelSurfaces = [...exhibit.querySelectorAll('.division-labels, .division-key')];
-  let labelsVisible = true;
+  const labelSurfaces = [...exhibit.querySelectorAll(exhibit.dataset.number === '75' ? '.division-labels' : '.division-labels, .division-key')];
+  let labelsVisible = labelsToggle?.getAttribute('aria-expanded') !== 'false';
   labelsToggle?.addEventListener('click', () => {
     labelsVisible = !labelsVisible;
     labelSurfaces.forEach(surface => { surface.hidden = !labelsVisible; });
@@ -31,6 +33,13 @@ for (const exhibit of document.querySelectorAll('[data-project-exhibit]')) {
   });
   const theme = () => document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
   function showStory(value) {
+    if (speechBubble) {
+      speakingId = value?.speaker ?? null;
+      speechBubble.hidden = !speakingId;
+      speechBubble.dataset.speaker = speakingId ?? '';
+      speechBubble.querySelector('[data-speech-speaker]').textContent = { viewer: 'You', maya: 'Maya', riven: 'Riven' }[speakingId] ?? '';
+      speechBubble.querySelector('[data-speech-text]').textContent = value?.speech ?? '';
+    }
     if (!story) return;
     story.hidden = !value;
     if (!value) return;
@@ -44,6 +53,19 @@ for (const exhibit of document.querySelectorAll('[data-project-exhibit]')) {
   function placeDivisions(points) {
     const width = stage.clientWidth, height = stage.clientHeight;
     if (!width || !height) return;
+    if (speechBubble && speakingId) {
+      const point = points.find(point => point.id === speakingId);
+      speechBubble.hidden = !point?.visible;
+      if (point?.visible) {
+        const halfWidth = speechBubble.offsetWidth / 2, bubbleHeight = speechBubble.offsetHeight;
+        const anchorX = point.x * width / 100;
+        const x = Math.max(halfWidth + 12, Math.min(width - halfWidth - 12, anchorX));
+        const y = Math.max(bubbleHeight + 12, Math.min(height - 16, point.y * height / 100 - 12));
+        speechBubble.style.left = `${x}px`;
+        speechBubble.style.top = `${y}px`;
+        speechBubble.style.setProperty('--speech-tail', `${Math.max(16, Math.min(halfWidth * 2 - 16, anchorX - x + halfWidth))}px`);
+      }
+    }
     const placed = [];
     for (const point of points) {
       const label = divisionLabels.get(point.id);

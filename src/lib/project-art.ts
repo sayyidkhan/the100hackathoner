@@ -25,14 +25,16 @@ import p48Light from '../../public/landing/assets/projects/048-jollycards-light-
 import p48Dark from '../../public/landing/assets/projects/048-jollycards-dark-v1.png';
 import p49Light from '../../public/landing/assets/projects/049-stress-bunny-light-v1.png';
 import p49Dark from '../../public/landing/assets/projects/049-stress-bunny-dark-v1.png';
-import p50Light from '../../public/landing/assets/projects/050-magistock-light-v1.png';
-import p50Dark from '../../public/landing/assets/projects/050-magistock-dark-v1.png';
+import p50Light from '../../public/landing/assets/projects/050-magistock-observatory-v2.png';
+import p50Dark from '../../public/landing/assets/projects/050-magistock-observatory-v2.png';
 import p51Light from '../../public/landing/assets/projects/051-should-i-quit-light-v2.png';
 import p51Dark from '../../public/landing/assets/projects/051-should-i-quit-dark-v2.png';
 import p52Light from '../../public/landing/assets/projects/052-linkedin-launch-light-v1.png';
 import p52Dark from '../../public/landing/assets/projects/052-linkedin-launch-dark-v1.png';
 import p53Light from '../../public/landing/assets/projects/053-devduel-light-v1.png';
 import p53Dark from '../../public/landing/assets/projects/053-devduel-dark-v1.png';
+import p54Light from '../../public/landing/assets/projects/054-gigradar-light-v1.png';
+import p54Dark from '../../public/landing/assets/projects/054-gigradar-dark-v1.png';
 import p55Light from '../../public/landing/assets/projects/055-buzo-light-v1.png';
 import p55Dark from '../../public/landing/assets/projects/055-buzo-dark-v1.png';
 import p56Light from '../../public/landing/assets/projects/056-bryan-feedback-light-v2.png';
@@ -64,10 +66,9 @@ import peterLight from '../../public/landing/assets/projects/078-peterindex-ligh
 import peterDark from '../../public/landing/assets/projects/078-peterindex-dark-v2.png';
 import zoLight from '../../public/landing/assets/projects/077-zo-memories-light-v1.png';
 import zoDark from '../../public/landing/assets/projects/077-zo-memories-dark-v1.png';
-import agrimLight from '../../public/landing/assets/projects/076-agrim-tycoon-light-v3.png';
+import agrimLight from '../../public/landing/assets/projects/076-agrim-tycoon-light-v4.png';
 import agrimDark from '../../public/landing/assets/projects/076-agrim-tycoon-dark-v3.png';
-import buzoLight from '../../public/landing/assets/projects/075-buzo-atlas-light-v1.png';
-import buzoDark from '../../public/landing/assets/projects/075-buzo-atlas-dark-v1.png';
+import buzoNight from '../../public/landing/assets/projects/075-buzo-atlas-night-v2.png';
 import telepathLight from '../../public/landing/assets/projects/074-corporate-telepath-light-v2.png';
 import telepathDark from '../../public/landing/assets/projects/074-corporate-telepath-dark-v2.png';
 import driveLight from '../../public/landing/assets/projects/073-zo-drive-light-v2.png';
@@ -80,13 +81,13 @@ import mapperLight from '../../public/landing/assets/projects/070-relationship-m
 import mapperDark from '../../public/landing/assets/projects/070-relationship-mapper-atlas-v2.png';
 import orderLight from '../../public/landing/assets/projects/069-order-tracker-light-v2.png';
 import orderDark from '../../public/landing/assets/projects/069-order-tracker-dark-v2.png';
-import sceneLight from '../../public/landing/assets/projects/067-sceneverse-light-v3.png';
-import sceneDark from '../../public/landing/assets/projects/067-sceneverse-dark-v3.png';
+import sceneLight from '../../public/landing/assets/projects/067-sceneverse-cinema-v4.png';
+import sceneDark from '../../public/landing/assets/projects/067-sceneverse-cinema-v4.png';
 import mumsLight from '../../public/landing/assets/projects/065-mums-can-build-light-v1.png';
 import mumsDark from '../../public/landing/assets/projects/065-mums-can-build-dark-v1.png';
 
-import buzo21Light from '../../public/landing/assets/projects/068-buzo-21-light-v1.png';
-import buzo21Dark from '../../public/landing/assets/projects/068-buzo-21-dark-v1.png';
+import buzo21Light from '../../public/landing/assets/projects/068-buzo-21-day-v3.png';
+import buzo21Dark from '../../public/landing/assets/projects/068-buzo-21-night-v2.png';
 import buzo20Light from '../../public/landing/assets/projects/066-buzo-20-light-v1.png';
 import buzo20Dark from '../../public/landing/assets/projects/066-buzo-20-dark-v1.png';
 
@@ -99,9 +100,10 @@ export interface ProjectArt {
 }
 
 export const projectArt: Record<number, ProjectArt> = {
+  54: { light: p54Light, dark: p54Dark, alt: 'A Telegram phone connects a glowing radar to a live music stage and art gallery with verification pins. A framed preview imagines ice cream and flowers after the event.', caption: 'Ask what’s on nearby. Discover events beyond the usual listings, check whether they’re still happening, and imagine what comes after.', model: '/landing/artifacts/gigradar.js' },
   82: { light: fitstakeLight, dark: fitstakeLight, alt: 'Two paper runners compete on red and blue lanes around a phone displaying progress and shared rewards.', caption: 'Two friends, one fitness challenge. Consistency unlocks a better reward for each player.', model: '/landing/artifacts/fitstake.js' },
   66: { light: buzo20Light, dark: buzo20Dark, alt: 'A red AI concierge kiosk connects a visitor to a concert, art exhibition and networking pavilion across a folded ivory map, with a brass compass and blue routes.', caption: 'Start with a conversation. Find your way to the next live experience.', model: '/landing/artifacts/buzo-20.js' },
-  68: { light: buzo21Light, dark: buzo21Dark, alt: 'An ivory concierge welcomes two visitors at a red desk beneath a globe, with blue paths connecting a music stage, networking pavilion and exhibition.', caption: 'One helpful conversation opens a world of live events.', model: '/landing/artifacts/buzo-21.js' },
+  68: { light: buzo21Light, dark: buzo21Dark, alt: 'A coral concierge desk and event shortlist connect a velvet-curtain music club, teal-glass art gallery and rooftop lounge in a detailed miniature live-event district.', caption: 'Find your scene. A conversation with Buzo turns live events into a night worth going out for.', model: '/landing/artifacts/buzo-21.js' },
   71: { light: palLight, dark: palDark, alt: 'A sheikh in a white headscarf and seven specialist companions gather around a council table inside an ivory kingdom, with a community market and noticeboard.', caption: 'One sheikh, seven trusted companions, and a whole community to care for. A kingdom helping one person run a community business.', model: '/landing/artifacts/kingdom-of-pal.js' },
   34: { light: p34Light, dark: p34Dark, alt: "Company manuals become three lesson cards along a blue ribbon, leading to a learner and mentor.", caption: "Workplace knowledge becomes smaller lessons, practice and feedback.", model: '/landing/artifacts/lrnmate.js' },
   35: { light: p35Light, dark: p35Dark, alt: "A folded map with blue waves and routes, a red location pin, local stall, story cards and a guide bubble.", caption: "Local discoveries, shared stories and a guide for the next adventure.", model: '/landing/artifacts/anginombak.js' },
@@ -116,7 +118,7 @@ export const projectArt: Record<number, ProjectArt> = {
   47: { light: p47Light, dark: p47Dark, alt: "Golden tempeh shaped as RAM, a GPU and motherboard sits on an ivory tray beside a red gift box and quote clipboard.", caption: "Hardware merch you can eat, packaged for the next gathering of builders.", model: '/landing/artifacts/natalies-tempeh.js' },
   48: { light: p48Light, dark: p48Dark, alt: "An ivory Christmas card with a folded tree rises from a red envelope beside three recipient-themed cards and blue ribbon.", caption: "A little context about the person makes a warmer holiday greeting.", model: '/landing/artifacts/jollycards.js' },
   49: { light: p49Light, dark: p49Dark, alt: "A resting ivory rabbit lies beside a released open hand, quiet blue pond ripples and a single red flower.", caption: "Let go of the controls. Give the bunny\u2014and yourself\u2014a moment to rest.", model: '/landing/artifacts/stress-bunny.js' },
-  50: { light: p50Light, dark: p50Dark, alt: "A jagged market signal passes three red control gates into a guarded path, beside an audit ledger, memory cards and override handle.", caption: "Market events become execution limits, with memory and an audit trail behind each decision.", model: '/landing/artifacts/magistock.js' },
+  50: { light: p50Light, dark: p50Dark, alt: "Three copper, blue and sage strategy towers connect to a brass gyroscope with a luminous cyan core, an execution guard and an audit archive on a midnight-blue instrument deck.", caption: "Three strategy perspectives. One risk governor. A traceable path from market signals to execution limits.", model: '/landing/artifacts/magistock.js' },
   51: { light: p51Light, dark: p51Dark, alt: "A person stands at a multi-way blue crossroads connecting an office, a landscape doorway, a library, a workbench and a restful garden, with advisory cards and a reflection journal.", caption: "Put the different perspectives on the table before choosing the next chapter.", model: '/landing/artifacts/should-i-quit.js' },
   52: { light: p52Light, dark: p52Dark, alt: "A red idea card travels into a miniature studio that produces an ivory post page, framed image and curling filmstrip.", caption: "One idea becomes a launch package: words, an image, and a short teaser.", model: '/landing/artifacts/linkedin-launch.js' },
   53: { light: p53Light, dark: p53Dark, alt: "Red and blue paper champions face off in a miniature arena, with profile cards, a six-part comparison wheel and commentary megaphone.", caption: "Professional profiles become a playful rivalry, complete with stats and commentary.", model: '/landing/artifacts/devduel.js' },
@@ -131,13 +133,13 @@ export const projectArt: Record<number, ProjectArt> = {
   63: { light: p63Light, dark: p63Dark, alt: "Two rival data center buildings, one cobalt and one vermilion, compete side by side with their own servers, cooling, solar power and revenue.", caption: "The advanced version: two data centers compete to grow their revenue while keeping power and cooling under control.", model: '/landing/artifacts/data-center-rivals.js' },
   64: { light: p64Light, dark: p64Dark, alt: "A winding blue game path connects opposing server fortresses, with five defense towers and a red voice-command microphone.", caption: "Build the defense, send the next wave, and command it all by voice.", model: '/landing/artifacts/data-center-destroyer.js' },
   65: { light: mumsLight, dark: mumsDark, alt: 'A speaker and red microphone connect through a blue speech ribbon to task cards and a builder arm assembling a miniature app.', caption: 'Speak an idea, shape the task, and follow the build as it happens.', model: '/landing/artifacts/mums-can-build.js' },
-  67: { light: sceneLight, dark: sceneDark, alt: 'A VR headset wearer talks with Neo, who holds out a red pill and a blue pill in separate open palms before a red movie frame.', caption: 'Step into the movie. Talk to Neo. Red pill or blue pill?', model: '/landing/artifacts/sceneverse.js' },
+  67: { light: sceneLight, dark: sceneDark, alt: 'A paused cinema portal opens onto Maya and Riven in a layered corridor, with character cards, a seated viewer, Vera’s microphone and a director’s chair.', caption: 'Pause the movie. Ask the characters. Discover the story with Vera and the Director.', model: '/landing/artifacts/sceneverse.js' },
   69: { light: orderLight, dark: orderDark, alt: 'A detailed zorder pastry shop with a striped canopy, payment-proof upload screen, merchant reviewing a receipt, order board and packed takeaway orders.', caption: 'From a small storefront to an organised order book. Payment proof stays attached, and the merchant stays in control.', model: '/landing/artifacts/order-tracker.js' },
   70: { light: mapperLight, dark: mapperDark, alt: 'A jade and brass relationship atlas connects a profile, ranked opportunity cards, three contact portraits and a contextual outreach draft.', caption: 'Find the role. Understand the people. Start a better conversation.', model: '/landing/artifacts/relationship-mapper.js' },
   72: { light: alienLight, dark: alienDark, alt: 'A lavender traveller explores marble islands suspended in a violet cosmos, connected by graceful bridges to a luminous golden doorway.', caption: 'Lost between worlds. Draw your own way home.', model: '/landing/artifacts/alien-homecoming.js' },
   73: { light: driveLight, dark: driveDark, alt: 'An ivory personal server workbench with a detailed file archive, native document cards, a brass sharing gateway, navy database modules and a functions terminal.', caption: 'Your files, documents, databases and functions. One private workspace, with sharing on your terms.', model: '/landing/artifacts/zo-drive.js' },
   74: { light: telepathLight, dark: telepathDark, alt: 'A paper-and-brass feature review studio with engineering, finance, legal and people workstations surrounding a suspended proposal and a shared action plan.', caption: 'Four perspectives turn a feature proposal into a shared checklist.', model: '/landing/artifacts/corporate-telepath.js' },
-  75: { light: buzoLight, dark: buzoDark, alt: 'A layered ivory atlas connects a concert stage, framed artwork and venue to an open red-spined ledger.', caption: 'Mapping the relationships, rights and decisions behind a cultural portfolio.', model: '/landing/artifacts/buzo-atlas.js' },
+  75: { light: buzoNight, dark: buzoNight, alt: 'An illuminated ivory atlas links a miniature concert stage, framed artwork and cultural venue with golden routes across a midnight city.', caption: 'Mapping the relationships, rights and decisions behind a cultural portfolio.', model: '/landing/artifacts/buzo-atlas-world.js' },
   76: { light: agrimLight, dark: agrimDark, alt: 'Mayor Agrim, wearing glasses and a black hoodie, directs a community marketplace, modern glass academy and server district from a central city-planning table.', caption: 'One mayor. Three different worlds. Agrim commands the city from the center.', model: '/landing/artifacts/agrim-tycoon.js' },
   77: { light: zoLight, dark: zoDark, alt: 'A red scrapbook unfolds into walls of ivory travel-photo cards, with two small figures and a blue shared timeline.', caption: 'Different perspectives. One shared story. Photos, films and voices woven into a living journal.', model: '/landing/artifacts/zo-memories.js' },
   81: { light: bookLight, dark: bookDark, alt: 'A red storybook opens into a paper landscape with a blue path leading home.', caption: 'Drawing a way through peer pressure, one choice at a time.', model: '/landing/artifacts/storybook.js' },

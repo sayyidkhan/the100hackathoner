@@ -1,0 +1,53 @@
+import { chromium, expect } from '@playwright/test';
+const browser = await chromium.launch({headless:true,channel:'chrome'});
+const errors=[];
+try {
+  const page=await browser.newPage({viewport:{width:1440,height:1100},deviceScaleFactor:1});
+  page.on('pageerror',error=>errors.push(error.message));
+  page.on('console',message=>{if(message.type()==='error'||message.text().includes('bake mismatch'))errors.push(message.text());});
+  await page.goto('http://127.0.0.1:4321/hackathons/66/');
+  await page.evaluate(async()=>{
+    const T=await import('/landing/vendor/three.module.js');
+    // Renderer is instance-bound in Three.js; inspect the model independently.
+    const {createArtifact}=await import('/landing/artifacts/buzo-20.js');
+    const model=createArtifact(T);
+    await model.userData.bakedAOPromise;
+    const stats={bake:model.userData.bakedAOStatus,meshes:0,vertices:0,base:model.userData.displayBase};
+    model.traverse(o=>{if(o.isMesh){stats.meshes++;stats.vertices+=o.geometry.attributes.position.count;}});
+    window.buzoStats=stats;
+    model.traverse(o=>{o.geometry?.dispose();if(o.material)o.material.dispose();});
+  });
+  await page.getByRole('button',{name:'Explore in 3D',exact:true}).click();
+  const stage=page.locator('[data-scene]'),canvas=stage.locator('canvas');
+  await canvas.waitFor({state:'visible'});
+  await expect(page.locator('[data-status]')).toHaveText('');
+  await page.waitForTimeout(1200);
+  await page.locator('[data-pause]').click();
+  await stage.screenshot({path:'outputs/buzo-20-review/light.png'});
+  const initial=await canvas.screenshot();
+  const box=await canvas.boundingBox();
+  await page.mouse.move(box.x+box.width*.50,box.y+box.height*.55);
+  await page.mouse.down();await page.mouse.move(box.x+box.width*.68,box.y+box.height*.60,{steps:8});await page.mouse.up();
+  await page.waitForTimeout(150);
+  if(initial.equals(await canvas.screenshot()))throw Error('Dragging did not rotate scene');
+  await page.locator('[data-reset]').click();
+  await page.getByRole('button',{name:'Switch to dark mode',exact:true}).click();
+  await page.waitForTimeout(500);
+  await stage.screenshot({path:'outputs/buzo-20-review/dark.png'});
+  const dark=await canvas.screenshot();
+  if(initial.equals(dark))throw Error('Theme did not change');
+  await page.setViewportSize({width:390,height:844});
+  await page.locator('[data-reset]').click();
+  await stage.screenshot({path:'outputs/buzo-20-review/mobile-dark.png'});
+  await page.getByRole('button',{name:'Switch to light mode',exact:true}).click();
+  await stage.screenshot({path:'outputs/buzo-20-review/mobile.png'});
+  if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth))throw Error('Horizontal overflow');
+  await page.getByRole('button',{name:'Artwork',exact:true}).click();
+  await expect(stage).not.toBeVisible();
+  await page.getByRole('button',{name:'Explore in 3D',exact:true}).click();
+  await expect(canvas).toBeVisible();
+  const stats=await page.evaluate(()=>window.buzoStats);
+  if(stats.bake!=='ready'&&stats.bake!=='loaded')throw Error(`Unexpected bake status: ${stats.bake}`);
+  if(errors.length)throw Error(errors.join('\n'));
+  console.log(JSON.stringify({stats,checks:'3D load, baked shading, rotate, reset, themes, mobile, artwork toggle',errors}));
+}finally{await browser.close();}

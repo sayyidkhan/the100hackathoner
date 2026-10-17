@@ -1,0 +1,10 @@
+Gigradar — hackathon 54 — source-led visual brief
+
+Sources read in the browser on 2026-10-17:
+LinkedIn: https://www.linkedin.com/feed/update/urn:li:activity:7438474540781006848/
+Instagram: https://www.instagram.com/p/DV0x7PoE18a/
+
+LinkedIn describes a Telegram interface using OpenClaw to find local events around the world, including events absent from large listing sites. The problem includes determining whether events are still ongoing or valid. WaveSpeedAI generates imagined post-event activities in the nearby location, with ice cream and flowers given as examples.
+Instagram identifies the project as an agentic event finder and aggregator, the 54th hackathon and second-prize result at SUSS Openclaw Hackathon 2026.
+
+Visual interpretation (not an exact screenshot or architecture diagram): Telegram phone → radar/map discovery → checked local venues → framed imagined after-event scene. Matching ceramic, cobalt, coral, aqua and brass materials in 2D and 3D. A music stage and gallery are illustrative venue types; the preview portal represents generated imagery, not a real augmented-reality feature.

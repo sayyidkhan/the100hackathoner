@@ -24,6 +24,7 @@ const columns = {
   location: 14,
   sourceCode: 15,
   eventLink: 16,
+  projectUrl: 36,
   awardType: 17,
   additionalInfo: 18,
   cashAmount: 19,
@@ -269,6 +270,7 @@ function toCatalogEntry(row, socialLinks = emptySocialLinks(), themeCategories =
     organizers: splitCatalogValue(row.organizers),
     members: splitCatalogValue(row.members),
     githubUrl: row.github_url,
+    projectUrl: row.project_url,
     eventUrl: row.event_url,
     socialLinks,
     prize,
@@ -413,7 +415,7 @@ function prepareSchema(db) {
 
     CREATE TABLE hackathon_links (
       hackathon_number INTEGER NOT NULL REFERENCES hackathons(number) ON DELETE CASCADE,
-      type TEXT NOT NULL CHECK (type IN ('source_code', 'event')),
+      type TEXT NOT NULL CHECK (type IN ('source_code', 'event', 'project')),
       url TEXT NOT NULL,
       PRIMARY KEY (hackathon_number, type)
     );
@@ -450,7 +452,8 @@ function prepareSchema(db) {
       GROUP_CONCAT(DISTINCT o.name) AS organizers,
       GROUP_CONCAT(DISTINCT p.name) AS members,
       MAX(CASE WHEN l.type = 'source_code' THEN l.url END) AS github_url,
-      MAX(CASE WHEN l.type = 'event' THEN l.url END) AS event_url
+      MAX(CASE WHEN l.type = 'event' THEN l.url END) AS event_url,
+      MAX(CASE WHEN l.type = 'project' THEN l.url END) AS project_url
     FROM hackathons h
     LEFT JOIN hackathon_awards a ON a.hackathon_number = h.number
     LEFT JOIN hackathon_tags ht ON ht.hackathon_number = h.number
@@ -572,6 +575,7 @@ try {
     const award = /^no\s+(?:prize|award)s?\.?$/i.test(rawAward ?? "") ? null : rawAward;
     const sourceCode = cleanUrl(valueAt(columns.sourceCode));
     const eventUrl = cleanUrl(valueAt(columns.eventLink));
+    const projectUrl = cleanUrl(valueAt(columns.projectUrl));
 
     insertHackathon.run(
       number, eventName, clean(valueAt(columns.productName)), parsedDate.label,
@@ -595,6 +599,7 @@ try {
     if (award) insertAward.run(number, award);
     if (sourceCode) insertLink.run(number, "source_code", sourceCode);
     if (eventUrl) insertLink.run(number, "event", eventUrl);
+    if (projectUrl) insertLink.run(number, "project", projectUrl);
     const socialLinks = workbookSocialLinks.get(number) ?? emptySocialLinks();
     for (const [platform, urls] of Object.entries(socialLinks)) {
       for (const url of urls) insertSocialLink.run(number, platform, url);
