@@ -1,0 +1,3 @@
+/* Match project 49: shared exhibit UI, with a scene-specific backdrop only. */
+.project-exhibit[data-number='48'] .exhibit-scene { aspect-ratio:3/2; background:radial-gradient(ellipse at 50% 35%,#efe1c8,#f5eddf 75%); }
+:root[data-theme='dark'] .project-exhibit[data-number='48'] .exhibit-scene { background:radial-gradient(ellipse at 48% 42%,#44332b,#1d1918 75%); }

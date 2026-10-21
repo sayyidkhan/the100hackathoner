@@ -1,0 +1,10 @@
+import { chromium } from '@playwright/test';
+const browser=await chromium.launch({headless:true,channel:'chrome'});
+const page=await browser.newPage({viewport:{width:1440,height:1100},deviceScaleFactor:1});const errors=[];page.on('pageerror',e=>errors.push(e.message));
+await page.goto('http://localhost:18481/hackathons/48/',{waitUntil:'networkidle'});
+await page.evaluate(()=>{document.documentElement.dataset.theme='dark';document.dispatchEvent(new Event('site:theme-change'));});
+await page.getByRole('button',{name:'Explore in 3D',exact:true}).click();await page.locator('[data-scene]').waitFor({state:'visible'});await page.locator('[data-scene]').scrollIntoViewIfNeeded();await page.waitForTimeout(1800);
+await page.locator('[data-pause]').click();await page.locator('[data-reset]').click();await page.locator('[data-project-exhibit]').screenshot({path:'outputs/jollycards-review/dark.png'});
+await page.evaluate(()=>{document.documentElement.dataset.theme='light';document.dispatchEvent(new Event('site:theme-change'));});await page.waitForTimeout(200);await page.locator('[data-project-exhibit]').screenshot({path:'outputs/jollycards-review/light.png'});
+await page.setViewportSize({width:390,height:844});await page.waitForTimeout(300);await page.locator('[data-project-exhibit]').screenshot({path:'outputs/jollycards-review/mobile.png'});
+console.log(JSON.stringify({errors,status:await page.locator('[data-status]').textContent(),overflow:await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)}));await browser.close();

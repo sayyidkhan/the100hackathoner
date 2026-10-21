@@ -15,16 +15,16 @@ import p42Light from '../../public/landing/assets/projects/042-astrodegen-light-
 import p42Dark from '../../public/landing/assets/projects/042-astrodegen-dark-v1.png';
 import p44Light from '../../public/landing/assets/projects/044-vibewater-light-v1.png';
 import p44Dark from '../../public/landing/assets/projects/044-vibewater-dark-v1.png';
-import p45Light from '../../public/landing/assets/projects/045-asterix-light-v1.png';
-import p45Dark from '../../public/landing/assets/projects/045-asterix-dark-v1.png';
-import p46Light from '../../public/landing/assets/projects/046-hedera-agents-light-v1.png';
-import p46Dark from '../../public/landing/assets/projects/046-hedera-agents-dark-v1.png';
+import p45Light from '../../public/landing/assets/projects/045-asterix-light-v2.png';
+import p45Dark from '../../public/landing/assets/projects/045-asterix-dark-v2.png';
+import p46Light from '../../public/landing/assets/projects/046-hedera-exchange-v2.png';
+import p46Dark from '../../public/landing/assets/projects/046-hedera-exchange-v2.png';
 import p47Light from '../../public/landing/assets/projects/047-natalies-tempeh-light-v1.png';
 import p47Dark from '../../public/landing/assets/projects/047-natalies-tempeh-dark-v1.png';
-import p48Light from '../../public/landing/assets/projects/048-jollycards-light-v1.png';
-import p48Dark from '../../public/landing/assets/projects/048-jollycards-dark-v1.png';
-import p49Light from '../../public/landing/assets/projects/049-stress-bunny-light-v1.png';
-import p49Dark from '../../public/landing/assets/projects/049-stress-bunny-dark-v1.png';
+import p48Light from '../../public/landing/assets/projects/048-jollycards-atelier-v2.png';
+import p48Dark from '../../public/landing/assets/projects/048-jollycards-atelier-v2.png';
+import p49Light from '../../public/landing/assets/projects/049-stress-bunny-light-v3.png';
+import p49Dark from '../../public/landing/assets/projects/049-stress-bunny-dark-v3.png';
 import p50Light from '../../public/landing/assets/projects/050-magistock-observatory-v2.png';
 import p50Dark from '../../public/landing/assets/projects/050-magistock-observatory-v2.png';
 import p51Light from '../../public/landing/assets/projects/051-should-i-quit-light-v2.png';
@@ -113,11 +113,11 @@ export const projectArt: Record<number, ProjectArt> = {
   41: { light: p41Light, dark: p41Dark, alt: "Three learners gather around a red paper campfire beside an open prompt playbook, connected idea cards and practice steps.", caption: "Learn through conversation, turn ideas into playbooks, and put them into practice.", model: '/landing/artifacts/prompt-alchemist.js' },
   42: { light: p42Light, dark: p42Dark, alt: "An ivory observatory and red telescope face moon-phase disks above a desk with a market curve and three signal tokens.", caption: "An experimental look at lunar cycles, market trends and the stories we build around them.", model: '/landing/artifacts/astrodegen.js' },
   44: { light: p44Light, dark: p44Dark, alt: "A speech bubble becomes an editable strategy flowchart beside a backtest chart, calendar tiles, lens and strategy archive.", caption: "Describe the strategy, inspect the logic, and test it against the past.", model: '/landing/artifacts/vibewater.js' },
-  45: { light: p45Light, dark: p45Dark, alt: "A red prompt bubble feeds an assessment workshop, question cards and a blue path branching to three outcome pedestals.", caption: "Turn a prompt into questions, then turn the answers into a clear outcome.", model: '/landing/artifacts/asterix.js' },
-  46: { light: p46Light, dark: p46Dark, alt: "Three ivory agents negotiate around a table linked to a red identity registry, with a ledger and payment receipt in front.", caption: "Agents meet, negotiate and leave a verifiable record of the exchange.", model: '/landing/artifacts/hedera-agents.js' },
+  45: { light: p45Light, dark: p45Dark, alt: "A tactile Asterix assessment console with a brass-rimmed dial, teal code terminal and a fan of answer cards.", caption: "How much of your coding is you? A vibe check, one question at a time.", model: '/landing/artifacts/asterix.js' },
+  46: { light: p46Light, dark: p46Dark, alt: "Three ceramic agents trade around an obsidian exchange table beneath an illuminated Hedera portal, with discovery, negotiation, payment and audit tiles.", caption: "Agents find each other. Agree on terms. Exchange value. Leave a record.", model: '/landing/artifacts/hedera-agents.js' },
   47: { light: p47Light, dark: p47Dark, alt: "Golden tempeh shaped as RAM, a GPU and motherboard sits on an ivory tray beside a red gift box and quote clipboard.", caption: "Hardware merch you can eat, packaged for the next gathering of builders.", model: '/landing/artifacts/natalies-tempeh.js' },
   48: { light: p48Light, dark: p48Dark, alt: "An ivory Christmas card with a folded tree rises from a red envelope beside three recipient-themed cards and blue ribbon.", caption: "A little context about the person makes a warmer holiday greeting.", model: '/landing/artifacts/jollycards.js' },
-  49: { light: p49Light, dark: p49Dark, alt: "A resting ivory rabbit lies beside a released open hand, quiet blue pond ripples and a single red flower.", caption: "Let go of the controls. Give the bunny\u2014and yourself\u2014a moment to rest.", model: '/landing/artifacts/stress-bunny.js' },
+  49: { light: p49Light, dark: p49Dark, alt: "A hand gently lifts a small ivory bunny above an open meadow, with a soft landing shadow, delicate flowers and a jade pond.", caption: "Pick the bunny up. Let it go. Find a little calm in between.", model: '/landing/artifacts/stress-bunny.js' },
   50: { light: p50Light, dark: p50Dark, alt: "Three copper, blue and sage strategy towers connect to a brass gyroscope with a luminous cyan core, an execution guard and an audit archive on a midnight-blue instrument deck.", caption: "Three strategy perspectives. One risk governor. A traceable path from market signals to execution limits.", model: '/landing/artifacts/magistock.js' },
   51: { light: p51Light, dark: p51Dark, alt: "A person stands at a multi-way blue crossroads connecting an office, a landscape doorway, a library, a workbench and a restful garden, with advisory cards and a reflection journal.", caption: "Put the different perspectives on the table before choosing the next chapter.", model: '/landing/artifacts/should-i-quit.js' },
   52: { light: p52Light, dark: p52Dark, alt: "A red idea card travels into a miniature studio that produces an ivory post page, framed image and curling filmstrip.", caption: "One idea becomes a launch package: words, an image, and a short teaser.", model: '/landing/artifacts/linkedin-launch.js' },

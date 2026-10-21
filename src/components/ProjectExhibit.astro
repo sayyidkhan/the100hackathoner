@@ -38,8 +38,12 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
 {number === 63 && <link rel="stylesheet" href="/landing/data-center-tycoon.css" />}
 {number === 75 && <link rel="stylesheet" href="/landing/buzo-atlas.css" />}
 {number === 70 && <link rel="stylesheet" href="/landing/relationship-mapper.css" />}
+{number === 49 && <link rel="stylesheet" href="/landing/stress-bunny.css" />}
 {number === 57 && <link rel="stylesheet" href="/landing/medivoice.css" />}
 {number === 50 && <link rel="stylesheet" href="/landing/magistock.css" />}
+{number === 48 && <link rel="stylesheet" href="/landing/jollycards.css" />}
+{number === 44 && <link rel="stylesheet" href="/landing/vibewater.css" />}
+{number === 46 && <link rel="stylesheet" href="/landing/hedera-agents.css" />}
 <section class="project-exhibit" data-project-exhibit data-number={number} data-model={art.model} aria-label={`${title} concept exhibit`}>
   {number === 63 && <header class="tycoon-intro">
     <div><p class="tycoon-eyebrow"><span></span> DATA CENTER TYCOON · WEB + MOBILE · 063</p>
@@ -72,7 +76,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     {projectUrl && <a class="atlas-launch" href={projectUrl} target="_blank" rel="noopener noreferrer">Explore the app <span aria-hidden="true">↗</span></a>}
   </header>}
   <div class="exhibit-toolbar">
-    <p>{number === 63 ? 'INSIDE THE DATA CENTER EMPIRE' : number === 75 ? 'THE LIVING CULTURAL ATLAS' : number === 70 ? 'THE OPPORTUNITY ATLAS' : number === 72 ? 'EXPLORE THE THRESHOLD' : number === 69 ? 'INSIDE THE LITTLE SHOP' : 'THE PROJECT, REIMAGINED'}</p>
+    <p>{number === 45 ? 'ASTERIX · THE VIBE CHECK CONSOLE' : number === 63 ? 'INSIDE THE DATA CENTER EMPIRE' : number === 75 ? 'THE LIVING CULTURAL ATLAS' : number === 70 ? 'THE OPPORTUNITY ATLAS' : number === 72 ? 'EXPLORE THE THRESHOLD' : number === 69 ? 'INSIDE THE LITTLE SHOP' : 'THE PROJECT, REIMAGINED'}</p>
     <div class="exhibit-actions">
       {number === 72 && projectUrl && <a class="cosmic-launch cosmic-toolbar-launch" href={projectUrl} target="_blank" rel="noopener noreferrer" aria-label="Open Alien Homecoming app (opens in a new tab)">Open app <span aria-hidden="true">↗</span></a>}
       {hasLabels && <button type="button" data-toggle-labels aria-expanded={number === 75 ? 'false' : 'true'}>{number === 75 ? 'Show labels' : 'Hide labels'}</button>}
@@ -96,7 +100,8 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
       </div>}
     </div>
     <div class="exhibit-scene" data-scene hidden>
-      <canvas tabindex="0" aria-label={`Interactive 3D concept for ${title}. Drag or use arrow keys to rotate.`}></canvas>
+      <canvas tabindex="0" aria-label={number === 49 ? 'Interactive bunny meadow. Drag the bunny to pick it up; release to drop. Space picks up or releases; arrow keys move it while held. Drag the garden to rotate. Home resets.' : `Interactive 3D concept for ${title}. Drag or use arrow keys to rotate.`}></canvas>
+      {number === 49 && <p class="bunny-interaction-hint" data-manipulation-status aria-live="polite">Pick up the bunny. Let it go. Let it rest.</p>}
       {number === 67 && <div class="scene-speech" data-scene-speech hidden aria-live="off">
         <strong data-speech-speaker></strong><p data-speech-text></p>
       </div>}
@@ -112,8 +117,8 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
       </div>}
     </div>
     <div class="exhibit-controls" data-controls hidden>
-      <span>Drag to rotate · Arrow keys to turn</span>
-      <button type="button" data-reset>Reset view</button>
+      <span>{number === 49 ? 'Drag bunny to lift · Release to drop · Space + arrows also work' : 'Drag to rotate · Arrow keys to turn'}</span>
+      <button type="button" data-reset>{number === 49 ? 'Reset meadow' : 'Reset view'}</button>
       <button type="button" data-pause aria-pressed="false">Pause motion</button>
     </div>
     {number === 57 && <div class="exhibit-walkthrough medi-walkthrough" data-walkthrough hidden>
@@ -184,7 +189,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     </figcaption> : number === 72 ? <figcaption class="cosmic-caption">
       <div><span class="cosmic-eyebrow">THE JOURNEY</span><p>{art.caption}</p><small>AI-painted realms, unexpected doorways, and a small traveller finding where they belong.</small></div>
       <div class="cosmic-facts"><span><b>10</b>realm families</span><span><b>03</b>home echoes</span><span><b>01</b>way home</span></div>
-    </figcaption> : <figcaption>{art.caption}<small>Concept artwork and a 3D interpretation of the project.</small></figcaption>}
+    </figcaption> : <figcaption>{art.caption}<small>{number === 45 ? 'Inspired by the vibe-coding assessment demo. The dial is illustrative, not a live assessment result.' : 'Concept artwork and a 3D interpretation of the project.'}</small></figcaption>}
   </figure>
   <p class="exhibit-status" role="status" data-status></p>
 </section>
@@ -314,6 +319,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
   .project-exhibit[data-number='66'] .exhibit-scene { aspect-ratio: 5 / 4; background: radial-gradient(ellipse at 45% 32%, #fffaf1 0%, #eee6d9 65%, #e2d8c8 100%); }
   :global([data-theme='dark']) .project-exhibit[data-number='66'] .exhibit-scene { background: radial-gradient(ellipse at 45% 36%, #283139 0%, #172128 58%, #0e151b 100%); }
   @media (max-width: 640px) { .project-exhibit[data-number='66'] .exhibit-scene { aspect-ratio: 1; } }
+  .project-exhibit[data-number='45'] .exhibit-scene { aspect-ratio: 3 / 2; }
   .project-exhibit { margin-top: 48px; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
   .exhibit-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; border-bottom: 1px solid var(--line); }
   .exhibit-toolbar p { margin: 0; font: 10px/1.5 var(--mono); letter-spacing: .08em; color: var(--muted); }

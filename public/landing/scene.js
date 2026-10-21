@@ -63,7 +63,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     throw error;
   }
 
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, Number(initialProject) === 57 ? 2 : 1.75));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, [49, 57].includes(Number(initialProject)) ? 2 : 1.75));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.95;
@@ -402,6 +402,18 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       Object.assign(key.shadow.camera,{left:-5,right:5,top:5.5,bottom:-4.5});
       key.shadow.camera.updateProjectionMatrix();
     }
+    if (currentModel?.userData.studioProfile === 'bunny') {
+      const night=currentTheme==='dark';
+      floor.visible=false;scene.background=null;
+      renderer.setClearColor(night?0x102623:0xe5ead8,0);contactShadow.material.opacity=0;
+      hemisphere.color.setHex(0xe5eedb);hemisphere.groundColor.setHex(night?0x334839:0x929a73);hemisphere.intensity=night?.35:.55;
+      key.color.setHex(0xffecd4);key.position.set(-3,6,5);key.intensity=night?1.9:2.3;
+      fill.color.setHex(0xc8d4e5);fill.intensity=.40;
+      rim.color.setHex(0xffce85);rim.position.set(3,4,-3);rim.intensity=night?2.1:1.7;
+      scene.environmentIntensity=.5;renderer.toneMappingExposure=1.02;
+      key.shadow.normalBias=.006;key.shadow.bias=-.00008;
+      Object.assign(key.shadow.camera,{left:-4,right:4,top:4,bottom:-3});key.shadow.camera.updateProjectionMatrix();
+    }
     if (currentModel?.userData.studioProfile === 'medivoice') {
       const night = currentTheme === 'dark';
       floor.visible = false;
@@ -419,6 +431,57 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       renderer.toneMappingExposure = 1.02;
       key.shadow.normalBias = .006; key.shadow.bias = -.00008;
       Object.assign(key.shadow.camera, { left: -4.5, right: 4.5, top: 5, bottom: -4 });
+      key.shadow.camera.updateProjectionMatrix();
+    }
+    if (currentModel?.userData.studioProfile === 'tempeh') {
+      hemisphere.intensity = .52;
+      hemisphere.groundColor.setHex(0x3d2b19);
+      key.color.setHex(0xffe4b7); key.position.set(-3.5, 6, 4);
+      key.intensity = 3.1;
+      fill.color.setHex(0xe8e6dc); fill.intensity = .48;
+      rim.color.setHex(0xffdfac); rim.intensity = 1.1;
+      scene.environmentIntensity = .55;
+      renderer.toneMappingExposure = 1.02;
+      contactShadow.material.opacity = .16;
+      key.shadow.normalBias = .008; key.shadow.bias = -.00008;
+      Object.assign(key.shadow.camera, { left: -4.5, right: 4.5, top: 4.5, bottom: -4 });
+      key.shadow.camera.updateProjectionMatrix();
+    }
+    if (currentModel?.userData.studioProfile === 'hedera') {
+      floor.visible = false; scene.background = null;
+      renderer.setClearColor(0x08110e, 0); contactShadow.material.opacity = 0;
+      hemisphere.color.setHex(0xd7e4db); hemisphere.groundColor.setHex(0x101914); hemisphere.intensity = .30;
+      key.color.setHex(0xffe3b5); key.intensity = 2.5; key.position.set(-3.8, 5, 4.5);
+      fill.color.setHex(0xb8d5e0); fill.intensity = .42;
+      rim.color.setHex(0x92ffc8); rim.intensity = 2.1; rim.position.set(3, 4, -4);
+      scene.environmentIntensity = .48; renderer.toneMappingExposure = .94;
+      key.shadow.normalBias = .004; key.shadow.bias = -.00005; key.shadow.radius = 4;
+      Object.assign(key.shadow.camera, { left: -4, right: 4, top: 5, bottom: -4 });
+      key.shadow.camera.updateProjectionMatrix();
+    }
+    if (currentModel?.userData.studioProfile === 'vibewater') {
+      floor.visible = false; scene.background = null;
+      renderer.setClearColor(currentTheme === 'dark' ? 0x17191a : 0xe4dfd3, 0);
+      contactShadow.material.opacity = 0;
+      hemisphere.intensity = .6; hemisphere.groundColor.setHex(0x4a4137);
+      key.color.setHex(0xffe8c4); key.intensity = 2.7; key.position.set(-4, 6, 5);
+      fill.color.setHex(0xd4e4f1); fill.intensity = .65; rim.intensity = 1.5;
+      scene.environmentIntensity = .55; renderer.toneMappingExposure = 1.02;
+      key.shadow.normalBias = .006; key.shadow.bias = -.00008; key.shadow.radius = 5;
+      Object.assign(key.shadow.camera, { left: -4.5, right: 4.5, top: 5, bottom: -4 });
+      key.shadow.camera.updateProjectionMatrix();
+    }
+    if (currentModel?.userData.studioProfile === 'jollycards') {
+      floor.visible = false; scene.background = null;
+      renderer.setClearColor(currentTheme === 'dark' ? 0x1d1918 : 0xf5eddf, 0);
+      contactShadow.material.opacity = 0;
+      hemisphere.intensity = .55;
+      hemisphere.groundColor.setHex(0x46301d);
+      key.color.setHex(0xffe3b7); key.intensity = 2.8; key.position.set(-3.5, 6, 5);
+      fill.color.setHex(0xe6e3da); fill.intensity = .7; rim.intensity = 1.2;
+      scene.environmentIntensity = .6; renderer.toneMappingExposure = 1.03;
+      key.shadow.normalBias = .006; key.shadow.bias = -.00008; key.shadow.radius = 5;
+      Object.assign(key.shadow.camera, { left: -4, right: 4, top: 4, bottom: -3 });
       key.shadow.camera.updateProjectionMatrix();
     }
     if (currentModel?.userData.studioProfile === 'fitstake') {
@@ -498,12 +561,22 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
   function render(time) {
     frameId = null;
     if (!canRender()) return;
-    const delta = lastFrameTime ? Math.min((time - lastFrameTime) / 1000, 0.05) : 0;
+    const frameDelta = lastFrameTime ? Math.max(0, (time - lastFrameTime) / 1000) : 0;
+    const delta = Math.min(frameDelta, 0.05);
     lastFrameTime = time;
-    if (!paused && !reducedMotion.matches && !drag) elapsed += delta;
+    // Seek-safe performances keep wall-clock pacing at low frame rates. Physics
+    // still uses bounded steps; stopFrames resets the clock on pause/visibility changes.
+    if (!paused && !reducedMotion.matches && !drag) elapsed += currentModel?.userData.realTimeAnimation ? frameDelta : delta;
     updateCamera();
     try {
+      currentModel?.userData.manipulation?.update(delta, elapsed, paused || reducedMotion.matches);
       currentModel?.userData.animate?.(elapsed);
+      const interaction=currentModel?.userData.interactionState;
+      if(interaction && container.dataset.interaction!==interaction){
+        container.dataset.interaction=interaction;
+        const status=container.querySelector('[data-manipulation-status]');
+        if(status)status.textContent={held:'You’ve got the bunny. Release to let go.',falling:'Letting go…',landing:'A soft landing.',resting:'Pick up the bunny. Let it go. Let it rest.'}[interaction];
+      }
       updateCamera();
       const story = currentModel?.userData.story ?? null;
       const nextStoryKey = story ? JSON.stringify([story.step, story.title, story.detail, story.tone]) : null;
@@ -526,7 +599,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       reportError(error);
       return;
     }
-    if (!paused && !reducedMotion.matches) requestFrame();
+    if ((!paused && !reducedMotion.matches) || currentModel?.userData.needsInteractionFrame) requestFrame();
   }
 
   function fitCamera(remeasure = false) {
@@ -678,6 +751,8 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
   }
 
   function resetView() {
+    cancelManipulation();
+    currentModel?.userData.manipulation?.reset();
     guidedCamera = false;
     yaw = Number.isFinite(currentModel?.userData.initialYaw) ? currentModel.userData.initialYaw : INITIAL_YAW;
     elevation = Number.isFinite(currentModel?.userData.initialElevation) ? currentModel.userData.initialElevation : INITIAL_ELEVATION;
@@ -700,6 +775,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       resize();
       requestFrame();
     } else {
+      cancelManipulation();
       stopFrames();
     }
   }
@@ -711,15 +787,40 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
   }
 
   const previousTouchAction = canvas.style.touchAction;
-  canvas.style.touchAction = 'pan-y';
+  canvas.style.touchAction = Number(initialProject)===49 ? 'none' : 'pan-y';
   if (!canvas.hasAttribute('tabindex')) canvas.tabIndex = 0;
   if (!canvas.hasAttribute('aria-label')) {
     canvas.setAttribute('aria-label', 'Interactive 3D project artifact. Drag to rotate, use arrow keys to orbit, or press Home to reset.');
   }
 
+  const pickRay=new THREE.Raycaster(),pickPointer=new THREE.Vector2();
+  function rayFromEvent(event){
+    const rect=canvas.getBoundingClientRect();
+    pickPointer.set((event.clientX-rect.left)/rect.width*2-1,-(event.clientY-rect.top)/rect.height*2+1);
+    camera.updateMatrixWorld();currentModel?.updateMatrixWorld(true);pickRay.setFromCamera(pickPointer,camera);
+  }
+  function cancelManipulation(){
+    const pointerId=drag?.id;
+    currentModel?.userData.manipulation?.release(elapsed,true);
+    drag=null;canvas.style.cursor='grab';
+    if(pointerId!==undefined&&canvas.hasPointerCapture(pointerId))canvas.releasePointerCapture(pointerId);
+  }
   canvas.addEventListener('pointerdown', event => {
-    if (!active || (event.pointerType === 'mouse' && event.button !== 0)) return;
+    if (!active || drag || (event.pointerType === 'mouse' && event.button !== 0)) return;
+    const manipulation=currentModel?.userData.manipulation;
+    if(manipulation){
+      rayFromEvent(event);
+      const hit=pickRay.intersectObject(manipulation.target,true)[0];
+      if(hit){
+        event.preventDefault();
+        manipulation.begin(elapsed);currentModel.updateMatrixWorld(true);
+        const center=manipulation.target.getWorldPosition(new THREE.Vector3());
+        drag={id:event.pointerId,kind:'bunny',plane:new THREE.Plane().setFromNormalAndCoplanarPoint(camera.getWorldDirection(new THREE.Vector3()),hit.point),offset:center.sub(hit.point)};
+        canvas.setPointerCapture(event.pointerId);canvas.focus({preventScroll:true});canvas.style.cursor='grabbing';requestFrame();return;
+      }
+    }
     guidedCamera = false;
+    currentModel?.userData.interact?.(elapsed);
     drag = {
       id: event.pointerId,
       x: event.clientX,
@@ -737,7 +838,17 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
   }, { signal: events.signal });
 
   canvas.addEventListener('pointermove', event => {
-    if (!drag || drag.id !== event.pointerId) return;
+    if (!drag){
+      if(currentModel?.userData.manipulation){rayFromEvent(event);canvas.style.cursor=pickRay.intersectObject(currentModel.userData.manipulation.target,true).length?'grab':'move';}
+      return;
+    }
+    if (drag.id !== event.pointerId) return;
+    if(drag.kind==='bunny'){
+      event.preventDefault();rayFromEvent(event);
+      const point=pickRay.ray.intersectPlane(drag.plane,new THREE.Vector3());
+      if(point)currentModel.userData.manipulation.move(currentModel.worldToLocal(point.add(drag.offset)),elapsed);
+      requestFrame();return;
+    }
     if (drag.touch && !drag.captured) {
       const dx = Math.abs(event.clientX - drag.originX);
       const dy = Math.abs(event.clientY - drag.originY);
@@ -750,6 +861,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       drag.captured = true;
     }
     if (event.cancelable) event.preventDefault();
+    currentModel?.userData.interact?.(elapsed);
     const scale = Math.max(container.clientWidth, 300);
     yaw -= ((event.clientX - drag.x) / scale) * 3.7;
     // Touch reserves the vertical axis for native page scrolling.
@@ -765,18 +877,31 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
 
   function endDrag(event) {
     if (!drag || drag.id !== event.pointerId) return;
+    const wasBunny=drag.kind==='bunny';drag=null;
+    if(wasBunny)currentModel?.userData.manipulation?.release(elapsed,paused||reducedMotion.matches||event.type!=='pointerup');
     if (canvas.hasPointerCapture(event.pointerId)) canvas.releasePointerCapture(event.pointerId);
-    drag = null;
-    lastInteraction = performance.now();
-    requestFrame();
+    canvas.style.cursor='grab';lastInteraction = performance.now();requestFrame();
   }
   canvas.addEventListener('pointerup', endDrag, { signal: events.signal });
   canvas.addEventListener('pointercancel', endDrag, { signal: events.signal });
   canvas.addEventListener('lostpointercapture', endDrag, { signal: events.signal });
   canvas.addEventListener('keydown', event => {
     if (!active) return;
+    const manipulation=currentModel?.userData.manipulation;
+    if(manipulation && (event.key===' '||event.key==='Enter')){
+      event.preventDefault();if(event.repeat)return;
+      if(currentModel.userData.isHeld)manipulation.release(elapsed,paused||reducedMotion.matches);else manipulation.begin(elapsed);
+      requestFrame();return;
+    }
+    if(manipulation && event.key==='Escape'){event.preventDefault();cancelManipulation();requestFrame();return;}
+    if(manipulation && currentModel.userData.isHeld && ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){
+      event.preventDefault();const point=manipulation.target.position.clone(),amount=event.shiftKey?.06:.18;
+      if(event.key==='ArrowLeft')point.x-=amount;if(event.key==='ArrowRight')point.x+=amount;
+      if(event.key==='ArrowUp')point.y+=amount;if(event.key==='ArrowDown')point.y-=amount;
+      manipulation.move(point,elapsed);requestFrame();return;
+    }
     const step = event.shiftKey ? 0.045 : 0.13;
-    if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) guidedCamera = false;
+    if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) { guidedCamera = false; currentModel?.userData.interact?.(elapsed); }
     if (event.key === 'ArrowLeft') yaw += step;
     else if (event.key === 'ArrowRight') yaw -= step;
     else if (event.key === 'ArrowUp') elevation = clamp(elevation + step, 0.21, 1.03);
@@ -794,9 +919,10 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     reportError(new Error('The 3D graphics context was lost. The artwork view remains available.'));
   }, { signal: events.signal });
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) stopFrames();
+    if (document.hidden) { cancelManipulation(); stopFrames(); }
     else requestFrame();
   }, { signal: events.signal });
+  window.addEventListener('blur',()=>{cancelManipulation();requestFrame();},{signal:events.signal});
   reducedMotion.addEventListener('change', () => {
     stopFrames();
     requestFrame();

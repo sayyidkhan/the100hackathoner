@@ -1,0 +1,13 @@
+{
+  "desktopOverflow": false,
+  "mobileOverflow": false,
+  "pausedFrameStable": true,
+  "visibleAnimationChangesFrame": true,
+  "pauseFreezesVisibleScene": true,
+  "consoleErrors": [],
+  "build": "passed",
+  "themes": [
+    "light",
+    "dark"
+  ]
+}

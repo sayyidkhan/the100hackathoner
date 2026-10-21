@@ -1,0 +1,11 @@
+{
+  "project": 44,
+  "sources": [
+    {"url": "https://github.com/sayyidkhan/vibewater_associates/blob/main/PROJECT_README.md", "finding": "Chat-first strategy creation, visual editor, backtesting, analytics and strategy library."},
+    {"url": "https://github.com/sayyidkhan/vibewater_associates/blob/main/frontend/components/StrategyBuilder.tsx", "finding": "Strategy node types include entry condition, profit target, stop loss and capital; examples include momentum, mean reversion and long/short."},
+    {"url": "https://www.instagram.com/p/DP-pSUWjPCS/", "finding": "Caption describes a prompt-driven investing strategy builder; marks the creator's 44th hackathon at Cursor Singapore. Viewed post and first two carousel images."}
+  ],
+  "artDirection": "Retain the existing artwork as the reference; rebuild its ivory-paper, red-chat and navy-blue strategy workbench in native Three.js.",
+  "chart": "Deterministic illustrative simulation; no claimed investment performance.",
+  "animation": "Prompt dots, signals along rules, active node accents and a chart-sampling magnifier. Uses the existing renderer's pause and visibility lifecycle."
+}

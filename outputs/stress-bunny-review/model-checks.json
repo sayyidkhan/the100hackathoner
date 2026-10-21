@@ -1,0 +1,22 @@
+{
+  "bakedAO": "ready",
+  "meshes": 137,
+  "triangles": 282460,
+  "geometryMiB": 7.53,
+  "checks": [
+    "finite geometry and transforms over two 120-second cycles",
+    "deterministic 120-second replay",
+    "visible breathing motion",
+    "interaction wakes bunny",
+    "stillness gradually restores calm",
+    "reset clears stale interaction time",
+    "light/dark theme hooks",
+    "eyes remain visible above the sculpted face",
+    "AO loads after motion starts",
+    "pick up and carry changes bunny position",
+    "gravity and soft landing at moved position",
+    "bounded drag and safe bank landing",
+    "paused/reduced-motion release lands immediately",
+    "reset restores home and clears held state"
+  ]
+}

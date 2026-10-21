@@ -1,0 +1,6 @@
+/* Keep the shared HackAtlas-style card; only the miniature's backdrop changes. */
+.project-exhibit[data-number='49'] .exhibit-scene { aspect-ratio:3/2; background:radial-gradient(ellipse at 48% 38%,#f2f2df 0%,#d8dfcb 80%); }
+:root[data-theme='dark'] .project-exhibit[data-number='49'] .exhibit-scene { background:radial-gradient(ellipse at 53% 32%,#29403a 0%,#0c1c1b 78%); }
+.project-exhibit[data-number='49'] .bunny-interaction-hint { position:absolute; bottom:16px; left:20px; right:20px; margin:0; text-align:center; font-size:12px; letter-spacing:.02em; color:#304a3b; pointer-events:none; }
+:root[data-theme='dark'] .project-exhibit[data-number='49'] .bunny-interaction-hint { color:#e0e7d5; }
+.project-exhibit[data-number='49'] canvas { cursor:grab; }

@@ -1,0 +1,5 @@
+/* Use the same shared card, toolbar, controls and caption as Natalie’s Tempeh.
+   Only the 3D stage retains the lighting backdrop of the Hedera artwork. */
+.project-exhibit[data-number='46'] .exhibit-scene {
+  background: radial-gradient(ellipse at 50% 45%, #214433 0%, #10271d 40%, #08130f 78%);
+}

@@ -1,0 +1,3 @@
+/* Shared exhibit controls and typography; the workbench alone owns its backdrop. */
+.project-exhibit[data-number='44'] .exhibit-scene { aspect-ratio:3/2; background:radial-gradient(ellipse at 45% 35%,#f3e7d0,#e4dfd3 78%); }
+:root[data-theme='dark'] .project-exhibit[data-number='44'] .exhibit-scene { background:radial-gradient(ellipse at 45% 40%,#42392f,#17191a 78%); }
