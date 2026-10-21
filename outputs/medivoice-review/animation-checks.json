@@ -1,0 +1,24 @@
+{
+  "bakedAO": "ready",
+  "meshes": 126,
+  "triangles": 315766,
+  "geometryMiB": 12.71,
+  "finite": true,
+  "duration": 24,
+  "phases": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "checks": [
+    "two complete cycles",
+    "deterministic replay",
+    "articulated motion",
+    "manual selection while paused",
+    "auto-play restart",
+    "AO loads after animation starts",
+    "finite transforms and geometry"
+  ],
+  "elapsedMs": 258
+}

@@ -1,0 +1,909 @@
+{
+  "format": "BAO2",
+  "rays": 32,
+  "maxDistance": 0.3,
+  "keyRays": 0,
+  "keyPosition": [
+    -5,
+    6,
+    2.5
+  ],
+  "keyWidth": 1.5,
+  "cell": 0.016,
+  "epsilon": 0.0018,
+  "sampled": 116921,
+  "cacheHits": 61554,
+  "totalVertices": 284620,
+  "triangles": 214824,
+  "bytes": 571272,
+  "minAO": 2,
+  "maxAO": 255,
+  "averageAO": 204.4,
+  "minKey": 255,
+  "maxKey": 255,
+  "averageKey": 255,
+  "meshes": [
+    {
+      "index": 0,
+      "name": "Mesh",
+      "vertices": 7188,
+      "offset": 2032,
+      "hash": 12208373
+    },
+    {
+      "index": 1,
+      "name": "Mesh",
+      "vertices": 9788,
+      "offset": 16408,
+      "hash": 395648865
+    },
+    {
+      "index": 2,
+      "name": "Mesh",
+      "vertices": 13915,
+      "offset": 35984,
+      "hash": 2024412772
+    },
+    {
+      "index": 3,
+      "name": "Mesh",
+      "vertices": 17618,
+      "offset": 63814,
+      "hash": 2087013049
+    },
+    {
+      "index": 4,
+      "name": "Mesh",
+      "vertices": 2484,
+      "offset": 99050,
+      "hash": 4237255127
+    },
+    {
+      "index": 5,
+      "name": "Mesh",
+      "vertices": 2484,
+      "offset": 104018,
+      "hash": 3170793560
+    },
+    {
+      "index": 6,
+      "name": "Mesh",
+      "vertices": 3250,
+      "offset": 108986,
+      "hash": 4157546275
+    },
+    {
+      "index": 7,
+      "name": "Mesh",
+      "vertices": 2484,
+      "offset": 115486,
+      "hash": 70847455
+    },
+    {
+      "index": 8,
+      "name": "Mesh",
+      "vertices": 120,
+      "offset": 120454,
+      "hash": 2001455541
+    },
+    {
+      "index": 9,
+      "name": "Mesh",
+      "vertices": 4652,
+      "offset": 120694,
+      "hash": 426867897
+    },
+    {
+      "index": 10,
+      "name": "Mesh",
+      "vertices": 2560,
+      "offset": 129998,
+      "hash": 3998474401
+    },
+    {
+      "index": 11,
+      "name": "Mesh",
+      "vertices": 2484,
+      "offset": 135118,
+      "hash": 901882277
+    },
+    {
+      "index": 12,
+      "name": "Mesh",
+      "vertices": 189,
+      "offset": 140086,
+      "hash": 2078181478
+    },
+    {
+      "index": 13,
+      "name": "Mesh",
+      "vertices": 33264,
+      "offset": 140464,
+      "hash": 3606477647
+    },
+    {
+      "index": 14,
+      "name": "Mesh",
+      "vertices": 4389,
+      "offset": 206992,
+      "hash": 3290095226
+    },
+    {
+      "index": 15,
+      "name": "Mesh",
+      "vertices": 1845,
+      "offset": 215770,
+      "hash": 2108602252
+    },
+    {
+      "index": 16,
+      "name": "Mesh",
+      "vertices": 1386,
+      "offset": 219460,
+      "hash": 3637575349
+    },
+    {
+      "index": 17,
+      "name": "Mesh",
+      "vertices": 5617,
+      "offset": 222232,
+      "hash": 3077251426
+    },
+    {
+      "index": 18,
+      "name": "Mesh",
+      "vertices": 693,
+      "offset": 233466,
+      "hash": 2295874155
+    },
+    {
+      "index": 19,
+      "name": "Mesh",
+      "vertices": 2818,
+      "offset": 234852,
+      "hash": 1655914387
+    },
+    {
+      "index": 20,
+      "name": "Mesh",
+      "vertices": 425,
+      "offset": 240488,
+      "hash": 4211332556
+    },
+    {
+      "index": 21,
+      "name": "Mesh",
+      "vertices": 693,
+      "offset": 241338,
+      "hash": 788546613
+    },
+    {
+      "index": 22,
+      "name": "Mesh",
+      "vertices": 2818,
+      "offset": 242724,
+      "hash": 1655914387
+    },
+    {
+      "index": 23,
+      "name": "Mesh",
+      "vertices": 425,
+      "offset": 248360,
+      "hash": 3791601179
+    },
+    {
+      "index": 24,
+      "name": "Mesh",
+      "vertices": 693,
+      "offset": 249210,
+      "hash": 1518200092
+    },
+    {
+      "index": 25,
+      "name": "Mesh",
+      "vertices": 256,
+      "offset": 250596,
+      "hash": 4090052165
+    },
+    {
+      "index": 26,
+      "name": "Mesh",
+      "vertices": 10089,
+      "offset": 251108,
+      "hash": 3835110365
+    },
+    {
+      "index": 27,
+      "name": "Mesh",
+      "vertices": 306,
+      "offset": 271286,
+      "hash": 2213938374
+    },
+    {
+      "index": 28,
+      "name": "Mesh",
+      "vertices": 2107,
+      "offset": 271898,
+      "hash": 2519955190
+    },
+    {
+      "index": 29,
+      "name": "Mesh",
+      "vertices": 850,
+      "offset": 276112,
+      "hash": 3653426616
+    },
+    {
+      "index": 30,
+      "name": "Mesh",
+      "vertices": 1386,
+      "offset": 277812,
+      "hash": 2493441526
+    },
+    {
+      "index": 31,
+      "name": "Mesh",
+      "vertices": 306,
+      "offset": 280584,
+      "hash": 3589765421
+    },
+    {
+      "index": 32,
+      "name": "Mesh",
+      "vertices": 64,
+      "offset": 281196,
+      "hash": 2723818119
+    },
+    {
+      "index": 33,
+      "name": "Mesh",
+      "vertices": 4389,
+      "offset": 281324,
+      "hash": 3290095226
+    },
+    {
+      "index": 34,
+      "name": "Mesh",
+      "vertices": 1845,
+      "offset": 290102,
+      "hash": 2108602252
+    },
+    {
+      "index": 35,
+      "name": "Mesh",
+      "vertices": 1386,
+      "offset": 293792,
+      "hash": 3637575349
+    },
+    {
+      "index": 36,
+      "name": "Mesh",
+      "vertices": 3113,
+      "offset": 296564,
+      "hash": 601249542
+    },
+    {
+      "index": 37,
+      "name": "Mesh",
+      "vertices": 2818,
+      "offset": 302790,
+      "hash": 1655914387
+    },
+    {
+      "index": 38,
+      "name": "Mesh",
+      "vertices": 425,
+      "offset": 308426,
+      "hash": 4211332556
+    },
+    {
+      "index": 39,
+      "name": "Mesh",
+      "vertices": 693,
+      "offset": 309276,
+      "hash": 788546613
+    },
+    {
+      "index": 40,
+      "name": "Mesh",
+      "vertices": 2818,
+      "offset": 310662,
+      "hash": 1655914387
+    },
+    {
+      "index": 41,
+      "name": "Mesh",
+      "vertices": 425,
+      "offset": 316298,
+      "hash": 3791601179
+    },
+    {
+      "index": 42,
+      "name": "Mesh",
+      "vertices": 693,
+      "offset": 317148,
+      "hash": 1518200092
+    },
+    {
+      "index": 43,
+      "name": "Mesh",
+      "vertices": 64,
+      "offset": 318534,
+      "hash": 941776227
+    },
+    {
+      "index": 44,
+      "name": "Mesh",
+      "vertices": 3512,
+      "offset": 318662,
+      "hash": 1641672088
+    },
+    {
+      "index": 45,
+      "name": "Mesh",
+      "vertices": 9936,
+      "offset": 325686,
+      "hash": 1016511097
+    },
+    {
+      "index": 46,
+      "name": "Mesh",
+      "vertices": 306,
+      "offset": 345558,
+      "hash": 2213938374
+    },
+    {
+      "index": 47,
+      "name": "Mesh",
+      "vertices": 2107,
+      "offset": 346170,
+      "hash": 2519955190
+    },
+    {
+      "index": 48,
+      "name": "Mesh",
+      "vertices": 1692,
+      "offset": 350384,
+      "hash": 3528224040
+    },
+    {
+      "index": 49,
+      "name": "Mesh",
+      "vertices": 612,
+      "offset": 353768,
+      "hash": 338419629
+    },
+    {
+      "index": 50,
+      "name": "Mesh",
+      "vertices": 1228,
+      "offset": 354992,
+      "hash": 700162903
+    },
+    {
+      "index": 51,
+      "name": "Mesh",
+      "vertices": 64,
+      "offset": 357448,
+      "hash": 2723818119
+    },
+    {
+      "index": 52,
+      "name": "Mesh",
+      "vertices": 130,
+      "offset": 357576,
+      "hash": 3492649038
+    },
+    {
+      "index": 53,
+      "name": "Mesh",
+      "vertices": 1809,
+      "offset": 357836,
+      "hash": 2485791970
+    },
+    {
+      "index": 54,
+      "name": "Mesh",
+      "vertices": 130,
+      "offset": 361454,
+      "hash": 1099944444
+    },
+    {
+      "index": 55,
+      "name": "Mesh",
+      "vertices": 1809,
+      "offset": 361714,
+      "hash": 672271996
+    },
+    {
+      "index": 56,
+      "name": "Mesh",
+      "vertices": 130,
+      "offset": 365332,
+      "hash": 1578528134
+    },
+    {
+      "index": 57,
+      "name": "Mesh",
+      "vertices": 1809,
+      "offset": 365592,
+      "hash": 129811815
+    },
+    {
+      "index": 58,
+      "name": "Mesh",
+      "vertices": 2484,
+      "offset": 369210,
+      "hash": 165281493
+    },
+    {
+      "index": 59,
+      "name": "Mesh",
+      "vertices": 2484,
+      "offset": 374178,
+      "hash": 4126119681
+    },
+    {
+      "index": 60,
+      "name": "Mesh",
+      "vertices": 484,
+      "offset": 379146,
+      "hash": 4190743258
+    },
+    {
+      "index": 61,
+      "name": "Mesh",
+      "vertices": 153,
+      "offset": 380114,
+      "hash": 2243121361
+    },
+    {
+      "index": 62,
+      "name": "Mesh",
+      "vertices": 4,
+      "offset": 380420,
+      "hash": 3935350638
+    },
+    {
+      "index": 63,
+      "name": "Mesh",
+      "vertices": 24,
+      "offset": 380428,
+      "hash": 63331141
+    },
+    {
+      "index": 64,
+      "name": "Mesh",
+      "vertices": 24,
+      "offset": 380476,
+      "hash": 3410282677
+    },
+    {
+      "index": 65,
+      "name": "Mesh",
+      "vertices": 24,
+      "offset": 380524,
+      "hash": 4204755957
+    },
+    {
+      "index": 66,
+      "name": "Mesh",
+      "vertices": 234,
+      "offset": 380572,
+      "hash": 4028394948
+    },
+    {
+      "index": 67,
+      "name": "Mesh",
+      "vertices": 4,
+      "offset": 381040,
+      "hash": 1481605702
+    },
+    {
+      "index": 68,
+      "name": "Mesh",
+      "vertices": 4,
+      "offset": 381048,
+      "hash": 914464142
+    },
+    {
+      "index": 69,
+      "name": "Mesh",
+      "vertices": 4,
+      "offset": 381056,
+      "hash": 3826934294
+    },
+    {
+      "index": 70,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 381064,
+      "hash": 3101544653
+    },
+    {
+      "index": 71,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 385840,
+      "hash": 3101544653
+    },
+    {
+      "index": 72,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 390616,
+      "hash": 3101544653
+    },
+    {
+      "index": 73,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 395392,
+      "hash": 3101544653
+    },
+    {
+      "index": 74,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 400168,
+      "hash": 3101544653
+    },
+    {
+      "index": 75,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 404944,
+      "hash": 3101544653
+    },
+    {
+      "index": 76,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 409720,
+      "hash": 3101544653
+    },
+    {
+      "index": 77,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 414496,
+      "hash": 3101544653
+    },
+    {
+      "index": 78,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 419272,
+      "hash": 3101544653
+    },
+    {
+      "index": 79,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 424048,
+      "hash": 3101544653
+    },
+    {
+      "index": 80,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 428824,
+      "hash": 3101544653
+    },
+    {
+      "index": 81,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 433600,
+      "hash": 3101544653
+    },
+    {
+      "index": 82,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 438376,
+      "hash": 3101544653
+    },
+    {
+      "index": 83,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 443152,
+      "hash": 3101544653
+    },
+    {
+      "index": 84,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 447928,
+      "hash": 3101544653
+    },
+    {
+      "index": 85,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 452704,
+      "hash": 3101544653
+    },
+    {
+      "index": 86,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 457480,
+      "hash": 3101544653
+    },
+    {
+      "index": 87,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 462256,
+      "hash": 3101544653
+    },
+    {
+      "index": 88,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 467032,
+      "hash": 3101544653
+    },
+    {
+      "index": 89,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 471808,
+      "hash": 3101544653
+    },
+    {
+      "index": 90,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 476584,
+      "hash": 3101544653
+    },
+    {
+      "index": 91,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 481360,
+      "hash": 3101544653
+    },
+    {
+      "index": 92,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 486136,
+      "hash": 3101544653
+    },
+    {
+      "index": 93,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 490912,
+      "hash": 3101544653
+    },
+    {
+      "index": 94,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 495688,
+      "hash": 3101544653
+    },
+    {
+      "index": 95,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 500464,
+      "hash": 3101544653
+    },
+    {
+      "index": 96,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 505240,
+      "hash": 3101544653
+    },
+    {
+      "index": 97,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 510016,
+      "hash": 3101544653
+    },
+    {
+      "index": 98,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 514792,
+      "hash": 3101544653
+    },
+    {
+      "index": 99,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 519568,
+      "hash": 3101544653
+    },
+    {
+      "index": 100,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 524344,
+      "hash": 3101544653
+    },
+    {
+      "index": 101,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 529120,
+      "hash": 3101544653
+    },
+    {
+      "index": 102,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 533896,
+      "hash": 3101544653
+    },
+    {
+      "index": 103,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 538672,
+      "hash": 3101544653
+    },
+    {
+      "index": 104,
+      "name": "Mesh",
+      "vertices": 2388,
+      "offset": 543448,
+      "hash": 3101544653
+    },
+    {
+      "index": 105,
+      "name": "Mesh",
+      "vertices": 715,
+      "offset": 548224,
+      "hash": 3890062134
+    },
+    {
+      "index": 106,
+      "name": "Mesh",
+      "vertices": 2484,
+      "offset": 549654,
+      "hash": 760485921
+    },
+    {
+      "index": 107,
+      "name": "Mesh",
+      "vertices": 693,
+      "offset": 554622,
+      "hash": 2371296414
+    },
+    {
+      "index": 108,
+      "name": "Mesh",
+      "vertices": 693,
+      "offset": 556008,
+      "hash": 3950179361
+    },
+    {
+      "index": 109,
+      "name": "Mesh",
+      "vertices": 4,
+      "offset": 557394,
+      "hash": 3440667902
+    },
+    {
+      "index": 110,
+      "name": "Mesh",
+      "vertices": 24,
+      "offset": 557402,
+      "hash": 1396216837
+    },
+    {
+      "index": 111,
+      "name": "Mesh",
+      "vertices": 24,
+      "offset": 557450,
+      "hash": 3055595765
+    },
+    {
+      "index": 112,
+      "name": "Mesh",
+      "vertices": 2484,
+      "offset": 557498,
+      "hash": 760485921
+    },
+    {
+      "index": 113,
+      "name": "Mesh",
+      "vertices": 324,
+      "offset": 562466,
+      "hash": 222611939
+    },
+    {
+      "index": 114,
+      "name": "Mesh",
+      "vertices": 4,
+      "offset": 563114,
+      "hash": 3440667902
+    },
+    {
+      "index": 115,
+      "name": "Mesh",
+      "vertices": 24,
+      "offset": 563122,
+      "hash": 1396216837
+    },
+    {
+      "index": 116,
+      "name": "Mesh",
+      "vertices": 24,
+      "offset": 563170,
+      "hash": 3055595765
+    },
+    {
+      "index": 117,
+      "name": "Mesh",
+      "vertices": 2484,
+      "offset": 563218,
+      "hash": 760485921
+    },
+    {
+      "index": 118,
+      "name": "Mesh",
+      "vertices": 693,
+      "offset": 568186,
+      "hash": 3866017891
+    },
+    {
+      "index": 119,
+      "name": "Mesh",
+      "vertices": 693,
+      "offset": 569572,
+      "hash": 3866017891
+    },
+    {
+      "index": 120,
+      "name": "Mesh",
+      "vertices": 24,
+      "offset": 570958,
+      "hash": 170991077
+    },
+    {
+      "index": 121,
+      "name": "Mesh",
+      "vertices": 4,
+      "offset": 571006,
+      "hash": 3440667902
+    },
+    {
+      "index": 122,
+      "name": "Mesh",
+      "vertices": 24,
+      "offset": 571014,
+      "hash": 1396216837
+    },
+    {
+      "index": 123,
+      "name": "Mesh",
+      "vertices": 24,
+      "offset": 571062,
+      "hash": 3055595765
+    },
+    {
+      "index": 124,
+      "name": "Mesh",
+      "vertices": 77,
+      "offset": 571110,
+      "hash": 135827026
+    },
+    {
+      "index": 125,
+      "name": "Mesh",
+      "vertices": 4,
+      "offset": 571264,
+      "hash": 3760627558
+    }
+  ]
+}

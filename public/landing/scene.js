@@ -63,7 +63,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     throw error;
   }
 
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, Number(initialProject) === 57 ? 2 : 1.75));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.95;
@@ -98,6 +98,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
   let distance = 16;
   let drag = null;
   let lastInteraction = 0;
+  let guidedCamera = true;
 
   // A local studio environment gives ivory, metallic trims and paper edges
   // readable reflections without remote HDRIs or colourful sci-fi lighting.
@@ -124,6 +125,10 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     environmentScene.background.setHex(0x414b5b);
     environmentPanel(8, 3, 0xffe4bf, 2.8, [-1, 3.6, 9]);
     environmentPanel(5, 2, 0xc9e7ff, 1.5, [5, 1, 6]);
+  }
+  if (initialProject === 57) {
+    environmentPanel(7, 3, 0xffe6c0, 2.4, [-2, 4, 7]);
+    environmentPanel(3, 5, 0xccfff0, 1.8, [5, 3, 3]);
   }
   const pmrem = new THREE.PMREMGenerator(renderer);
   let environment;
@@ -397,6 +402,25 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       Object.assign(key.shadow.camera,{left:-5,right:5,top:5.5,bottom:-4.5});
       key.shadow.camera.updateProjectionMatrix();
     }
+    if (currentModel?.userData.studioProfile === 'medivoice') {
+      const night = currentTheme === 'dark';
+      floor.visible = false;
+      scene.background = null;
+      renderer.setClearColor(night ? 0x0c201f : 0xf0ede4, 0);
+      contactShadow.material.opacity = 0;
+      hemisphere.color.setHex(0xd9eadd);
+      hemisphere.groundColor.setHex(night ? 0x263c35 : 0x9c9c85);
+      hemisphere.intensity = night ? .28 : .45;
+      key.color.setHex(0xffe3bc); key.intensity = night ? 2.3 : 2.65;
+      fill.color.setHex(0xc0e4dd); fill.intensity = .42;
+      rim.color.setHex(0xffe5bd); rim.intensity = 1.7;
+      key.position.set(-3.5, 6, 5);
+      scene.environmentIntensity = .8;
+      renderer.toneMappingExposure = 1.02;
+      key.shadow.normalBias = .006; key.shadow.bias = -.00008;
+      Object.assign(key.shadow.camera, { left: -4.5, right: 4.5, top: 5, bottom: -4 });
+      key.shadow.camera.updateProjectionMatrix();
+    }
     if (currentModel?.userData.studioProfile === 'fitstake') {
       hemisphere.intensity = .7;
       key.intensity = 2.6;
@@ -459,13 +483,16 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
   function updateCamera() {
     const idle = !paused && !reducedMotion.matches && !drag && performance.now() - lastInteraction > 1800;
     const orbitOffset = idle && currentModel?.userData.autoOrbit !== false ? Math.sin(elapsed * 0.4) * 0.14 : 0;
-    const angle = yaw + orbitOffset;
+    const cue = guidedCamera ? currentModel?.userData.cameraCue : null;
+    const angle = yaw + orbitOffset + (cue?.yaw ?? 0);
+    const shotDistance = distance * (cue?.distance ?? 1);
+    const shotTarget = target.clone().add(new THREE.Vector3(cue?.x ?? 0, cue?.y ?? 0, cue?.z ?? 0));
     camera.position.set(
-      Math.sin(angle) * Math.cos(elevation) * distance,
-      target.y + Math.sin(elevation) * distance,
-      Math.cos(angle) * Math.cos(elevation) * distance,
+      shotTarget.x + Math.sin(angle) * Math.cos(elevation) * shotDistance,
+      shotTarget.y + Math.sin(elevation) * shotDistance,
+      shotTarget.z + Math.cos(angle) * Math.cos(elevation) * shotDistance,
     );
-    camera.lookAt(target);
+    camera.lookAt(shotTarget);
   }
 
   function render(time) {
@@ -477,6 +504,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     updateCamera();
     try {
       currentModel?.userData.animate?.(elapsed);
+      updateCamera();
       const story = currentModel?.userData.story ?? null;
       const nextStoryKey = story ? JSON.stringify([story.step, story.title, story.detail, story.tone]) : null;
       if (storyKey !== nextStoryKey) {
@@ -650,15 +678,17 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
   }
 
   function resetView() {
+    guidedCamera = false;
     yaw = Number.isFinite(currentModel?.userData.initialYaw) ? currentModel.userData.initialYaw : INITIAL_YAW;
     elevation = Number.isFinite(currentModel?.userData.initialElevation) ? currentModel.userData.initialElevation : INITIAL_ELEVATION;
-    elapsed = 0;
+    if (!currentModel?.userData.cameraCue) elapsed = 0;
     lastInteraction = performance.now();
     fitCamera();
     requestFrame();
   }
 
   function setStoryStep(index) {
+    guidedCamera = true;
     currentModel?.userData.setStep?.(index, elapsed);
     requestFrame();
   }
@@ -689,6 +719,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
 
   canvas.addEventListener('pointerdown', event => {
     if (!active || (event.pointerType === 'mouse' && event.button !== 0)) return;
+    guidedCamera = false;
     drag = {
       id: event.pointerId,
       x: event.clientX,
@@ -745,6 +776,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
   canvas.addEventListener('keydown', event => {
     if (!active) return;
     const step = event.shiftKey ? 0.045 : 0.13;
+    if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) guidedCamera = false;
     if (event.key === 'ArrowLeft') yaw += step;
     else if (event.key === 'ArrowRight') yaw -= step;
     else if (event.key === 'ArrowUp') elevation = clamp(elevation + step, 0.21, 1.03);

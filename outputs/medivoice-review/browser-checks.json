@@ -1,0 +1,16 @@
+{
+  "browserErrors": [],
+  "mobileViewport": 390,
+  "mobilePageWidth": 390,
+  "checks": [
+    "dark desktop artwork and 3D",
+    "light mobile artwork and 3D",
+    "four journey steps",
+    "pause and reset",
+    "keyboard orbit",
+    "theme switching",
+    "no horizontal overflow",
+    "responsive image loaded"
+  ],
+  "build": "97 pages; Astro check and build passed"
+}

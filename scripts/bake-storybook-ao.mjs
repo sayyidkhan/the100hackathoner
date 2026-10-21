@@ -20,17 +20,19 @@ const options = Object.fromEntries(process.argv.slice(2).map(arg => {
   if (!match) throw new Error(`Expected --name=value, received ${arg}`);
   return [match[1], match[2]];
 }));
-if (options.model && !['storybook', 'pal'].includes(options.model)) throw new Error('Unknown bake model.');
+if (options.model && !['storybook', 'pal', 'medivoice'].includes(options.model)) throw new Error('Unknown bake model.');
 const pal = options.model === 'pal';
-const { createArtifact } = await import(pal ? '../public/landing/artifacts/kingdom-of-pal.js' : '../public/landing/artifacts/storybook.js');
-const rays = Number(options.rays ?? (pal ? 24 : 48));
-const maxDistance = Number(options.distance ?? (pal ? .2 : .9));
-const keyRays = pal ? 0 : 16; // Pal keeps live shadows for its articulated cast.
+const medivoice = options.model === 'medivoice';
+const animated = pal || medivoice;
+const { createArtifact } = await import(medivoice ? '../public/landing/artifacts/medivoice.js' : pal ? '../public/landing/artifacts/kingdom-of-pal.js' : '../public/landing/artifacts/storybook.js');
+const rays = Number(options.rays ?? (animated ? 24 : 48));
+const maxDistance = Number(options.distance ?? (pal ? .2 : medivoice ? .24 : .9));
+const keyRays = animated ? 0 : 16; // Articulated exhibits keep live direct shadows.
 const keyPosition = new THREE.Vector3(-5, 6, 2.5);
 const keyWidth = 1.5;
-const cell = Number(options.cell ?? (pal ? .012 : .018));
+const cell = Number(options.cell ?? (pal ? .012 : medivoice ? .015 : .018));
 const limit = options.limit === undefined ? Infinity : Number(options.limit);
-const output = resolve(rootPath, options.out ?? `public/landing/assets/${pal ? 'pal' : 'storybook'}-ao-v1.bin`);
+const output = resolve(rootPath, options.out ?? `public/landing/assets/${medivoice ? 'medivoice' : pal ? 'pal' : 'storybook'}-ao-v1.bin`);
 if (!Number.isInteger(rays) || rays < 4 || rays > 256) throw new Error('rays must be an integer from 4 to 256.');
 if (!(maxDistance > 0 && maxDistance < 10) || !(cell > 0 && cell < .1)) throw new Error('Invalid distance or cache cell.');
 if (!(limit > 0)) throw new Error('limit must be positive.');

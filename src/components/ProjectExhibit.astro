@@ -38,6 +38,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
 {number === 63 && <link rel="stylesheet" href="/landing/data-center-tycoon.css" />}
 {number === 75 && <link rel="stylesheet" href="/landing/buzo-atlas.css" />}
 {number === 70 && <link rel="stylesheet" href="/landing/relationship-mapper.css" />}
+{number === 57 && <link rel="stylesheet" href="/landing/medivoice.css" />}
 {number === 50 && <link rel="stylesheet" href="/landing/magistock.css" />}
 <section class="project-exhibit" data-project-exhibit data-number={number} data-model={art.model} aria-label={`${title} concept exhibit`}>
   {number === 63 && <header class="tycoon-intro">
@@ -115,6 +116,16 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
       <button type="button" data-reset>Reset view</button>
       <button type="button" data-pause aria-pressed="false">Pause motion</button>
     </div>
+    {number === 57 && <div class="exhibit-walkthrough medi-walkthrough" data-walkthrough hidden>
+      <div class="exhibit-story" data-story aria-live="off" hidden>
+        <p class="exhibit-story-heading"><span class="exhibit-story-dot" aria-hidden="true"></span><span class="exhibit-story-step" data-story-step></span><span data-story-title></span></p>
+        <p class="exhibit-story-detail" data-story-detail></p>
+      </div>
+      <div class="walkthrough-steps" role="group" aria-label="MediVoice care journey">
+        {['Voice consultation', 'Case summary', 'Doctor review', 'Digital MC'].map((label,index) => <button type="button" data-story-select={index} aria-pressed={index === 0 ? 'true' : 'false'}><span>{String(index+1).padStart(2,'0')}</span>{label}</button>)}
+      </div>
+      <button type="button" class="medi-autoplay" data-story-auto aria-pressed="true">Auto-play journey</button>
+    </div>}
     {number === 54 && <div class="exhibit-walkthrough gigradar-walkthrough" data-walkthrough hidden>
       <div class="exhibit-story" data-story aria-live="off" hidden>
         <p class="exhibit-story-heading"><span class="exhibit-story-dot" aria-hidden="true"></span><span class="exhibit-story-step" data-story-step></span><span data-story-title></span></p>

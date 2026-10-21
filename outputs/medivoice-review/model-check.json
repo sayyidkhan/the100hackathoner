@@ -1,0 +1,12 @@
+{
+  "meshes": 23,
+  "triangles": 108192,
+  "finite": true,
+  "steps": [
+    "Start with a conversation",
+    "Give the story structure",
+    "Keep a doctor in the loop",
+    "An MC, after approval"
+  ],
+  "framingPoints": 1448
+}

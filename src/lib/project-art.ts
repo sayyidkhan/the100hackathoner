@@ -39,8 +39,8 @@ import p55Light from '../../public/landing/assets/projects/055-buzo-light-v1.png
 import p55Dark from '../../public/landing/assets/projects/055-buzo-dark-v1.png';
 import p56Light from '../../public/landing/assets/projects/056-bryan-feedback-light-v2.png';
 import p56Dark from '../../public/landing/assets/projects/056-bryan-feedback-dark-v2.png';
-import p57Light from '../../public/landing/assets/projects/057-medivoice-light-v1.png';
-import p57Dark from '../../public/landing/assets/projects/057-medivoice-dark-v1.png';
+import p57Light from '../../public/landing/assets/projects/057-medivoice-light-v2.png';
+import p57Dark from '../../public/landing/assets/projects/057-medivoice-dark-v2.png';
 import p58Light from '../../public/landing/assets/projects/058-hackatlas-light-v1.png';
 import p58Dark from '../../public/landing/assets/projects/058-hackatlas-dark-v1.png';
 import p59Light from '../../public/landing/assets/projects/059-brain-org-light-v1.png';
@@ -124,7 +124,7 @@ export const projectArt: Record<number, ProjectArt> = {
   53: { light: p53Light, dark: p53Dark, alt: "Red and blue paper champions face off in a miniature arena, with profile cards, a six-part comparison wheel and commentary megaphone.", caption: "Professional profiles become a playful rivalry, complete with stats and commentary.", model: '/landing/artifacts/devduel.js' },
   55: { light: p55Light, dark: p55Dark, alt: "A coral-edged Buzo phone connects a live-music club, rooftop lounge and DJ stage with glowing routes across a miniature Singapore nightlife scene.", caption: "Tell Buzo your vibe. Find the right events, then turn the shortlist into a night out.", model: '/landing/artifacts/buzo.js' },
   56: { light: p56Light, dark: p56Dark, alt: "A floating ceramic Bryan robot with coral headphones and a glowing halo gathers feedback cards into an event insights panel on a circular stage.", caption: "After the event, a short conversation becomes something the organizer can act on.", model: '/landing/artifacts/bryan-feedback.js' },
-  57: { light: p57Light, dark: p57Dark, alt: "A patient's spoken words become a case-summary clipboard for a clinician, with a red staircase representing direct escalation.", caption: "Listen first, structure the story, and keep the clinician in the decision.", model: '/landing/artifacts/medivoice.js' },
+  57: { light: p57Light, dark: p57Dark, alt: "A miniature care pavilion: voice ribbons connect a phone to a structured case summary, a clinician’s desk and a doctor-approved medical certificate.", caption: "A conversation becomes a case. A clinician makes the call.", model: '/landing/artifacts/medivoice.js' },
   58: { light: p58Light, dark: p58Dark, alt: "A cobalt atlas globe connects builder profiles to a four-person hackathon team, with a seven-axis fit chart, project ideas and an invitation envelope.", caption: "Start with a hackathon brief. Find builders whose strengths fit together, then turn the match into a team.", model: '/landing/artifacts/hackatlas.js' },
   59: { light: p59Light, dark: p59Dark, alt: "An office workflow queues at a red bottleneck beneath a cobalt brain; a diagnostic lens highlights the blockage and a blue route leads to completed work.", caption: "Make the bottleneck visible, reconnect the handoffs, and help work move again.", model: '/landing/artifacts/brain-org.js' },
   60: { light: p60Light, dark: p60Dark, alt: "An empty office chair sits beside a blue AI stand-in consulting a teammate, with a rulebook and three trays for approval, rejection and human handoff.", caption: "Your judgement, available even when you are not. Routine decisions keep moving; the important ones come back to you.", model: '/landing/artifacts/guardian-agent.js' },
