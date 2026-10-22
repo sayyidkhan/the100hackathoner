@@ -96,6 +96,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
   let yaw = INITIAL_YAW;
   let elevation = INITIAL_ELEVATION;
   let distance = 16;
+  let zoom = 1;
   let drag = null;
   let lastInteraction = 0;
   let guidedCamera = true;
@@ -299,6 +300,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     fill.color.setHex(cosmos ? 0xb69aff : 0xd4deff);
     rim.color.setHex(cosmos ? 0x9a8aff : 0xfff8e8);
     paperContact.visible = paper && currentModel?.userData.contactFootprint !== false;
+    paperContact.scale.set(1, 1, 1);
     paperContact.material.opacity = currentTheme === 'light' ? .23 : .55;
     // The aerial crow uses its own soft footprint below the blue drum, avoiding
     // an oversized wing silhouette on the otherwise seamless exhibit backdrop.
@@ -414,7 +416,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       key.shadow.normalBias=.006;key.shadow.bias=-.00008;
       Object.assign(key.shadow.camera,{left:-4,right:4,top:4,bottom:-3});key.shadow.camera.updateProjectionMatrix();
     }
-    if (currentModel?.userData.studioProfile === 'medivoice') {
+    if (['medivoice', 'scaleup'].includes(currentModel?.userData.studioProfile)) {
       const night = currentTheme === 'dark';
       floor.visible = false;
       scene.background = null;
@@ -433,6 +435,22 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       Object.assign(key.shadow.camera, { left: -4.5, right: 4.5, top: 5, bottom: -4 });
       key.shadow.camera.updateProjectionMatrix();
     }
+    if (currentModel?.userData.studioProfile === 'coastal') {
+      // Warm broad studio light matches the miniature's baked soft key.
+      const dark = currentTheme === 'dark';
+      hemisphere.color.setHex(0xfff0d8); hemisphere.groundColor.setHex(0x60513c);
+      hemisphere.intensity = .48;
+      key.color.setHex(0xffe5bf); key.position.set(-5, 6, 2.5); key.intensity = 2.7;
+      fill.color.setHex(0xd5e7ec); fill.intensity = .32;
+      rim.color.setHex(0xffdfaf); rim.intensity = .95;
+      scene.environmentIntensity = .55; renderer.toneMappingExposure = 1.04;
+      key.shadow.normalBias = .006; key.shadow.bias = -.00008;
+      Object.assign(key.shadow.camera, { left: -5, right: 5, top: 5, bottom: -4 });
+      key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity = 0;
+      paperContact.visible = true; paperContact.material.opacity = dark ? .55 : .22;
+      paperContact.scale.set(1.23, 1.25, 1);
+    }
     if (currentModel?.userData.studioProfile === 'tempeh') {
       hemisphere.intensity = .52;
       hemisphere.groundColor.setHex(0x3d2b19);
@@ -447,6 +465,18 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       Object.assign(key.shadow.camera, { left: -4.5, right: 4.5, top: 4.5, bottom: -4 });
       key.shadow.camera.updateProjectionMatrix();
     }
+    if (currentModel?.userData.studioProfile === 'memory') {
+      floor.visible = false; scene.background = null;
+      renderer.setClearColor(0x0a1322, 0); contactShadow.material.opacity = 0;
+      hemisphere.color.setHex(0xd8e2ec); hemisphere.groundColor.setHex(0x172237); hemisphere.intensity = .48;
+      key.color.setHex(0xffe2b4); key.intensity = 3.0; key.position.set(-3.8, 5.5, 5);
+      fill.color.setHex(0xaccfff); fill.intensity = .65;
+      rim.color.setHex(0xffdfaa); rim.intensity = 2; rim.position.set(2, 5, -4);
+      scene.environmentIntensity = .72; renderer.toneMappingExposure = 1.05;
+      key.shadow.normalBias = .006; key.shadow.bias = -.00006;
+      Object.assign(key.shadow.camera, { left: -4, right: 4, top: 5, bottom: -3.5 });
+      key.shadow.camera.updateProjectionMatrix();
+    }
     if (currentModel?.userData.studioProfile === 'hedera') {
       floor.visible = false; scene.background = null;
       renderer.setClearColor(0x08110e, 0); contactShadow.material.opacity = 0;
@@ -459,6 +489,30 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       Object.assign(key.shadow.camera, { left: -4, right: 4, top: 5, bottom: -4 });
       key.shadow.camera.updateProjectionMatrix();
     }
+    if (currentModel?.userData.studioProfile === 'astrodegen') {
+      floor.visible = false; scene.background = null;
+      renderer.setClearColor(0x191612, 0); contactShadow.material.opacity = 0;
+      hemisphere.color.setHex(0xfff4e3); hemisphere.groundColor.setHex(0x554936); hemisphere.intensity = .55;
+      key.color.setHex(0xffe7bd); key.intensity = 2.6; key.position.set(-3.8, 6, 4);
+      fill.color.setHex(0xe3e9fa); fill.intensity = .55;
+      rim.color.setHex(0xfff0d5); rim.intensity = 1.5; rim.position.set(2, 5, -4);
+      scene.environmentIntensity = .32; renderer.toneMappingExposure = .96;
+      key.shadow.normalBias = .004; key.shadow.bias = -.00005;
+      Object.assign(key.shadow.camera, { left: -4, right: 4, top: 5, bottom: -4 });
+      key.shadow.camera.updateProjectionMatrix();
+    }
+    if (currentModel?.userData.studioProfile === 'two-rivers') {
+      floor.visible = false; scene.background = null;
+      renderer.setClearColor(0x071c20, 0); contactShadow.material.opacity = 0;
+      hemisphere.color.setHex(0xd4e7dc); hemisphere.groundColor.setHex(0x253c32); hemisphere.intensity = .55;
+      key.color.setHex(0xffe3b2); key.intensity = 3.1; key.position.set(-4, 6, 5);
+      fill.color.setHex(0xa4d7df); fill.intensity = .6;
+      rim.color.setHex(0xa3edcd); rim.intensity = 2.3; rim.position.set(3, 5, -4);
+      scene.environmentIntensity = .65; renderer.toneMappingExposure = 1.06;
+      key.shadow.normalBias = .004; key.shadow.bias = -.00005; key.shadow.radius = 4;
+      Object.assign(key.shadow.camera, { left: -5, right: 5, top: 5, bottom: -4 });
+      key.shadow.camera.updateProjectionMatrix();
+    }
     if (currentModel?.userData.studioProfile === 'vibewater') {
       floor.visible = false; scene.background = null;
       renderer.setClearColor(currentTheme === 'dark' ? 0x17191a : 0xe4dfd3, 0);
@@ -468,6 +522,19 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       fill.color.setHex(0xd4e4f1); fill.intensity = .65; rim.intensity = 1.5;
       scene.environmentIntensity = .55; renderer.toneMappingExposure = 1.02;
       key.shadow.normalBias = .006; key.shadow.bias = -.00008; key.shadow.radius = 5;
+      Object.assign(key.shadow.camera, { left: -4.5, right: 4.5, top: 5, bottom: -4 });
+      key.shadow.camera.updateProjectionMatrix();
+    }
+    if (currentModel?.userData.studioProfile === 'invitation') {
+      floor.visible = false; scene.background = null;
+      renderer.setClearColor(currentTheme === 'dark' ? 0x1d201d : 0xeee7da, 0);
+      contactShadow.material.opacity = 0;
+      hemisphere.intensity = .44; hemisphere.groundColor.setHex(0x514431);
+      key.color.setHex(0xffe8c6); key.intensity = 2.8; key.position.set(-3.8, 6, 5);
+      fill.color.setHex(0xe4e8e3); fill.intensity = .48;
+      rim.color.setHex(0xffd99c); rim.intensity = 1.6;
+      scene.environmentIntensity = .50; renderer.toneMappingExposure = 1.05;
+      key.shadow.normalBias = .003; key.shadow.bias = -.00004; key.shadow.radius = 5;
       Object.assign(key.shadow.camera, { left: -4.5, right: 4.5, top: 5, bottom: -4 });
       key.shadow.camera.updateProjectionMatrix();
     }
@@ -548,7 +615,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     const orbitOffset = idle && currentModel?.userData.autoOrbit !== false ? Math.sin(elapsed * 0.4) * 0.14 : 0;
     const cue = guidedCamera ? currentModel?.userData.cameraCue : null;
     const angle = yaw + orbitOffset + (cue?.yaw ?? 0);
-    const shotDistance = distance * (cue?.distance ?? 1);
+    const shotDistance = distance * (cue?.distance ?? 1) / zoom;
     const shotTarget = target.clone().add(new THREE.Vector3(cue?.x ?? 0, cue?.y ?? 0, cue?.z ?? 0));
     camera.position.set(
       shotTarget.x + Math.sin(angle) * Math.cos(elevation) * shotDistance,
@@ -740,6 +807,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     if (currentModel) currentModel.visible = false;
     currentModel = model;
     currentId = numericId;
+    zoom = 1;
     model.visible = true;
     model.userData.setTheme?.(currentTheme);
     applyArtifactLighting();
@@ -751,6 +819,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
   }
 
   function resetView() {
+    zoom = 1;
     cancelManipulation();
     currentModel?.userData.manipulation?.reset();
     guidedCamera = false;
@@ -760,6 +829,15 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     lastInteraction = performance.now();
     fitCamera();
     requestFrame();
+  }
+
+  function zoomBy(factor) {
+    if (!Number.isFinite(factor) || factor <= 0) return zoom;
+    zoom = clamp(zoom * factor, 1, 2.2);
+    lastInteraction = performance.now();
+    updateCamera();
+    requestFrame();
+    return zoom;
   }
 
   function setStoryStep(index) {
@@ -951,6 +1029,8 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     const textures = new Set();
     scene.traverse(object => {
       if (object.geometry) geometries.add(object.geometry);
+      if (object.customDepthMaterial) materials.add(object.customDepthMaterial);
+      if (object.customDistanceMaterial) materials.add(object.customDistanceMaterial);
       const list = object.material ? (Array.isArray(object.material) ? object.material : [object.material]) : [];
       list.forEach(material => {
         materials.add(material);
@@ -978,5 +1058,5 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     dispose();
     throw error;
   }
-  return { setProject, setActive, setPaused, setTheme, setStoryStep, resetView, dispose };
+  return { setProject, setActive, setPaused, setTheme, setStoryStep, resetView, zoomBy, dispose };
 }

@@ -1,0 +1,230 @@
+{
+  "format": "BAO2",
+  "rays": 48,
+  "maxDistance": 0.65,
+  "keyRays": 16,
+  "keyPosition": [
+    -5,
+    6,
+    2.5
+  ],
+  "keyWidth": 1.5,
+  "cell": 0.022,
+  "epsilon": 0.0018,
+  "sampled": 193933,
+  "cacheHits": 928382,
+  "totalVertices": 1122348,
+  "triangles": 322138,
+  "bytes": 2245176,
+  "minAO": 1,
+  "maxAO": 255,
+  "averageAO": 155.25,
+  "minKey": 0,
+  "maxKey": 255,
+  "averageKey": 100.62,
+  "meshes": [
+    {
+      "index": 0,
+      "name": "limestone",
+      "vertices": 49524,
+      "offset": 480,
+      "hash": 1629616953
+    },
+    {
+      "index": 1,
+      "name": "sea",
+      "vertices": 25200,
+      "offset": 99528,
+      "hash": 4124094721
+    },
+    {
+      "index": 2,
+      "name": "foam",
+      "vertices": 36576,
+      "offset": 149928,
+      "hash": 14582924
+    },
+    {
+      "index": 3,
+      "name": "edge",
+      "vertices": 236448,
+      "offset": 223080,
+      "hash": 3921472690
+    },
+    {
+      "index": 4,
+      "name": "paper",
+      "vertices": 90684,
+      "offset": 695976,
+      "hash": 1392274653
+    },
+    {
+      "index": 5,
+      "name": "contour",
+      "vertices": 80640,
+      "offset": 877344,
+      "hash": 666889261
+    },
+    {
+      "index": 6,
+      "name": "cobalt",
+      "vertices": 27756,
+      "offset": 1038624,
+      "hash": 1925880386
+    },
+    {
+      "index": 7,
+      "name": "blue",
+      "vertices": 76536,
+      "offset": 1094136,
+      "hash": 323868348
+    },
+    {
+      "index": 8,
+      "name": "mountain",
+      "vertices": 4284,
+      "offset": 1247208,
+      "hash": 3454740186
+    },
+    {
+      "index": 9,
+      "name": "ivory",
+      "vertices": 87252,
+      "offset": 1255776,
+      "hash": 217052592
+    },
+    {
+      "index": 10,
+      "name": "wood",
+      "vertices": 41628,
+      "offset": 1430280,
+      "hash": 74038133
+    },
+    {
+      "index": 11,
+      "name": "sage",
+      "vertices": 21528,
+      "offset": 1513536,
+      "hash": 2941959594
+    },
+    {
+      "index": 12,
+      "name": "vein",
+      "vertices": 138528,
+      "offset": 1556592,
+      "hash": 1459236760
+    },
+    {
+      "index": 13,
+      "name": "leaf",
+      "vertices": 15528,
+      "offset": 1833648,
+      "hash": 3092869322
+    },
+    {
+      "index": 14,
+      "name": "darkLeaf",
+      "vertices": 12672,
+      "offset": 1864704,
+      "hash": 3016186949
+    },
+    {
+      "index": 15,
+      "name": "red",
+      "vertices": 16980,
+      "offset": 1890048,
+      "hash": 2005252413
+    },
+    {
+      "index": 16,
+      "name": "canvas",
+      "vertices": 15624,
+      "offset": 1924008,
+      "hash": 2003097693
+    },
+    {
+      "index": 17,
+      "name": "stripe",
+      "vertices": 7440,
+      "offset": 1955256,
+      "hash": 567843993
+    },
+    {
+      "index": 18,
+      "name": "fruit",
+      "vertices": 9504,
+      "offset": 1970136,
+      "hash": 4022493609
+    },
+    {
+      "index": 19,
+      "name": "lime",
+      "vertices": 9504,
+      "offset": 1989144,
+      "hash": 2354402681
+    },
+    {
+      "index": 20,
+      "name": "terracotta",
+      "vertices": 9216,
+      "offset": 2008152,
+      "hash": 2939270593
+    },
+    {
+      "index": 21,
+      "name": "route",
+      "vertices": 32472,
+      "offset": 2026584,
+      "hash": 1435478275
+    },
+    {
+      "index": 22,
+      "name": "sky",
+      "vertices": 6324,
+      "offset": 2091528,
+      "hash": 146630861
+    },
+    {
+      "index": 23,
+      "name": "distant",
+      "vertices": 840,
+      "offset": 2104176,
+      "hash": 4034020505
+    },
+    {
+      "index": 24,
+      "name": "ridge",
+      "vertices": 840,
+      "offset": 2105856,
+      "hash": 3235730573
+    },
+    {
+      "index": 25,
+      "name": "sunset",
+      "vertices": 6324,
+      "offset": 2107536,
+      "hash": 4156959824
+    },
+    {
+      "index": 26,
+      "name": "leather",
+      "vertices": 31920,
+      "offset": 2120184,
+      "hash": 551881307
+    },
+    {
+      "index": 27,
+      "name": "brass",
+      "vertices": 27936,
+      "offset": 2184024,
+      "hash": 2009617601
+    },
+    {
+      "index": 28,
+      "name": "hair",
+      "vertices": 2640,
+      "offset": 2239896,
+      "hash": 710887777
+    }
+  ]
+}

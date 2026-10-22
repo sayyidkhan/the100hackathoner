@@ -1,5 +1,6 @@
 ---
 import { getImage } from 'astro:assets';
+import ScaleupJourney from './ScaleupJourney.astro';
 import type { ProjectArt } from '../lib/project-art';
 interface Props { number: number; title: string; art: ProjectArt; projectUrl?: string | null; }
 const { number, title, art, projectUrl: catalogProjectUrl } = Astro.props;
@@ -7,6 +8,7 @@ const { number, title, art, projectUrl: catalogProjectUrl } = Astro.props;
 // Use the standard exhibit card for projects without a deployment URL.
 // Expanded promotional treatments are reserved for deployed projects.
 const projectUrl = catalogProjectUrl ?? (number === 63 ? 'https://v0-data-center-tycoon.vercel.app/' : null);
+const isScaleup = [36, 37, 38].includes(number);
 const hasLabels = [74, 75, 76].includes(number);
 async function variants(src: ProjectArt['light']) {
   const images = await Promise.all([480, 800, 1200, 1536].map(width => getImage({ src, width, format: 'webp', quality: 80 })));
@@ -34,6 +36,9 @@ const divisions = number === 74 ? [
 ];
 const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)]);
 ---
+{isScaleup && <link rel="stylesheet" href="/landing/scaleup-evolution.css" />}
+{number === 41 && <link rel="stylesheet" href="/landing/invitation-studio.css" />}
+{number === 39 && <link rel="stylesheet" href="/landing/memory-observatory.css" />}
 {number === 67 && <link rel="stylesheet" href="/landing/sceneverse.css" />}
 {number === 63 && <link rel="stylesheet" href="/landing/data-center-tycoon.css" />}
 {number === 75 && <link rel="stylesheet" href="/landing/buzo-atlas.css" />}
@@ -43,8 +48,11 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
 {number === 50 && <link rel="stylesheet" href="/landing/magistock.css" />}
 {number === 48 && <link rel="stylesheet" href="/landing/jollycards.css" />}
 {number === 44 && <link rel="stylesheet" href="/landing/vibewater.css" />}
+{number === 40 && <link rel="stylesheet" href="/landing/two-rivers.css" />}
+{number === 42 && <link rel="stylesheet" href="/landing/astrodegen.css" />}
 {number === 46 && <link rel="stylesheet" href="/landing/hedera-agents.css" />}
-<section class="project-exhibit" data-project-exhibit data-number={number} data-model={art.model} aria-label={`${title} concept exhibit`}>
+<section class="project-exhibit" id={isScaleup ? 'scaleup-evolution' : undefined} data-scaleup={isScaleup || undefined} data-project-exhibit data-number={number} data-model={art.model} aria-label={`${title} concept exhibit`}>
+  {isScaleup && <ScaleupJourney number={number} />}
   {number === 63 && <header class="tycoon-intro">
     <div><p class="tycoon-eyebrow"><span></span> DATA CENTER TYCOON · WEB + MOBILE · 063</p>
     <h2>Build an empire.<br /><em>Keep it in balance.</em></h2>
@@ -76,7 +84,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     {projectUrl && <a class="atlas-launch" href={projectUrl} target="_blank" rel="noopener noreferrer">Explore the app <span aria-hidden="true">↗</span></a>}
   </header>}
   <div class="exhibit-toolbar">
-    <p>{number === 45 ? 'ASTERIX · THE VIBE CHECK CONSOLE' : number === 63 ? 'INSIDE THE DATA CENTER EMPIRE' : number === 75 ? 'THE LIVING CULTURAL ATLAS' : number === 70 ? 'THE OPPORTUNITY ATLAS' : number === 72 ? 'EXPLORE THE THRESHOLD' : number === 69 ? 'INSIDE THE LITTLE SHOP' : 'THE PROJECT, REIMAGINED'}</p>
+    <p>{isScaleup ? 'THE SAME IDEA, EXPANDING' : number === 41 ? 'PROMPT ALCHEMIST · THE INVITATION STUDIO' : number === 45 ? 'ASTERIX · THE VIBE CHECK CONSOLE' : number === 63 ? 'INSIDE THE DATA CENTER EMPIRE' : number === 75 ? 'THE LIVING CULTURAL ATLAS' : number === 70 ? 'THE OPPORTUNITY ATLAS' : number === 72 ? 'EXPLORE THE THRESHOLD' : number === 69 ? 'INSIDE THE LITTLE SHOP' : 'THE PROJECT, REIMAGINED'}</p>
     <div class="exhibit-actions">
       {number === 72 && projectUrl && <a class="cosmic-launch cosmic-toolbar-launch" href={projectUrl} target="_blank" rel="noopener noreferrer" aria-label="Open Alien Homecoming app (opens in a new tab)">Open app <span aria-hidden="true">↗</span></a>}
       {hasLabels && <button type="button" data-toggle-labels aria-expanded={number === 75 ? 'false' : 'true'}>{number === 75 ? 'Show labels' : 'Hide labels'}</button>}
@@ -116,11 +124,27 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
         <p class="exhibit-story-detail" data-story-detail></p>
       </div>}
     </div>
+    {number === 41 && <div class="invitation-journey" aria-label="The event funnel">
+      <span><b>01</b> Attract attention</span><span aria-hidden="true">→</span>
+      <span><b>02</b> Make the invitation</span><span aria-hidden="true">→</span>
+      <span><b>03</b> Bring people together</span>
+    </div>}
     <div class="exhibit-controls" data-controls hidden>
       <span>{number === 49 ? 'Drag bunny to lift · Release to drop · Space + arrows also work' : 'Drag to rotate · Arrow keys to turn'}</span>
+      {number === 35 && <><button type="button" data-zoom="0.8" aria-label="Zoom out" disabled>−</button><button type="button" data-zoom="1.25" aria-label="Zoom in">+</button></>}
       <button type="button" data-reset>{number === 49 ? 'Reset meadow' : 'Reset view'}</button>
       <button type="button" data-pause aria-pressed="false">Pause motion</button>
     </div>
+    {isScaleup && <div class="exhibit-walkthrough" data-walkthrough hidden>
+      <div class="exhibit-story" data-story aria-live="off" hidden>
+        <p class="exhibit-story-heading"><span class="exhibit-story-step" data-story-step></span><span data-story-title></span></p>
+        <p class="exhibit-story-detail" data-story-detail></p>
+      </div>
+      <div class="walkthrough-steps" role="group" aria-label="Compare the three ScaleUp AI editions in 3D">
+        {['Consulting idea', 'Operating platform', 'VR edition'].map((label,index) => <button type="button" data-story-select={index} aria-pressed={index===number-36?'true':'false'}><span>0{index+1}</span> {label}</button>)}
+        <button type="button" data-story-auto aria-pressed="false">Play evolution</button>
+      </div>
+    </div>}
     {number === 57 && <div class="exhibit-walkthrough medi-walkthrough" data-walkthrough hidden>
       <div class="exhibit-story" data-story aria-live="off" hidden>
         <p class="exhibit-story-heading"><span class="exhibit-story-dot" aria-hidden="true"></span><span class="exhibit-story-step" data-story-step></span><span data-story-title></span></p>
@@ -189,7 +213,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     </figcaption> : number === 72 ? <figcaption class="cosmic-caption">
       <div><span class="cosmic-eyebrow">THE JOURNEY</span><p>{art.caption}</p><small>AI-painted realms, unexpected doorways, and a small traveller finding where they belong.</small></div>
       <div class="cosmic-facts"><span><b>10</b>realm families</span><span><b>03</b>home echoes</span><span><b>01</b>way home</span></div>
-    </figcaption> : <figcaption>{art.caption}<small>{number === 45 ? 'Inspired by the vibe-coding assessment demo. The dial is illustrative, not a live assessment result.' : 'Concept artwork and a 3D interpretation of the project.'}</small></figcaption>}
+    </figcaption> : <figcaption>{art.caption}<small>{isScaleup ? 'Concept artwork and interactive 3D interpretation of three evolving hackathon builds.' : number === 41 ? 'Campaign creative, a compelling invitation, and a reason to show up. Inspired by the NAS.IO hackathon build.' : number === 45 ? 'Inspired by the vibe-coding assessment demo. The dial is illustrative, not a live assessment result.' : 'Concept artwork and a 3D interpretation of the project.'}</small></figcaption>}
   </figure>
   <p class="exhibit-status" role="status" data-status></p>
 </section>
@@ -344,6 +368,8 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
   [hidden] { display: none !important; }
   .exhibit-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; padding: 12px 22px; border-top: 1px solid var(--line); }
   .exhibit-controls span { flex: 1; font-size: .75rem; color: var(--muted); }
+  .exhibit-controls [data-zoom] { width: 36px; padding-inline: 0; font-size: 1rem; line-height: 1; }
+  .exhibit-controls [data-zoom]:disabled { opacity: .35; cursor: default; }
   figcaption { padding: 22px; font-size: 1rem; line-height: 1.5; }
   figcaption small { display: block; margin-top: 8px; font-size: .75rem; color: var(--muted); }
   .exhibit-status { margin: 0; padding: 0 22px 16px; color: var(--muted); font-size: .8rem; }

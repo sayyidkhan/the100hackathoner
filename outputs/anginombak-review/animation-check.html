@@ -1,0 +1,27 @@
+<!doctype html><html><head><title>Coastal animation verification</title><style>body{margin:20px;background:#141414;color:white;font:16px monospace}#stage{width:650px;height:420px}canvas{width:100%;height:100%}pre{white-space:pre-wrap}</style></head><body><h1>Coastal animation verification</h1><div id="stage"><canvas></canvas></div><pre id="results">Running…</pre><script type="module">
+import {createGalleryScene} from './landing/scene.js';
+import {createArtifact} from './landing/artifacts/anginombak.js';
+const container=document.querySelector('#stage'),canvas=document.querySelector('canvas'),results=document.querySelector('#results');
+const lines=[];let currentTime=0,frames=0,model,scene;
+const wait=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+function pass(label,condition){if(!condition)throw new Error(label);lines.push('PASS '+label);results.textContent=lines.join('\n');}
+function factory(T){model=createArtifact(T);const animate=model.userData.animate;model.userData.animate=t=>{frames++;currentTime=t;animate(t);};return model;}
+function create(){return createGalleryScene({canvas,container,initialProject:35,projectIds:new Set([35]),artifactFactory:factory});}
+try{
+ scene=create();scene.setActive(true);await model.userData.bakedAOPromise;await wait(900);
+ pass('Live animation advances the scene clock',currentTime>.1);
+ pass('Existing geometry still matches the baked shading',model.userData.bakedAOStatus==='ready');
+ scene.setPaused(true);await wait(150);const pausedTime=currentTime;await wait(450);
+ pass('Pause freezes all model motion',currentTime===pausedTime);
+ scene.resetView();await wait(100);pass('Reset restores the rest pose',currentTime===0);
+ scene.setPaused(false);await wait(450);pass('Resume restarts the animation',currentTime>0);
+ scene.setActive(false);const hiddenTime=currentTime;await wait(350);pass('Inactive exhibit stops animation',currentTime===hiddenTime);
+ scene.dispose();
+ const nativeMatchMedia=window.matchMedia.bind(window),reduced=new EventTarget();reduced.matches=true;reduced.media='(prefers-reduced-motion: reduce)';
+ window.matchMedia=query=>query==='(prefers-reduced-motion: reduce)'?reduced:nativeMatchMedia(query);
+ currentTime=-1;frames=0;scene=create();window.matchMedia=nativeMatchMedia;scene.setActive(true);await model.userData.bakedAOPromise;await wait(600);
+ pass('Reduced motion renders a still rest pose',frames>0&&currentTime===0);
+ const stillFrames=frames;await wait(350);pass('Reduced motion does not run a continuous frame loop',frames===stillFrames);
+ scene.dispose();results.textContent+='\nALL CHECKS PASSED';
+}catch(error){results.textContent+='\nFAIL '+error.message;console.error(error);scene?.dispose();}
+</script></body></html>

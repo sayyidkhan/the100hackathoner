@@ -1,0 +1,66 @@
+{
+  "project": 39,
+  "title": "GPT-6 Nano: Memory Observatory",
+  "sources": [
+    {
+      "url": "https://github.com/sayyidkhan/gpt6-nano/blob/main/src/App.tsx",
+      "finding": "Historical chat and tag selection, local memory loading, knowledge graph views."
+    },
+    {
+      "url": "https://github.com/sayyidkhan/gpt6-nano/blob/main/src/responder.ts",
+      "finding": "Keyword-based related memory ranking, shared-concept graph, templated connection suggestions."
+    },
+    {
+      "url": "https://github.com/sayyidkhan/gpt6-nano/blob/main/src/storage.ts",
+      "finding": "Seeded sample topics include solar panels, urban wind and edge robotics. Browser-local persistence."
+    },
+    {
+      "url": "https://www.instagram.com/p/DNLa9r_xO3o/",
+      "finding": "Author describes choosing historical chats and converging their context into a new conversation; first carousel image shows the Multi-Dimensional Memory frontend."
+    }
+  ],
+  "design": {
+    "concept": "Memory observatory",
+    "materials": [
+      "ink-blue mineral stone",
+      "ivory paper and ceramic",
+      "brushed brass",
+      "coral conversation tile",
+      "cobalt connection paths"
+    ],
+    "stages": [
+      "Recall",
+      "Connect",
+      "Converge"
+    ],
+    "scope": "Conceptual exhibit walkthrough; does not claim a trained frontier model or run live retrieval.",
+    "presentation": "Standard shared exhibit card matching #46: no custom header, CTA, walkthrough controls, caption styling or card theme. Preserve artwork, animated 3D model and studio backdrop."
+  },
+  "artwork": {
+    "tool": "built-in image_gen",
+    "path": "public/landing/assets/projects/039-memory-observatory-v2.png",
+    "prompt": "Create an extraordinary high-end editorial 3D product illustration for a portfolio project called \"Multi-dimensional memory\". Landscape 3:2 composition, no typography, no logos, no watermark. The subject is a tangible MEMORY OBSERVATORY: multiple archived conversations converge into one new conversation. It must read like an exquisite physical museum sculpture, not a dashboard or flat network diagram.\n\nComposition: on a wide, low, rounded rectangular midnight-blue stone platform, three small sculptural ivory archive libraries form a horseshoe. Left library contains six thick paper cards, center rear library rises higher, right library contains six cards. Their cards have rounded corners, subtle paper fibres, small brass index tabs, finely embossed pictograms of a sun/solar panel, wind turbine, and robotic gripper respectively. From these three libraries, three elegant thin luminous cobalt-blue curved paths travel inward, lifting several loose ivory memory cards through the air toward the central focal point. The center is a large coral-vermilion rounded conversation tile standing vertically, with an embossed ivory speech symbol, three beautifully proportioned short raised lines, tiny brass registration corners. The tile is suspended just above a circular ivory ceramic pedestal with concentric brass inlays. Behind the central tile stand TWO oversized thin brushed-brass orbital arcs, tilted in different planes, framing the sculpture with a dramatic airy crown. Several small cobalt ceramic spheres and pale ivory spheres on the arcs suggest connected concepts. A single dramatic vermilion connection bridges from the left library to the right library through the crown, visually distinct from the blue paths. Foreground: a beautifully bound open ivory notebook with curved layered pages and a slim blue magnifying lens resting near it, a small stack of index cards and fine brass pen. Sparse deliberate detail; disciplined composition with breathing space, hierarchy and elegant asymmetry. No plants, no robot, no brain, no computer monitor.\n\nMaterials and photography: deep ink-blue enamel, warm white uncoated paper with visible edge layers, pale travertine ceramic, satin brushed brass, translucent blue connections, rich vermilion centerpiece. Luxurious tactile miniature photographed with 65mm product lens from front-right at 25 degree downward elevation. All elements in focus, nuanced microtexture, beautiful ambient occlusion, soft warm key light from upper left, cool rim, delicate reflections. Deep ink-navy seamless studio background with a very subtle warm pool of light behind the core. Platform entirely visible with 7% safe margin. Sculpture fills frame generously. Premium design-magazine still life, sophisticated, emotionally evocative, stunning craftsmanship, believable geometry, no clutter, no giant empty plinth."
+  },
+  "validation": {
+    "astroCheck": "0 errors, 0 warnings (existing hints remain)",
+    "productionBuild": "97 pages built",
+    "geometry": "Finite vertices and matching UV attributes verified",
+    "modelDrawCalls": 44,
+    "triangles": 322656,
+    "interaction": [
+      "automatic model phases",
+      "pause",
+      "keyboard rotation",
+      "reset"
+    ],
+    "viewports": [
+      "desktop",
+      "390px mobile"
+    ],
+    "themes": [
+      "dark",
+      "light"
+    ],
+    "previews": "outputs/gpt6-nano-review/"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "project": 40,
+  "build": "passed: astro check and 97 pages",
+  "moduleSyntax": "passed",
+  "desktopViewport": 1280,
+  "mobileViewport": 390,
+  "mobileScrollWidth": 390,
+  "themesReviewed": ["light", "dark"],
+  "viewsReviewed": ["artwork", "3d"],
+  "pausedScreenshotsIdentical": true,
+  "resumedScreenshotsChanged": true,
+  "keyboardRotationAndReset": "exercised",
+  "browserConsoleErrors": [],
+  "reducedMotion": "inherits shared gallery; not separately simulated"
+}

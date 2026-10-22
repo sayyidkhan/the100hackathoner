@@ -136,7 +136,13 @@ for (const exhibit of document.querySelectorAll('[data-project-exhibit]')) {
     }
     display(requested);
   }));
-  exhibit.querySelector('[data-reset]').addEventListener('click', () => scene?.resetView());
+  const zoomButtons = [...exhibit.querySelectorAll('[data-zoom]')];
+  function updateZoomButtons(zoom = 1) {
+    zoomButtons.forEach(button => { button.disabled = Number(button.dataset.zoom) < 1 ? zoom <= 1 : zoom >= 2.2; });
+  }
+  zoomButtons.forEach(button => button.addEventListener('click', () => updateZoomButtons(scene?.zoomBy(Number(button.dataset.zoom)))));
+  exhibit.querySelector('[data-reset]').addEventListener('click', () => { scene?.resetView(); updateZoomButtons(); });
+  stage.querySelector('canvas').addEventListener('keydown', event => { if (event.key === 'Home') updateZoomButtons(); });
   stepButtons.forEach(button => button.addEventListener('click', () => {
     scene?.setStoryStep(Number(button.dataset.storySelect));
     autoSteps?.setAttribute('aria-pressed', 'false');

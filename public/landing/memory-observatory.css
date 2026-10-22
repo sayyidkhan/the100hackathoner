@@ -1,0 +1,5 @@
+/* Use the shared exhibit card, toolbar, controls and caption, as on #46.
+   Only the 3D studio retains the backdrop of the memory artwork. */
+.project-exhibit[data-number='39'] .exhibit-scene {
+  background: radial-gradient(ellipse at 48% 33%, #3e424b 0%, #192a41 36%, #0b1627 68%, #080f1c 100%);
+}

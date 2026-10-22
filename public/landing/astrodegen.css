@@ -1,0 +1,7 @@
+/* Quiet warm studio, matching the original paper-and-clay artwork. */
+.project-exhibit[data-number='42'] .exhibit-scene {
+  background: radial-gradient(ellipse at 45% 40%, #393127, #211d18 58%, #141312);
+}
+[data-theme='light'] .project-exhibit[data-number='42'] .exhibit-scene {
+  background: radial-gradient(ellipse at 45% 40%, #eee6d8, #d4c9b7);
+}

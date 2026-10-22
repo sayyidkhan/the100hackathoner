@@ -3,14 +3,14 @@ import fitstakeLight from '../../public/landing/assets/projects/082-fitstake-lig
 import p34Dark from '../../public/landing/assets/projects/034-lrnmate-dark-v1.png';
 import p35Light from '../../public/landing/assets/projects/035-anginombak-light-v1.png';
 import p35Dark from '../../public/landing/assets/projects/035-anginombak-dark-v1.png';
-import p37Light from '../../public/landing/assets/projects/037-scaleup-roadmap-light-v1.png';
-import p37Dark from '../../public/landing/assets/projects/037-scaleup-roadmap-dark-v1.png';
-import p38Light from '../../public/landing/assets/projects/038-scaleup-perspectives-light-v1.png';
-import p38Dark from '../../public/landing/assets/projects/038-scaleup-perspectives-dark-v1.png';
-import p39Light from '../../public/landing/assets/projects/039-memory-graph-light-v1.png';
-import p39Dark from '../../public/landing/assets/projects/039-memory-graph-dark-v1.png';
-import p41Light from '../../public/landing/assets/projects/041-prompt-alchemist-light-v1.png';
-import p41Dark from '../../public/landing/assets/projects/041-prompt-alchemist-dark-v1.png';
+import p36 from '../../public/landing/assets/projects/036-scaleup-origin-v2.png';
+import p37 from '../../public/landing/assets/projects/037-scaleup-platform-v2.png';
+import p38 from '../../public/landing/assets/projects/038-scaleup-spatial-v2.png';
+import p39Light from '../../public/landing/assets/projects/039-memory-observatory-v2.png';
+import p39Dark from '../../public/landing/assets/projects/039-memory-observatory-v2.png';
+import twoRiversArt from '../../public/landing/assets/projects/040-two-rivers-v1.png';
+import p41Light from '../../public/landing/assets/projects/041-invitation-light-v2.png';
+import p41Dark from '../../public/landing/assets/projects/041-invitation-dark-v2.png';
 import p42Light from '../../public/landing/assets/projects/042-astrodegen-light-v1.png';
 import p42Dark from '../../public/landing/assets/projects/042-astrodegen-dark-v1.png';
 import p44Light from '../../public/landing/assets/projects/044-vibewater-light-v1.png';
@@ -100,6 +100,7 @@ export interface ProjectArt {
 }
 
 export const projectArt: Record<number, ProjectArt> = {
+  40: { light: twoRiversArt, dark: twoRiversArt, alt: 'A miniature eco theme park with two turquoise rivers joining beneath a golden Tree of Life, a rainforest canopy walk, timber pavilion, bamboo coaster and solar-powered station.', caption: 'Two Rivers, One Future. Sarawak’s rainforest meets Singapore’s Supertrees in a concept for an eco theme park, where heritage and innovation flow together.', model: '/landing/artifacts/two-rivers.js' },
   54: { light: p54Light, dark: p54Dark, alt: 'A Telegram phone connects a glowing radar to a live music stage and art gallery with verification pins. A framed preview imagines ice cream and flowers after the event.', caption: 'Ask what’s on nearby. Discover events beyond the usual listings, check whether they’re still happening, and imagine what comes after.', model: '/landing/artifacts/gigradar.js' },
   82: { light: fitstakeLight, dark: fitstakeLight, alt: 'Two paper runners compete on red and blue lanes around a phone displaying progress and shared rewards.', caption: 'Two friends, one fitness challenge. Consistency unlocks a better reward for each player.', model: '/landing/artifacts/fitstake.js' },
   66: { light: buzo20Light, dark: buzo20Dark, alt: 'A red AI concierge kiosk connects a visitor to a concert, art exhibition and networking pavilion across a folded ivory map, with a brass compass and blue routes.', caption: 'Start with a conversation. Find your way to the next live experience.', model: '/landing/artifacts/buzo-20.js' },
@@ -107,10 +108,11 @@ export const projectArt: Record<number, ProjectArt> = {
   71: { light: palLight, dark: palDark, alt: 'A sheikh in a white headscarf and seven specialist companions gather around a council table inside an ivory kingdom, with a community market and noticeboard.', caption: 'One sheikh, seven trusted companions, and a whole community to care for. A kingdom helping one person run a community business.', model: '/landing/artifacts/kingdom-of-pal.js' },
   34: { light: p34Light, dark: p34Dark, alt: "Company manuals become three lesson cards along a blue ribbon, leading to a learner and mentor.", caption: "Workplace knowledge becomes smaller lessons, practice and feedback.", model: '/landing/artifacts/lrnmate.js' },
   35: { light: p35Light, dark: p35Dark, alt: "A folded map with blue waves and routes, a red location pin, local stall, story cards and a guide bubble.", caption: "Local discoveries, shared stories and a guide for the next adventure.", model: '/landing/artifacts/anginombak.js' },
-  37: { light: p37Light, dark: p37Dark, alt: "An open business ledger leads through blue action steps to a miniature cafe.", caption: "From business insights to a practical plan for the next step.", model: '/landing/artifacts/scaleup-roadmap.js' },
-  38: { light: p38Light, dark: p38Dark, alt: "Paper cafe surrounded by financial, customer and trend panels, with a founder and adviser.", caption: "Different business perspectives meet around one small business.", model: '/landing/artifacts/scaleup-perspectives.js' },
-  39: { light: p39Light, dark: p39Dark, alt: "A red query card rises from a memory archive inside a blue network of saved ideas, with a red unexpected connection.", caption: "Recall the useful details and find connections across earlier conversations.", model: '/landing/artifacts/memory-graph.js' },
-  41: { light: p41Light, dark: p41Dark, alt: "Three learners gather around a red paper campfire beside an open prompt playbook, connected idea cards and practice steps.", caption: "Learn through conversation, turn ideas into playbooks, and put them into practice.", model: '/landing/artifacts/prompt-alchemist.js' },
+  36: { light:p36, dark:p36, alt:"A cream café connects an open financial ledger to a consulting roadmap: the first ScaleUp AI idea.", caption:"One small business. A first step towards accessible AI consulting.", model:'/landing/artifacts/scaleup-origin.js' },
+  37: { light:p37, dark:p37, alt:"The same café now connects to six jade dashboards for finance, growth, reviews, social, trends and business overview.", caption:"The same mission, with more of the business in view.", model:'/landing/artifacts/scaleup-roadmap.js' },
+  38: { light:p38, dark:p38, alt:"The same café and business dashboards become a spatial consulting concept framed by an illuminated arch and a VR headset.", caption:"The platform evolves again. Step into the consulting experience.", model:'/landing/artifacts/scaleup-perspectives.js' },
+  39: { light: p39Light, dark: p39Dark, alt: "Ivory archives of solar, wind and robotics conversations converge on a coral conversation tile inside a brass orbital memory observatory.", caption: "Choose the conversations worth remembering. Bring their context into what comes next.", model: '/landing/artifacts/memory-graph.js' },
+  41: { light: p41Light, dark: p41Dark, alt: "Campaign cards lead to a framed event invitation, with a golden path connecting its call to action to a terracotta-seated auditorium.", caption: "Turn attention into attendance. Make the invitation worth acting on.", model: '/landing/artifacts/prompt-alchemist.js' },
   42: { light: p42Light, dark: p42Dark, alt: "An ivory observatory and red telescope face moon-phase disks above a desk with a market curve and three signal tokens.", caption: "An experimental look at lunar cycles, market trends and the stories we build around them.", model: '/landing/artifacts/astrodegen.js' },
   44: { light: p44Light, dark: p44Dark, alt: "A speech bubble becomes an editable strategy flowchart beside a backtest chart, calendar tiles, lens and strategy archive.", caption: "Describe the strategy, inspect the logic, and test it against the past.", model: '/landing/artifacts/vibewater.js' },
   45: { light: p45Light, dark: p45Dark, alt: "A tactile Asterix assessment console with a brass-rimmed dial, teal code terminal and a fan of answer cards.", caption: "How much of your coding is you? A vibe check, one question at a time.", model: '/landing/artifacts/asterix.js' },

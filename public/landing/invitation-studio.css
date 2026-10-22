@@ -1,0 +1,19 @@
+/* The invitation sculpture shares a warm photographic studio with its artwork. */
+.project-exhibit[data-number='41'] .exhibit-scene {
+  aspect-ratio: 3 / 2;
+  background: radial-gradient(ellipse at 48% 38%, #fff5e3, #e6ddcd 82%);
+}
+:root[data-theme='dark'] .project-exhibit[data-number='41'] .exhibit-scene {
+  background: radial-gradient(ellipse at 48% 38%, #484336, #1c201d 76%);
+}
+.project-exhibit[data-number='41'] .invitation-journey {
+  display: flex; flex-wrap: wrap; gap: 18px; padding: 13px 22px;
+  border-top: 1px solid var(--line); font: 10px/1.5 var(--mono); color: var(--muted);
+}
+.project-exhibit[data-number='41'] .invitation-journey b { color: var(--ink); font-weight: 500; }
+@media(max-width:550px) {
+  .project-exhibit[data-number='41'] .exhibit-scene { aspect-ratio: 3 / 2; }
+  .project-exhibit[data-number='41'] .invitation-journey { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 12px 16px; font-size: 9px; }
+  .project-exhibit[data-number='41'] .invitation-journey span[aria-hidden] { display: none; }
+  .project-exhibit[data-number='41'] .invitation-journey b { display: block; margin-bottom: 4px; }
+}

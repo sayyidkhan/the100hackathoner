@@ -1,4 +1,7 @@
 {
+  "44": {
+    "client": "OpenAI, Anthropic, convex, cursor, fal.ai"
+  },
   "52": {
     "productName": "Prompt & Pixel: AI LinkedIn Launch Studio"
   },

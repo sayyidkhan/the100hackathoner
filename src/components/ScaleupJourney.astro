@@ -1,0 +1,20 @@
+---
+const { number } = Astro.props;
+const stages = [
+  { number:36, name:'The consulting idea', event:'Super AI', date:'17–19 JUN', change:'Start with the SME', detail:'Explore accessible AI consulting for small businesses.', carry:'Affordable, actionable advice for SMEs.', addition:'The first consulting concept.', next:'Turn the idea into a broader product.' },
+  { number:37, name:'The operating platform', event:'Bolt.New', date:'21 JUN', change:'Connect the business', detail:'Bring finance, growth and customer signals into one workspace.', carry:'The same business problem and consulting ambition.', addition:'Dashboard, financials, growth coach, reviews, social and trends.', next:'Explore a more immersive way to engage with those insights.' },
+  { number:38, name:'The immersive edition', event:'OOJU × Manus.AI', date:'27 JUN', change:'Step inside the insight', detail:'Reimagine the consulting experience through a VR edition.', carry:'The platform’s business intelligence foundation.', addition:'A spatial consulting concept, explored at OOJU × Manus.AI.', next:'A new interface for the same mission. Awarded second place.' },
+];
+const current=stages[number-36];
+---
+<div class="scaleup-journey">
+  <div class="scaleup-series-heading"><p>ONE IDEA. THREE BUILDS.</p><span>SCALEUP AI · JUNE 2025</span></div>
+  <nav aria-label="ScaleUp AI project evolution" class="scaleup-stages">
+    {stages.map((s,i)=><a href={`/hackathons/${s.number}/?from=landing#scaleup-evolution`} aria-current={s.number===number?'page':undefined}>
+      <span class="scaleup-stage-index">0{i+1}<span aria-hidden="true">↗</span></span>
+      <strong>{s.name}</strong><span>{s.event} · {s.date}</span>
+    </a>)}
+  </nav>
+  <div class="scaleup-chapter"><span>CHAPTER 0{number-35}</span><h3>{current.change}</h3><p>{current.detail}</p></div>
+  <dl class="scaleup-changes"><div><dt>THE THROUGHLINE</dt><dd>{current.carry}</dd></div><div><dt>THIS EDITION</dt><dd>{current.addition}</dd></div><div><dt>WHERE IT LED</dt><dd>{current.next}</dd></div></dl>
+</div>
