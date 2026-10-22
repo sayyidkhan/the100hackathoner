@@ -1,0 +1,26 @@
+/* The ordinary exhibit card, with a quiet studio behind the sculptural tree. */
+.project-exhibit[data-number='31'] .exhibit-scene {
+  background: radial-gradient(ellipse at 48% 36%, #315958, #112e31 62%, #092024);
+  aspect-ratio: 3 / 2;
+}
+:root[data-theme='light'] .project-exhibit[data-number='31'] .exhibit-scene {
+  background: radial-gradient(ellipse at 48% 36%, #fff8e9, #e9dfcd 76%);
+}
+.project-exhibit[data-number='31'] .growth-walkthrough .exhibit-story {
+  position: static;
+  max-width: none;
+  margin-bottom: 16px;
+  text-shadow: none;
+}
+.project-exhibit[data-number='31'] .growth-walkthrough .exhibit-story-heading { margin: 0; color: var(--ink); font-size: .9rem; }
+.project-exhibit[data-number='31'] .growth-walkthrough .exhibit-story-detail { margin: 7px 0 0; }
+.project-exhibit[data-number='31'] .exhibit-story-step { flex-shrink: 0; white-space: nowrap; }
+.project-exhibit[data-number='31'] [data-story-select='0'] { border-color: #b87356; }
+.project-exhibit[data-number='31'] [data-story-select='1'] { border-color: #ad8b48; }
+.project-exhibit[data-number='31'] [data-story-select='2'] { border-color: #508b7b; }
+@media(max-width: 550px) {
+  .project-exhibit[data-number='31'] .exhibit-scene { aspect-ratio: 4 / 3; }
+  .project-exhibit[data-number='31'] .walkthrough-steps { display: grid; grid-template-columns: 1fr 1fr; overflow: visible; }
+  .project-exhibit[data-number='31'] .walkthrough-steps button { white-space: normal; min-height: 42px; }
+  .project-exhibit[data-number='31'] .exhibit-story-heading { align-items: baseline; }
+}

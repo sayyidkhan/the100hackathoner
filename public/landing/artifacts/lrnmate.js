@@ -1,7 +1,9 @@
+import {lessonMoment} from './lrnmate-timing.js';
 import { applyMediVoiceAO } from './medivoice-surface.js';
-import { lrnmatePeople } from './lrnmate-people.js';
+import { lrnmatePeople, prepareLrnmatePeople } from './lrnmate-people.js';
 import { lrnmateSurfaces } from './lrnmate-surfaces.js';
 import { medivoiceStudio } from './medivoice-studio.js';
+export const prepareArtifact=prepareLrnmatePeople;
 // Source-grounded concept: documents → snippets/video → quiz → human feedback.
 export function createArtifact(T, options={}) {
  const {root,materials:m,mesh,disk,ball,line,batch,texture}=medivoiceStudio(T);
@@ -42,7 +44,7 @@ export function createArtifact(T, options={}) {
  // Broad folded ribbon, built as a real double-sided surface.
  const curve=new T.CatmullRomCurve3([new T.Vector3(-2.25,1.7,.36),new T.Vector3(-1.3,1.10,.42),new T.Vector3(-.25,.85,.44),new T.Vector3(.75,.65,.40),new T.Vector3(1.50,1.0,-.10)]);
  const ribbon=new T.PlaneGeometry(1,1,150,20),rp=ribbon.attributes.position;
- for(let i=0;i<rp.count;i++){const t=rp.getX(i)+.5,p=curve.getPointAt(t),v=rp.getY(i);rp.setXYZ(i,p.x,p.y+v*.65+Math.sin(t*14+v)*.07,p.z-v*.40);}ribbon.computeVertexNormals();const ribbonMesh=mesh(ribbon,'cloth');const ribbonRest=new Float32Array(rp.array);ribbonMesh.userData.noAO=true;
+ for(let i=0;i<rp.count;i++){const t=rp.getX(i)+.5,p=curve.getPointAt(t),v=rp.getY(i);rp.setXYZ(i,p.x,p.y+v*.65+Math.sin(t*14+v)*.07,p.z-v*.40);}ribbon.computeVertexNormals();const ribbonMesh=mesh(ribbon,'cloth');ribbonMesh.userData.noAO=true;
  const cards=[],cardHeights=[2.05,1.87,1.64];
  function printFace(map,w,h,x,y,z,p){const o=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshStandardMaterial({map,roughness:.88}));o.position.set(x,y,z);p.add(o);}
  for(let i=0;i<3;i++){
@@ -63,9 +65,9 @@ export function createArtifact(T, options={}) {
  const laptop=group(0,.85,-.26,desk);box(.48,.025,.25,0,0,0,'gold',laptop);const screen=box(.48,.29,.023,0,.15,-.12,'ink',laptop);screen.rotation.x=-.17;for(let i=0;i<3;i++)box(.3,.012,.012,0,.10+i*.05,-.097,'paper',laptop);
  disk(.065,.10,.43,.88,.06,'ivory',desk);const handle=mesh(new T.TorusGeometry(.04,.009,8,24),'gold',desk);handle.position.set(.50,.89,.06);
  const lamp=group(3.58,.29,-.48);disk(.16,.035,0,.03,0,'gold',lamp);line([[0,.04,0],[0,2.40,0],[-.20,2.57,0],[-.40,2.40,0]],.018,'gold',lamp);const shade=mesh(new T.ConeGeometry(.18,.19,36,1,true),'gold',lamp);shade.position.set(-.40,2.35,0);
- const animatePeople=lrnmatePeople(T,{root,materials:m,mesh,ball,line,box,disk});
+ let animatePeople=()=>{};
  const feedback=new T.CatmullRomCurve3([new T.Vector3(3.15,2.35,-.55),new T.Vector3(2.2,3.10,-.55),new T.Vector3(.9,3.24,-.55),new T.Vector3(-.15,2.75,-.45)]);
- line(Array.from({length:65},(_,i)=>feedback.getPoint(i/64).toArray()),.014,'gold');const movingBeads=[];for(const t of [.36,.75]){const g=group();g.position.copy(feedback.getPointAt(t));ball(.065,0,0,0,'blue',g);movingBeads.push(g);}const tip=mesh(new T.ConeGeometry(.075,.22,24),'gold');tip.position.copy(feedback.getPointAt(1));tip.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),feedback.getTangentAt(1));
+ line(Array.from({length:65},(_,i)=>feedback.getPoint(i/64).toArray()),.014,'gold');const movingBeads=[];for(const t of [.36,.75]){const g=group();g.position.copy(feedback.getPointAt(t));ball(.065,0,0,0,'blue',g);g.name='lrnmate-feedback';movingBeads.push(g);}const tip=mesh(new T.ConeGeometry(.075,.22,24),'gold');tip.position.copy(feedback.getPointAt(1));tip.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),feedback.getTangentAt(1));
  // Small leaves and a ceramic planter frame the human end of the story.
  const plant=group(3.60,.29,-.65);disk(.16,.27,0,.135,0,'paper',plant);
  for(let i=0;i<14;i++){const a=i*2.4,h=.48+i*.09;line([[0,.2,0],[Math.sin(a)*.10,h,Math.cos(a)*.10]],.009,'gold',plant);const leaf=ball(.11,Math.sin(a)*.12,h,Math.cos(a)*.12,'leaf',plant);leaf.scale.set(.45,1.7,.7);leaf.rotation.z=-Math.sin(a)*.7;}
@@ -76,11 +78,12 @@ export function createArtifact(T, options={}) {
  cards.forEach(g=>g.traverse(o=>{if(o.isMesh){o.receiveShadow=false;o.userData.noReceiveShadow=true;}}));
  root.userData={framingPoints,conceptual:true,artifactId:34,displayBase:false,studioProfile:'lrnmate',groundLevel:-.12,initialYaw:-.16,initialElevation:.30,autoOrbit:false,realTimeAnimation:true,
   animate(t){
-   cards.forEach((c,i)=>{c.position.y=cardHeights[i]+.025*Math.sin(t*.8+i);c.rotation.y=-.10+.025*Math.sin(t*.55+i);});
+   const beat=lessonMoment(t);
+   cards.forEach((c,i)=>{c.position.y=cardHeights[i]+.035*(i===0?beat.explain:i===2?beat.respond:0);c.rotation.y=-.10;});
    animatePeople(t);
-   movingBeads.forEach((b,i)=>b.position.copy(feedback.getPointAt((t*.065+i*.48)%1)));
-   for(let i=0;i<rp.count;i++){const x=ribbonRest[i*3];rp.setY(i,ribbonRest[i*3+1]+.035*Math.sin(x*3-t*1.6));}rp.needsUpdate=true;ribbon.computeVertexNormals();
+   movingBeads.forEach((b,i)=>{b.visible=i===0&&beat.feedbackVisible;b.position.copy(feedback.getPointAt(beat.feedback));b.scale.setScalar(beat.feedbackScale);});
+
   },
   framingBounds:new T.Box3(new T.Vector3(-4.1,0,-1.4),new T.Vector3(4.1,3.35,1.4))};
- root.userData.animate(0);if(!options.bake)applyMediVoiceAO(T,root,{url:new URL('../assets/lrnmate-ao-v1.bin',import.meta.url),label:'LrnMate'});return root;
+ root.userData.animate(0);if(!options.bake)applyMediVoiceAO(T,root,{url:new URL('../assets/lrnmate-ao-v1.bin',import.meta.url),label:'LrnMate'});if(!options.bake)animatePeople=lrnmatePeople(T,{root,box,disk,line});root.userData.animate(0);return root;
 }

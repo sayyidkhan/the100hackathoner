@@ -37,6 +37,7 @@ const divisions = number === 74 ? [
 const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)]);
 ---
 {isScaleup && <link rel="stylesheet" href="/landing/scaleup-evolution.css" />}
+{number === 31 && <link rel="stylesheet" href="/landing/growthguru.css" />}
 {number === 41 && <link rel="stylesheet" href="/landing/invitation-studio.css" />}
 {number === 39 && <link rel="stylesheet" href="/landing/memory-observatory.css" />}
 {number === 67 && <link rel="stylesheet" href="/landing/sceneverse.css" />}
@@ -135,6 +136,17 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
       <button type="button" data-reset>{number === 49 ? 'Reset meadow' : 'Reset view'}</button>
       <button type="button" data-pause aria-pressed="false">Pause motion</button>
     </div>
+    {number === 31 && <div class="exhibit-walkthrough growth-walkthrough" data-walkthrough hidden>
+      <div class="exhibit-story" data-story aria-live="polite" hidden>
+        <p class="exhibit-story-heading"><span class="exhibit-story-step" data-story-step></span><span data-story-title></span></p>
+        <p class="exhibit-story-detail" data-story-detail></p>
+      </div>
+      <div class="walkthrough-steps" role="group" aria-label="Explore a GrowthGuru learning path">
+        {['Frontend', 'Backend', 'Database'].map((label, index) => <button type="button" data-story-select={index} aria-pressed={index === 0 ? 'true' : 'false'}><span>0{index + 1}</span>{label}</button>)}
+        <button type="button" data-story-auto aria-pressed="false">Tour all paths</button>
+      </div>
+      <p>Illustrative progression through skills from the original prototype. The reflection pool represents the broader wellbeing idea.</p>
+    </div>}
     {isScaleup && <div class="exhibit-walkthrough" data-walkthrough hidden>
       <div class="exhibit-story" data-story aria-live="off" hidden>
         <p class="exhibit-story-heading"><span class="exhibit-story-step" data-story-step></span><span data-story-title></span></p>

@@ -121,17 +121,20 @@ for (const exhibit of document.querySelectorAll('[data-project-exhibit]')) {
       status.textContent = 'Opening the 3D exhibit…';
       button.setAttribute('aria-busy', 'true');
       try {
-        loading ??= Promise.all([import('./scene.js'), import(exhibit.dataset.model)]).then(([renderer, artifact]) => renderer.createGalleryScene({
+        loading ??= Promise.all([import('./scene.js'), import(exhibit.dataset.model)]).then(async ([renderer, artifact]) => {
+          await artifact.prepareArtifact?.();
+          return renderer.createGalleryScene({
           canvas: stage.querySelector('canvas'), container: stage, theme: theme(),
           initialProject: Number(exhibit.dataset.number), projectIds: new Set([Number(exhibit.dataset.number)]),
           artifactFactory: artifact.createArtifact, onError: fallback, onStoryChange: showStory, onAnnotations: placeDivisions,
-        }));
+        });
+        });
         scene = await loading;
         if (failed) { scene.dispose(); scene = undefined; return; }
         applyTheme();
         pauseLabel();
         status.textContent = '';
-      } catch { fallback(); return; }
+      } catch (error) { console.warn('Project exhibit failed to open:', error); fallback(); return; }
       finally { button.removeAttribute('aria-busy'); }
     }
     display(requested);

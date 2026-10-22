@@ -1,7 +1,9 @@
 import { createObservatorySurfaces } from './astrodegen-surfaces.js';
 import { createLunarMoon } from './astrodegen-moon.js';
 import { createLunarMarket } from './astrodegen-market.js';
+import { createObservatory } from './astrodegen-observatory.js';
 import { applyObservatoryAO } from './astrodegen-occlusion.js';
+import { applyObservatorySoftShadows } from './astrodegen-soft-shadows.js';
 
 // A tactile observatory miniature with one moving, phase-changing moon.
 export function createArtifact(T, { bake = false } = {}) {
@@ -15,7 +17,7 @@ export function createArtifact(T, { bake = false } = {}) {
   grainCtx.putImageData(grainData,0,0);const grain=new T.CanvasTexture(grainCanvas);grain.wrapS=grain.wrapT=T.RepeatWrapping;grain.repeat.set(3,3);
   for(const mat of Object.values(m)){mat.bumpMap=grain;mat.bumpScale=.002;}
   const surfaces=createObservatorySurfaces(T);
-  Object.assign(m,{ivory:surfaces.limestone,red:surfaces.enamel,blue:surfaces.navy,lens:surfaces.glass,ceramic:surfaces.ceramic,nickel:surfaces.nickel,window:surfaces.window,mortar:surfaces.mortar});
+  Object.assign(m,surfaces,{ivory:surfaces.limestone,red:surfaces.enamel,blue:surfaces.navy,lens:surfaces.glass,ceramic:surfaces.ceramic,nickel:surfaces.nickel,window:surfaces.window,mortar:surfaces.mortar});
   function group(x=0,y=0,z=0,parent=root,animate=false){const o=new T.Group();o.position.set(x,y,z);parent.add(o);if(animate)moving.add(o);return o;}
   function mesh(g,mat,parent=root){const o=new T.Mesh(g,typeof mat==='string'?m[mat]:mat);o.castShadow=o.receiveShadow=true;parent.add(o);return o;}
   function geo(key,fn){if(!cache.has(key))cache.set(key,fn());return cache.get(key);}
@@ -53,68 +55,10 @@ export function createArtifact(T, { bake = false } = {}) {
   // Incised paving joints: scale cues on a continuous, quiet surface.
   for(const z of [-1.08,-.62,-.16,.30,.76,1.22])box(4.84,.0015,.004,0,.241,z,'mortar',root,.0005);
   for(let row=0;row<6;row++)for(let i=0;i<6;i++)box(.004,.0015,row===5?.22:.45,-2.30+i*.88+(row%2)*.44,.241,row===5?1.335:-.855+row*.46,'mortar',root,.0005);
-  const observatory=group(-1.22,.20,-.25);
-  disk(.79,.10,0,.05,0,'ivory',observatory);disk(.70,.84,0,.51,0,'ivory',observatory);disk(.74,.08,0,.96,0,'red',observatory);
-  disk(.77,.05,0,1.015,0,'ceramic',observatory);
-  ring(.718,.012,0,.89,0,'nickel',observatory,true);
-  ring(.755,.014,0,1.005,0,'nickel',observatory,true);
-  // Stone courses and staggered joints on the drum.
-  for(let row=0;row<6;row++){
-    const y=.16+row*.12;ring(.702,.0025,0,y,0,'mortar',observatory,true);
-    for(let j=0;j<20;j++){const a=j*TAU/20+(row%2)*PI/20;
-      if(Math.cos(a)>.82&&y<.72)continue;
-      line([[Math.sin(a)*.703,y,Math.cos(a)*.703],[Math.sin(a)*.703,y+.113,Math.cos(a)*.703]],.002,'mortar',observatory);
-    }
-  }
-  for(let i=0;i<40;i++){const a=i*TAU/40;ball(.012,Math.sin(a)*.744,.975,Math.cos(a)*.744,'nickel',observatory);}
-  // Shallow arched recesses read like cut paper, framed by an extruded ivory arch.
-  function arch(width,height,depth,parent,mat){const r=width/2,shape=new T.Shape();shape.moveTo(-r,0);shape.lineTo(-r,height-r);shape.absarc(0,height-r,r,PI,0,true);shape.lineTo(r,0);shape.closePath();return mesh(new T.ExtrudeGeometry(shape,{depth,bevelEnabled:true,bevelSegments:2,steps:1,bevelSize:.012,bevelThickness:.012,curveSegments:24}),mat,parent);}
-  const entry=group(0,.10,.69,observatory);
-  arch(.49,.66,.035,entry,'ceramic');const recess=arch(.41,.61,.022,entry,'shade');recess.position.z=.04;
-  const inner=arch(.34,.56,.015,entry,'red');inner.position.set(0,.018,.068);
-  for(const x of [-.11,-.055,0,.055,.11])box(.004,.36,.004,x,.22,.091,'shade',entry,.001);
-  box(.04,.07,.012,.10,.25,.097,'nickel',entry,.008);ball(.016,.10,.26,.11,'nickel',entry);
-  for(const a of [-2.4,-1.25,-.72,.72,1.25,2.4]){
-    const g=group(Math.sin(a)*.699,.35,Math.cos(a)*.699,observatory);g.rotation.y=a;
-    arch(.21,.35,.025,g,'ceramic');const recess=arch(.155,.29,.014,g,'blue');recess.position.set(0,.025,.028);
-    const glass=arch(.117,.25,.008,g,'window');glass.position.set(0,.045,.047);
-    box(.012,.22,.009,0,.16,.06,'blue',g,.002);box(.12,.012,.009,0,.19,.06,'blue',g,.002);
-    box(.25,.035,.07,0,.015,.025,'ceramic',g,.008);
-  }
-  for(let i=0;i<4;i++){
-    box(.61,.045*(i+1),.18,0,.04+.0225*(i+1),1.24-i*.15,'ivory',observatory,.018);
-    box(.57,.005,.013,0,.042+.045*(i+1),1.30-i*.15,'ceramic',observatory,.002);
-  }
-  for(const x of [-.37,.37]){line([[x,.12,1.28],[x,.40,.80]],.014,'nickel',observatory);for(const z of [.88,1.20])line([[x,.10,z],[x,z<1?.35:.17,z]],.012,'nickel',observatory);}
-  const dome=group(0,1.04,0,observatory,true);
-  // An open wedge exposes the red inner lining and telescope mount.
-  const shell=mesh(new T.SphereGeometry(.69,64,32,3.2,TAU-1.25,0,PI/2),'ceramic',dome);shell.material=m.ceramic.clone();shell.material.side=T.DoubleSide;
-  const lining=mesh(new T.SphereGeometry(.66,64,32,3.2,TAU-1.25,0,PI/2),'red',dome);lining.material=m.red.clone();lining.material.side=T.DoubleSide;
-  for(let i=0;i<10;i++){const a=3.2+i*(TAU-1.25)/9,points=[];for(let j=0;j<=18;j++){const b=j/18*PI/2;points.push([-Math.cos(a)*Math.sin(b)*.697,Math.cos(b)*.697,Math.sin(a)*Math.sin(b)*.697]);}line(points,.007,'nickel',dome);
-    for(const b of [.35,.75,1.15,1.45])ball(.008,-Math.cos(a)*Math.sin(b)*.705,Math.cos(b)*.705,Math.sin(a)*Math.sin(b)*.705,'nickel',dome);}
-  for(const a of [3.2,3.2+TAU-1.25]){const points=[];for(let i=0;i<=24;i++){const b=i*PI/48;points.push([-Math.cos(a)*Math.sin(b)*.70,Math.cos(b)*.70,Math.sin(a)*Math.sin(b)*.70]);}line(points,.022,'nickel',dome);}
-  const mount=group(0,0,0,observatory,true);
-  box(.17,.52,.21,0,1.19,0,'ivory',mount);
-  const hinge=disk(.14,.22,0,1.44,0,'ivory',mount);hinge.rotation.x=PI/2;
-  const screw=disk(.075,.025,0,1.44,.125,'blue',mount);screw.rotation.x=PI/2;
-  const telescope=group(0,1.46,0,observatory,true);
-  telescope.name='lunar-tracking-telescope';telescope.scale.setScalar(.9);dome.name='lunar-tracking-dome';
-  // Nested optical tube, deep objective, focusing rack and small finder scope.
-  disk(.135,.82,0,.26,0,'red',telescope);disk(.19,.30,0,.66,0,'red',telescope);
-  for(const [y,r] of [[-.14,.15],[.27,.15],[.51,.20],[.82,.21]]){
-    disk(r,.032,0,y,0,'nickel',telescope);ring(r,.008,0,y+.021,0,'blue',telescope,true);
-  }
-  disk(.18,.028,0,.835,0,'blue',telescope);disk(.16,.012,0,.854,0,'lens',telescope);
-  ring(.172,.012,0,.862,0,'nickel',telescope,true);
-  ring(.146,.003,0,.865,0,'blue',telescope,true);
-  disk(.062,.23,0,-.25,0,'blue',telescope);disk(.078,.04,0,-.37,0,'nickel',telescope);
-  for(let i=0;i<13;i++)ring(.066,.004,0,-.18-i*.012,0,'nickel',telescope,true);
-  for(const x of [-.17,.17]){const knob=disk(.061,.055,x,.04,0,'nickel',telescope);knob.rotation.z=PI/2;for(let i=0;i<12;i++){const a=i*TAU/12;ball(.007,x,.04+Math.sin(a)*.062,Math.cos(a)*.062,'blue',telescope);}}
-  const finder=group(.19,.31,0,telescope);disk(.032,.34,0,0,0,'ceramic',finder);disk(.042,.04,0,.18,0,'nickel',finder);disk(.03,.008,0,.203,0,'lens',finder);
-  for(const y of [.18,.40])box(.10,.025,.03,.15,y,0,'nickel',telescope,.006);
+  const {observatory,dome,telescope,mount}=createObservatory(T,{group,mesh,box,disk,ring,ball,line,materials:m});
 
   const moon=createLunarMoon(T,{radius:.44,grain});root.add(moon);moving.add(moon);
-  const moonPath=u=>new T.Vector3(-2.05+4.10*u,3.03+Math.sin(PI*u)*.27,-.82);
+  const moonPath=u=>new T.Vector3(-2.05+4.10*u,3.03+Math.sin(PI*u)*.27,.12);
   // A fine inlaid trajectory with instrument-like divisions.
   line(Array.from({length:49},(_,i)=>{const p=moonPath(i/48);p.z-=.16;return p.toArray();}),.008,'nickel');
   for(let i=0;i<=28;i++){const p=moonPath(i/28);line([[p.x,p.y-.025,p.z-.16],[p.x,p.y+(i%7===0?.055:.012),p.z-.16]],.004,'blue');}
@@ -189,7 +133,7 @@ export function createArtifact(T, { bake = false } = {}) {
     const o=mesh(g,mat);o.position.set(x,.255+h*.23,z);o.rotation.y=x*1.7;return o;
   }
   for(const [i,[x,z,w,h]] of [[-2.16,.70,.23,.28],[-2.15,.12,.27,.43],[-1.96,-1.09,.30,.32],[-.55,-1.1,.31,.38],[.13,-1.04,.33,.52],[1.43,-1.03,.26,.34],[2.11,-.88,.23,.42],[2.25,.78,.19,.22],[-1.81,1.12,.17,.20]].entries()){
-    rock(x,z,w,h,'ivory',i);rock(x+.17,z+.08,w*.43,h*.38,'ivory',i+10);
+    rock(x,z,w,h,surfaces.rock,i);rock(x+.17,z+.08,w*.43,h*.38,surfaces.rock,i+10);
   }
   for(const [x,z] of [[-2.25,.35],[.40,-1.02],[2.24,1.12]]){const shard=mesh(new T.ConeGeometry(.11,.29,5),'red');shard.position.set(x,.38,z);shard.rotation.z=.15;}
 
@@ -259,5 +203,5 @@ export function createArtifact(T, { bake = false } = {}) {
         mat.emissiveIntensity=weight*.45*marketActive;
         token.userData.active=market.userData.state.signal===name&&marketActive>0;
       }
-    }});root.userData.animate(0);if(!bake)applyObservatoryAO(T,root);return root;
+    }});root.userData.animate(0);if(!bake){applyObservatorySoftShadows(T,root);applyObservatoryAO(T,root);}return root;
 }

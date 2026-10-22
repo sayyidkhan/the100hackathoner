@@ -1,3 +1,4 @@
+import { boatOpacity, prepareBoatFade } from './two-rivers-boat-fade.js';
 import { riverSurfaces } from './two-rivers-surfaces.js';
 import { riverAtmosphere } from './two-rivers-atmosphere.js';
 import { createRiverLandform } from './two-rivers-terrain.js';
@@ -246,6 +247,7 @@ export function createArtifact(T) {
     return g;
   }
   const boats=[boat(),boat()];
+  const boatFades=boats.map(prepareBoatFade);
   const trains=Array.from({length:5},()=>{const g=group(0,0,0,root);box(.12,.06,.13,0,.04,0,'red',g);box(.09,.025,.09,0,.082,0,'ink',g);person(0,.07,0,'cream',g);for(const x of [-.065,.065])for(const z of [-.035,.035]){const w=mesh(new T.SphereGeometry(.016,6,4),'ink',g);w.position.set(x,0,z);}return g;});
   const drones=group(0,0,0,root);for(let i=0;i<28;i++){const a=i/28*Math.PI*2;lamp(tx+Math.cos(a)*1.45,3.92+Math.sin(a*2)*.07,tz+Math.sin(a)*1.45,.007,drones,false);}
 
@@ -268,7 +270,7 @@ export function createArtifact(T) {
   root.userData.animate=time=>{
     atmosphere.animate(time);
     waterNormal.offset.set(time*.008,time*.004);
-    boats.forEach((g,i)=>{const phase=(time*.025+.32+i*.35)%1,branch=phase<.72?i:2,t=phase<.72?phase/.72:(phase-.72)/.28,path=routes[branch],p=path.getPoint(t),d=path.getTangent(t);g.position.copy(p);g.position.y+=.012+Math.sin(time*1.8+i)*.004;g.rotation.y=Math.atan2(d.x,d.z);g.rotation.z=Math.sin(time+i)*.008;});
+    boats.forEach((g,i)=>{const phase=(time*.025+.32+i*.35)%1,branch=phase<.72?i:2,t=phase<.72?phase/.72:(phase-.72)/.28,path=routes[branch],p=path.getPoint(t),d=path.getTangent(t);g.position.copy(p);g.position.y+=.012+Math.sin(time*1.8+i)*.004;g.rotation.y=Math.atan2(d.x,d.z);g.rotation.z=Math.sin(time+i)*.008;boatFades[i].setOpacity(boatOpacity(phase));});
     trains.forEach((g,i)=>{const t=(time*.03-i*.014+1)%1,p=track.getPoint(t),d=track.getTangent(t);g.position.copy(p);g.position.y+=.035;g.rotation.y=Math.atan2(d.x,d.z);g.rotation.x=-Math.asin(d.y);});
     drones.rotation.y=Math.sin(time*.12)*.08;
   };
@@ -286,6 +288,7 @@ export function createArtifact(T) {
     m.foliage.color.setHex(night?0x80aaa4:0xffffff);
     nightLights.forEach(light=>light.intensity=night?2.5:0);
     glowMaterial.opacity=night?1:0;drones.visible=night;
+    boatFades.forEach(fade=>fade.syncTheme());
   };
   root.userData.animate(0);return root;
 }

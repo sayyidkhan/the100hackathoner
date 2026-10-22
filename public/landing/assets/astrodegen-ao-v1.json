@@ -1,96 +1,131 @@
 {
   "format": "OAO1",
   "signatureQuantization": 100000,
-  "rays": 24,
+  "rays": 64,
   "maxDistance": 0.35,
   "keyRays": 0,
-  "cell": 0.014,
+  "cell": 0.01,
   "epsilon": 0.0018,
-  "sampled": 99497,
-  "cacheHits": 549769,
-  "totalVertices": 649266,
-  "triangles": 213510,
-  "bytes": 649458,
+  "sampled": 111786,
+  "cacheHits": 616260,
+  "totalVertices": 728046,
+  "triangles": 239738,
+  "bytes": 728318,
   "minAO": 2,
   "maxAO": 255,
-  "averageAO": 141.38,
+  "averageAO": 144.02,
   "meshes": [
     {
       "index": 0,
       "name": "observatory-static-6",
-      "vertices": 79296,
-      "offset": 192,
-      "hash": 202394286
+      "vertices": 52800,
+      "offset": 272,
+      "hash": 2855348366
     },
     {
       "index": 1,
       "name": "observatory-static-7",
-      "vertices": 103032,
-      "offset": 79488,
-      "hash": 410973177
+      "vertices": 67488,
+      "offset": 53072,
+      "hash": 1284467537
     },
     {
       "index": 2,
       "name": "observatory-static-8",
-      "vertices": 172944,
-      "offset": 182520,
-      "hash": 3731614557
+      "vertices": 12432,
+      "offset": 120560,
+      "hash": 2407157677
     },
     {
       "index": 3,
       "name": "observatory-static-9",
-      "vertices": 135792,
-      "offset": 355464,
-      "hash": 561628977
+      "vertices": 54432,
+      "offset": 132992,
+      "hash": 782883489
     },
     {
       "index": 4,
       "name": "observatory-static-10",
-      "vertices": 27930,
-      "offset": 491256,
-      "hash": 3190050813
+      "vertices": 168864,
+      "offset": 187424,
+      "hash": 3243353688
     },
     {
       "index": 5,
       "name": "observatory-static-11",
-      "vertices": 75024,
-      "offset": 519186,
-      "hash": 3658336339
+      "vertices": 17808,
+      "offset": 356288,
+      "hash": 3577319377
     },
     {
       "index": 6,
       "name": "observatory-static-12",
-      "vertices": 8304,
-      "offset": 594210,
-      "hash": 475871747
+      "vertices": 86832,
+      "offset": 374096,
+      "hash": 3790813175
     },
     {
       "index": 7,
       "name": "observatory-static-13",
-      "vertices": 10944,
-      "offset": 602514,
-      "hash": 373601425
+      "vertices": 7428,
+      "offset": 460928,
+      "hash": 851770808
     },
     {
       "index": 8,
       "name": "observatory-static-14",
-      "vertices": 3600,
-      "offset": 613458,
-      "hash": 3098440013
+      "vertices": 12816,
+      "offset": 468356,
+      "hash": 390216061
     },
     {
       "index": 9,
       "name": "observatory-static-15",
-      "vertices": 10368,
-      "offset": 617058,
-      "hash": 3712081988
+      "vertices": 4224,
+      "offset": 481172,
+      "hash": 859857021
     },
     {
       "index": 10,
       "name": "observatory-static-16",
+      "vertices": 45072,
+      "offset": 485396,
+      "hash": 2459903304
+    },
+    {
+      "index": 11,
+      "name": "observatory-static-17",
+      "vertices": 21882,
+      "offset": 530468,
+      "hash": 1867011436
+    },
+    {
+      "index": 12,
+      "name": "observatory-static-18",
+      "vertices": 3600,
+      "offset": 552350,
+      "hash": 3098440013
+    },
+    {
+      "index": 13,
+      "name": "observatory-static-19",
+      "vertices": 10368,
+      "offset": 555950,
+      "hash": 3712081988
+    },
+    {
+      "index": 14,
+      "name": "observatory-static-20",
       "vertices": 22032,
-      "offset": 627426,
+      "offset": 566318,
       "hash": 1125330723
+    },
+    {
+      "index": 15,
+      "name": "observatory-static-21",
+      "vertices": 139968,
+      "offset": 588350,
+      "hash": 3263688777
     }
   ]
 }

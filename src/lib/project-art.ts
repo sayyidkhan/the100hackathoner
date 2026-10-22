@@ -1,3 +1,4 @@
+import p31 from '../../public/landing/assets/projects/031-growthguru-garden-v2.png';
 import p34Light from '../../public/landing/assets/projects/034-lrnmate-studio-v2.png';
 import fitstakeLight from '../../public/landing/assets/projects/082-fitstake-light-v1.png';
 import p34Dark from '../../public/landing/assets/projects/034-lrnmate-studio-v2.png';
@@ -101,6 +102,7 @@ export interface ProjectArt {
 }
 
 export const projectArt: Record<number, ProjectArt> = {
+  31: { light: p31, dark: p31, alt: 'A brass learning tree grows from an open book beneath a limestone arch. Coral frontend, amber backend and jade database milestones overlook a walnut study desk and quiet reflection pool.', caption: 'Grow one skill at a time. Follow a learning path, connect the milestones, and make room to reflect.', model: '/landing/artifacts/growthguru.js' },
   40: { light: twoRiversDay, dark: twoRiversArt, alt: 'A miniature eco theme park with two turquoise rivers joining beneath a golden Tree of Life, a rainforest canopy walk, timber pavilion, bamboo coaster and solar-powered station.', caption: 'Two Rivers, One Future. Sarawak’s rainforest meets Singapore’s Supertrees in a concept for an eco theme park, where heritage and innovation flow together.', model: '/landing/artifacts/two-rivers.js' },
   54: { light: p54Light, dark: p54Dark, alt: 'A Telegram phone connects a glowing radar to a live music stage and art gallery with verification pins. A framed preview imagines ice cream and flowers after the event.', caption: 'Ask what’s on nearby. Discover events beyond the usual listings, check whether they’re still happening, and imagine what comes after.', model: '/landing/artifacts/gigradar.js' },
   82: { light: fitstakeLight, dark: fitstakeLight, alt: 'Two paper runners compete on red and blue lanes around a phone displaying progress and shared rewards.', caption: 'Two friends, one fitness challenge. Consistency unlocks a better reward for each player.', model: '/landing/artifacts/fitstake.js' },

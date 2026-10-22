@@ -131,11 +131,15 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     environmentPanel(7, 3, 0xffe6c0, 2.4, [-2, 4, 7]);
     environmentPanel(3, 5, 0xccfff0, 1.8, [5, 3, 3]);
   }
+  if (Number(initialProject) === 31) {
+    environmentPanel(2, 5, 0xffe7c5, 3.2, [-4, 4, 6]);
+    environmentPanel(1.5, 4, 0xc9eeeb, 2.0, [5, 3, 4]);
+  }
   if (Number(initialProject) === 42) {
-    // Tall photographic strip lights describe the curved enamel and rolled
-    // metal edges without washing out the dark market instrument.
-    environmentPanel(2, 6, 0xffeed9, 3.5, [-4, 3, 6]);
-    environmentPanel(1.4, 5, 0xd3e7ff, 2.8, [5, 3, 5]);
+    // One broad warm source and a quiet reflector describe the plaster without
+    // the opposing bright strips that made the architecture look lacquered.
+    environmentPanel(4, 5, 0xffebd2, 2.2, [-4, 4, 5]);
+    environmentPanel(2, 4, 0xdce2e7, .65, [5, 2, 3]);
   }
   const pmrem = new THREE.PMREMGenerator(renderer);
   let environment;
@@ -423,7 +427,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       key.shadow.normalBias=.006;key.shadow.bias=-.00008;
       Object.assign(key.shadow.camera,{left:-4,right:4,top:4,bottom:-3});key.shadow.camera.updateProjectionMatrix();
     }
-    if (['medivoice', 'scaleup'].includes(currentModel?.userData.studioProfile)) {
+    if (['medivoice', 'scaleup', 'growthguru'].includes(currentModel?.userData.studioProfile)) {
       const night = currentTheme === 'dark';
       floor.visible = false;
       scene.background = null;
@@ -440,6 +444,16 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       renderer.toneMappingExposure = 1.02;
       key.shadow.normalBias = .006; key.shadow.bias = -.00008;
       Object.assign(key.shadow.camera, { left: -4.5, right: 4.5, top: 5, bottom: -4 });
+      key.shadow.camera.updateProjectionMatrix();
+    }
+    if (currentModel?.userData.studioProfile === 'growthguru') {
+      hemisphere.intensity = .28;
+      key.position.set(-4.5, 6, 4); key.intensity = 3.1;
+      fill.intensity = .24; rim.intensity = 2.1;
+      scene.environmentIntensity = .48;
+      renderer.toneMappingExposure = .95;
+      key.shadow.normalBias = .005;
+      Object.assign(key.shadow.camera, { left: -5, right: 5, top: 6, bottom: -4 });
       key.shadow.camera.updateProjectionMatrix();
     }
     if (currentModel?.userData.studioProfile === 'lrnmate') {
@@ -517,12 +531,19 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     if (currentModel?.userData.studioProfile === 'astrodegen') {
       floor.visible = false; scene.background = null;
       renderer.setClearColor(0x191612, 0); contactShadow.material.opacity = 0;
-      hemisphere.color.setHex(0xe5edff); hemisphere.groundColor.setHex(0x352c23); hemisphere.intensity = .28;
-      key.color.setHex(0xffe8cc); key.intensity = 2.7; key.position.set(-3.8, 5, 3);
-      fill.color.setHex(0xc9defa); fill.intensity = .38;
-      rim.color.setHex(0xffedce); rim.intensity = 2.5; rim.position.set(2, 4, -4);
-      scene.environmentIntensity = .78; renderer.toneMappingExposure = 1.04;
-      key.shadow.normalBias = .002; key.shadow.bias = -.00004;
+      // A close, rectangular footprint seats the stone base in the studio.
+      // It excludes the overhead moon, whose shadow would cross the backdrop.
+      paperContact.visible = true;
+      paperContact.scale.set(.94, .80, 1);
+      paperContact.material.opacity = currentTheme === 'light' ? .26 : .52;
+      // A warm, raking key reveals mineral relief. Low fill preserves the
+      // window reveals and roof overhang instead of whitening every surface.
+      hemisphere.color.setHex(0xebe1cf); hemisphere.groundColor.setHex(0x29261e); hemisphere.intensity = .20;
+      key.color.setHex(0xffe5c5); key.intensity = 3.1; key.position.set(-4.5, 4.8, 4.5);
+      fill.color.setHex(0xc7d1d9); fill.intensity = .16;
+      rim.color.setHex(0xffedd4); rim.intensity = .8; rim.position.set(2, 4, -4);
+      scene.environmentIntensity = .24; renderer.toneMappingExposure = 1.01;
+      key.shadow.normalBias = .001; key.shadow.bias = -.000025; key.shadow.radius = 10.5;
       Object.assign(key.shadow.camera, { left: -3.4, right: 3.4, top: 4, bottom: -3.4 });
       key.shadow.camera.updateProjectionMatrix();
     }
