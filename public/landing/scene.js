@@ -131,6 +131,12 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     environmentPanel(7, 3, 0xffe6c0, 2.4, [-2, 4, 7]);
     environmentPanel(3, 5, 0xccfff0, 1.8, [5, 3, 3]);
   }
+  if (Number(initialProject) === 42) {
+    // Tall photographic strip lights describe the curved enamel and rolled
+    // metal edges without washing out the dark market instrument.
+    environmentPanel(2, 6, 0xffeed9, 3.5, [-4, 3, 6]);
+    environmentPanel(1.4, 5, 0xd3e7ff, 2.8, [5, 3, 5]);
+  }
   const pmrem = new THREE.PMREMGenerator(renderer);
   let environment;
   try {
@@ -280,6 +286,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
 
   function applyArtifactLighting() {
     const palette = THEMES[currentTheme];
+    floor.material.color.setHex(palette.background);
     const scale = currentModel?.userData.studioLightScale ?? 1;
     const atlas = currentModel?.userData.studioProfile === 'atlas';
     const paper = currentModel?.userData.studioProfile === 'paper';
@@ -435,6 +442,24 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       Object.assign(key.shadow.camera, { left: -4.5, right: 4.5, top: 5, bottom: -4 });
       key.shadow.camera.updateProjectionMatrix();
     }
+    if (currentModel?.userData.studioProfile === 'lrnmate') {
+      const dark = currentTheme === 'dark';
+      const backdrop = dark ? 0x29231e : 0xece5d9;
+      scene.background.setHex(backdrop); scene.fog.color.setHex(backdrop);
+      renderer.setClearColor(backdrop, 1); floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xffeed5); hemisphere.groundColor.setHex(0x504338);
+      hemisphere.intensity = .42;
+      key.color.setHex(0xffe5c3); key.position.set(-3.5, 5.5, 5); key.intensity = 2.65;
+      fill.color.setHex(0xe0e9f2); fill.intensity = .42;
+      rim.color.setHex(0xffdba2); rim.intensity = 1.65;
+      scene.environmentIntensity = .60; renderer.toneMappingExposure = 1.02;
+      key.shadow.normalBias = .009; key.shadow.bias = -.00008; key.shadow.radius = 5;
+      Object.assign(key.shadow.camera, { left: -5, right: 5, top: 5, bottom: -4 });
+      key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity = 0;
+      paperContact.visible = true; paperContact.material.opacity = dark ? .42 : .16;
+      paperContact.scale.set(1.15, 1.1, 1);
+    }
     if (currentModel?.userData.studioProfile === 'coastal') {
       // Warm broad studio light matches the miniature's baked soft key.
       const dark = currentTheme === 'dark';
@@ -492,24 +517,25 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     if (currentModel?.userData.studioProfile === 'astrodegen') {
       floor.visible = false; scene.background = null;
       renderer.setClearColor(0x191612, 0); contactShadow.material.opacity = 0;
-      hemisphere.color.setHex(0xfff4e3); hemisphere.groundColor.setHex(0x554936); hemisphere.intensity = .55;
-      key.color.setHex(0xffe7bd); key.intensity = 2.6; key.position.set(-3.8, 6, 4);
-      fill.color.setHex(0xe3e9fa); fill.intensity = .55;
-      rim.color.setHex(0xfff0d5); rim.intensity = 1.5; rim.position.set(2, 5, -4);
-      scene.environmentIntensity = .32; renderer.toneMappingExposure = .96;
-      key.shadow.normalBias = .004; key.shadow.bias = -.00005;
-      Object.assign(key.shadow.camera, { left: -4, right: 4, top: 5, bottom: -4 });
+      hemisphere.color.setHex(0xe5edff); hemisphere.groundColor.setHex(0x352c23); hemisphere.intensity = .28;
+      key.color.setHex(0xffe8cc); key.intensity = 2.7; key.position.set(-3.8, 5, 3);
+      fill.color.setHex(0xc9defa); fill.intensity = .38;
+      rim.color.setHex(0xffedce); rim.intensity = 2.5; rim.position.set(2, 4, -4);
+      scene.environmentIntensity = .78; renderer.toneMappingExposure = 1.04;
+      key.shadow.normalBias = .002; key.shadow.bias = -.00004;
+      Object.assign(key.shadow.camera, { left: -3.4, right: 3.4, top: 4, bottom: -3.4 });
       key.shadow.camera.updateProjectionMatrix();
     }
     if (currentModel?.userData.studioProfile === 'two-rivers') {
+      const night = currentTheme === 'dark';
       floor.visible = false; scene.background = null;
       renderer.setClearColor(0x071c20, 0); contactShadow.material.opacity = 0;
-      hemisphere.color.setHex(0xd4e7dc); hemisphere.groundColor.setHex(0x253c32); hemisphere.intensity = .55;
-      key.color.setHex(0xffe3b2); key.intensity = 3.1; key.position.set(-4, 6, 5);
-      fill.color.setHex(0xa4d7df); fill.intensity = .6;
-      rim.color.setHex(0xa3edcd); rim.intensity = 2.3; rim.position.set(3, 5, -4);
-      scene.environmentIntensity = .65; renderer.toneMappingExposure = 1.06;
-      key.shadow.normalBias = .004; key.shadow.bias = -.00005; key.shadow.radius = 4;
+      hemisphere.color.setHex(night ? 0x83b7c6 : 0xe9ead7); hemisphere.groundColor.setHex(0x253323); hemisphere.intensity = night ? .38 : .8;
+      key.color.setHex(night ? 0x8fb9e5 : 0xffe8c8); key.intensity = night ? 1.25 : 4.1; key.position.set(-5, 4, 3);
+      fill.color.setHex(0xa4d7df); fill.intensity = night ? .38 : .8;
+      rim.color.setHex(night ? 0x97d5d7 : 0xdbf0df); rim.intensity = night ? 2.4 : 2.3; rim.position.set(3, 5, -4);
+      scene.environmentIntensity = night ? .4 : .7; renderer.toneMappingExposure = night ? 1.0 : 1.08;
+      key.shadow.normalBias = .002; key.shadow.bias = -.00004; key.shadow.radius = 3;
       Object.assign(key.shadow.camera, { left: -5, right: 5, top: 5, bottom: -4 });
       key.shadow.camera.updateProjectionMatrix();
     }

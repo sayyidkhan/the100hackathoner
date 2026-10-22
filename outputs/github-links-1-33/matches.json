@@ -1,0 +1,14 @@
+[
+ {"number":1,"repo":"xueyiyi","evidence":"Repository README and index.html identify Xueyiyi workplace/mobile learning; shared project repository for V1 and V2."},
+ {"number":2,"repo":"xueyiyi","evidence":"Same Xueyiyi project repository; no separate V2 repository found."},
+ {"number":13,"repo":"test-app-net-worth-evaluator","evidence":"Repository description: Lifestyle Net Worth Evaluator."},
+ {"number":15,"repo":"unesco-weatherguru","evidence":"Tree contains floodpredictions.html, raindays.html and weatherguru_v1.xlsx."},
+ {"number":17,"repo":"goldigloo","evidence":"README explicitly calls the project Ice Igloo and describes Shariah-compliant impact investment screening."},
+ {"number":18,"repo":"checker-app","evidence":"Repository description: write a better job ad, get a better candidate."},
+ {"number":19,"repo":"fasight","evidence":"README: digital will planning made easy."},
+ {"number":23,"repo":"pestoverflow","evidence":"README identifies IoT pest detector and Hack&Roll-era pest analysis project."},
+ {"number":24,"repo":"my-next-gym","evidence":"README: predict the next best place to open a gym business. Fits #24, not the robot described under #29."},
+ {"number":25,"repo":"neurosurge","evidence":"README: mnemonics to improve memory retention and delay dementia."},
+ {"number":26,"repo":"amigo","evidence":"README names Flutter Hackathon 2019 at Block71 and describes language exchange."},
+ {"number":31,"repo":"growthguru","evidence":"Exact repository name, created April 2023; source includes developer-learning skill trees."}
+]

@@ -1,6 +1,6 @@
 import { applyBakedAO } from './storybook-surface.js';
 import { coastalMotion } from './anginombak-motion.js';
-import { createCoastalWalk, createWalkingShadows } from './anginombak-walk.js';
+import { createCoastalWalk, createWalkingShadows, createCoastalTrail, coastalJourney } from './anginombak-walk.js';
 
 // A hand-built coastal atlas. Waves, picture reliefs, folds and foliage are
 // actual geometry. Keep seed and batching order stable for the offline bake.
@@ -209,7 +209,7 @@ export function createArtifact(T, { bake = false } = {}) {
     for(let i=0;i<3;i++)tube([[i*.065-.07,0,.15],[i*.07-.07,.13,.14],[i*.085-.08,.23,.13]],.009,'vein',g,10);
   }
   palm(-1.10,1.59,.78);palm(3.02,-1.73,1.02);palm(-.28,1.96,.40);
-  [[-.74,1.90,.65],[.96,2.01,.69],[1.30,-1.48,.68],[2.82,-1.33,.56],[3.17,.65,.58],[-.48,-1.78,.64],[.10,1.94,.42],[2.52,.95,.38]].forEach(a=>shrub(...a));
+  [[-.74,1.90,.65],[.96,2.01,.69],[1.30,-1.48,.68],[2.82,-1.33,.56],[3.17,.65,.58],[-.48,-1.78,.64],[.10,1.94,.42],[3.23,1.32,.38]].forEach(a=>shrub(...a));
 
   // Sewn canopy, scalloped valance, timber counter, turned pottery and produce.
   const stall=group(-.31,fold(-.31,-.95),-.95,-.06);
@@ -268,14 +268,13 @@ export function createArtifact(T, { bake = false } = {}) {
     box(.86,.014,.02,0,.12,.046,'edge',g,.002);tube([[-.30,.02,-.36],[0,1.19,-.06],[.30,.02,-.36]],.018,'wood',g);
   }
   postcard(.97,-.92,-.09);postcard(2.74,-.26,.12,true);
-  const pathPoints=[[-1.35,-.29],[-.95,.20],[-.20,.34],[.45,.08],[.95,-.03],[1.35,.48],[1.42,1.01],[2.03,1.22],[2.76,.62],[2.70,1.21],[2.98,1.91]];
-  const routeCurve=new T.CatmullRomCurve3(pathPoints.map(([x,z])=>new T.Vector3(x,0,z)));
+  const routeCurve=createCoastalTrail(T);
   for(let i=0;i<49;i++){
     const a=routeCurve.getPointAt(i/49),b=routeCurve.getPointAt((i+.61)/49),mid=a.clone().lerp(b,.5);
     motion.mark(tube([[a.x,fold(a.x,a.z)+.035,a.z],[mid.x,fold(mid.x,mid.z)+.035,mid.z],[b.x,fold(b.x,b.z)+.035,b.z]],.022,'route',root,6),7,(i+.3)/49);
   }
   for(const [x,z] of [[-1.35,-.29],[.95,-.03],[2.76,.62],[2.98,1.91]])ring(.12,.038,x,fold(x,z)+.045,z,'route',root,true);
-  const bubble=group(.93,fold(.93,.90)+.34,.90,-.04);
+  const bubble=group(.65,fold(.65,1.18)+.34,1.18,-.04);
   relief(rounded(.94,.60,.25),.12,'ivory',bubble,.025);
   const tail=relief(shape([[-.24,-.24],[-.27,-.49],[-.02,-.25]]),.10,'ivory',bubble,.015);tail.position.z=.006;
   for(const x of [-.23,0,.23])motion.mark(ball(x,0,.15,.064,.064,.025,'route',bubble),5,-x*7,bubble);
@@ -350,7 +349,7 @@ export function createArtifact(T, { bake = false } = {}) {
   let updateShadows;
   root.userData.animate=seconds=>{
     const poses=walk(seconds);
-    motion.animate(seconds);motion.setWalkers(poses);updateShadows?.(poses);
+    motion.animate(seconds);motion.setWalkers(poses);motion.setJourney(coastalJourney(seconds));updateShadows?.(poses);
   };
   root.userData.animate(0);
   root.userData.realTimeAnimation=true;

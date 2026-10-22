@@ -1,0 +1,96 @@
+{
+  "format": "OAO1",
+  "signatureQuantization": 100000,
+  "rays": 24,
+  "maxDistance": 0.35,
+  "keyRays": 0,
+  "cell": 0.014,
+  "epsilon": 0.0018,
+  "sampled": 99497,
+  "cacheHits": 549769,
+  "totalVertices": 649266,
+  "triangles": 213510,
+  "bytes": 649458,
+  "minAO": 2,
+  "maxAO": 255,
+  "averageAO": 141.38,
+  "meshes": [
+    {
+      "index": 0,
+      "name": "observatory-static-6",
+      "vertices": 79296,
+      "offset": 192,
+      "hash": 202394286
+    },
+    {
+      "index": 1,
+      "name": "observatory-static-7",
+      "vertices": 103032,
+      "offset": 79488,
+      "hash": 410973177
+    },
+    {
+      "index": 2,
+      "name": "observatory-static-8",
+      "vertices": 172944,
+      "offset": 182520,
+      "hash": 3731614557
+    },
+    {
+      "index": 3,
+      "name": "observatory-static-9",
+      "vertices": 135792,
+      "offset": 355464,
+      "hash": 561628977
+    },
+    {
+      "index": 4,
+      "name": "observatory-static-10",
+      "vertices": 27930,
+      "offset": 491256,
+      "hash": 3190050813
+    },
+    {
+      "index": 5,
+      "name": "observatory-static-11",
+      "vertices": 75024,
+      "offset": 519186,
+      "hash": 3658336339
+    },
+    {
+      "index": 6,
+      "name": "observatory-static-12",
+      "vertices": 8304,
+      "offset": 594210,
+      "hash": 475871747
+    },
+    {
+      "index": 7,
+      "name": "observatory-static-13",
+      "vertices": 10944,
+      "offset": 602514,
+      "hash": 373601425
+    },
+    {
+      "index": 8,
+      "name": "observatory-static-14",
+      "vertices": 3600,
+      "offset": 613458,
+      "hash": 3098440013
+    },
+    {
+      "index": 9,
+      "name": "observatory-static-15",
+      "vertices": 10368,
+      "offset": 617058,
+      "hash": 3712081988
+    },
+    {
+      "index": 10,
+      "name": "observatory-static-16",
+      "vertices": 22032,
+      "offset": 627426,
+      "hash": 1125330723
+    }
+  ]
+}

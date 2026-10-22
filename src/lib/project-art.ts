@@ -1,6 +1,6 @@
-import p34Light from '../../public/landing/assets/projects/034-lrnmate-light-v1.png';
+import p34Light from '../../public/landing/assets/projects/034-lrnmate-studio-v2.png';
 import fitstakeLight from '../../public/landing/assets/projects/082-fitstake-light-v1.png';
-import p34Dark from '../../public/landing/assets/projects/034-lrnmate-dark-v1.png';
+import p34Dark from '../../public/landing/assets/projects/034-lrnmate-studio-v2.png';
 import p35Light from '../../public/landing/assets/projects/035-anginombak-light-v1.png';
 import p35Dark from '../../public/landing/assets/projects/035-anginombak-dark-v1.png';
 import p36 from '../../public/landing/assets/projects/036-scaleup-origin-v2.png';
@@ -9,6 +9,7 @@ import p38 from '../../public/landing/assets/projects/038-scaleup-spatial-v2.png
 import p39Light from '../../public/landing/assets/projects/039-memory-observatory-v2.png';
 import p39Dark from '../../public/landing/assets/projects/039-memory-observatory-v2.png';
 import twoRiversArt from '../../public/landing/assets/projects/040-two-rivers-v1.png';
+import twoRiversDay from '../../public/landing/assets/projects/040-two-rivers-light-v2.png';
 import p41Light from '../../public/landing/assets/projects/041-invitation-light-v2.png';
 import p41Dark from '../../public/landing/assets/projects/041-invitation-dark-v2.png';
 import p42Light from '../../public/landing/assets/projects/042-astrodegen-light-v1.png';
@@ -100,13 +101,13 @@ export interface ProjectArt {
 }
 
 export const projectArt: Record<number, ProjectArt> = {
-  40: { light: twoRiversArt, dark: twoRiversArt, alt: 'A miniature eco theme park with two turquoise rivers joining beneath a golden Tree of Life, a rainforest canopy walk, timber pavilion, bamboo coaster and solar-powered station.', caption: 'Two Rivers, One Future. Sarawak’s rainforest meets Singapore’s Supertrees in a concept for an eco theme park, where heritage and innovation flow together.', model: '/landing/artifacts/two-rivers.js' },
+  40: { light: twoRiversDay, dark: twoRiversArt, alt: 'A miniature eco theme park with two turquoise rivers joining beneath a golden Tree of Life, a rainforest canopy walk, timber pavilion, bamboo coaster and solar-powered station.', caption: 'Two Rivers, One Future. Sarawak’s rainforest meets Singapore’s Supertrees in a concept for an eco theme park, where heritage and innovation flow together.', model: '/landing/artifacts/two-rivers.js' },
   54: { light: p54Light, dark: p54Dark, alt: 'A Telegram phone connects a glowing radar to a live music stage and art gallery with verification pins. A framed preview imagines ice cream and flowers after the event.', caption: 'Ask what’s on nearby. Discover events beyond the usual listings, check whether they’re still happening, and imagine what comes after.', model: '/landing/artifacts/gigradar.js' },
   82: { light: fitstakeLight, dark: fitstakeLight, alt: 'Two paper runners compete on red and blue lanes around a phone displaying progress and shared rewards.', caption: 'Two friends, one fitness challenge. Consistency unlocks a better reward for each player.', model: '/landing/artifacts/fitstake.js' },
   66: { light: buzo20Light, dark: buzo20Dark, alt: 'A red AI concierge kiosk connects a visitor to a concert, art exhibition and networking pavilion across a folded ivory map, with a brass compass and blue routes.', caption: 'Start with a conversation. Find your way to the next live experience.', model: '/landing/artifacts/buzo-20.js' },
   68: { light: buzo21Light, dark: buzo21Dark, alt: 'A coral concierge desk and event shortlist connect a velvet-curtain music club, teal-glass art gallery and rooftop lounge in a detailed miniature live-event district.', caption: 'Find your scene. A conversation with Buzo turns live events into a night worth going out for.', model: '/landing/artifacts/buzo-21.js' },
   71: { light: palLight, dark: palDark, alt: 'A sheikh in a white headscarf and seven specialist companions gather around a council table inside an ivory kingdom, with a community market and noticeboard.', caption: 'One sheikh, seven trusted companions, and a whole community to care for. A kingdom helping one person run a community business.', model: '/landing/artifacts/kingdom-of-pal.js' },
-  34: { light: p34Light, dark: p34Dark, alt: "Company manuals become three lesson cards along a blue ribbon, leading to a learner and mentor.", caption: "Workplace knowledge becomes smaller lessons, practice and feedback.", model: '/landing/artifacts/lrnmate.js' },
+  34: { light: p34Light, dark: p34Dark, alt: "A tactile knowledge studio: an archive, lesson ribbon, video and quiz cards, and a shared learner–mentor desk.", caption: "Documents into lessons, quizzes and feedback. A workplace-learning concept, explored through a hackathon UI prototype.", model: '/landing/artifacts/lrnmate.js' },
   35: { light: p35Light, dark: p35Dark, alt: "A folded map with blue waves and routes, a red location pin, local stall, story cards and a guide bubble.", caption: "Local discoveries, shared stories and a guide for the next adventure.", model: '/landing/artifacts/anginombak.js' },
   36: { light:p36, dark:p36, alt:"A cream café connects an open financial ledger to a consulting roadmap: the first ScaleUp AI idea.", caption:"One small business. A first step towards accessible AI consulting.", model:'/landing/artifacts/scaleup-origin.js' },
   37: { light:p37, dark:p37, alt:"The same café now connects to six jade dashboards for finance, growth, reviews, social, trends and business overview.", caption:"The same mission, with more of the business in view.", model:'/landing/artifacts/scaleup-roadmap.js' },

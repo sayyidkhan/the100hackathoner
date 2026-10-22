@@ -1,3 +1,4 @@
+import { createShopPeople } from './scaleup-people.js';
 import { medivoiceStudio } from './medivoice-studio.js';
 
 // Shared architectural vocabulary; capability growth, never invented traction.
@@ -35,10 +36,10 @@ export function createScaleup(T, initialStage=0) {
     const tex=new T.CanvasTexture(c);tex.colorSpace=T.SRGBColorSpace;const o=new T.Mesh(new T.PlaneGeometry(1.12,.14),new T.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false}));o.position.z=.12;o.userData.noShadow=true;parent.add(o);
   }
   const core=group(),origin=group(),platform=group(),spatial=group(),labels=group();
-  slab(5.3,3.5,.16,.3,0,.08,.2,'stone',core);
-  slab(8.2,3.65,.10,.4,0,.01,.2,'stone',origin);
-  slab(9.7,5.5,.12,.65,0,.01,-.65,'stone',platform);
-  slab(9.45,5.25,.015,.55,0,.08,-.65,'jade',platform);
+  slab(5.3,4.3,.16,.3,0,.08,.4,'stone',core);
+  slab(8.2,4.5,.10,.4,0,.01,.4,'stone',origin);
+  slab(9.7,6,.12,.65,0,.01,-.35,'stone',platform);
+  slab(9.45,5.75,.015,.55,0,.08,-.35,'jade',platform);
   const cafe=group(0,.16,.18,core);
   box(2.5,2.24,1.48,.06,0,1.12,0,'stone',cafe);
   box(2.7,.16,1.67,.04,0,2.25,0,'cream',cafe);box(2.62,.06,1.59,.02,0,2.36,0,'gold',cafe);
@@ -66,7 +67,7 @@ export function createScaleup(T, initialStage=0) {
     tube([[x-.14,.43,1.75],[x-.14,.8,1.75],[x,.91,1.75],[x+.14,.8,1.75],[x+.14,.43,1.75]],.017,'gold',cafe);
     for(let i=0;i<5;i++)tube([[x-.1+i*.05,.47,1.75],[x-.1+i*.05,.8,1.75]],.009,'wood',cafe);
   }
-  for(const x of [-1.75,1.75]){
+  for(const x of [-1.55,1.55]){
     const g=group(x,.16,.45,core);disk(.19,.35,0,.175,0,'terra',g,.24);disk(.21,.025,0,.35,0,'wood',g);tube([[0,.3,0],[.015,.8,0],[0,1.5,.03]],.024,'wood',g);
     for(let i=0;i<18;i++){
       const a=i*2.4,y=.65+(i%6)*.16,r=.16+(i%3)*.04,x=Math.cos(a)*r,z=Math.sin(a)*r;tube([[0,y-.15,0],[x,y,z]],.008,'wood',g);
@@ -74,7 +75,7 @@ export function createScaleup(T, initialStage=0) {
     }
   }
   // Ledger, the retained foundation for every subsequent edition.
-  const ledger=group(-2.8,.65,1.15,core);ledger.rotation.x=-.9;ledger.rotation.y=-.12;
+  const ledger=group(-3.25,.65,1.15,core);ledger.rotation.x=-.9;ledger.rotation.y=-.12;
   for(const side of [-1,1]){
     const p=group(side*.42,0,0,ledger);p.rotation.y=side*-.12;
     box(.83,1.05,.10,.035,0,0,0,'wood',p);box(.77,.99,.07,.025,0,0,.07,'cream',p);
@@ -88,7 +89,7 @@ export function createScaleup(T, initialStage=0) {
     else{ring(.28,.055,0,.22,.12,'mint',p);for(const x of [-.25,.25])box(.35,.22,.03,.014,x,-.42,.11,'mint',p);}
   }
   function screen(x,y,z,kind,parent,yaw=0){const g=group(x,y,z,parent);g.rotation.y=yaw;box(1.35,1.9,.12,.055,0,0,0,'gold',g);box(1.26,1.81,.05,.024,0,0,.08,'jade',g);chart(g,kind);box(.93,.012,.025,.005,0,-.72,.11,'gold',g);return g;}
-  screen(2.9,1.35,.25,1,origin,-.12);disk(.04,.35,2.9,.3,.25,'gold',origin);box(1.55,.1,.5,.04,2.9,.13,.25,'gold',origin);
+  screen(3.25,1.35,.25,1,origin,-.12);disk(.04,.35,3.25,.3,.25,'gold',origin);box(1.55,.1,.5,.04,3.25,.13,.25,'gold',origin);
   const panels=[],panelLabels=[],positions=[[-3.85,1.65,-.25,.3],[-2.7,2.15,-1.55,.18],[-1.05,2.65,-2.35,.07],[1.05,2.65,-2.35,-.07],[2.7,2.15,-1.55,-.18],[3.85,1.65,-.25,-.3]],names=['FINANCIALS','GROWTH COACH','REVIEWS','SOCIAL MEDIA','TRENDS','OVERVIEW'];
   positions.forEach(([x,y,z,yaw],i)=>{
     panels.push(screen(x,y,z,i,platform,yaw));disk(.032,y-.95,x,(y-.95)/2+.1,z,'gold',platform);box(1.45,.07,.4,.03,x,.12,z,'gold',platform);
@@ -96,24 +97,26 @@ export function createScaleup(T, initialStage=0) {
   });
   const pts=[[-2.15,.15,-1.3],[-2.15,1.65,-1.3],[-1.6,3.15,-1.3],[0,3.85,-1.3],[1.6,3.15,-1.3],[2.15,1.65,-1.3],[2.15,.15,-1.3]];
   tube(pts,.12,'cream',spatial);tube(pts.map(([x,y,z])=>[x,y,z+.105]),.022,'glow',spatial);
-  const headset=group(2.55,.3,1.55,spatial);headset.rotation.y=-.18;
+  const headset=group(3.55,.3,1.55,spatial);headset.rotation.y=-.18;
   box(1.85,.12,1.15,.055,0,0,0,'cream',headset);box(1.12,.6,.61,.15,0,.42,0,'cream',headset);box(1.02,.46,.075,.035,0,.43,.33,'gold',headset);box(.94,.39,.07,.03,0,.43,.38,'glass',headset);
   tube([[-.5,.4,-.1],[-.56,.45,-.5],[0,.48,-.77],[.56,.45,-.5],[.5,.4,-.1]],.075,'jade',headset);tube([[0,.63,.1],[0,.91,-.35],[0,.5,-.77]],.06,'jade',headset);
   for(const x of [-.7,.7]){box(.17,.34,.19,.075,x,.21,.36,'cream',headset).rotation.z=x;ring(.12,.025,x,.34,.34,'gold',headset).rotation.x=-.6;ball(.036,x,.37,.42,'jade',headset);}
   const routes=[];
   function route(points,parent,edition){const curve=tube(points,.014,'mint',parent),g=group(),bead=ball(.058,0,0,0,'glow',g);routes.push({curve,g,bead,edition});}
-  route([[-2.8,.18,1.9],[-2,.18,2.1],[-1,.18,1.9]],core,0);route([[1.15,.18,1.5],[2.8,.18,1.25],[2.9,.18,.35]],origin,1);
+  route([[-2.8,.18,1.9],[-2,.18,2.1],[-1,.18,1.9]],core,0);route([[1.15,.18,1.5],[3.15,.18,1.25],[3.25,.18,.35]],origin,1);
   positions.forEach(([x,,z])=>route([[Math.sign(x)*1.4,.115,.7],[x*.75,.115,z+.65],[x,.115,z+.25]],platform,2));
   batch(core);batch(origin);batch(platform);batch(spatial);
+  const animatePeople=createShopPeople(T,root);
   const stories=[{title:'The consulting idea',detail:'Super AI · 17–19 Jun 2025. Make AI business advice accessible to SMEs.'},{title:'The operating platform',detail:'Bolt.New · 21 Jun 2025. Finance, growth, reviews, social, trends and an overview share one business context.'},{title:'The immersive edition',detail:'OOJU × Manus.AI · 27 Jun 2025. Reimagine the same business intelligence in a spatial consulting environment.'}];
   let selected=initialStage,epoch=0,autoStart=initialStage;
   function animate(t){
+    animatePeople(t);
     const stage=selected===null?(autoStart+Math.floor(Math.max(0,t-epoch)/9))%3:selected;
     origin.visible=stage===0;platform.visible=stage>=1;spatial.visible=stage===2;labels.visible=stage>=1;
     panels.forEach((p,i)=>{const dy=stage===2?.065*Math.sin(t*.85+i*.75):0;p.position.y=positions[i][1]+dy;panelLabels[i].position.y=positions[i][1]+.69+dy;});
     routes.forEach(({curve,g,bead,edition},i)=>{g.visible=edition===0||(edition===1?stage===0:stage>=1);bead.position.copy(curve.getPointAt((t*.13+i*.16)%1));});
     root.userData.story={index:stage,step:`0${stage+1} / 03`,...stories[stage],tone:'scaleup'};root.userData.currentStage=stage;
   }
-  root.userData={conceptual:true,artifactId:36+initialStage,displayBase:false,studioProfile:'scaleup',groundLevel:-.06,initialYaw:-.12,initialElevation:.34,autoOrbit:false,realTimeAnimation:true,framingBounds:new T.Box3(new T.Vector3(-4.85,-.06,-3.4),new T.Vector3(4.85,4,2.25)),setStep(index,t=0){if(index===null){autoStart=root.userData.currentStage;epoch=t;selected=null;}else if(Number.isInteger(index)&&index>=0&&index<3)selected=index;animate(t);},animate};
+  root.userData={conceptual:true,artifactId:36+initialStage,displayBase:false,studioProfile:'scaleup',groundLevel:-.06,initialYaw:-.12,initialElevation:.34,autoOrbit:false,realTimeAnimation:true,framingBounds:new T.Box3(new T.Vector3(-4.85,-.06,-3.4),new T.Vector3(4.85,4,2.75)),setStep(index,t=0){if(index===null){autoStart=root.userData.currentStage;epoch=t;selected=null;}else if(Number.isInteger(index)&&index>=0&&index<3)selected=index;animate(t);},animate};
   animate(0);return root;
 }

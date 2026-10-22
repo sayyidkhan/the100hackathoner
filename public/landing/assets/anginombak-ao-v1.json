@@ -11,17 +11,17 @@
   "keyWidth": 1.5,
   "cell": 0.022,
   "epsilon": 0.0018,
-  "sampled": 193933,
-  "cacheHits": 928382,
+  "sampled": 193940,
+  "cacheHits": 928375,
   "totalVertices": 1122348,
-  "triangles": 322138,
+  "triangles": 319578,
   "bytes": 2245176,
   "minAO": 1,
   "maxAO": 255,
-  "averageAO": 155.25,
+  "averageAO": 155.75,
   "minKey": 0,
   "maxKey": 255,
-  "averageKey": 100.62,
+  "averageKey": 107.24,
   "meshes": [
     {
       "index": 0,
@@ -91,7 +91,7 @@
       "name": "ivory",
       "vertices": 87252,
       "offset": 1255776,
-      "hash": 217052592
+      "hash": 3798493312
     },
     {
       "index": 10,
@@ -105,28 +105,28 @@
       "name": "sage",
       "vertices": 21528,
       "offset": 1513536,
-      "hash": 2941959594
+      "hash": 3332281123
     },
     {
       "index": 12,
       "name": "vein",
       "vertices": 138528,
       "offset": 1556592,
-      "hash": 1459236760
+      "hash": 1599146046
     },
     {
       "index": 13,
       "name": "leaf",
       "vertices": 15528,
       "offset": 1833648,
-      "hash": 3092869322
+      "hash": 1200385120
     },
     {
       "index": 14,
       "name": "darkLeaf",
       "vertices": 12672,
       "offset": 1864704,
-      "hash": 3016186949
+      "hash": 374440307
     },
     {
       "index": 15,
@@ -175,7 +175,7 @@
       "name": "route",
       "vertices": 32472,
       "offset": 2026584,
-      "hash": 1435478275
+      "hash": 4042656191
     },
     {
       "index": 22,

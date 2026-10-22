@@ -3,10 +3,12 @@
 // pause, reduced motion, hidden tabs and offscreen exhibits all freeze it.
 export function coastalMotion(T) {
   const time = { value: 0 };
+  const journey = { value: new T.Vector3(0,1.8,0) };
   const walkers = { value: [new T.Vector4(),new T.Vector4()] };
   const steps = { value: new T.Vector4() };
   const declarations = `
     uniform float uCoastTime;
+    uniform vec3 uCoastJourney;
     uniform vec4 uCoastWalkers[2];
     uniform vec4 uCoastSteps;
     attribute vec2 coastMotion;
@@ -35,7 +37,7 @@ export function coastalMotion(T) {
       float phase=coastMotion.y;
       if(coastMotion.x==2.0) return vec2(.045*(sin(uCoastTime*.71+phase)-sin(phase)), .085*(sin(uCoastTime*.91+phase)-sin(phase)));
       if(coastMotion.x==3.0) return vec2(0.0,.030*(sin(uCoastTime*.65+phase)-sin(phase)));
-      if(coastMotion.x==4.0) return vec2(.025*sin(uCoastTime*.8),.075*sin(uCoastTime*1.05));
+
       if(coastMotion.x==8.0) return vec2(.025*(sin(uCoastTime*.75+phase)-sin(phase)),.045*(sin(uCoastTime*.95+phase)-sin(phase)));
       return vec2(0.0);
     }
@@ -52,7 +54,7 @@ export function coastalMotion(T) {
           p.x+=.13*(sin(uCoastTime*.54+phase)-sin(phase));
           p.y+=.045*(sin(uCoastTime*.83+phase)-sin(phase));
         }
-        if(kind==4.0) p.y+=.045*(1.0-cos(uCoastTime*1.3));
+        if(kind==4.0) { p=coastPivot+(p-coastPivot)*uCoastJourney.z; p.y+=uCoastJourney.y; }
       } else if(kind==5.0) {
         p.y+=.029*(sin(uCoastTime*3.1+phase)-sin(phase));
       } else if(kind==6.0) {
@@ -91,6 +93,7 @@ export function coastalMotion(T) {
   `;
   function vertex(shader) {
     shader.uniforms.uCoastTime = time;
+    shader.uniforms.uCoastJourney = journey;
     shader.uniforms.uCoastWalkers = walkers;
     shader.uniforms.uCoastSteps = steps;
     shader.vertexShader = shader.vertexShader
@@ -100,8 +103,8 @@ export function coastalMotion(T) {
         transformed=coastPosition(transformed);
         vCoastPulse=0.0;
         if(coastMotion.x==7.0) {
-          float progress=fract(uCoastTime/15.0);
-          float gap=abs(fract(coastMotion.y-progress+.5)-.5);
+          float progress=1.0-uCoastJourney.x;
+          float gap=abs(coastMotion.y-progress);
           vCoastPulse=pow(max(0.0,1.0-gap/.09),2.0)*smoothstep(0.0,1.2,uCoastTime);
         }
       `);
@@ -119,12 +122,12 @@ export function coastalMotion(T) {
           diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.34,.68,.78),vCoastPulse*.65);
         `);
     };
-    material.customProgramCacheKey = () => cacheKey + ':coastal-motion-v2';
+    material.customProgramCacheKey = () => cacheKey + ':coastal-motion-v3';
   }
   // Match silhouettes in the live-shadow fallback while the AO asset loads.
   const depthMaterial = new T.MeshDepthMaterial({ depthPacking: T.RGBADepthPacking });
   depthMaterial.onBeforeCompile = vertex;
-  depthMaterial.customProgramCacheKey = () => 'coastal-motion-depth-v2';
+  depthMaterial.customProgramCacheKey = () => 'coastal-motion-depth-v3';
   function mark(object, kind, phase = 0, anchor = object) {
     object.userData.coastalMotion = { kind, phase, anchor };
     return object;
@@ -139,6 +142,7 @@ export function coastalMotion(T) {
   }
   return {
     install, mark, attributes, depthMaterial,
+    setJourney(state) { journey.value.set(state.progress,state.pinHeight,state.pinScale); },
     setWalkers(poses) {
       poses.forEach((pose,i)=>walkers.value[i].set(pose.x,pose.y,pose.z,pose.yaw));
       steps.value.set(poses[0].gait,poses[0].stride,poses[1].gait,poses[1].stride);

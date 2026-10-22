@@ -1,7 +1,7 @@
 import { geometryAOHash } from './storybook-surface.js';
 
 // Offline ambient contact shading. Live light and moving shadows remain dynamic.
-export function applyMediVoiceAO(T,root) {
+export function applyMediVoiceAO(T,root,{url=new URL('../assets/medivoice-ao-v1.bin',import.meta.url)}={}) {
   const meshes=[];
   root.traverse(o=>{if(o.isMesh)meshes.push(o);});
   const hashes=meshes.map(mesh=>geometryAOHash(mesh.geometry));
@@ -27,7 +27,7 @@ export function applyMediVoiceAO(T,root) {
   root.userData.bakedAOStatus='loading';
   root.userData.bakedAOPromise=(async()=>{
     try{
-      const response=await fetch(new URL('../assets/medivoice-ao-v1.bin',import.meta.url));
+      const response=await fetch(url);
       if(!response.ok)throw new Error('MediVoice contact bake unavailable');
       const buffer=await response.arrayBuffer();if(root.userData.disposed)return false;
       const view=new DataView(buffer),header=16+meshes.length*16;

@@ -1,34 +1,36 @@
-// The family strolls through the clear corridor between the two picture easels.
-// Arc-length sampling keeps their pace even; the cosine turnaround slows them
-// before they turn. Everything is derived from the gallery's pausable clock.
-export const COASTAL_WALKERS = [
-  { x: 3.03, z: 1.63, scale: .86, yaw: -.70, points: [[3.03,1.63],[2.30,1.65],[1.83,1.12],[1.88,.32],[1.95,-.52]] },
-  { x: 2.49, z: 1.77, scale: .57, yaw: -.55, points: [[2.49,1.77],[2.05,1.50],[1.79,.90],[1.89,.10],[1.94,-.94]] },
-];
-export function createCoastalWalk(T, height) {
-  const period = 34;
-  const paths = COASTAL_WALKERS.map(walker => new T.CatmullRomCurve3(walker.points.map(([x,z]) => new T.Vector3(x,0,z))));
-  paths.forEach(path => { path.arcLengthDivisions = 300; path.updateArcLengths(); });
-  const lengths = paths.map(path => path.getLength());
-  const wrap = angle => Math.atan2(Math.sin(angle),Math.cos(angle));
-  return seconds => {
-    const time = Number.isFinite(seconds) ? Math.max(0,seconds) : 0;
-    const phase = time % period / period * Math.PI * 2;
-    const progress = (1-Math.cos(phase))/2;
-    const facingBack = (1-Math.tanh(Math.sin(phase)*6))/2;
-    const entry = T.MathUtils.smoothstep(time,0,1.8);
-    return paths.map((path,i) => {
-      const walker = COASTAL_WALKERS[i];
-      const p = path.getPointAt(progress), tangent = path.getTangentAt(progress);
-      const heading = Math.atan2(tangent.x,tangent.z) + Math.PI*facingBack;
-      const yaw = walker.yaw + wrap(heading-walker.yaw)*entry;
-      const distance = (Math.floor(time/period)*2+(phase<=Math.PI?progress:2-progress))*lengths[i];
-      const stride = Math.min(1,lengths[i]*Math.PI/period*Math.abs(Math.sin(phase))/.23)*entry;
-      const gait = distance*15;
-      // Cancel the rise caused by rotating both legs about the hip, keeping
-      // the supporting boot at the map surface instead of making the body float.
-      const hipDrop = .38*walker.scale*(1-Math.cos(Math.sin(gait)*.44*stride));
-      return { x:p.x, y:height(p.x,p.z)+.015-hipDrop, z:p.z, yaw, gait, stride };
+// One shared curve drives both the drawn trail and the family's footsteps.
+export const COASTAL_TRAIL = [[-1.35,-.29],[-.95,.20],[-.20,.34],[.45,.08],[.95,-.03],[1.35,.48],[1.42,1.01],[2.05,.70],[2.76,.62],[2.98,1.91]];
+export const COASTAL_WALKERS = [{scale:.86},{scale:.57}];
+export const COASTAL_ARRIVAL = 28;
+export function createCoastalTrail(T) {
+  return new T.CatmullRomCurve3(COASTAL_TRAIL.map(([x,z])=>new T.Vector3(x,0,z)));
+}
+export function coastalJourney(seconds) {
+  const time=Number.isFinite(seconds)?Math.max(0,seconds):0;
+  const u=Math.min(1,time/COASTAL_ARRIVAL);
+  // Ease into walking and decelerate at the destination; no teleporting loop.
+  const progress=u*u*(3-2*u);
+  const landed=time-COASTAL_ARRIVAL;
+  const drop=Math.max(0,Math.min(1,landed/.85));
+  const bounce=landed>.85&&landed<1.45 ? .10*Math.sin((landed-.85)/.60*Math.PI) : 0;
+  return {progress,speed:6*u*(1-u)/COASTAL_ARRIVAL,arrived:landed>=0,
+    pinScale:Math.min(1,Math.max(0,landed/.12)),pinHeight:1.8*(1-drop*drop)+bounce};
+}
+export function createCoastalWalk(T,height) {
+  const path=createCoastalTrail(T),length=path.getLength();
+  return seconds=>{
+    const journey=coastalJourney(seconds);
+    return COASTAL_WALKERS.map((walker,i)=>{
+      // Adult leads, child follows on the same line with a half-metre gap.
+      const start=i===0?.55:0, end=length-(i===0?.50:1.05);
+      const distance=start+(end-start)*journey.progress;
+      const at=1-distance/length;
+      const p=path.getPointAt(at), tangent=path.getTangentAt(at);
+      const yaw=Math.atan2(-tangent.x,-tangent.z);
+      const gait=(distance-start)*15;
+      const stride=Math.min(1,(end-start)*journey.speed/.23);
+      const hipDrop=.38*walker.scale*(1-Math.cos(Math.sin(gait)*.44*stride));
+      return {x:p.x,y:height(p.x,p.z)+.015-hipDrop,z:p.z,yaw,gait,stride};
     });
   };
 }

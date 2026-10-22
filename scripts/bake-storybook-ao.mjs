@@ -20,14 +20,15 @@ const options = Object.fromEntries(process.argv.slice(2).map(arg => {
   if (!match) throw new Error(`Expected --name=value, received ${arg}`);
   return [match[1], match[2]];
 }));
-if (options.model && !['storybook', 'pal', 'medivoice', 'bunny', 'invitation', 'anginombak'].includes(options.model)) throw new Error('Unknown bake model.');
+if (options.model && !['storybook', 'pal', 'medivoice', 'bunny', 'invitation', 'anginombak', 'lrnmate'].includes(options.model)) throw new Error('Unknown bake model.');
+const lrnmate = options.model === 'lrnmate';
 const pal = options.model === 'pal';
 const medivoice = options.model === 'medivoice';
 const bunny = options.model === 'bunny';
 const invitation = options.model === 'invitation';
 const anginombak = options.model === 'anginombak';
-const animated = pal || medivoice || bunny || invitation;
-const { createArtifact } = await import(anginombak ? '../public/landing/artifacts/anginombak.js' : invitation ? '../public/landing/artifacts/prompt-alchemist.js' : bunny ? '../public/landing/artifacts/stress-bunny.js' : medivoice ? '../public/landing/artifacts/medivoice.js' : pal ? '../public/landing/artifacts/kingdom-of-pal.js' : '../public/landing/artifacts/storybook.js');
+const animated = lrnmate || pal || medivoice || bunny || invitation;
+const { createArtifact } = await import(lrnmate ? '../public/landing/artifacts/lrnmate.js' : anginombak ? '../public/landing/artifacts/anginombak.js' : invitation ? '../public/landing/artifacts/prompt-alchemist.js' : bunny ? '../public/landing/artifacts/stress-bunny.js' : medivoice ? '../public/landing/artifacts/medivoice.js' : pal ? '../public/landing/artifacts/kingdom-of-pal.js' : '../public/landing/artifacts/storybook.js');
 const rays = Number(options.rays ?? (animated ? 24 : 48));
 const maxDistance = Number(options.distance ?? (invitation ? .27 : pal ? .2 : medivoice ? .24 : .9));
 const keyRays = animated ? 0 : 16; // Articulated exhibits keep live direct shadows.
@@ -62,9 +63,11 @@ for (const mesh of meshes) {
   const position = mesh.geometry.getAttribute('position'), index = mesh.geometry.index;
   const count = index?.count ?? position.count;
   for (let i = 0; i < count; i += 3) {
-    // Travelling figures use moving contact decals. Their starting positions
+    // Travelling figures and the arrival pin cannot cast permanent shadows.
+    // Figures use moving contact decals. Their starting positions
     // must not leave permanent silhouettes baked into the map underneath.
-    if (anginombak && mesh.geometry.getAttribute('coastMotion')?.getX(index ? index.getX(i) : i) >= 9) continue;
+    const coastalKind = anginombak ? mesh.geometry.getAttribute('coastMotion')?.getX(index ? index.getX(i) : i) : 0;
+    if (coastalKind === 4 || coastalKind >= 9) continue;
     const vertices = [];
     for (let c = 0; c < 3; c++) {
       point.fromBufferAttribute(position, index ? index.getX(i + c) : i + c).applyMatrix4(mesh.matrixWorld);

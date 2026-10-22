@@ -1,7 +1,9 @@
 .project-exhibit[data-number='40'] .exhibit-scene {
   aspect-ratio: 3 / 2;
-  background: radial-gradient(ellipse at 48% 40%, #e7e7ce, #c4d3c8 80%);
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(255, 240, 198, .7), transparent 48%),
+    linear-gradient(180deg, #86afc5 0%, #bad3d3 55%, #e0dfca 100%);
 }
 :root[data-theme='dark'] .project-exhibit[data-number='40'] .exhibit-scene {
-  background: radial-gradient(ellipse at 48% 40%, #244640, #071c20 80%);
+  background: radial-gradient(ellipse at 48% 40%, #193c43 0%, #0b2632 48%, #020b17 100%);
 }

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import * as T from '../../public/landing/vendor/three.module.js';
 import {createArtifact} from '../../public/landing/artifacts/astrodegen.js';
 // Geometry/timeline checks only; actual rendering is verified in the browser.
-globalThis.document={createElement:()=>({getContext:()=>({createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)}),putImageData(){},createRadialGradient:()=>({addColorStop(){}}),fillRect(){},fillText(){}})})};
+globalThis.document={createElement:()=>({getContext:()=>({createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)}),putImageData(){},createRadialGradient:()=>({addColorStop(){}}),fillRect(){},fillText(){},clearRect(){},setTransform(){}})})};
 const root=createArtifact(T);
 function pose(t){root.userData.animate(t);root.updateMatrixWorld(true);const values=[];root.traverse(o=>{for(const n of [...o.position,...o.quaternion,...o.scale])assert(Number.isFinite(n),'Non-finite pose');values.push(...o.position,...o.quaternion,...o.scale,o.visible?1:0);});return values;}
 const phases=[1,7,13,19].map(t=>({t,pose:pose(t)}));
