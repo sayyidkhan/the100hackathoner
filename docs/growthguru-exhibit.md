@@ -30,6 +30,12 @@ Framing refinement: pull the camera back about 18% so the whole arch and base re
 
 Refinement pass: raised ivory skill reliefs in glazed brass medallions, tapered tree branches, solid curved pages with a leather cover, a rounded limestone plinth, richer walnut/stone finishes and a dedicated studio-light profile. The rigid scene is flattened into material batches before a deterministic contact-occlusion bake. Moving leaves, lights and water retain live animation and lighting.
 
-Rebuild contact shading after geometry edits with `node scripts/bake-growthguru-ao.mjs --rays=32 --distance=.65 --cell=.018`. The local bake uses the existing validated OAO1 loader from `astrodegen-occlusion.js`; it verifies every geometry signature before applying any shading. Asset: `public/landing/assets/growthguru-ao-v1.bin`.
+Rebuild contact shading after geometry edits with `node scripts/bake-growthguru-ao.mjs --rays=24 --distance=.65 --cell=.018`. The local bake uses the existing validated OAO1 loader from `astrodegen-occlusion.js`; it verifies every geometry signature before applying any shading. Asset: `public/landing/assets/growthguru-ao-v1.bin`.
 
 `node --test scripts/tests/growthguru.test.mjs` verifies path selection, tour order, invalid-input handling, clock reset, finite geometry and replayable motion. `npm run build` checks Astro and generates the website. Browser checks cover desktop, narrow mobile, artwork/3D switching, three path selectors, tour, pause and keyboard orbit.
+
+## Artwork matching pass
+
+Raised the book dais and plaques, tightened the medallion arrangement, and moved the initial camera closer to a front view. Secondary brass twigs, shaped leaves, layered garden beds and rocks fill the silhouette. Warm additive halos follow the path lights and pulse gently; fine pool highlights move with the existing ripple animation. Small botanical veins use reduced geometry, while the rigid scenery remains batched by material.
+
+This pass is checked with the model tests and production build. Live visual comparison remains pending because local browser access is disabled in Work settings. The browser checks described above refer to the previous refinement pass.

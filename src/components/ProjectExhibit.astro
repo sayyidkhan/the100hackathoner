@@ -125,6 +125,12 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
         <p class="exhibit-story-detail" data-story-detail></p>
       </div>}
     </div>
+    {[18, 19, 20].includes(number) && <div class="exhibit-walkthrough" data-walkthrough hidden>
+      <div class="exhibit-story" style="position: static; max-width: none;" data-story aria-live="off" hidden>
+        <p class="exhibit-story-heading"><span class="exhibit-story-step" data-story-step></span><span data-story-title></span></p>
+        <p class="exhibit-story-detail" data-story-detail></p>
+      </div>
+    </div>}
     {number === 41 && <div class="invitation-journey" aria-label="The event funnel">
       <span><b>01</b> Attract attention</span><span aria-hidden="true">→</span>
       <span><b>02</b> Make the invitation</span><span aria-hidden="true">→</span>

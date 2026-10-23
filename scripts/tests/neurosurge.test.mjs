@@ -1,0 +1,20 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import * as T from '../../public/landing/vendor/three.module.js';
+import {createArtifact,memoryMoment,CYCLE_SECONDS} from '../../public/landing/artifacts/neurosurge.js';
+test('NeuroSurge learns before recall, sends feedback only after retrieval, and loops continuously',()=>{
+ assert.equal(memoryMoment(2).turn,0);
+ assert.equal(memoryMoment(7.5).turn,Math.PI);
+ assert.deepEqual(memoryMoment(8).recalled,[0,0,0]);
+ assert.deepEqual(memoryMoment(13).recalled,[1,1,1]);
+ assert.equal(memoryMoment(13).feedbackVisible,false);
+ assert.equal(memoryMoment(15).feedbackVisible,true);
+ assert.equal(memoryMoment(19).turn,0);
+ assert.deepEqual(memoryMoment(CYCLE_SECONDS),memoryMoment(0));
+ const root=createArtifact(T);let count=0;
+ root.traverse(o=>{if(o.geometry){count+=o.geometry.attributes.position.count;assert(Array.from(o.geometry.attributes.position.array).every(Number.isFinite));}});
+ assert(count>10000);
+ const state=t=>{root.userData.animate(t);root.updateMatrixWorld(true);const a=[];root.traverse(o=>a.push(...o.matrixWorld.elements,Number(o.visible)));return a;};
+ const first=state(0);assert.notDeepEqual(state(10),first);assert.deepEqual(state(22),first);assert.deepEqual(state(10),state(10));
+ for(const t of [-22,.5,6,7,8,13,14,17,21.999,22,100000])assert(state(t).every(Number.isFinite));
+});

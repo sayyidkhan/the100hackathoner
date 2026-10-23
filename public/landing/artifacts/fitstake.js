@@ -1,3 +1,5 @@
+import { createFitStakeRunners } from './fitstake-runners.js';
+
 // Five-step product walkthrough, grounded in FitStake's README and payment flow.
 const STEPS = [
   ['Create or join a challenge', 'Choose an activity and 1–365 days. Invite one friend and agree on the scoring rules.', 'flowing'],
@@ -130,75 +132,7 @@ export function createArtifact(T) {
   line([[.50,2.04,.12],[.2,1.88,.25],[-.46,1.55,.25]],'blue',screens[4]);
   gift(-.46,1.10,.15,.85,'red',screens[4]);gift(.46,1.12,.15,.58,'blue',screens[4]);
   label('BEST',-.47,.93,.28,.60,'#29323d',screens[4]);label('LOWEST',.47,.93,.28,.68,'#29323d',screens[4]);
-  // Faceted athletes: shaped torsos, hinged knees/elbows and layered shoes.
-  function taper(a,b,r1,r2,color,parent){
-    const start=new T.Vector3(...a),end=new T.Vector3(...b),v=end.clone().sub(start);
-    const item=mesh(new T.CylinderGeometry(r2,r1,v.length(),5,1),color,parent);
-    item.position.copy(start.add(end).multiplyScalar(.5));item.quaternion.setFromUnitVectors(new T.Vector3(0,1,0),v.normalize());return item;
-  }
-  function torso(parent,color){
-    const rings=[[0,.18,.12],[.22,.15,.10],[.51,.28,.135],[.62,.20,.115]];
-    const pos=[],idx=[];
-    for(const [y,w,d]of rings)for(let i=0;i<6;i++){const a=i*Math.PI/3;pos.push(Math.cos(a)*w,y,Math.sin(a)*d);}
-    for(let j=0;j<3;j++)for(let i=0;i<6;i++){let a=j*6+i,b=j*6+(i+1)%6;idx.push(a,b,a+6,b,b+6,a+6);}
-    idx.push(18,19,20,18,20,21,18,21,22,18,22,23);
-    const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(pos,3));geo.setIndex(idx);geo.computeVertexNormals();return mesh(geo,color,parent);
-  }
-  function hairstyle(parent,ponytail){
-    // A continuous shell follows the head, with a higher forehead and lower nape.
-    // The old flattened cap intersected the crown and exposed patches of scalp.
-    const positions=[],indices=[],segments=20,rings=10;
-    for(let row=0;row<=rings;row++)for(let col=0;col<=segments;col++){
-      const phi=col/segments*Math.PI*2;
-      const theta=row/rings*(1.45-.30*Math.sin(phi)+.055*Math.sin(3*phi));
-      positions.push(.160*Math.sin(theta)*Math.cos(phi),.89+.222*Math.cos(theta),.025+.170*Math.sin(theta)*Math.sin(phi));
-    }
-    for(let row=0;row<rings;row++)for(let col=0;col<segments;col++){
-      const a=row*(segments+1)+col,b=a+segments+1;
-      indices.push(a,a+1,b,a+1,b+1,b);
-    }
-    const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.setIndex(indices);geometry.computeVertexNormals();
-    mesh(geometry,'ink',parent);
-    if(ponytail){
-      taper([0,.96,-.12],[.07,.91,-.32],.075,.055,'ink',parent);
-      taper([.07,.91,-.32],[.12,.77,-.49],.055,.008,'ink',parent);
-    }else{
-      const sweep=sphere(.10,-.025,1.075,.075,'ink',parent);sweep.scale.set(1.1,.60,.82);sweep.rotation.z=-.22;
-    }
-  }
-  function runner(x,color,phase) {
-    const g=new T.Group();root.add(g);g.position.set(x,.34,.56);g.scale.setScalar(1.22);
-    const body=new T.Group();g.add(body);body.position.y=1.02;body.rotation.x=.16;
-    torso(body,color);taper([0,.59,0],[0,.75,.02],.075,.07,'paper',body);
-    const head=sphere(.17,0,.89,.025,'paper',body);head.scale.set(.83,1.17,.88);
-    for(const side of [-1,1]){
-      const ear=sphere(.038,side*.143,.88,.025,'paper',body);ear.scale.set(.62,1,.72);
-      sphere(.012,side*.050,.925,.170,'ink',body);
-    }
-    const nose=mesh(new T.ConeGeometry(.048,.12,4),'paper',body);nose.rotation.x=Math.PI/2;nose.position.set(0,.89,.17);
-    hairstyle(body,x<0);
-    for(const side of [-1,1])taper([side*.16,.1,.02],[side*.14,-.12,.01],.13,.12,color,body);
-    const arms=[],legs=[];
-    for(const side of [-1,1]){
-      const arm=new T.Group();arm.position.set(side*.255,.51,0);body.add(arm);
-      sphere(.095,0,-.02,0,'paper',arm);taper([0,0,0],[side*.015,-.31,0],.085,.058,'paper',arm);
-      const elbow=new T.Group();elbow.position.set(side*.015,-.31,0);arm.add(elbow);elbow.rotation.x=-1.28;
-      sphere(.06,0,0,0,'paper',elbow);taper([0,0,0],[0,-.29,0],.06,.038,'paper',elbow);sphere(.06,0,-.32,.01,'paper',elbow);
-      if(side===-1){const watch=box(.105,.07,.06,0,-.24,.045,'ink',elbow);watch.rotation.x=.1;}
-      arms.push(arm);
-      const leg=new T.Group();leg.position.set(side*.135,1.05,0);g.add(leg);
-      taper([0,0,0],[0,-.43,0],.13,.075,'paper',leg);
-      const knee=new T.Group();knee.position.y=-.43;leg.add(knee);
-      sphere(.078,0,0,0,'paper',knee);taper([0,0,0],[0,-.43,0],.075,.047,'paper',knee);
-      taper([0,-.28,0],[0,-.43,0],.063,.055,'white',knee);
-      const shoe=panel(.16,.31,.12,0,-.46,.09,color,knee,.055);shoe.rotation.x=-Math.PI/2;
-      box(.17,.035,.32,0,-.52,.09,'white',knee);
-      for(let j=0;j<3;j++)box(.12,.016,.018,0,-.389,.04+j*.045,'white',knee);
-      legs.push({hip:leg,knee});
-    }
-    g.rotation.y=x<0?.57:-.44;return {g,body,arms,legs,phase};
-  }
-  const runners=[runner(-2.14,'red',.8),runner(2.14,'blue',Math.PI+.8)];
+  const runners=createFitStakeRunners(T,root);
   // Floating recommendation shelves, with real depth and a restrained gold orbit.
   const rewardDisplay=new T.Group();root.add(rewardDisplay);
   const rewards=[gift(-1.45,1.42,.65,.95,'red',rewardDisplay),gift(1.45,1.65,.65,1.20,'blue',rewardDisplay)];
@@ -215,12 +149,6 @@ export function createArtifact(T) {
     mesh(new T.TubeGeometry(curve,64,.025,6,false),color);
     const pulse=sphere(.055,0,0,0,'gold');paths.push({curve,pulse});
   }
-  // Small folded landscape details anchor the stadium in the paper-art collection.
-  function leaf(x,y,z,angle,scale){
-    const geometry=new T.BufferGeometry();geometry.setAttribute('position',new T.Float32BufferAttribute([0,0,0,-.17,.40,0,0,.84,0,0,.42,.075,.17,.40,0],3));geometry.setIndex([0,1,3,1,2,3,0,3,4,3,2,4]);geometry.computeVertexNormals();
-    const item=mesh(geometry,'paper');item.material=materials.paper;item.material.side=T.DoubleSide;item.position.set(x,y,z);item.rotation.z=angle;item.scale.setScalar(scale);
-  }
-  for(const sign of [-1,1])for(let i=0;i<4;i++)leaf(sign*(2.78+i*.07),.3,-.69+i*.08,sign*(i-.8)*.28,.65+i*.13);
   const stepMarkers=[];
   for(let i=0;i<5;i++){
     const x=(i-2)*.40;const marker=panel(.31,.07,.18,x,.34,1.93,'edge',root,.025);stepMarkers.push(marker);
@@ -235,7 +163,7 @@ export function createArtifact(T) {
     piece.userData={x:Math.sin(a)*(1.7+(i%4)*.27),y:1.6+(i%7)*.22,z:-.65+Math.cos(a)*.6,phase:a};
     confetti.push(piece);
   }
-  root.userData={artifactId:82,displayBase:false,groundLevel:0,initialYaw:-.12,initialElevation:.36,studioProfile:'fitstake',studioLightScale:1.10};
+  root.userData={artifactId:82,displayBase:false,groundLevel:0,initialYaw:-.12,initialElevation:.36,studioProfile:'fitstake',studioLightScale:1.10,realTimeAnimation:true};
   let selected=null, offset=0, lastTime=0;
   root.userData.setStep=(index,elapsed=lastTime)=>{
     if(index===null){offset=elapsed-(selected??0)*7;selected=null;}
@@ -251,12 +179,23 @@ export function createArtifact(T) {
     stepLights.forEach((light,i)=>{light.material=materials[i===index?'red':'edge'];});
     stepMarkers.forEach((marker,i)=>{marker.material=materials[i===index?'gold':'edge'];});
     ai.rotation.y=elapsed*.6;
-    runners.forEach(({g,body,arms,legs,phase},i)=>{
-      const stride=Math.sin((index===3?elapsed*4.8:elapsed*1.5)+phase);
-      arms.forEach((arm,j)=>{arm.rotation.x=stride*(j?-.72:.72);arm.rotation.z=j?-.12:.12;});
-      legs.forEach(({hip,knee},j)=>{const swing=stride*(j?1:-1);hip.rotation.x=swing*.72;knee.rotation.x=.26+Math.max(0,swing)*1.18;});
-      body.rotation.z=Math.sin(elapsed*1.5+phase)*.035;
-      g.position.y=.29+Math.abs(Math.cos(elapsed*(index===3?4.8:1.5)+phase))*.065;
+    runners.forEach(({g,body,arms,elbows,legs,head,ponytail,ground,phase})=>{
+      const running=index===3, clock=elapsed*(running?4.8:1.5)+phase;
+      const stride=Math.sin(clock), strength=running?1:.20;
+      arms.forEach((arm,j)=>{
+        const swing=stride*(j?-1:1);
+        // Rest with hands beside the thighs; flex the elbows only for running.
+        arm.rotation.x=running?swing*.48-.04:swing*.025+.02;
+        arm.rotation.z=j?.10:-.10;
+        elbows[j].rotation.x=running?-1.05+swing*.12:-.12;
+      });
+      legs.forEach(({hip,knee},j)=>{const swing=stride*(j?1:-1);hip.rotation.x=swing*.62*strength; knee.rotation.x=running?.12+Math.max(0,swing)*1.02:.055;});
+      body.rotation.z=Math.sin(clock)*.018*strength;
+      body.rotation.x=running?.10:.035;
+      head.rotation.y=Math.sin(elapsed*.6+phase)*.045;
+      head.rotation.z=-body.rotation.z*.5;
+      if(ponytail)ponytail.rotation.x=Math.sin(clock-.5)*.13*strength;
+      ground();
     });
     progressBars.forEach((bar,i)=>{const amount=.18+(i?.51:.72)*Math.min(t/5,1);bar.scale.x=amount;bar.position.x=-(1-amount)*.65;});
     rewardDisplay.visible=index===1||index===4;

@@ -605,7 +605,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       rim.intensity = 1.8;
       scene.environmentIntensity = .55;
       renderer.toneMappingExposure = 1;
-      key.shadow.normalBias = .009;
+      key.shadow.normalBias = .004;
       key.shadow.radius = 5;
     }
     if (currentModel?.userData.studioProfile === 'pal') {

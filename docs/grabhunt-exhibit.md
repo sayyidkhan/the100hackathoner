@@ -1,0 +1,13 @@
+# GrabHunt exhibit
+
+Evidence is limited to the site's historical record: “E-credits via GrabPoints”, AngelHack 2019. No source repository was found. See [research](exhibits-23-27-research.md). This is explicitly a sculptural concept interpretation; there are no invented redemption rates, payment integrations or treasure-hunt mechanics.
+
+Composition: emerald/brass rewards reservoir left, central exchange phone, ivory voucher kiosk right, connected by physical rails and conduits. The local model follows the generated artwork layout, with machined coin edges, enclosure screws, recessed slots, perforated voucher and fine stone/enamel textures.
+
+Animation: 16-second token transfer, exchange acknowledgement, sequential checks, credit reveal, hold and retraction. Shared pause/reduced-motion behavior; deterministic seek and exact loop tests. The voucher reveal is illustrative rather than a real payment.
+
+Files: `public/landing/assets/projects/027-grabhunt-v1.png`, `public/landing/artifacts/grabhunt.js`, `public/landing/artifacts/early-exhibit-studio.js`.
+
+## Artwork prompt — built-in imagegen
+
+Use case: stylized-concept. Landscape 3:2 premium architectural product diorama for GrabHunt, a hackathon concept exchanging GrabPoints into e-credits. Composition must be feasible as interactive browser 3D: one rounded ivory limestone rectangular plinth. Left a dark emerald cylindrical rewards reservoir with brushed brass rim holds a carefully arranged stack of six gold coins, each embossed with a simple star. A gently curved brass double rail runs across the foreground from the reservoir into a central tall emerald smartphone on a machined brass docking foot. The phone screen shows a cream circular exchange arrow and three small green confirmation ticks, no numbers or financial returns. Right a sophisticated physical ivory voucher printer kiosk with emerald edges, a brass slot, and a dimensional ivory credit voucher emerging from it. The voucher has a large green checkmark, subtle embossed border, perforation and three short brass lines. Thin emerald and gold conduit connects phone to kiosk. Deep emerald green, ivory porous stone, champagne brass and pale jade. Finely machined surfaces, subtle patina, crisp small screws, layered construction, warm broad softbox illumination and soft contact shadows against warm charcoal background, museum quality photoreal 3D render. Whole base visible, elevated front three-quarter camera, comfortable margins. Front plaque exact text 'GrabHunt'. No people, no treasure hunt, no city map, no invented conversion rates, no extra captions, no floating random particles.
