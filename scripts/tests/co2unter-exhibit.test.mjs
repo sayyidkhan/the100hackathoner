@@ -13,5 +13,9 @@ test('CO2unter has finite geometry and a deterministic data-to-comparison sequen
  assert.deepEqual(state(24),initial,'loop returns to same frame');
  const midway=state(8);assert.equal(packet.visible,true);assert.equal(root.userData.story.index,1);state(20);assert.deepEqual(state(8),midway,'seeking cannot depend on previous frame');
  for(const [time,index,moving] of [[2,0,true],[6,1,false],[9,1,true],[14,2,false],[17,3,true],[22,3,false]]){state(time);assert.equal(root.userData.story.index,index);assert.equal(packet.visible,moving);}
+ const screen=root.getObjectByName('co2unter-converter-screen');
+ root.userData.setStep(3,31);const woodFrame=state(31);assert.equal(screen.userData.comparison,'wood');assert.equal(root.getObjectByName('co2unter-wood-halo').visible,true);assert.deepEqual(state(80),woodFrame,'manual phase stays fixed');
+ root.userData.setStep(null,80);assert.deepEqual(state(80),woodFrame,'autoplay resumes without jumping');
+ root.userData.setStep(2,90);assert.equal(screen.userData.comparison,'bananas');assert.equal(root.getObjectByName('co2unter-bananas-halo').visible,true);
  const box=new T.Box3().setFromObject(root);assert(box.min.y>=-.001);assert(box.max.x-box.min.x<9);assert.equal(root.userData.cycleDuration,24);
 });

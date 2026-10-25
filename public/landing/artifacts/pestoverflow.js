@@ -1,80 +1,135 @@
 import {earlyStudio,ease} from './early-exhibit-studio.js';
 import {pestMouse} from './pestoverflow-mouse.js';
+import {pestSurfaces} from './pestoverflow-surfaces.js';
+import {createPestScreen} from './pestoverflow-app-screen.js';
+
+export const PESTOVERFLOW_CYCLE=18;
+export function pestMoment(time){
+ const t=((time%PESTOVERFLOW_CYCLE)+PESTOVERFLOW_CYCLE)%PESTOVERFLOW_CYCLE;
+ const phase=t<4?'monitoring':t<5.2?'detected':t<6.5?'sending':t<13?'notified':'reset';
+ return {t,phase,detected:t>=4&&t<16.5,notified:t>=6.5&&t<16.5,
+  travel:t<4?ease(t/4):t<13?1:1-ease((t-13)/4),gait:t<4?Math.sin(Math.PI*t/4):t>=13&&t<17?Math.sin(Math.PI*(t-13)/4):0};
+}
+
 export function createArtifact(T){
- const k=earlyStudio(T),{root,m,mesh,box,disk,ball,line,group,rounded,slab,ring,ellipsoid,text,base,finish}=k;
- m.enamel=new T.MeshStandardMaterial({color:0xd4c4a8,roughness:.48,bumpMap:k.texture('stone'),bumpScale:.006});
- m.pir=new T.MeshStandardMaterial({color:0xf5efdf,roughness:.38,flatShading:true});
- m.lens=new T.MeshPhysicalMaterial({color:0x151f30,roughness:.12,metalness:.2,clearcoat:1,clearcoatRoughness:.06});
- base('PestOverflow');
- // Staggered floor joints and wall footing seat the installation in a utility room.
- for(let i=0;i<7;i++)box(.009,.003,2.35,-3+i*.56,.294,-.40,'mortar');
- for(let i=0;i<4;i++)box(3.7,.003,.009,-1.3,.294,-1.38+i*.58,'mortar');
- rounded(2.75,.13,.18,-1.79,.35,-1.09,'stone');
- // Cutaway utility wall and pipework frame a real sensor prototype.
- box(2.6,2.65,.12,-1.8,1.61,-1.22,'mortar');
- for(let row=0;row<9;row++)for(let col=0;col<5;col++)rounded(.49,.255,.12,-2.83+col*.52+(row%2)*.12,.42+row*.29,-1.12,'brick',root,.023);
- line([[-2.79,.35,-.90],[-2.79,2.8,-.90]],.075,'brass');
- line([[-2.79,1.25,-.90],[-2.4,1.25,-.90],[-2.35,1.04,-.82],[-.93,1.04,-.82]],.065,'brass');
- for(let i=0;i<7;i++){const c=ring(.095,.019,-2.79,.5+i*.34,-.9,'brass');c.rotation.x=Math.PI/2;}
- ring(.16,.033,-2.79,1.4,-.71,'copper');line([[-2.95,1.4,-.71],[-2.63,1.4,-.71]],.018,'copper');
- rounded(.87,.83,.1,-1.7,2.25,-1,'silver');rounded(.73,.69,.08,-1.7,2.25,-.92,'black');
- for(let i=0;i<9;i++)box(.014,.64,.014,-2.02+i*.08,2.25,-.865,'brass');
- for(let i=0;i<8;i++)box(.68,.014,.014,-1.7,1.95+i*.085,-.86,'brass');
- // Open enclosure: deep recess, bezel and individually modelled electronics.
- // A genuine open shell: rear pan, four thick walls and a raised front gasket.
- rounded(2.05,2.66,.13,.02,1.68,-.60,'enamel',root,.17);
- rounded(1.81,2.39,.035,.02,1.68,-.513,'dark',root,.12);
- for(const x of [-.92,.96])rounded(.18,2.57,.68,x,1.68,-.24,'enamel',root,.07);
- for(const y of [.43,2.93])rounded(1.83,.18,.68,.02,y,-.24,'enamel',root,.065);
- for(const x of [-.80,.84])rounded(.025,2.27,.035,x,1.68,.115,'mortar',root,.01);
- for(const y of [.54,2.82])rounded(1.62,.025,.035,.02,y,.115,'mortar',root,.01);
- // Mounting standoffs leave an observable gap behind the electronics.
- for(const x of [-.63,.62])for(const y of [.63,1.53]){const stand=disk(.05,.26,x,y,-.30,'brass');stand.rotation.x=Math.PI/2;}
- for(const y of [1.03,2.39]){rounded(.13,.30,.12,-1.05,y,-.12,'brass',root,.03);line([[-1.05,y-.15,-.04],[-1.05,y+.15,-.04]],.03,'silver');}
- for(const x of [-.68,.72])slab(.24,.50,.045,x,.313,-.25,'brass');
- for(const y of [.69,.88,1.07,1.26])box(.012,.08,.29,1.058,y,-.27,'dark');
- for(const x of [-.87,.91])for(const y of [.51,2.85]){const screw=disk(.052,.025,x,y,.113,'brass');screw.rotation.x=Math.PI/2;box(.062,.008,.01,x,y,.13,'black');}
- rounded(1.43,1.03,.065,0,1.07,-.17,'green');
- rounded(.4,.4,.08,-.14,1.09,-.105,'black',root,.018);
- // GPIO header pins and solder lands, not decorative spheres.
- rounded(1.24,.13,.07,-.02,1.48,-.10,'black',root,.01);
- for(let row=0;row<2;row++)for(let i=0;i<18;i++){box(.013,.013,.11,-.60+i*.069,1.455+row*.055,-.025,'gold');}
- for(const x of [-.63,.62])for(const y of [.63,1.53]){ring(.036,.009,x,y,-.125,'gold');}
- for(let i=0;i<8;i++){box(.026,.014,.015,-.34+i*.054,.853,-.052,'silver');box(.014,.026,.015,-.367,.88+i*.052,-.052,'silver');}
- for(let i=0;i<3;i++){const cap=disk(.032,.08,-.54+i*.14,1.26,-.06,'silver');cap.rotation.x=Math.PI/2;ring(.025,.005,-.54+i*.14,1.26,-.012,'black');}
- text('PIR  /  GPIO 23',.64,-.24,1.67,-.10,root,'#d7c79c');
- for(let i=0;i<3;i++){rounded(.30,.23,.19,.58,1.38-i*.28,-.08,'silver',root,.025);rounded(.21,.13,.025,.58,1.38-i*.28,.027,'black',root,.01);}
- for(let i=0;i<12;i++){const x=-.61+(i%4)*.14,y=.73+Math.floor(i/4)*.17;box(.08,.045,.03,x,y,-.105,'silver');}
- for(let i=0;i<9;i++)line([[-.5+i*.09,.66,-.127],[-.5+i*.09,.85,-.127],[-.38+i*.06,.92,-.127]],.006,'gold');
- rounded(.83,.83,.08,-.38,2.23,-.13,'cream');
- const dome=mesh(new T.IcosahedronGeometry(.38,3),'pir');dome.position.set(-.38,2.23,-.04);dome.scale.z=.58;
- rounded(.50,.51,.12,.48,2.24,-.12,'brass');rounded(.43,.44,.1,.48,2.24,-.038,'black');ring(.15,.04,.48,2.24,.03,'silver');ellipsoid(.48,2.24,.045,.118,.118,.055,'lens');ring(.085,.012,.48,2.24,.098,'green');ring(.054,.006,.48,2.24,.10,'silver');
- line([[-.7,1.6,-.13],[-.8,1.8,-.13],[-.8,2.5,-.13],[-.42,2.68,-.13]],.025,'copper');
- line([[.7,1.6,-.12],[.82,1.8,-.12],[.62,1.98,-.12]],.025,'black');
- // A floor-mounted aperture observes the mouse's path.
- rounded(.33,.41,.16,-1.1,.53,.45,'black');ring(.09,.024,-1.1,.53,.545,'silver');
- const animal=pestMouse(T,k),mouse=animal.group;mouse.position.set(-2.5,.294,.75);
- // SMS phone and map relief; no implied computer-vision implementation.
- const phone=group(2.18,.30,.02);phone.rotation.y=-.10;
- slab(1.23,.8,.12,0,.06,0,'brass',phone);rounded(1.22,2.54,.16,0,1.42,0,'brass',phone,.16);rounded(1.13,2.45,.14,0,1.42,.09,'black',phone,.14);
- box(.27,.025,.02,0,2.52,.172,'silver',phone);rounded(.94,.75,.025,0,1.57,.18,'cream',phone);
- for(let i=0;i<4;i++){const road=box(.025,.64,.015,-.34+i*.23,1.57,.201,'mortar',phone);road.rotation.z=.4;}
- for(let i=0;i<3;i++)box(.82,.026,.016,0,1.35+i*.20,.204,'mortar',phone);
- const alert=group(0,2.15,.195,phone);ring(.13,.035,0,0,0,'coral',alert);box(.024,.13,.025,0,.015,.01,'cream',alert);ball(.017,0,-.085,.02,'cream',alert);
- const message=group(0,.81,.19,phone);rounded(.94,.46,.025,0,0,0,'cream',message);
- text('SENSOR LINK',.83,0,2.32,.212,phone,'#c8bca6');
- const pin=group(0,1.60,.23,phone);ring(.07,.027,0,.04,0,'coral',pin);const tip=mesh(new T.ConeGeometry(.055,.12,3),'coral',pin);tip.position.y=-.05;tip.rotation.z=Math.PI;
- const curve=new T.CatmullRomCurve3([new T.Vector3(.96,2.57,-.39),new T.Vector3(1.25,2.5,-.30),new T.Vector3(1.38,1.72,-.08),new T.Vector3(1.59,1.65,.03)]);
- mesh(new T.TubeGeometry(curve,48,.035,10,false),'brass');
- const pulse=ball(.07,0,0,0,'coral');const led=ball(.045,.75,1.72,-.15,'coral');
- // The SMS content appears with the notification, rather than announcing a pest at rest.
- if(typeof document!=='undefined'){
-  const c=document.createElement('canvas');c.width=512;c.height=128;const ctx=c.getContext('2d');ctx.fillStyle='#303b34';ctx.font='bold 37px sans-serif';ctx.textAlign='center';ctx.fillText('Pest detected',256,46);ctx.font='27px sans-serif';ctx.fillText('Utility room · Sensor 01',256,96);
-  const map=new T.CanvasTexture(c);map.colorSpace=T.SRGBColorSpace;const label=new T.Mesh(new T.PlaneGeometry(.84,.21),new T.MeshBasicMaterial({map,transparent:true,depthWrite:false}));label.position.set(0,0,.035);message.add(label);
+ const k=earlyStudio(T),{root,m,mesh,box,disk,ball,line,group,rounded,slab,ring,ellipsoid,finish}=k;
+ const surfaces=pestSurfaces(T);
+ for(const [name,repeat,bumpScale] of [['oak',[1.25,.68],.009],['stone',[.68,.68],.010],['plaster',[.65,.65],.006]]){
+  for(const map of Object.values(surfaces[name]))if(map?.isTexture)map.repeat.set(...repeat);
+  m[name]=new T.MeshStandardMaterial({color:0xffffff,roughness:1,metalness:0,map:surfaces[name].map,bumpMap:surfaces[name].bumpMap,roughnessMap:surfaces[name].roughnessMap,bumpScale});
  }
- const out=finish(23,[mouse,alert,message,pin,pulse,led]);
- out.userData.initialYaw=-.10;out.userData.initialElevation=.23;
- const start=mouse.position.clone(),pulseOffset=pulse.position.clone(),messageRest=message.position.clone();
- out.userData.animate=t=>{const p=((t%14)+14)%14;const travel=p<3?ease(p/3):p<9.7?1:1-ease((p-9.7)/3);mouse.position.copy(start);mouse.position.x+=travel*.83;animal.animate(p,p<3?Math.sin(Math.PI*p/3):p>=9.7&&p<12.7?Math.sin(Math.PI*(p-9.7)/3):0);mouse.rotation.y=p<9?0:p<9.7?Math.PI*ease((p-9)/.7):p<12.7?Math.PI:Math.PI*(1-ease((p-12.7)/.7));alert.visible=p>=3&&p<10;const notification=ease((p-5)/.45)*(1-ease((p-9.5)/.5));message.visible=notification>.001;message.position.copy(messageRest);message.position.y-=(1-notification)*.10;message.scale.setScalar(Math.max(.001,notification));pin.visible=p>=5&&p<10;led.scale.setScalar(p>=3&&p<5?1.3: .65);pulse.visible=p>=3.7&&p<5;const q=curve.getPointAt(Math.max(0,Math.min(1,(p-3.7)/1.3)));pulse.position.copy(q).add(pulseOffset);};
+ Object.assign(m,{
+  recess:new T.MeshStandardMaterial({color:0x2b2018,roughness:.9}),
+  grout:new T.MeshStandardMaterial({color:0xb9ad98,roughness:.95}),
+  graphite:new T.MeshPhysicalMaterial({color:0x171b1d,roughness:.28,metalness:.75,clearcoat:.4}),
+  steel:new T.MeshStandardMaterial({color:0x929795,roughness:.28,metalness:.92}),
+  brass:new T.MeshStandardMaterial({color:0xc09a5f,roughness:.26,metalness:.85}),
+  lens:new T.MeshPhysicalMaterial({color:0x06141a,roughness:.08,metalness:.3,clearcoat:1}),
+  porcelain:new T.MeshStandardMaterial({color:0xddd7c9,roughness:.48}),
+  leaf:new T.MeshStandardMaterial({color:0x3d5535,roughness:.78,side:T.DoubleSide}),
+  glow:new T.MeshBasicMaterial({color:0xffad75,toneMapped:false}),
+  coralSignal:new T.MeshBasicMaterial({color:0xff7456,toneMapped:false}),
+ });
+ // Continuous architectural foundation: no trophy pedestal or empty mounting plates.
+ slab(8.0,4.05,.23,0,.115,0,'stone',root,.25);
+ slab(7.86,3.91,.022,0,.241,0,'stone',root,.21);
+ const floorY=.278;
+ const kitchen=group(-1.52,0,-.20);kitchen.name='pestoverflow-kitchen';
+ rounded(4.72,2.53,.16,0,1.528,-1.61,'plaster',kitchen,.025);
+ rounded(.15,2.53,3.02,-2.29,1.528,-.17,'plaster',kitchen,.018);
+ // Shadow gaps and individually laid limestone tiles give the room physical depth.
+ for(let ix=0;ix<6;ix++)for(let iz=0;iz<4;iz++){
+  const tile=slab(.746,.732,.018,-1.90+ix*.755,.256,-1.18+iz*.742,'stone',kitchen,.008);
+  tile.rotation.y=(ix+iz)%2?Math.PI:0;
+ }
+ box(4.55,.095,.035,0,.326,-1.51,'stone',kitchen);
+ box(.035,.095,2.94,-2.19,.326,-.17,'stone',kitchen);
+ // Full-size joinery with flush bookmatched wood, dark reveals and an inset plinth.
+ const cabinet=group(-.02,.29,-1.04,kitchen);cabinet.name='pestoverflow-cabinet-bank';
+ rounded(4.19,.94,.81,0,.50,0,'recess',cabinet,.015);
+ box(4.12,.10,.70,0,.065,-.04,'recess',cabinet);
+ for(let i=0;i<5;i++){
+  const x=-1.65+i*.825;
+  const front=rounded(.80,.84,.045,x,.54,.433,'oak',cabinet,.012);
+  // Pulls are fine metal details, with a restrained horizontal finger recess.
+  box(.65,.012,.014,x,.914,.467,'recess',cabinet);
+  line([[x-.15,.915,.483],[x+.15,.915,.483]],.007,'brass',cabinet);
+  front.userData.joinery=true;
+ }
+ // A true opening in the counter surrounds the recessed steel basin.
+ const counterShape=new T.Shape();counterShape.moveTo(-2.16,-.49);counterShape.lineTo(2.16,-.49);counterShape.lineTo(2.16,.49);counterShape.lineTo(-2.16,.49);counterShape.closePath();
+ const hole=new T.Path();hole.moveTo(-1.33,-.27);hole.lineTo(-1.33,.28);hole.lineTo(-.49,.28);hole.lineTo(-.49,-.27);hole.closePath();counterShape.holes.push(hole);
+ const countertop=mesh(new T.ExtrudeGeometry(counterShape,{depth:.095,bevelEnabled:true,bevelSize:.012,bevelThickness:.01,bevelSegments:3}),'stone',cabinet);
+ countertop.rotation.x=-Math.PI/2;countertop.position.y=.98;
+ slab(.82,.54,.022,-.91,.935,0,'steel',cabinet,.055);
+ for(const x of [-1.325,-.495])box(.018,.10,.55,x,.982,0,'steel',cabinet);
+ for(const z of [-.265,.275])box(.83,.10,.018,-.91,.982,z,'steel',cabinet);
+ disk(.045,.004,-.91,.951,0,'recess',cabinet);ring(.044,.003,-.91,.954,0,'steel',cabinet).rotation.x=-Math.PI/2;
+ line([[-.90,1.05,-.39],[-.90,1.42,-.39],[-.90,1.51,-.31],[-.90,1.51,-.13],[-.90,1.41,-.10]],.023,'brass',cabinet);
+ disk(.046,.018,-.90,1.07,-.39,'brass',cabinet);line([[-.79,1.07,-.39],[-.79,1.18,-.39],[-.72,1.18,-.39]],.011,'brass',cabinet);
+ // Honed-stone backsplash and a slim oak shelf with a warm under-light.
+ rounded(4.34,.52,.035,-.02,1.62,-1.507,'stone',kitchen,.012);
+ slab(3.95,.32,.075,-.06,2.18,-1.39,'oak',kitchen,.015);
+ box(3.60,.012,.022,-.06,2.128,-1.25,'glow',kitchen);
+ for(const x of [-1.74,1.54])box(.035,.16,.20,x,2.08,-1.40,'brass',kitchen);
+ // A few carefully modelled utensils establish scale without crowding the event.
+ function board(x,y,z,w,h,tilt){const g=group(x,y,z,kitchen);g.rotation.z=tilt;rounded(w,h,.045,0,0,0,'oak',g,.07);rounded(w*.30,.22,.045,0,h/2+.045,0,'oak',g,.04);ring(.032,.006,0,h/2+.08,.025,'recess',g);return g;}
+ board(.85,1.66,-1.43,.39,.63,-.08);board(1.15,1.55,-1.36,.34,.44,.09);
+ function vessel(x,y,z,r,h,key){const pts=[new T.Vector2(0,0),new T.Vector2(r*.72,0),new T.Vector2(r,.035),new T.Vector2(r*.92,h*.85),new T.Vector2(r*.78,h),new T.Vector2(r*.64,h),new T.Vector2(r*.77,h*.84),new T.Vector2(r*.80,.05),new T.Vector2(0,.05)];const o=mesh(new T.LatheGeometry(pts,40),key,kitchen);o.position.set(x,y,z);return o;}
+ vessel(1.68,1.36,-1.10,.13,.27,'porcelain');
+ for(let i=0;i<5;i++)line([[1.68,1.40,-1.10],[1.68+(i-2)*.032,1.83,-1.10+(i%2)*.03]],.009,'oak',kitchen);
+ vessel(.39,1.36,-.85,.17,.10,'porcelain');for(let i=0;i<3;i++)ellipsoid(.29+i*.09,1.48,-.85,.065,.065,.065,'leaf',kitchen);
+ const pot=vessel(-1.73,1.36,-1.18,.13,.22,'porcelain');
+ disk(.11,.012,-1.73,1.57,-1.18,'recess',kitchen);
+ for(let i=0;i<12;i++){
+  const a=i*2.399,tip=new T.Vector3(-1.73+Math.cos(a)*.17,1.77+(i%4)*.07,-1.18+Math.sin(a)*.14);
+  line([[-1.73,1.56,-1.18],tip.toArray()],.004,'leaf',kitchen);
+  for(const sign of [-1,1]){const leaf=ellipsoid(tip.x+sign*.025,tip.y-.02,tip.z,.065,.014,.025,'leaf',kitchen);leaf.rotation.z=sign*.48;leaf.rotation.y=a;}
+ }
+ for(let i=0;i<3;i++){const cup=vessel(-1.24+i*.29,2.23,-1.40,.081,.16,'porcelain');ring(.052,.010,-1.13+i*.29,2.32,-1.40,'porcelain',kitchen);}
+ // Discreet camera, with a real lens barrel and articulated wall mount.
+ const sensor=group(-2.10,2.43,-1.37,kitchen);sensor.name='pestoverflow-room-sensor';sensor.rotation.y=.55;sensor.rotation.x=.25;
+ rounded(.28,.32,.075,0,0,-.11,'porcelain',sensor,.07);
+ line([[0,0,-.10],[0,0,.05]],.032,'steel',sensor);
+ const housing=mesh(new T.CylinderGeometry(.155,.145,.14,64),'porcelain',sensor);housing.rotation.x=Math.PI/2;housing.position.z=.09;
+ const face=mesh(new T.CylinderGeometry(.132,.132,.014,64),'graphite',sensor);face.rotation.x=Math.PI/2;face.position.z=.168;
+ ring(.088,.010,0,0,.181,'steel',sensor);ellipsoid(0,0,.181,.076,.076,.018,'lens',sensor);
+ const led=ball(.013,0,-.11,.185,'jade',sensor);
+ // Mouse follows one unobstructed route, stopping precisely inside the event box.
+ const animal=pestMouse(T,k),mouse=animal.group;mouse.position.set(-2.62,floorY,.67);mouse.scale.setScalar(.88);
+ const zone=group(-1.05,floorY+.012,.67);zone.name='pestoverflow-detection-zone';
+ for(const sx of [-1,1])for(const sz of [-1,1])line([[sx*.45,0,sz*.19],[sx*.45,0,sz*.27],[sx*.34,0,sz*.27]],.012,'coralSignal',zone);
+ // Precise phone housing and a single integrated screen, with a camera event UI.
+ const phone=group(2.36,.265,.16);phone.name='pestoverflow-owner-phone';phone.rotation.y=-.07;phone.rotation.x=-.045;
+ rounded(2.08,4.02,.175,0,2.03,0,'graphite',phone,.23);
+ rounded(2.025,3.965,.058,0,2.03,.105,'steel',phone,.21);
+ rounded(1.97,3.91,.035,0,2.03,.149,'graphite',phone,.20);
+ const app=createPestScreen(T);app.mesh.scale.setScalar(1.174);app.mesh.position.set(0,2.03,.181);app.mesh.name='pestoverflow-app-screen';phone.add(app.mesh);
+ rounded(.50,.11,.018,0,3.829,.196,'graphite',phone,.05);ball(.026,.172,3.83,.207,'lens',phone);
+ rounded(.47,.025,.008,0,.235,.204,'porcelain',phone,.012);
+ rounded(.024,.42,.06,1.06,2.55,0,'steel',phone,.01);rounded(.024,.22,.06,-1.06,2.86,0,'steel',phone,.01);
+ // Connection is a transient notification, not a permanent wire in the room.
+ const curve=new T.CatmullRomCurve3([new T.Vector3(-3.51,2.64,-1.37),new T.Vector3(-1.3,3.27,-1.15),new T.Vector3(.55,3.16,-.42),new T.Vector3(1.39,2.98,.35)]);
+ const route=mesh(new T.TubeGeometry(curve,100,.008,8,false),'coralSignal');route.name='pestoverflow-notification-route';
+ const pulse=ball(.048,0,0,0,'coralSignal');pulse.name='pestoverflow-notification-pulse';pulse.position.copy(curve.getPointAt(0));
+ // Named semantic state nodes make timing testable independently of canvas rendering.
+ const notice=group(0,0,0,phone);notice.name='pestoverflow-owner-alert';
+ const confirmation=group(0,0,0,phone);confirmation.name='pestoverflow-owner-confirmation';
+ // Keep only the indicator dynamic; batch the static room by material.
+ sensor.remove(led);k.batch(kitchen);sensor.add(led);
+ const out=finish(23,[kitchen,phone,mouse,zone,route,pulse]);
+ const start=mouse.position.clone(),offset=pulse.position.clone().sub(curve.getPointAt(0));
+ const framingPoints=[];out.updateMatrixWorld(true);for(const child of out.children){if(child===pulse||child===route)continue;const b=new T.Box3().setFromObject(child);if(b.isEmpty())continue;for(const x of [b.min.x,b.max.x])for(const y of [b.min.y,b.max.y])for(const z of [b.min.z,b.max.z])framingPoints.push(new T.Vector3(x,y,z));}
+ Object.assign(out.userData,{studioProfile:'pestoverflow',initialYaw:-.09,initialElevation:.28,appFirst:true,cycle:PESTOVERFLOW_CYCLE,framingPoints});
+ const stories=[['Monitoring the kitchen','The camera watches the floor beside the cabinets.','neutral'],['Pest activity detected','The mouse has entered the monitored area.','thinking'],['Alert on its way','The event and its location are sent to the owner.','thinking'],['The owner knows where to act','A kitchen event appears in the app with a notification receipt.','complete'],['Monitoring resumes','The event stays recorded while the scene prepares to replay.','neutral']];
+ out.userData.animate=time=>{
+  const s=pestMoment(time),t=s.t;mouse.position.copy(start);mouse.position.x+=s.travel*1.57;
+  mouse.rotation.y=t<12?0:t<13?Math.PI*ease(t-12):t<17?Math.PI:Math.PI*(1-ease(t-17));animal.animate(t,s.gait);
+  zone.visible=s.detected;led.material=s.detected?m.coralSignal:m.jade;
+  route.visible=t>=5.2&&t<8.2;pulse.visible=t>=5.2&&t<6.5;pulse.position.copy(curve.getPointAt(ease((t-5.2)/1.3))).add(offset);
+  notice.visible=s.notified;confirmation.visible=s.notified;app.update(s.notified?'notified':s.phase==='reset'?'monitoring':s.phase);
+  const chapter=['monitoring','detected','sending','notified','reset'].indexOf(s.phase),story=stories[chapter],index=chapter===4?0:chapter;
+  out.userData.story={index,step:`0${index+1} / 04`,title:story[0],detail:story[1],tone:story[2],phase:s.phase};
+ };
  out.userData.animate(0);return out;
 }

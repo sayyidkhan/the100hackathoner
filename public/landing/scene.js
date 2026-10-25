@@ -456,9 +456,10 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       Object.assign(key.shadow.camera, { left: -5, right: 5, top: 6, bottom: -4 });
       key.shadow.camera.updateProjectionMatrix();
     }
-    if (currentModel?.userData.studioProfile === 'lrnmate') {
+    if (['lrnmate','amigo'].includes(currentModel?.userData.studioProfile)) {
       const dark = currentTheme === 'dark';
-      const backdrop = dark ? 0x29231e : 0xece5d9;
+      const amigo = currentModel?.userData.studioProfile === 'amigo';
+      const backdrop = dark ? (amigo ? 0x0c272c : 0x29231e) : 0xece5d9;
       scene.background.setHex(backdrop); scene.fog.color.setHex(backdrop);
       renderer.setClearColor(backdrop, 1); floor.material.color.setHex(backdrop);
       hemisphere.color.setHex(0xffeed5); hemisphere.groundColor.setHex(0x504338);
@@ -473,6 +474,41 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       contactShadow.material.opacity = 0;
       paperContact.visible = true; paperContact.material.opacity = dark ? .42 : .16;
       paperContact.scale.set(1.15, 1.1, 1);
+      if(amigo){
+        hemisphere.intensity=.32;key.intensity=3.05;fill.intensity=.35;
+        rim.color.setHex(0xaed4d3);rim.intensity=2;
+        key.shadow.normalBias=.004;scene.environmentIntensity=.65;
+      }
+    }
+    if (currentModel?.userData.studioProfile === 'pestoverflow') {
+      const dark = currentTheme === 'dark';
+      const backdrop = dark ? 0x211e1b : 0xebe7df;
+      scene.background.setHex(backdrop); scene.fog.color.setHex(backdrop);
+      renderer.setClearColor(backdrop, 1); floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xf5e8d5); hemisphere.groundColor.setHex(0x3a3028); hemisphere.intensity=.30;
+      key.color.setHex(0xffe8ca); key.position.set(-4.5,6,3.5); key.intensity=3.15;
+      fill.color.setHex(0xcbdde5); fill.intensity=.36;
+      rim.color.setHex(0xffd29a); rim.intensity=2.0; rim.position.set(3,4,-3);
+      scene.environmentIntensity=.62; renderer.toneMappingExposure=.96;
+      key.shadow.normalBias=.004; key.shadow.bias=-.00005; key.shadow.radius=5;
+      Object.assign(key.shadow.camera,{left:-5,right:5,top:5,bottom:-4});key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity=0;paperContact.visible=true;
+      paperContact.material.opacity=dark?.44:.18;paperContact.scale.set(1.3,1.1,1);
+    }
+    if (currentModel?.userData.studioProfile === 'mynextgym') {
+      const dark = currentTheme === 'dark';
+      const backdrop = dark ? 0x211f1c : 0xece7de;
+      scene.background.setHex(backdrop); scene.fog.color.setHex(backdrop);
+      renderer.setClearColor(backdrop, 1); floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xf5ebdc); hemisphere.groundColor.setHex(0x354044); hemisphere.intensity=.42;
+      key.color.setHex(0xffe5c0); key.position.set(-4.5,6.5,3); key.intensity=2.8;
+      fill.color.setHex(0xc4e2ea); fill.intensity=.48;
+      rim.color.setHex(0xffddb4); rim.position.set(3,4,-3); rim.intensity=1.8;
+      scene.environmentIntensity=.68; renderer.toneMappingExposure=.98;
+      key.shadow.normalBias=.003; key.shadow.bias=-.00005; key.shadow.radius=5;
+      Object.assign(key.shadow.camera,{left:-5,right:5,top:5,bottom:-4});key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity=0;paperContact.visible=true;
+      paperContact.material.opacity=dark?.42:.18;paperContact.scale.set(1.3,1.1,1);
     }
     if (currentModel?.userData.studioProfile === 'coastal') {
       // Warm broad studio light matches the miniature's baked soft key.

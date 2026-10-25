@@ -1,41 +1,43 @@
 import {medivoiceStudio} from './medivoice-studio.js';
 import {landPolygons} from './co2unter-land.js';
 import {planningExhibitSurfaces} from './planning-exhibit-surfaces.js';
+import {co2unterSurfaces} from './co2unter-surfaces.js';
 
-// The sculptural arrangement interprets the original carbon-to-familiar-units
-// converter. No geometry or animation represents a measured emission quantity.
+// Source-grounded converter interpretation. Objects are familiar references,
+// never measured carbon results; no numeric emission factor is invented here.
 export function createArtifact(T) {
- const kit=medivoiceStudio(T),{root,materials:m,mesh,disk,ball,line,texture,finish}=kit;
- const palette={paper:0xe3d4b8,ivory:0xf5e9d1,blue:0x164d59,ink:0x163b40,gold:0xb99353,wood:0x6e4931,bark:0x503524,cut:0xc9a573,yellow:0xd4ab43,jade:0x5cb9a9,shade:0xa79b7f};
- for(const [k,color] of Object.entries(palette))m[k]=new T.MeshStandardMaterial({color,roughness:k==='gold'?.32:.76,metalness:k==='gold'?.72:0});
- const grain=texture('paper'),wood=texture('wood');
- for(const k of ['paper','ivory','cut']){m[k].bumpMap=grain;m[k].bumpScale=k==='paper'?.024:.009;}
- for(const k of ['wood','bark']){m[k].bumpMap=wood;m[k].bumpScale=.028;}
- m.blue.roughness=.32;m.blue.metalness=.15;
- m.jade.emissive=new T.Color(0x235f58);m.jade.emissiveIntensity=.3;
+ const {root,materials:m,mesh,disk,ball,line,texture,finish}=medivoiceStudio(T);
+ const palette={paper:0xebe0cd,ivory:0xf0e7d7,blue:0x123f52,ink:0x12323f,gold:0xb79559,wood:0x745239,bark:0xffffff,cut:0xffffff,yellow:0xffffff,jade:0x87d1b8,shade:0xa89a7e};
+ for(const [k,color] of Object.entries(palette))m[k]=new T.MeshStandardMaterial({color,roughness:k==='gold'?.32:.78,metalness:k==='gold'?.66:0});
+ const grain=texture('paper'),surfaces=co2unterSurfaces(T);
  m.paper.map=planningExhibitSurfaces(T).stone;m.paper.bumpMap=m.paper.map;m.paper.bumpScale=.028;
+ m.ivory.bumpMap=grain;m.ivory.bumpScale=.008;
+ m.bark.map=surfaces.bark;m.bark.bumpMap=surfaces.bark;m.bark.bumpScale=.065;m.bark.roughness=.96;
+ m.cut.map=surfaces.endgrain;m.cut.bumpMap=surfaces.endgrain;m.cut.bumpScale=.012;
+ m.yellow.map=surfaces.banana;m.yellow.bumpMap=surfaces.banana;m.yellow.bumpScale=.008;m.yellow.roughness=.57;
+ m.blue.roughness=.37;m.blue.metalness=.18;m.blue.bumpMap=grain;m.blue.bumpScale=.007;
+ m.jade.emissive=new T.Color(0x3c9176);m.jade.emissiveIntensity=.35;
  const group=(x=0,y=0,z=0,p=root)=>{const g=new T.Group();g.position.set(x,y,z);p.add(g);return g;};
  function box(w,h,d,x,y,z,color='ivory',p=root,r=.035){
   r=Math.min(r,w*.48,h*.48,d*.48);const geo=new T.BoxGeometry(w,h,d,6,6,6),a=geo.attributes.position;
   for(let i=0;i<a.count;i++){const v=new T.Vector3().fromBufferAttribute(a,i),c=new T.Vector3(T.MathUtils.clamp(v.x,-w/2+r,w/2-r),T.MathUtils.clamp(v.y,-h/2+r,h/2-r),T.MathUtils.clamp(v.z,-d/2+r,d/2-r));v.sub(c).normalize().multiplyScalar(r).add(c);a.setXYZ(i,v.x,v.y,v.z);}geo.computeVertexNormals();const o=mesh(geo,color,p);o.position.set(x,y,z);return o;
  }
+ function panel(w,h,d,r,color,p=root){const s=new T.Shape(),x=-w/2,y=-h/2;s.moveTo(x+r,y);s.lineTo(x+w-r,y);s.quadraticCurveTo(x+w,y,x+w,y+r);s.lineTo(x+w,y+h-r);s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);s.lineTo(x+r,y+h);s.quadraticCurveTo(x,y+h,x,y+h-r);s.lineTo(x,y+r);s.quadraticCurveTo(x,y,x+r,y);return mesh(new T.ExtrudeGeometry(s,{depth:d,bevelEnabled:true,bevelSegments:3,bevelSize:.012,bevelThickness:.012,curveSegments:12}),color,p);}
  const labels=group();
- function label(text,w,h,x,y,z,color='#d3b579',bg='#183a3d',p=labels){
+ function label(text,w,h,x,y,z,color='#e8cc95',bg='#12323f',p=labels){
   if(typeof document==='undefined')return;
-  const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=Math.max(128,Math.round(1024*h/w));const c=canvas.getContext('2d');c.fillStyle=bg;c.fillRect(0,0,canvas.width,canvas.height);c.fillStyle=color;c.font=`500 ${Math.round(canvas.height*.52)}px Georgia, serif`;c.textAlign='center';c.textBaseline='middle';c.fillText(text,canvas.width/2,canvas.height/2,canvas.width*.91);const map=new T.CanvasTexture(canvas);map.colorSpace=T.SRGBColorSpace;const o=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshStandardMaterial({map,roughness:.8}));o.position.set(x,y,z);p.add(o);return o;
+  const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=Math.max(100,Math.round(1024*h/w));const c=canvas.getContext('2d');c.fillStyle=bg;c.fillRect(0,0,canvas.width,canvas.height);c.fillStyle=color;c.font=`500 ${Math.round(canvas.height*.57)}px Georgia, serif`;c.textAlign='center';c.textBaseline='middle';c.fillText(text,canvas.width/2,canvas.height/2,canvas.width*.91);const map=new T.CanvasTexture(canvas);map.colorSpace=T.SRGBColorSpace;const o=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshStandardMaterial({map,roughness:.8}));o.position.set(x,y,z);p.add(o);return o;
  }
- // Rounded limestone exhibition slab with a dark shadow gap and brass reveal.
- box(8.05,.10,3.25,0,.04,0,'ink',root,.04);
- box(8.2,.35,3.35,0,.25,0,'paper',root,.14);
- box(7.87,.025,3.04,0,.437,0,'gold',root,.012);
- box(7.80,.035,2.97,0,.46,0,'paper',root,.017);
- box(1.75,.23,.04,0,.23,1.69,'gold');
- label('CO2unter',1.67,.185,0,.23,1.716);
-
+ // A sculpted, rounded plinth gives the three parts a single visual foundation.
+ const plinth=panel(8.0,3.45,.33,.5,'paper');plinth.rotation.x=-Math.PI/2;plinth.position.y=.11;
+ const under=panel(7.88,3.32,.08,.48,'ink');under.rotation.x=-Math.PI/2;under.position.y=.025;
+ const reveal=panel(7.94,3.38,.022,.48,'gold');reveal.rotation.x=-Math.PI/2;reveal.position.y=.105;
+ box(2.20,.26,.06,0,.26,1.744,'gold',root,.025);label('CO₂unter',2.10,.21,0,.26,1.779);
+ for(const side of [-1,1]){const screw=ball(.024,side*1.01,.26,1.79,'gold');screw.scale.z=.4;}
  // Celestial globe in a stationary instrument mount. Geographic land relief,
  // meridians, fine latitude lines and calibrated brass rim read as an instrument.
- const globeCenter=new T.Vector3(-2.45,1.97,-.10),radius=1.12;
- disk(.72,.13,-2.45,.55,-.1,'gold');disk(.60,.12,-2.45,.65,-.1,'blue');disk(.19,.28,-2.45,.81,-.1,'gold');
+ const globeCenter=new T.Vector3(-2.35,2.11,-.32),radius=1.12;
+ disk(.78,.13,-2.35,.56,-.32,'gold');disk(.64,.12,-2.35,.67,-.32,'blue');disk(.22,.32,-2.35,.86,-.32,'gold');
  const globe=group(...globeCenter.toArray());globe.rotation.y=.45;
  ball(radius,0,0,0,'blue',globe);
  const spherical=(lon,lat,r=radius+.009)=>{const l=lon*Math.PI/180,p=lat*Math.PI/180;return [r*Math.cos(p)*Math.sin(l),r*Math.sin(p),r*Math.cos(p)*Math.cos(l)];};
@@ -66,72 +68,84 @@ export function createArtifact(T) {
  const landMesh=mesh(landGeometry,'ivory',globe);landMesh.name='co2unter-earth-land';
  const meridian=mesh(new T.TorusGeometry(1.25,.026,12,160),'gold');meridian.position.copy(globeCenter);meridian.rotation.z=-.2;
  for(let i=0;i<72;i++){const a=i*Math.PI/36;const tick=box(.008,i%6===0?.065:.028,.014,Math.sin(a)*1.25,Math.cos(a)*1.25,0,'gold',globe,.003);tick.rotation.z=-a;}
- // Globe remains stable; the selected source lights up only during intake.
- const source=group(-1.57,2.17,.61);ball(.074,0,0,0,'jade',source);const targetRing=mesh(new T.TorusGeometry(.13,.012,8,48),'gold',source);
- const markerLabel=label('CARBON DATA',1.28,.16,-2.45,.65,.66);
- if(markerLabel)markerLabel.rotation.x=-.1;
+ // Brass polar spindle and turned base detail make the globe an instrument.
+ disk(.055,.23,-2.35,3.34,-.32,'gold');ball(.065,-2.35,3.48,-.32,'gold');
+ for(const yy of [.59,.72]){const rim=mesh(new T.TorusGeometry(.65,.012,8,96),'gold');rim.position.set(-2.35,yy,-.32);rim.rotation.x=Math.PI/2;}
+ const source=group(-1.55,2.24,.41);ball(.065,0,0,0,'jade',source);mesh(new T.TorusGeometry(.11,.012,8,48),'gold',source);
+ label('01  /  CARBON DATA',1.62,.16,-2.35,.52,.63);
 
- // Source -> converter channel inset into the stone, with one guided sample.
- const intakeCurve=new T.CatmullRomCurve3([new T.Vector3(-1.58,.51,.75),new T.Vector3(-1.1,.51,1.05),new T.Vector3(-.55,.51,1.02),new T.Vector3(0,.51,.65)]);
- line(intakeCurve.getPoints(70).map(v=>v.toArray()),.016,'gold');
- const phone=group(0,.56,-.18);phone.rotation.x=-.065;
- box(1.45,.12,.82,0,0,0,'gold',phone,.05);box(1.20,.15,.61,0,.11,0,'ivory',phone,.06);
- box(1.45,2.53,.17,0,1.46,0,'gold',phone,.08);box(1.37,2.46,.17,0,1.46,.025,'ivory',phone,.075);box(1.20,2.16,.025,0,1.48,.123,'ink',phone,.012);
- box(.35,.022,.012,0,2.59,.13,'shade',phone,.01);ball(.018,.29,2.59,.141,'blue',phone);
- const phoneLabels=group(0,.56,-.18,labels);phoneLabels.rotation.x=-.065;
- label('CO2unter',1.07,.23,0,2.34,.144,'#ead7ac','#163b40',phoneLabels);
- label('CARBON',.99,.16,0,2.02,.149,'#b48b46','#f1e5cc',phoneLabels);
- label('COMPARE',.99,.16,0,1.16,.149,'#b48b46','#f1e5cc',phoneLabels);
- label('FAMILIAR UNITS',.99,.12,0,.57,.149,'#cfddcf','#163b40',phoneLabels);
- box(1.0,.48,.014,0,1.89,.14,'ivory',phone,.007);box(1.0,.48,.014,0,1.03,.14,'ivory',phone,.007);
- for(let j=0;j<3;j++){box(.52-j*.05,.027,.016,-.11,1.89-j*.09,.156,'shade',phone,.006);box(.46+j*.04,.026,.016,-.13,1.04-j*.09,.156,'shade',phone,.006);}
- line([[-.09,1.57,.16],[-.09,1.38,.16],[-.15,1.44,.16]],.016,'gold',phone);line([[.09,1.39,.16],[.09,1.58,.16],[.15,1.52,.16]],.016,'gold',phone);
- const phoneGlow=group(0,.56,-.18);phoneGlow.rotation.x=-.065;
- const inputGlow=box(.024,.43,.016,-.53,1.89,.163,'jade',phoneGlow,.007),outputGlow=box(.024,.43,.016,-.53,1.03,.163,'jade',phoneGlow,.007);
+ // Oversized working-screen miniature: complete hierarchy, actual choices and
+ // a changing result card; no decorative placeholder bars or made-up values.
+ const phone=group(-.02,.59,.0);phone.rotation.x=-.10;
+ box(1.87,.12,.85,0,0,0,'gold',phone,.05);box(1.65,.10,.67,0,.10,0,'paper',phone,.04);
+ const frame=panel(1.83,3.12,.16,.20,'gold',phone);frame.position.set(0,1.84,0);
+ const body=panel(1.75,3.05,.16,.18,'ivory',phone);body.position.set(0,1.84,.035);
+ const glass=panel(1.56,2.68,.018,.10,'ink',phone);glass.position.set(0,1.86,.206);
+ box(.32,.025,.015,0,3.22,.221,'ink',phone,.01);ball(.022,.25,3.22,.228,'blue',phone);
+ const home=mesh(new T.TorusGeometry(.057,.009,8,40),'gold',phone);home.position.set(0,.41,.224);
+ for(const [x,y,h] of [[-.94,2.65,.16],[-.94,2.40,.16],[.94,2.55,.28]])box(.02,h,.085,x,y,.08,'gold',phone,.01);
+ const display=group(-.02,.59,0);display.rotation.x=-.10;
+ const screenMap=surfaces.screenFrames.length?new T.CanvasTexture(surfaces.screenFrames[0]):null;if(screenMap){screenMap.colorSpace=T.SRGBColorSpace;screenMap.anisotropy=4;}
+ const screen=new T.Mesh(new T.PlaneGeometry(1.48,2.47),new T.MeshStandardMaterial({color:surfaces.screenFrames.length?0xffffff:0x12323f,map:screenMap,roughness:.58,emissive:0xffffff,emissiveMap:screenMap,emissiveIntensity:surfaces.screenFrames.length?.15:0}));screen.position.set(0,1.86,.241);screen.name='co2unter-converter-screen';screen.userData.noReceiveShadow=true;display.add(screen);
+ label('02  /  CONVERT',1.36,.15,-.02,.53,.66);
 
- // Everyday comparisons are displayed as physical specimens. Their counts are
- // compositional only and do not encode an emissions conversion factor.
- const pods=[{x:2.18,z:.74,r:.68,lift:0,name:'BANANAS'},{x:2.72,z:-.69,r:.71,lift:.32,name:'WOOD'}];
- const rings=[];
- for(const pod of pods){disk(pod.r,.12,pod.x,.53,pod.z,'gold');disk(pod.r-.035,.19+pod.lift,pod.x,.665+pod.lift/2,pod.z,'paper');disk(pod.r-.085,.025,pod.x,.773+pod.lift,pod.z,'ivory');label(pod.name,.91,.12,pod.x,.65+pod.lift,pod.z+pod.r+.006);const g=group(pod.x,.794+pod.lift,pod.z);const tor=mesh(new T.TorusGeometry(pod.r-.11,.018,10,96),'jade',g);tor.rotation.x=Math.PI/2;rings.push(g);}
- function banana(x,z,tilt){
-  const g=group(x,.84,z);g.rotation.y=tilt;
-  const path=new T.CatmullRomCurve3([new T.Vector3(-.42,.27,0),new T.Vector3(-.22,.045,0),new T.Vector3(.06,.02,0),new T.Vector3(.31,.16,0),new T.Vector3(.4,.37,0)]);
-  const geometry=new T.TubeGeometry(path,44,.095,12,false),pos=geometry.attributes.position;
-  // Taper the two tips while retaining curved cross sections.
-  for(let i=0;i<pos.count;i++){const step=Math.floor(i/13)/44,c=path.getPointAt(Math.max(0,Math.min(1,step))),v=new T.Vector3().fromBufferAttribute(pos,i);const taper=.38+.62*Math.pow(Math.sin(Math.PI*step),.45);v.sub(c).multiplyScalar(taper).add(c);pos.setXYZ(i,v.x,v.y,v.z);}geometry.computeVertexNormals();mesh(geometry,'yellow',g);
-  for(const a of [-.9,.9])line(path.getPoints(36).map(p=>[p.x,p.y+.045,p.z+a*.064]),.003,'cut',g);
-  const stem=box(.06,.13,.06,.4,.42,0,'wood',g,.016);stem.rotation.z=-.2;
+ // Two generous comparison stages are intentionally separated in depth and
+ // height. The upper wood stage remains visible above the banana bunch.
+ const pods=[{x:2.25,z:.88,r:.75,lift:.02,name:'BANANAS'},{x:2.72,z:-.63,r:.78,lift:.68,name:'WOOD'}];
+ const rings=[],specimens=[];
+ for(const [i,pod] of pods.entries()){
+  disk(pod.r,.085,pod.x,.50,pod.z,'gold');disk(pod.r-.025,.20+pod.lift,pod.x,.64+pod.lift/2,pod.z,'paper');disk(pod.r-.05,.05,pod.x,.77+pod.lift,pod.z,'ivory');
+  const rim=mesh(new T.TorusGeometry(pod.r-.05,.013,8,96),'gold');rim.position.set(pod.x,.80+pod.lift,pod.z);rim.rotation.x=Math.PI/2;
+  if(i===1)for(let j=0;j<36;j++){const a=j*Math.PI/18;line([[pod.x+Math.sin(a)*(pod.r-.023),.58,pod.z+Math.cos(a)*(pod.r-.023)],[pod.x+Math.sin(a)*(pod.r-.023),.71+pod.lift,pod.z+Math.cos(a)*(pod.r-.023)]],.008,'shade');}
+  box(.96,.18,.035,pod.x,.65+pod.lift,pod.z+pod.r+.02,'gold',root,.012);label(pod.name,.91,.145,pod.x,.65+pod.lift,pod.z+pod.r+.041);
+  const ring=group(pod.x,.812+pod.lift,pod.z);ring.name=`co2unter-${pod.name.toLowerCase()}-halo`;
+  const tor=mesh(new T.TorusGeometry(pod.r-.10,.022,12,100),'jade',ring);tor.rotation.x=Math.PI/2;rings.push(ring);
  }
- banana(2.16,.58,-.10);banana(2.15,.78,.06);banana(2.18,.98,.20);
- for(const [x,y,z] of [[2.43,1.23,-.66],[2.84,1.23,-.66],[2.65,1.49,-.66]]){
-  const log=group(x,y,z);const trunk=disk(.18,.88,0,0,0,'bark',log);trunk.rotation.x=Math.PI/2;
-  for(const side of [-1,1]){const end=disk(.166,.012,0,0,side*.448,'cut',log);end.rotation.x=Math.PI/2;
-   for(const rr of [.035,.067,.103,.139]){const ring=mesh(new T.TorusGeometry(rr,.004,6,42),'wood',log);ring.position.z=side*.456;ring.scale.y=.92;}}
-  for(let j=0;j<10;j++){const a=j*Math.PI/5;line([[Math.sin(a)*.18,Math.cos(a)*.18,-.42],[Math.sin(a+.06)*.181,Math.cos(a+.06)*.181,0],[Math.sin(a)*.18,Math.cos(a)*.18,.42]],.007,'wood',log);}
+ const bananaBunch=group(2.25,.84,.88);bananaBunch.name='co2unter-banana-specimen';specimens.push(bananaBunch);
+ for(let j=0;j<4;j++){
+  const off=(j-1.5)*.17;
+  const path=new T.CatmullRomCurve3([new T.Vector3(-.55,.14,off),new T.Vector3(-.28,.035,off),new T.Vector3(.09,.10,off*.85),new T.Vector3(.40,.33,off*.50),new T.Vector3(.48,.53,-.04)]);
+  const segments=56,sides=16,geo=new T.TubeGeometry(path,segments,1,sides,false),p=geo.attributes.position;
+  for(let i=0;i<p.count;i++){const u=Math.floor(i/(sides+1))/segments,a=(i%(sides+1))/sides*Math.PI*2,center=path.getPointAt(u),v=new T.Vector3().fromBufferAttribute(p,i);const radius=(.014+.09*Math.pow(Math.sin(Math.PI*u),.6))*(1+.035*Math.cos(a*5));v.sub(center).normalize().multiplyScalar(radius).add(center);p.setXYZ(i,v.x,v.y,v.z);}geo.computeVertexNormals();mesh(geo,'yellow',bananaBunch);
+  ball(.025,-.55,.14,off,'wood',bananaBunch);
  }
- const paths=pods.map(p=>new T.CatmullRomCurve3([new T.Vector3(.72,.51,.35),new T.Vector3(1.22,.51,.35),new T.Vector3(p.x-.6,.51,p.z),new T.Vector3(p.x,.51,p.z)]));
- paths.forEach(c=>line(c.getPoints(65).map(v=>v.toArray()),.016,'gold'));
- const carrier=group();carrier.name='co2unter-conversion-packet';ball(.066,0,0,0,'jade',carrier);
- // Small etched wayfinding arrows clarify that the channels are a process.
- for(const [x,z] of [[-1.05,1.04],[1.16,.35]])line([[x-.06,.52,z-.06],[x+.025,.52,z],[x-.06,.52,z+.06]],.013,'gold');
- carrier.position.copy(intakeCurve.getPointAt(0));
- const preserved=[globe,source,labels,phoneGlow,...rings,carrier];
+ const stalk=box(.115,.17,.12,.48,.58,-.04,'wood',bananaBunch,.035);stalk.rotation.z=-.12;
+ const logs=group(2.72,1.49,-.63);logs.name='co2unter-wood-specimen';specimens.push(logs);logs.rotation.y=-.10;
+ for(const [x,y] of [[-.23,.23],[.23,.23],[0,.62]]){
+  const g=group(x,y,0,logs),geo=new T.CylinderGeometry(.225,.24,1.07,40,14,true),p=geo.attributes.position;
+  for(let i=0;i<p.count;i++){const x=p.getX(i),y=p.getY(i),z=p.getZ(i),a=Math.atan2(z,x),f=1+.035*Math.sin(a*9+y*4)+.022*Math.sin(a*17-y*6);p.setXYZ(i,x*f,y,z*f);}geo.computeVertexNormals();const trunk=mesh(geo,'bark',g);trunk.rotation.x=Math.PI/2;
+  for(const side of [-1,1]){const end=mesh(new T.CircleGeometry(.225,64),'cut',g);end.position.z=side*.541;if(side<0)end.rotation.y=Math.PI;
+   const edge=mesh(new T.TorusGeometry(.228,.012,8,64),'bark',g);edge.position.z=side*.537;
+   for(const radius of [.045,.083,.123,.164,.20]){const points=Array.from({length:49},(_,j)=>{const a=j*Math.PI/24,r=radius*(1+.035*Math.sin(a*5)+.017*Math.cos(a*9));return new T.Vector3(Math.cos(a)*r,Math.sin(a)*r,side*.549);});mesh(new T.TubeGeometry(new T.CatmullRomCurve3(points),64,.0029,5,false),'wood',g);}
+   for(const a of [.35,2.7,4.6])line([[Math.cos(a)*.22,Math.sin(a)*.22,side*.547],[Math.cos(a+.08)*.13,Math.sin(a+.08)*.13,side*.548]],.004,'wood',g);
+  }
+ }
+ // Routed process channels terminate at physical objects, not arbitrary space.
+ const intakeCurve=new T.CatmullRomCurve3([new T.Vector3(-2.35,.49,.62),new T.Vector3(-2.0,.49,1.25),new T.Vector3(-1.04,.49,1.18),new T.Vector3(-.81,.49,.50)]);
+ const paths=pods.map(p=>new T.CatmullRomCurve3([new T.Vector3(.85,.49,.50),new T.Vector3(1.25,.49,.50),new T.Vector3(p.x-p.r-.10,.49,p.z),new T.Vector3(p.x-p.r+.05,.49,p.z)]));
+ [intakeCurve,...paths].forEach(c=>line(c.getPoints(60).map(v=>v.toArray()),.022,'gold'));
+ for(const [x,z] of [[-2.35,.62],[-.81,.50],[.85,.50]]){disk(.10,.018,x,.49,z,'gold');disk(.061,.023,x,.51,z,'blue');}
+ const carrier=group();carrier.name='co2unter-conversion-packet';ball(.074,0,0,0,'jade',carrier);carrier.position.copy(intakeCurve.getPointAt(0));
+ for(const [x,z] of [[-1.55,1.29],[1.15,.50]])line([[x-.07,.5,z-.065],[x+.035,.5,z],[x-.07,.5,z+.065]],.016,'gold');
+ const preserved=[globe,source,labels,display,...rings,carrier];
  finish(20,preserved);
- // finish() centers all root groups equally; retain the offset for path samples.
  const pathOffset=carrier.position.clone().sub(intakeCurve.getPointAt(0));
  const stories=[
-  ['Carbon data, made approachable','The original project explored carbon-emissions data through a mobile converter.'],
-  ['Choose a familiar comparison','The converter relates a carbon input to an everyday unit.'],
-  ['Make the scale tangible','Bananas are one of the familiar comparisons in the original project story.'],
-  ['Compare another perspective','Wood provides another everyday reference. Objects here are illustrative, not measured quantities.']
+  ['Start with a carbon footprint','The 2018 prototype turns carbon-emissions input into a familiar comparison.'],
+  ['Choose bananas','The phone selects an everyday reference, then sends the comparison to its display.'],
+  ['See an everyday reference','The selected banana display lights up. These specimens illustrate the idea, not a measured quantity.'],
+  ['Switch to wood','The same input can be viewed through another familiar reference. The phone and wood display change together.']
  ];
  const smooth=x=>{x=Math.max(0,Math.min(1,x));return x*x*(3-2*x);};
- root.userData={...root.userData,displayBase:false,studioProfile:'lrnmate',initialYaw:-.13,initialElevation:.32,autoOrbit:false,realTimeAnimation:true,cycleDuration:24,
- animate(time){const t=((time%24)+24)%24;let index=t<5?0:t<10?1:t<16?2:3;
+ let lastScreen=-1,manualTime=null,timeOffset=0;
+ const stepTimes=[2.5,8.5,12.5,20.5];
+ root.userData={...root.userData,displayBase:false,studioProfile:'lrnmate',initialYaw:-.10,initialElevation:.24,autoOrbit:false,realTimeAnimation:true,cycleDuration:24,
+ setStep(index,elapsed=0){if(index===null){timeOffset=elapsed-(manualTime??(elapsed-timeOffset));manualTime=null;}else{manualTime=stepTimes[Math.max(0,Math.min(3,index))];}root.userData.animate(elapsed);},
+ animate(time){const clock=manualTime??(time-timeOffset),t=((clock%24)+24)%24,index=t<5?0:t<10?1:t<16?2:3;
   root.userData.story={index,step:`0${index+1} / 04`,title:stories[index][0],detail:stories[index][1],tone:'neutral'};
-  source.scale.setScalar(1+.08*Math.sin(Math.PI*Math.min(1,t/5)));
-  inputGlow.visible=t<10;outputGlow.visible=t>=7&&t<22;
+  screen.userData.comparison=index===3?'wood':index>=1?'bananas':'input';
+  if(lastScreen!==index&&surfaces.screenFrames.length){screenMap.image=surfaces.screenFrames[index];screenMap.needsUpdate=true;lastScreen=index;}
+  source.scale.setScalar(1+.10*Math.sin(Math.PI*Math.min(1,t/5)));
   rings[0].visible=t>=10&&t<16;rings[1].visible=t>=19&&t<23;
   let c=null,u=0;if(t<4.5){c=intakeCurve;u=smooth(t/4.5);}else if(t>=7&&t<10){c=paths[0];u=smooth((t-7)/3);}else if(t>=16&&t<19){c=paths[1];u=smooth((t-16)/3);}
   carrier.visible=Boolean(c);carrier.position.copy((c??intakeCurve).getPointAt(c?u:0)).add(pathOffset);

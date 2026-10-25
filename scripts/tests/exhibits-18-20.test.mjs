@@ -43,5 +43,15 @@ for (const [id, name] of [[18, 'checker-app'], [19, 'fasight'], [20, 'co2unter']
     assert.deepEqual(state(model.userData.cycleDuration), start, 'loop returns to initial state');
     const sample = state(3); state(11);
     assert.deepEqual(state(3), sample, 'seeking cannot accumulate drift');
+    if ([18, 20].includes(id)) {
+      assert.equal(typeof model.userData.setStep, 'function');
+      model.userData.setStep(3, 30);
+      const selected = state(30);
+      assert.equal(model.userData.story.index, 3, 'manual selection opens requested stage');
+      assert.deepEqual(state(60), selected, 'inspection stays still as elapsed time advances');
+      model.userData.setStep(null, 60);
+      assert.deepEqual(state(60), selected, 'autoplay resumes without jumping');
+      assert.notDeepEqual(state(70), selected, 'autoplay progresses after resuming');
+    }
   });
 }

@@ -11,42 +11,42 @@ Reviewed `sayyidkhan/amigo`, master revision `9b78cca10a6443a4fdae0e07e021a7f309
 
 The exhibit interprets the intended exchange and word-bank concept. English/Spanish greetings and the apple example are illustrative. It does not claim live functionality or that an actual meeting occurred.
 
-## Visual composition
+## Current direction — conversation café (v3, 25 October 2026)
 
-Paired rust and teal conversation terminals flank a brass-mounted globe. Thin brass paths carry reciprocal message beads. Phrasebooks, a pencil and a listening badge occupy the front left; a walnut vocabulary drawer occupies the front right. Both artwork and 3D use the same ivory stone plinth, brass seam and AMIGO nameplate. Detailed object craftsmanship avoids placeholder people.
+The phone-and-globe composition was rejected as too similar after the v2 material pass. Version 3 replaces it with an architectural language-exchange café. The setting is a visual metaphor for reciprocal conversation, not a claim that the prototype provided an in-person café service.
 
-The globe uses [Natural Earth 1:110m land boundaries](https://github.com/nvkelso/natural-earth-vector/blob/master/geojson/ne_110m_land.geojson), public-domain geographic data, rounded to 0.01 degrees and stored locally in `amigo-land.js`. The texture is generated deterministically at creation; no remote runtime requests. The map is illustrative, not for navigation.
+Both artwork and 3D contain two terracotta/teal upholstered tub chairs, a shared walnut table with cups and an open notebook, an arched window, warm pendant lamp, olive tree, Hello/Hola speech bubbles and three bilingual word cards. A low terrazzo floor replaces the rectangular display plinth. The rear wall has a real arched opening; the chairs use continuous padded shells, rounded cushions and wooden legs.
+
+The live model uses local deterministic wood, linen and stone textures. Static geometry is batched by material; complete moving assemblies preserve their lettering. Component framing points fit the architecture without padding for empty upper corners. No external runtime texture requests are needed.
 
 ## Motion
 
-14-second deterministic loop:
+Deterministic 14-second sequence:
+- 0–1s: rest.
+- 1–4.6s: Hello lifts gently and a warm message travels to Hola.
+- 5.2–8.6s: Hola lifts and the message returns.
+- 8.8–13s: the three vocabulary cards rise with a slight stagger, then settle.
+- All transforms return to their initial state at 14 seconds.
 
-- 0–1s: calm composition.
-- 1–4.2s: rust greeting travels left to right; only its source waveform moves.
-- 4.2–5.2s: listening pause.
-- 5.2–8.4s: teal reply returns right to left; only its source waveform moves.
-- 8.8–12.7s: front bilingual flashcard rises for inspection and settles back into its drawer.
-- Final rest before repeating.
-
-Animation receives elapsed time through `root.userData.animate(time)` with `realTimeAnimation: true`; gallery pause/reduced-motion behavior remains owned by the existing renderer. No independent timers, random frame changes, camera orbit or perpetual object wobble. Static components are batched by material. Approximately 198k vertices, 47 geometry meshes before browser-only lettering.
+Animation is driven through `root.userData.animate(time)`, with `realTimeAnimation: true`. Existing pause, reduced-motion and keyboard rotation behavior remains with the shared renderer.
 
 ## Integration
 
-- Artwork: `/landing/assets/projects/026-amigo-v1.png`
-- Model: `/landing/artifacts/amigo.js`
-- Suggested alt: `A tactile Amigo language-exchange diorama with rust and teal conversation terminals, a brass globe, phrasebooks and a bilingual vocabulary drawer.`
-- Suggested caption: `A conversation becomes a word worth remembering. Amigo explores reciprocal language practice and a translated word bank.`
-- Browser capture: `outputs/amigo-review/amigo-3d.png`
-- Test: `node --test scripts/tests/amigo.test.mjs`
+- Artwork: `public/landing/assets/projects/026-amigo-cafe-v3.png`
+- Model: `public/landing/artifacts/amigo.js`
+- Materials: `public/landing/artifacts/amigo-surfaces.js`
+- Browser capture: `outputs/amigo-review/amigo-cafe-v3-3d.png`
+- Caption: “Pull up a chair. Exchange a greeting. Take a new word with you. Amigo reimagines reciprocal language practice.”
+- Earlier v1/v2 image assets remain as historical iterations; the site imports v3.
 
 ## Artwork generation
 
-Built-in imagegen tool, not CLI. Generated 1536 × 1024 PNG saved into the repository; original generated asset retained.
+Built-in imagegen, new image rather than an edit of the previous composition. Generated at 1536 × 1024 and copied into the repository.
 
 Final prompt:
 
-> Use case: stylized-concept. Create one exquisite photoreal studio photograph of a tangible handcrafted miniature diorama for Amigo, a language exchange app. Landscape 3:2 composition, the entire object fills 85% of frame, elevated frontal three-quarter view, warm dark espresso background, soft amber key light from upper left and subtle cool rim. Exact composition to build as real interactive 3D: low wide rounded rectangular warm ivory travertine plinth with thin brass inlay, a small front dark nameplate reading 'AMIGO'. On left stands a tall rounded rust-orange smartphone-shaped conversation terminal, on right a matching deep teal conversation terminal, both inward-angled but facing camera, on small brass cradles. Each terminal has an ivory inset screen with a restrained embossed sound waveform, a circular camera dot and tiny etched speaker grille, plus one small cream chat bubble. Left bubble says 'Hello', right says 'Hola'. Between them is a detailed dark teal tabletop globe about two thirds the phone height, finely etched brass longitude and latitude grid and flat warm gold continents, held in tilted brass meridian ring and brass pedestal. Two thin brass curved communication arcs pass over the globe between terminals, with one rust enamel message bead and one teal enamel message bead. Foreground right: a small walnut word-bank card tray holding five cream index cards with brass tabs; front card has a simple red apple relief and small labels 'apple' and 'manzana'. Foreground left: a short stack of two linen-bound phrasebooks, a mechanical pencil and small round brass listening badge. Tactile microtexture, refined bevels, believable fine craft, deep contact shadows, warm ivory, rust orange, petroleum teal and brushed brass palette. No humans, no toys, no floating screens, no oversized random labels, no UI screenshot, no magical smoke. The sculptural exhibit communicates conversation becoming a saved vocabulary card. Keep it plausible to reproduce in detailed Three.js geometry.
+> Use case: stylized-concept. Asset: Amigo language-exchange portfolio artwork, landscape 3:2. Create a completely new premium miniature architectural scene: a welcoming conversation cafe, with NO phones and NO globe. Full diorama visible, frontal three-quarter view at modest elevation, dark petrol-teal studio background. One low circular cream terrazzo floor with thin terracotta edge. A curved ivory half-height cafe wall at rear, a large central dark teal inset arched window with fine walnut mullions, small uppercase AMIGO lettering above the window, delicate warm pendant lamp hanging from a thin curved brass stem. Two plush sculptural tub armchairs, left burnt orange, right deep teal, angled slightly toward each other; beautifully upholstered rounded backs and cushions, slender walnut legs. A round walnut pedestal cafe table between them with two tiny ivory ceramic espresso cups and an open notebook. Above the left chair floats a cream rounded speech bubble reading 'Hello', above the right one a cream rounded speech bubble reading 'Hola'; connected by one slim flowing coral ribbon arch carrying three small warm glowing dots. In front of the table, three upright little collectible vocabulary cards on a low ivory display ledge: middle card larger with a sculpted red apple icon and clear small 'apple / manzana' text; side cards slightly angled with simple sun and leaf icons. Small potted olive tree at rear right and a stack of two books near left chair. Handcrafted contemporary architectural maquette, soft tactile woven upholstery, real wood grain, fine terrazzo, satin brass details, beautiful soft shadows and warm afternoon lighting. Strong silhouette, airy clear composition, sophisticated contemporary editorial image, exquisite realistic physical detail. No humans, no huge device screens, no giant lettering, no globe, no phone, no floating island, no massive plinth, no UI. Warm terracotta and cream balanced with deep teal, restrained metal. The two conversation chairs and speech bubbles are the main focus; objects match a plausible interactive Three.js sculpture.
 
 ## Verification
 
-Node test checks finite geometry/transforms, correct exhibit ID, time-driven animation, distinct greeting/reply/card stages, seek determinism and seamless 14-second loop. Isolated Chrome render checked composition, message position, depth of lettering and the globe texture. No runtime page errors during that render. Main app integration/build is verified by the coordinating agent.
+`node --test scripts/tests/amigo.test.mjs`: two passing tests covering finite geometry and transforms, deterministic seeking, a seamless 14-second loop, reciprocal message direction, greeting order and word-card lift/reset. Production build and live browser review check integration, composition, text and gallery controls.

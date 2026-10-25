@@ -1,11 +1,11 @@
-import p23 from '../../public/landing/assets/projects/023-pestoverflow-v1.png';
-import p24 from '../../public/landing/assets/projects/024-mynextgym-v1.png';
+import p23 from '../../public/landing/assets/projects/023-pestoverflow-owner-alert-v2.png';
+import p24 from '../../public/landing/assets/projects/024-mynextgym-location-choice-v3.png';
 import p25 from '../../public/landing/assets/projects/025-neurosurge-v1.png';
-import p26 from '../../public/landing/assets/projects/026-amigo-v1.png';
+import p26 from '../../public/landing/assets/projects/026-amigo-cafe-v3.png';
 import p27 from '../../public/landing/assets/projects/027-grabhunt-v1.png';
-import p18 from '../../public/landing/assets/projects/018-checker-app-v1.png';
+import p18 from '../../public/landing/assets/projects/018-checker-app-v2.png';
 import p19 from '../../public/landing/assets/projects/019-fasight-v1.png';
-import p20 from '../../public/landing/assets/projects/020-co2unter-v1.png';
+import p20 from '../../public/landing/assets/projects/020-co2unter-v2.png';
 import p31 from '../../public/landing/assets/projects/031-growthguru-garden-v2.png';
 import p34Light from '../../public/landing/assets/projects/034-lrnmate-studio-v2.png';
 import fitstakeLight from '../../public/landing/assets/projects/082-fitstake-light-v1.png';
@@ -110,15 +110,15 @@ export interface ProjectArt {
 }
 
 export const projectArt: Record<number, ProjectArt> = {
-  23: { light:p23, dark:p23, alt:'A detailed pest-sensor diorama with a brick utility wall, Raspberry Pi circuit board, PIR dome, mouse and SMS alert phone.', caption:'Detect a visitor you did not invite. An experimental sensor turns movement into a location alert.', model:'/landing/artifacts/pestoverflow.js' },
-  24: { light:p24, dark:p24, alt:'A miniature gym, detailed urban district, comparison charts and a selected site pin on an ivory planning table.', caption:'Compare districts, examine the neighbourhood, and explore where a new gym could fit.', model:'/landing/artifacts/mynextgym.js' },
+  23: { light:p23, dark:p23, alt:'A kitchen sensor detects a mouse and sends a Pest detected alert with the kitchen location to the owner’s phone.', caption:'Detect a pest. Know where it is. Alert the owner.', model:'/landing/artifacts/pestoverflow.js' },
+  24: { light:p24, dark:p24, alt:'Pedestrian flows from transit, offices and homes converge at site B. A footfall comparison shows A 12, B 36 and C 20, then recommends opening the proposed gym at B.', caption:'Follow the footfall. Compare three sites. Open your next gym where the most people pass.', model:'/landing/artifacts/mynextgym.js' },
   25: { light:p25, dark:p25, alt:'A miniature mnemonic kitchen with a walnut grocery cabinet, asparagus, mushroom and rosemary cards, recall tiles and a copper pan on a cream oven.', caption:'Grocery cues become memorable associations, then recipe ingredients are recalled in a mnemonic-learning prototype.', model:'/landing/artifacts/neurosurge.js' },
-  26: { light:p26, dark:p26, alt:'Two conversation terminals connect through a brass-meridian globe to a bilingual flashcard tray.', caption:'Exchange languages, collect useful words, and practise remembering them. A language-learning prototype.', model:'/landing/artifacts/amigo.js' },
+  26: { light:p26, dark:p26, alt:'An Amigo conversation café with orange and teal armchairs, Hello and Hola speech bubbles, and bilingual vocabulary cards.', caption:'Pull up a chair. Exchange a greeting. Take a new word with you. Amigo reimagines reciprocal language practice.', model:'/landing/artifacts/amigo.js' },
   27: { light:p27, dark:p27, alt:'An emerald and brass rewards reservoir connects gold points to an exchange phone and an ivory credit-voucher kiosk.', caption:'From GrabPoints to e-credits. A sculptural interpretation of the GrabHunt hackathon concept.', model:'/landing/artifacts/grabhunt.js' },
 
-  18: { light: p18, dark: p18, alt: 'A brass magnifier examines an ivory job-ad clipboard beside coral and amber review trays and a revised document.', caption: 'Review job-ad wording, distinguish terms to omit from terms to improve, and explore a sample rewrite.', model: '/landing/artifacts/checker-app.js' },
+  18: { light: p18, dark: p18, alt: 'An editorial desk with original and revised job-ad sheets, a brass magnifier, and coral OMIT and amber IMPROVE annotation cards.', caption: 'Review job-ad wording, distinguish terms to omit from terms to improve, and explore a sample rewrite.', model: '/landing/artifacts/checker-app.js' },
   19: { light: p19, dark: p19, alt: 'An open ivory ledger connects a miniature house and asset tray to a brass tree of family portraits, with an identity card and fountain pen.', caption: 'Bring personal details, assets and trusted people into one place. A digital will-planning concept from the hackathon prototype.', model: '/landing/artifacts/fasight.js' },
-  20: { light: p20, dark: p20, alt: 'A blue and brass globe connects to a carbon-footprint converter phone, with miniature bananas and stacked timber representing everyday comparisons.', caption: 'Make carbon data easier to grasp. CO2unter explores comparisons with familiar everyday things.', model: '/landing/artifacts/co2unter.js' },
+  20: { light: p20, dark: p20, alt: 'A detailed blue globe connects to a carbon-converter phone with banana and wood choices, alongside textured specimens on stepped ivory display stands.', caption: 'Make carbon data easier to grasp. CO2unter explores comparisons with familiar everyday things.', model: '/landing/artifacts/co2unter.js' },
   31: { light: p31, dark: p31, alt: 'A brass learning tree grows from an open book beneath a limestone arch. Coral frontend, amber backend and jade database milestones overlook a walnut study desk and quiet reflection pool.', caption: 'Grow one skill at a time. Follow a learning path, connect the milestones, and make room to reflect.', model: '/landing/artifacts/growthguru.js' },
   40: { light: twoRiversDay, dark: twoRiversArt, alt: 'A miniature eco theme park with two turquoise rivers joining beneath a golden Tree of Life, a rainforest canopy walk, timber pavilion, bamboo coaster and solar-powered station.', caption: 'Two Rivers, One Future. Sarawak’s rainforest meets Singapore’s Supertrees in a concept for an eco theme park, where heritage and innovation flow together.', model: '/landing/artifacts/two-rivers.js' },
   54: { light: p54Light, dark: p54Dark, alt: 'A Telegram phone connects a glowing radar to a live music stage and art gallery with verification pins. A framed preview imagines ice cream and flowers after the event.', caption: 'Ask what’s on nearby. Discover events beyond the usual listings, check whether they’re still happening, and imagine what comes after.', model: '/landing/artifacts/gigradar.js' },

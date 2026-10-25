@@ -1,64 +1,72 @@
-# MyNextGym — hackathon 24
+# MyNextGym — footfall-led location analysis
 
-## Source evidence
+## Product purpose and evidence
 
-Reviewed the actual [repository](https://github.com/sayyidkhan/my-next-gym), master revision `626aae36b6dacd4adfd658d181e5b60652c8630b` via the GitHub connector on 23 October 2026.
+MyNextGym identifies a potential gym location using footfall. The exhibit makes that reasoning visible: count pedestrian arrivals at three candidate sites, compare the sample, select the busiest site, then show a proposed gym at that location.
 
-- Repository description: helping predict where to open a gym business.
-- [`index.html`](https://github.com/sayyidkhan/my-next-gym/blob/626aae36b6dacd4adfd658d181e5b60652c8630b/index.html) is titled **My Next Gym — District Analysis**. It embeds Tableau `XmarksDistrict/Story1` and links to sub-district analysis.
-- [`sub-district-analysis.html`](https://github.com/sayyidkhan/my-next-gym/blob/626aae36b6dacd4adfd658d181e5b60652c8630b/sub-district-analysis.html) embeds Tableau's shared view `KT5QBRKSH`.
-- Both pages contain a commented-out Cluster Analysis link. The exhibit therefore represents the two implemented levels, not an invented third feature.
-- The source is a Bootstrap frontend around Tableau views. No predictive algorithm, real estate recommendations, geographical data, or fitness tracking functionality is asserted. The miniature's chart heights and parcels are illustrative; they are not retrieved Tableau data.
+The source repository was reviewed at master revision `626aae36b6dacd4adfd658d181e5b60652c8630b`:
 
-## Deliverables and integration
+- [Repository](https://github.com/sayyidkhan/my-next-gym): describes predicting the next best place to open a gym business.
+- [`index.html`](https://github.com/sayyidkhan/my-next-gym/blob/626aae36b6dacd4adfd658d181e5b60652c8630b/index.html): district-analysis frontend embedding Tableau `XmarksDistrict/Story1`.
+- [`sub-district-analysis.html`](https://github.com/sayyidkhan/my-next-gym/blob/626aae36b6dacd4adfd658d181e5b60652c8630b/sub-district-analysis.html): sub-district frontend embedding Tableau `shared/KT5QBRKSH`.
 
-- Artwork: `/landing/assets/projects/024-mynextgym-v1.png`
-- Three.js module: `/landing/artifacts/mynextgym.js`
-- `createArtifact(THREE)` follows the current gallery contract and needs no external model loading.
-- Suggested caption: **From district comparisons to a closer look at the neighbourhood: exploring where to open the next gym.**
-- Suggested alt: **An ivory architectural district model with an open gym, detailed buildings, district and sub-district charts, and a terracotta location pin marking a candidate site.**
-- Shared renderer profile: existing `lrnmate`; warm studio illumination, no extra gallery pedestal, automatic orbit disabled. Module alone sets `realTimeAnimation`, camera angle, and its own local gym light. No shared renderer or kit changes.
+The source confirms location analysis, and the owner clarified footfall as the intended focus. The exhibit's A/B/C sites, transit/office/residential routes, counts and recommendation are an **illustrative sample scenario**. They are not live readings, retrieved footfall measurements, a reproduced Tableau dataset or a verified business forecast. The display explicitly says “Sample footfall” and “Illustrative scenario.” The proposed storefront is a visualization of the selected location, not an existing gym.
 
-## Composition
+## Composition and app
 
-The generated artwork and real-time scene use the same arrangement: an open-front gym pavilion at left/front; a miniature district with window grids and rooftop parapets in the centre/back; a brass-framed teal analytics board at right/back; and a site marker at right/front. The gym includes two treadmill frames, consoles and belts, a dumbbell rack, bench, wood slats, brass structural posts and inset warm lighting. Streets, planted parcels, trees and a physically inset path connect the architectural scene. The stone base has one nameplate.
+A warm stone foundation holds a landscape street-map tablet on the left and one upright comparison app on the right. The map uses a dark blue-ink surface, readable streets, amber/teal routes, three labelled sources and small contextual buildings. Density patches indicate the catchment areas without hiding the pedestrian paths. Three clear A/B/C badges establish the alternatives.
 
-The visual treatment is architectural rather than character-based: limestone pores, wood grain, brass, muted green planting and dark rubber. All textures are deterministic procedural data textures. Rigid details are merged by material to keep draw calls bounded (29 meshes in the non-DOM validation case). Text planes are preserved separately in browsers.
+Five routes carry **68 individual pedestrian marks**:
 
-## Animation
+| Site | Sample arrivals | Source routes |
+| --- | ---: | --- |
+| A | 12 | Transit |
+| B | 36 | Transit, offices and homes; 12 each |
+| C | 20 | Offices |
 
-One deterministic 20-second loop explains the repository workflow:
+Arrivals at B are interleaved across its three routes. Each pedestrian follows a fixed horizontal path into an individual gathering position, then stops. This makes the numerical totals and the map animation describe the same sample. The destination spread keeps the proposed storefront clear.
 
-1. District chart columns reveal in sequence (0–6s).
-2. Sub-district chart columns reveal, then a single brass signal follows the inset path (6–11s).
-3. Only after that traversal finishes, the pin descends onto the candidate parcel (11–12.2s).
-4. The result holds for review, then gracefully retracts to the starting state (12.2–20s).
+The upright app uses a single 1024 × 1608 canvas texture, rather than separate mesh labels/cards. Its dark navy interface contains MyNextGym branding, “Where to open?”, three prominent sample counts with comparison bars, and a final “OPEN AT B” recommendation. The highlighted row progresses through A, B and C before the selected result appears. The screen redraws only when integer counts or discrete phase/comparison state change, avoiding texture uploads on every frame. Map density fields grow with the observed sample totals.
 
-Buildings, trees and unoccupied gym equipment stay still. No unrelated exercise or wandering figures. The gallery controls pause, reduced motion and tab visibility; the module consumes only its supplied time. `gymMoment` is pure and replayable. UI story text calls the site illustrative rather than implying a real recommendation.
+A coral B pin descends onto the selected location after comparison. Once selection completes, a compact glazed storefront with a GYM sign rises at B. Its stone base, brass mullions, dark glazing and cream roof communicate the proposal without overwhelming the analytics map. The pin follows the emerging roof to remain visible. Before selection, there is no winner pin, selection ring or proposed gym.
 
-## Generated artwork prompt
+Materials use warm ivory stone, blue-ink enamel, muted teal, amber, brass and coral. The scene requests the dedicated `mynextgym` renderer profile and supplies framing points that prioritize both the flat map and upright app. Source/context architecture remains subordinate to the location decision.
 
-Tool: built-in `image_gen` using the imagegen skill, not API fallback. Final output copied into the repository. Original: `/Users/sayyid/.codex/generated_images/01a1645a-d319-7ad1-8ea3-0888ce979637/exec-4e0403b1-80e7-421d-bcab-b7f1b227a2dd.png`.
+## 24-second sequence
 
-> Create a premium architectural miniature exhibit for My Next Gym, a hackathon project analysing districts and sub-districts to select a gym business location. Wide 3:2 composition, entire miniature visible, dark warm charcoal seamless studio background, warm soft key light from upper left, subtle cool rim, tactile ivory limestone with fine pores, deep petrol teal and brushed brass accents. Camera three-quarter elevated front view. Scene on a single wide thin rounded rectangular limestone base. LEFT FRONT: open-front cutaway boutique gym pavilion, flat ivory roof supported by slender brass columns, teal fascia bearing small legible text 'GYM', wood slatted back wall, two detailed treadmills with belts, rails and consoles, weight bench and rack of dark metal barbells, realistic architectural model scale, no people. CENTRE and BACK: compact carefully crafted urban district maquette with about ten cream low-rise and mid-rise buildings, recessed teal window grids and inset rooftops, pale streets forming a clear grid, three rectangular neighbourhood parcels in muted sage, warm terracotta and pale teal with brass outlines, small realistic trees along streets. RIGHT BACK: one physical dark-teal freestanding analytics board framed in thin brass, two grouped bar charts and a simplified parcel map engraved into it, modest text only 'DISTRICT' and 'SUB-DISTRICT', no numbers or claimed measurements. RIGHT FRONT: a single sculpted terracotta location pin with circular cutout standing above a selected small square parcel, fine brass ring outlining selected site. A thin inset teal path runs from central district to selected parcel. Front base carries a tiny inset brass plaque 'My Next Gym'. This is an elegant high-fidelity handmade architectural model photographed in a design museum, crisp intricate materials, sculptural realism, subtle shadows, no toy characters, no floating cards, no futuristic holograms, no generic cubes without windows. Exact object placement should remain clear enough to recreate in real-time 3D.
+| Time | Scene and app behaviour |
+| --- | --- |
+| 0–8 s | Pedestrians travel from their sources. A/B/C counts accumulate to 12/36/20 as people reach their destinations. No winner or gym is visible. |
+| 8–12 s | Crowd holds still. App compares A, B and C in order, using the completed sample. |
+| 12–15 s | App selects B. The coral pin descends during 12–14 s; the selection ring appears. The proposed gym remains hidden. |
+| 15–21 s | Glazed proposed GYM storefront reveals at B, reaching full height at 17.5 s. The marker follows its roof and the app retains the recommendation. |
+| 21–22 s | Completed proposal holds for review. |
+| 22–24 s | Crowd and selected-site geometry reduce before the exact replay reset. Counts restart when the next sample begins at 24 s. |
 
-## Verification
+The loop is driven exclusively by the gallery's animation clock, with no Date-based state, timers or network requests. `gymMoment(time)` is pure and exposes counts, comparison, selection, reveal and fade values. Repeating any timestamp restores the same model, app and caption state. Shared pause, visibility and reduced-motion behaviour remain owned by the gallery renderer.
 
-`node --test scripts/tests/mynextgym.test.mjs` passes. Checks include finite mesh coordinates, bounded draw count, replay without drift, full-cycle reset, pin landing after the route, and finite transforms across two complete cycles.
+`root.userData.story` contains `index`, `step`, `title`, `detail`, `tone`, `phase` and counts. `candidateSites` and `flowRoutes` expose illustrative sample semantics; route metadata includes source, destination, sample size and control points. The app screen publishes its phase, counts, comparison row and winner for Node-side verification.
 
-An actual shared-renderer screenshot was captured at the selection phase with installed headless Chromium: `outputs/mynextgym-review/dark.png`. No page errors occurred. Review exposed windows intersecting the bevelled facade; their surface offsets, door offsets and plaque lettering were corrected afterward. The temporary preview HTML was removed. Parent task owns integrated-page verification and site build.
+## Validation
 
-## Architectural refinement — 23 October 2026
+Run `node --test scripts/tests/mynextgym.test.mjs`. The six tests cover:
 
-The first pass hid the gym equipment behind a large solid roof and made the neighbourhood read as repeated blocks. The refined module keeps the original composition and artwork, with these deliberate changes:
+- Monotonic integer counts, correct 12/36/20 totals and sequential comparison of all candidates.
+- No winner or storefront before comparison; pin descent before proposed-gym reveal.
+- Route sample totals and exact agreement between arrived pedestrian positions and app counts.
+- Pedestrians staying inside the map footprint, on one horizontal surface, and stationary while results are compared/reviewed.
+- Finite geometry, repeatable seeking, complete story/app integration, exact 24-second reset and no geometry below the foundation.
+- Node app fallback and invalid-input clamping, plus screen raycasts that catch housing occlusion.
 
-- **Visible gym interior:** the roof is now an architectural cutaway. Only the rear canopy, perimeter beams and two slender rafters remain. Both treadmill decks and consoles are open to the camera. A rear mirror, restrained slatted timber wall, tile seams, exposed lighting and brass framing define the interior.
-- **Equipment:** treadmill consoles now share one tilted transform with their screens and controls; belt ribbing, roller ends and motor vents add scale. The adjustable bench has separate seat/backrest and a support strut. Hexagonal dumbbells have visible metal end hubs on the two-level rack.
-- **Recessed facades:** glazing sits behind real stone piers and floor spandrels, around a smaller interior core. Window openings are no longer flat panels applied to an unbroken outside wall. Three facade families alternate masonry bays, balcony ledges with railings, and vertical brass fins. Roof gardens, penthouses, rooftop service equipment, entrance canopies and steps vary the skyline.
-- **Urban detail:** sidewalk benches, street lights, crossing strips and drain grilles provide scale. Foliage uses irregular clusters and branching trunks; mesh density remains bounded.
-- **Quieter analytics board:** height reduced by 21%, width by 11%. A thin irregular polygon inlay replaces the blocky map tiles. It still represents the repository's two implemented analysis levels, with no invented data labels.
-- **Performance:** static geometry remains merged into 29 meshes in the non-DOM test. Animation still uses the shared clock and the same district → sub-district → route → pin sequence. Chart animation accounts for the board's new scale.
+The scene currently measures 103 meshes and 312,777 vertices without browser-only label planes. Tests allow fewer than 125 meshes and 350,000 vertices to bound accidental geometry growth. This is a structural budget, not a claim of a measured browser frame rate.
 
-All three `mynextgym.test.mjs` tests pass. New downward ray tests verify that both treadmill decks are directly visible through the cutaway, and bounds checks prevent the chart board dominating the skyline. Finite geometry, bounded mesh/vertex counts, repeated-time replay, full-cycle seams and pin timing remain covered.
+Live browser review verified the updated artwork, readable counts, descending selection pin, completed glazed gym, pause/resume and absence of console errors. Node tests cannot establish visual quality. Previous 22-second qualitative LOW/HIGH/MEDIUM scenes and earlier architectural pavilion screenshots are superseded and should not be presented as proof of this version.
 
-Fresh browser review was attempted through CUA. The tool returned **“Local browser use is disabled in Work settings”**. No alternative browser automation was attempted. `outputs/mynextgym-review/dark.png` remains the first-pass screenshot and must not be presented as a screenshot of this refinement.
+Matching artwork: `public/landing/assets/projects/024-mynextgym-location-choice-v3.png`. Its final generation prompt and provenance are recorded in `docs/mynextgym-artwork-v3.md`. Both views share the three candidate sites, sample counts and the proposed gym at B. The 3D uses a glazed station canopy, taller offices and residential blocks to make the footfall origins visible.
+
+## Files
+
+- Scene: `public/landing/artifacts/mynextgym.js`
+- Integrated app: `public/landing/artifacts/mynextgym-app-screen.js`
+- Tests: `scripts/tests/mynextgym.test.mjs`
+- This documentation: `docs/mynextgym-exhibit.md`
