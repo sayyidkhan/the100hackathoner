@@ -1,4 +1,5 @@
 for (const exhibit of document.querySelectorAll('[data-project-exhibit]')) {
+  if (!exhibit.dataset.model) continue;
   const artwork = exhibit.querySelector('[data-art]');
   const stage = exhibit.querySelector('[data-scene]');
   const controls = exhibit.querySelector('[data-controls]');

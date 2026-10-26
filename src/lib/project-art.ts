@@ -3,6 +3,7 @@ import p24 from '../../public/landing/assets/projects/024-mynextgym-location-cho
 import p25 from '../../public/landing/assets/projects/025-neurosurge-v1.png';
 import p26 from '../../public/landing/assets/projects/026-amigo-cafe-v3.png';
 import p27 from '../../public/landing/assets/projects/027-grabhunt-v1.png';
+import p29 from '../../public/landing/assets/projects/029-uncle-dustbin-v2.png';
 import p18 from '../../public/landing/assets/projects/018-checker-app-v2.png';
 import p19 from '../../public/landing/assets/projects/019-fasight-v1.png';
 import p20 from '../../public/landing/assets/projects/020-co2unter-v2.png';
@@ -106,7 +107,7 @@ export interface ProjectArt {
   dark: ImageMetadata;
   alt: string;
   caption: string;
-  model: string;
+  model?: string;
 }
 
 export const projectArt: Record<number, ProjectArt> = {
@@ -115,6 +116,7 @@ export const projectArt: Record<number, ProjectArt> = {
   25: { light:p25, dark:p25, alt:'A miniature mnemonic kitchen with a walnut grocery cabinet, asparagus, mushroom and rosemary cards, recall tiles and a copper pan on a cream oven.', caption:'Grocery cues become memorable associations, then recipe ingredients are recalled in a mnemonic-learning prototype.', model:'/landing/artifacts/neurosurge.js' },
   26: { light:p26, dark:p26, alt:'An Amigo conversation café with orange and teal armchairs, Hello and Hola speech bubbles, and bilingual vocabulary cards.', caption:'Pull up a chair. Exchange a greeting. Take a new word with you. Amigo reimagines reciprocal language practice.', model:'/landing/artifacts/amigo.js' },
   27: { light:p27, dark:p27, alt:'An emerald and brass rewards reservoir connects gold points to an exchange phone and an ivory credit-voucher kiosk.', caption:'From GrabPoints to e-credits. A sculptural interpretation of the GrabHunt hackathon concept.', model:'/landing/artifacts/grabhunt.js' },
+  29: { light:p29, dark:p29, alt:'A blue two-wheel robot carries a large open ivory dustbin on four timber struts, following a dark route through a miniature home.', caption:'A little help at home. Follow Uncle Dustbin through the hallway to collect rubbish from residents in the bedroom, living room and kitchen.', model:'/landing/artifacts/uncle-dustbin.js' },
 
   18: { light: p18, dark: p18, alt: 'An editorial desk with original and revised job-ad sheets, a brass magnifier, and coral OMIT and amber IMPROVE annotation cards.', caption: 'Review job-ad wording, distinguish terms to omit from terms to improve, and explore a sample rewrite.', model: '/landing/artifacts/checker-app.js' },
   19: { light: p19, dark: p19, alt: 'An open ivory ledger connects a miniature house and asset tray to a brass tree of family portraits, with an identity card and fountain pen.', caption: 'Bring personal details, assets and trusted people into one place. A digital will-planning concept from the hackathon prototype.', model: '/landing/artifacts/fasight.js' },

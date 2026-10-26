@@ -89,10 +89,10 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     <div class="exhibit-actions">
       {number === 72 && projectUrl && <a class="cosmic-launch cosmic-toolbar-launch" href={projectUrl} target="_blank" rel="noopener noreferrer" aria-label="Open Alien Homecoming app (opens in a new tab)">Open app <span aria-hidden="true">↗</span></a>}
       {hasLabels && <button type="button" data-toggle-labels aria-expanded={number === 75 ? 'false' : 'true'}>{number === 75 ? 'Show labels' : 'Hide labels'}</button>}
-    <div role="group" aria-label="Display mode" class="exhibit-modes">
+    {art.model && <div role="group" aria-label="Display mode" class="exhibit-modes">
       <button type="button" data-mode="artwork" aria-pressed="true">Artwork</button>
       <button type="button" data-mode="3d" aria-pressed="false">Explore in 3D</button>
-    </div>
+    </div>}
     </div>
   </div>
   <figure>
@@ -125,7 +125,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
         <p class="exhibit-story-detail" data-story-detail></p>
       </div>}
     </div>
-    {[18, 19, 20, 23, 24].includes(number) && <div class="exhibit-walkthrough" data-walkthrough hidden>
+    {[18, 19, 20, 23, 24, 29].includes(number) && <div class="exhibit-walkthrough" data-walkthrough hidden>
       {[18, 20].includes(number) && <div class="walkthrough-steps" role="group" aria-label={`Explore the ${title} workflow`}>
         {(number === 18 ? ['Draft', 'Inspect', 'Review flags', 'Sample rewrite', 'Reset'] : ['Carbon input', 'Choose bananas', 'Banana comparison', 'Wood comparison']).map((label, index) => <button type="button" data-story-select={index} aria-pressed={index === 0 ? 'true' : 'false'}><span>{String(index + 1).padStart(2, '0')}</span>{label}</button>)}
         <button type="button" data-story-auto aria-pressed="true">Auto-play</button>
@@ -142,8 +142,8 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     </div>}
     <div class="exhibit-controls" data-controls hidden>
       <span>{number === 49 ? 'Drag bunny to lift · Release to drop · Space + arrows also work' : 'Drag to rotate · Arrow keys to turn'}</span>
-      {[18, 20, 23, 24, 35].includes(number) && <><button type="button" data-zoom="0.8" aria-label="Zoom out" disabled>−</button><button type="button" data-zoom="1.25" aria-label="Zoom in">+</button></>}
-      <button type="button" data-reset>{number === 49 ? 'Reset meadow' : 'Reset view'}</button>
+      {[18, 20, 23, 24, 29, 35].includes(number) && <><button type="button" data-zoom="0.8" aria-label="Zoom out" disabled>−</button><button type="button" data-zoom="1.25" aria-label="Zoom in">+</button></>}
+      <button type="button" data-reset>{number === 49 ? 'Reset meadow' : number === 29 ? 'Replay route' : 'Reset view'}</button>
       <button type="button" data-pause aria-pressed="false">Pause motion</button>
     </div>
     {number === 31 && <div class="exhibit-walkthrough growth-walkthrough" data-walkthrough hidden>
@@ -235,7 +235,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     </figcaption> : number === 72 ? <figcaption class="cosmic-caption">
       <div><span class="cosmic-eyebrow">THE JOURNEY</span><p>{art.caption}</p><small>AI-painted realms, unexpected doorways, and a small traveller finding where they belong.</small></div>
       <div class="cosmic-facts"><span><b>10</b>realm families</span><span><b>03</b>home echoes</span><span><b>01</b>way home</span></div>
-    </figcaption> : <figcaption>{art.caption}<small>{isScaleup ? 'Concept artwork and interactive 3D interpretation of three evolving hackathon builds.' : number === 23 ? 'Animated concept: detection at the property → location alert → owner notified.' : number === 24 ? 'Animated concept: count footfall → compare A, B and C → select a site → propose the gym. Sample figures are illustrative.' : number === 41 ? 'Campaign creative, a compelling invitation, and a reason to show up. Inspired by the NAS.IO hackathon build.' : number === 45 ? 'Inspired by the vibe-coding assessment demo. The dial is illustrative, not a live assessment result.' : 'Concept artwork and a 3D interpretation of the project.'}</small></figcaption>}
+    </figcaption> : <figcaption>{art.caption}<small>{!art.model ? 'Concept artwork inspired by the original hackathon prototype.' : isScaleup ? 'Concept artwork and interactive 3D interpretation of three evolving hackathon builds.' : number === 23 ? 'Animated concept: detection at the property → location alert → owner notified.' : number === 24 ? 'Animated concept: count footfall → compare A, B and C → select a site → propose the gym. Sample figures are illustrative.' : number === 41 ? 'Campaign creative, a compelling invitation, and a reason to show up. Inspired by the NAS.IO hackathon build.' : number === 45 ? 'Inspired by the vibe-coding assessment demo. The dial is illustrative, not a live assessment result.' : 'Concept artwork and a 3D interpretation of the project.'}</small></figcaption>}
   </figure>
   <p class="exhibit-status" role="status" data-status></p>
 </section>

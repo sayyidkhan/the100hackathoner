@@ -456,9 +456,9 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       Object.assign(key.shadow.camera, { left: -5, right: 5, top: 6, bottom: -4 });
       key.shadow.camera.updateProjectionMatrix();
     }
-    if (['lrnmate','amigo'].includes(currentModel?.userData.studioProfile)) {
+    if (['lrnmate','amigo','dustbin'].includes(currentModel?.userData.studioProfile)) {
       const dark = currentTheme === 'dark';
-      const amigo = currentModel?.userData.studioProfile === 'amigo';
+      const amigo = ['amigo','dustbin'].includes(currentModel?.userData.studioProfile);
       const backdrop = dark ? (amigo ? 0x0c272c : 0x29231e) : 0xece5d9;
       scene.background.setHex(backdrop); scene.fog.color.setHex(backdrop);
       renderer.setClearColor(backdrop, 1); floor.material.color.setHex(backdrop);
