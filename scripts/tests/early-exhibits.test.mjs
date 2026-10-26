@@ -4,6 +4,7 @@ import * as T from '../../public/landing/vendor/three.module.js';
 import {createArtifact as pest, PESTOVERFLOW_CYCLE, pestMoment} from '../../public/landing/artifacts/pestoverflow.js';
 import {createArtifact as grab} from '../../public/landing/artifacts/grabhunt.js';
 import {pestSurfaces} from '../../public/landing/artifacts/pestoverflow-surfaces.js';
+import {createPestScreen} from '../../public/landing/artifacts/pestoverflow-app-screen.js';
 for(const [title,create,cycle] of [['PestOverflow',pest,PESTOVERFLOW_CYCLE],['GrabHunt',grab,16]]){
  test(`${title}: finite geometry, seekable motion and a seamless cycle`,()=>{
   const root=create(T);let vertices=0;
@@ -35,14 +36,53 @@ test('PestOverflow centres the owner app and keeps resting paws planted',()=>{
 test('PestOverflow detects in the property before informing the owner',()=>{
  const root=pest(T),notice=root.getObjectByName('pestoverflow-owner-alert'),confirmation=root.getObjectByName('pestoverflow-owner-confirmation'),pulse=root.getObjectByName('pestoverflow-notification-pulse'),zone=root.getObjectByName('pestoverflow-detection-zone'),mouse=root.getObjectByName('pestoverflow-field-mouse'),screen=root.getObjectByName('pestoverflow-app-screen');
  for(const t of [0,2,3.99]){root.userData.animate(t);assert.equal(zone.visible,false);assert.equal(notice.visible,false);assert.equal(confirmation.visible,false);assert.equal(pulse.visible,false);assert.equal(screen.userData.phase,'monitoring');}
- root.userData.animate(4);root.updateMatrixWorld(true);assert.equal(zone.visible,true);assert.equal(notice.visible,false);assert.equal(screen.userData.phase,'detected');
+ assert.equal(screen.userData.screenOn,false,'phone stays asleep before detection');
+ root.userData.animate(4);root.updateMatrixWorld(true);assert.equal(zone.visible,true);assert.equal(notice.visible,false);assert.equal(screen.userData.phase,'detected');assert.equal(screen.userData.screenOn,true,'detection wakes the phone');
  const region=new T.Box3().setFromObject(zone),animal=new T.Box3().setFromObject(mouse);
  assert(animal.max.x>region.min.x&&animal.min.x<region.max.x,'mouse must enter the floor detection zone before the trigger');
  root.userData.animate(5.8);assert.equal(pulse.visible,true);assert.equal(notice.visible,false);assert.equal(root.userData.story.phase,'sending');assert.equal(screen.userData.phase,'sending');
  root.userData.animate(7);assert.equal(pulse.visible,false);assert.equal(notice.visible,true);assert.equal(confirmation.visible,true);assert.equal(root.userData.story.title,'The owner knows where to act');assert.equal(screen.userData.phase,'notified');
- root.userData.animate(17.7);assert.equal(notice.visible,false);assert.equal(zone.visible,false);assert.equal(screen.userData.phase,'monitoring');
+ root.userData.animate(17.7);assert.equal(notice.visible,false);assert.equal(zone.visible,false);assert.equal(screen.userData.phase,'monitoring');assert.equal(screen.userData.screenOn,false,'replay clears the phone');
  root.userData.animate(PESTOVERFLOW_CYCLE+7);assert.equal(screen.userData.phase,'notified','screen seeking follows the same repeatable clock as the model');
  assert.equal(pestMoment(4).phase,'detected');assert.equal(pestMoment(6.5).phase,'notified');
+});
+
+test('PestOverflow phone draws nothing until detection, then shows the alert before its delivery receipt',()=>{
+ const previous=globalThis.document,words=[],fills=[];
+ const ctx=new Proxy({
+  fillStyle:'',fillRect(){fills.push(this.fillStyle);},fillText(value){words.push(value);},
+  createLinearGradient(){return {addColorStop(){}};},
+ },{get(target,key){return key in target?target[key]:()=>{};}});
+ globalThis.document={createElement:()=>({width:0,height:0,getContext:()=>ctx})};
+ let app;
+ try{
+  app=createPestScreen(T);
+  assert.deepEqual(words,[]);assert.deepEqual(fills,['#050708']);
+  app.update('detected');assert(words.includes('PEST DETECTED'));assert(words.includes('Kitchen'));assert(!words.includes('Owner notified'));
+  words.length=0;app.update('sending');assert(words.includes('Sending alert'));assert(!words.includes('Owner notified'));
+  words.length=0;app.update('notified');assert(words.includes('Owner notified'));
+  words.length=0;fills.length=0;app.update('monitoring');assert.deepEqual(words,[]);assert.deepEqual(fills,['#050708']);assert.equal(app.mesh.userData.screenOn,false);
+ }finally{app?.dispose();if(previous===undefined)delete globalThis.document;else globalThis.document=previous;}
+});
+
+test('PestOverflow fades in place after the incident and resets only while invisible',()=>{
+ const root=pest(T),mouse=root.getObjectByName('pestoverflow-field-mouse');
+ const materials=new Set();mouse.traverse(o=>{if(o.isMesh)for(const m of Array.isArray(o.material)?o.material:[o.material])materials.add(m);});
+ root.userData.animate(4);const destination=mouse.position.toArray();
+ let previous=1;
+ for(let t=4;t<18;t+=.125){
+  root.userData.animate(t);
+  assert.deepEqual(mouse.position.toArray(),destination,'mouse must not retrace its route');
+  assert.equal(mouse.rotation.y,0,'mouse must not turn around');
+  assert.equal(pestMoment(t).gait,0,'feet stay planted after arrival');
+  const opacity=pestMoment(t).opacity;assert(opacity<=previous);previous=opacity;
+  for(const material of materials){assert.equal(material.opacity,opacity);assert(material.transparent);}
+ }
+ assert.equal(pestMoment(13).opacity,1);assert.equal(pestMoment(14.75).opacity,.5);
+ for(const t of [16.5,17.99,18]){root.userData.animate(t);assert.equal(mouse.visible,false);}
+ assert.notDeepEqual(mouse.position.toArray(),destination,'loop reset moves the invisible mouse to its start');
+ root.userData.animate(18.3);assert(mouse.visible);assert(Math.abs(pestMoment(18.3).opacity-.5)<1e-10);
+ root.userData.animate(14.75);for(const material of materials)assert.equal(material.opacity,.5,'fade supports seeking backwards');
 });
 
 test('PestOverflow mouse route stays in the open floor lane',()=>{

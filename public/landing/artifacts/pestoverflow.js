@@ -8,7 +8,8 @@ export function pestMoment(time){
  const t=((time%PESTOVERFLOW_CYCLE)+PESTOVERFLOW_CYCLE)%PESTOVERFLOW_CYCLE;
  const phase=t<4?'monitoring':t<5.2?'detected':t<6.5?'sending':t<13?'notified':'reset';
  return {t,phase,detected:t>=4&&t<16.5,notified:t>=6.5&&t<16.5,
-  travel:t<4?ease(t/4):t<13?1:1-ease((t-13)/4),gait:t<4?Math.sin(Math.PI*t/4):t>=13&&t<17?Math.sin(Math.PI*(t-13)/4):0};
+  travel:t<4?ease(t/4):1,gait:t<4?Math.sin(Math.PI*t/4):0,
+  opacity:t<.6?ease(t/.6):1-ease((t-13)/3.5)};
 }
 
 export function createArtifact(T){
@@ -106,7 +107,6 @@ export function createArtifact(T){
  rounded(1.97,3.91,.035,0,2.03,.149,'graphite',phone,.20);
  const app=createPestScreen(T);app.mesh.scale.setScalar(1.174);app.mesh.position.set(0,2.03,.181);app.mesh.name='pestoverflow-app-screen';phone.add(app.mesh);
  rounded(.50,.11,.018,0,3.829,.196,'graphite',phone,.05);ball(.026,.172,3.83,.207,'lens',phone);
- rounded(.47,.025,.008,0,.235,.204,'porcelain',phone,.012);
  rounded(.024,.42,.06,1.06,2.55,0,'steel',phone,.01);rounded(.024,.22,.06,-1.06,2.86,0,'steel',phone,.01);
  // Connection is a transient notification, not a permanent wire in the room.
  const curve=new T.CatmullRomCurve3([new T.Vector3(-3.51,2.64,-1.37),new T.Vector3(-1.3,3.27,-1.15),new T.Vector3(.55,3.16,-.42),new T.Vector3(1.39,2.98,.35)]);
@@ -118,13 +118,20 @@ export function createArtifact(T){
  // Keep only the indicator dynamic; batch the static room by material.
  sensor.remove(led);k.batch(kitchen);sensor.add(led);
  const out=finish(23,[kitchen,phone,mouse,zone,route,pulse]);
+ // Only the mouse fades; keep its materials separate from the room and phone.
+ const mouseMeshes=[],mouseMaterials=new Set();
+ mouse.traverse(o=>{if(o.isMesh){mouseMeshes.push(o);for(const material of Array.isArray(o.material)?o.material:[o.material])mouseMaterials.add(material);}});
+ for(const material of mouseMaterials)material.transparent=true;
  const start=mouse.position.clone(),offset=pulse.position.clone().sub(curve.getPointAt(0));
  const framingPoints=[];out.updateMatrixWorld(true);for(const child of out.children){if(child===pulse||child===route)continue;const b=new T.Box3().setFromObject(child);if(b.isEmpty())continue;for(const x of [b.min.x,b.max.x])for(const y of [b.min.y,b.max.y])for(const z of [b.min.z,b.max.z])framingPoints.push(new T.Vector3(x,y,z));}
  Object.assign(out.userData,{studioProfile:'pestoverflow',initialYaw:-.09,initialElevation:.28,appFirst:true,cycle:PESTOVERFLOW_CYCLE,framingPoints});
  const stories=[['Monitoring the kitchen','The camera watches the floor beside the cabinets.','neutral'],['Pest activity detected','The mouse has entered the monitored area.','thinking'],['Alert on its way','The event and its location are sent to the owner.','thinking'],['The owner knows where to act','A kitchen event appears in the app with a notification receipt.','complete'],['Monitoring resumes','The event stays recorded while the scene prepares to replay.','neutral']];
  out.userData.animate=time=>{
   const s=pestMoment(time),t=s.t;mouse.position.copy(start);mouse.position.x+=s.travel*1.57;
-  mouse.rotation.y=t<12?0:t<13?Math.PI*ease(t-12):t<17?Math.PI:Math.PI*(1-ease(t-17));animal.animate(t,s.gait);
+  mouse.rotation.y=0;animal.animate(t,s.gait);
+  mouse.visible=s.opacity>0;
+  for(const material of mouseMaterials){material.opacity=s.opacity;material.depthWrite=s.opacity===1;}
+  for(const mesh of mouseMeshes)mesh.castShadow=s.opacity===1;
   zone.visible=s.detected;led.material=s.detected?m.coralSignal:m.jade;
   route.visible=t>=5.2&&t<8.2;pulse.visible=t>=5.2&&t<6.5;pulse.position.copy(curve.getPointAt(ease((t-5.2)/1.3))).add(offset);
   notice.visible=s.notified;confirmation.visible=s.notified;app.update(s.notified?'notified':s.phase==='reset'?'monitoring':s.phase);

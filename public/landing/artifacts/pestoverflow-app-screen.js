@@ -73,7 +73,16 @@ export function createPestScreen(T) {
     if(!['monitoring','detected','sending','notified'].includes(phase))phase='monitoring';
     if(currentPhase===phase)return;
     currentPhase=phase;mesh.userData.phase=phase;
+    const screenOn=phase!=='monitoring';
+    mesh.userData.screenOn=screenOn;
+    material.color.setHex(texture?0xffffff:screenOn?0x17201e:0x050708);
     if(!ctx)return;
+    if(!screenOn){
+      // Sleeping phone: no status bar, camera preview, labels or home indicator.
+      ctx.fillStyle='#050708';ctx.fillRect(0,0,768,1536);
+      texture.needsUpdate=true;
+      return;
+    }
     const notified=phase==='notified';
     ctx.fillStyle=colors.bg;ctx.fillRect(0,0,768,1536);
     text('9:41',49,49,25,colors.ink,600);
@@ -82,9 +91,9 @@ export function createPestScreen(T) {
     text('Orchard residence',45,180,28,colors.muted);
     // An event-first hierarchy stays legible when the phone is a small part
     // of the exhibit: alert, camera evidence, then delivery receipt.
-    rounded(44,218,680,236,24,notified?'#ed8c70':'#2b4033');
-    text(notified?'PEST DETECTED':'MONITORING',75,305,64,notified?'#251d17':colors.green,750);
-    text('Kitchen',75,384,60,notified?'#3f3024':colors.ink,600);
+    rounded(44,218,680,236,24,'#ed8c70');
+    text('PEST DETECTED',75,305,64,'#251d17',750);
+    text('Kitchen',75,384,60,'#3f3024',600);
     ctx.save();ctx.translate(0,199);ctx.scale(1,.90);camera(phase);ctx.restore();
     text('Camera 01',44,967,43,colors.ink,600);
     if(notified)text('Just now',547,967,35,colors.coral,500);
@@ -95,9 +104,9 @@ export function createPestScreen(T) {
       text('Owner notified',76,1180,63,colors.ink,650);
       text('Location attached',76,1240,39,colors.green,500);
     } else {
-      circle(91,1091,12,colors.green);
-      text('Watching for',76,1177,55,colors.ink,600);
-      text('activity',76,1241,55,colors.ink,600);
+      circle(91,1091,12,colors.coral);
+      text(phase==='sending'?'Sending alert':'Pest detected',76,1177,55,colors.ink,600);
+      text(phase==='sending'?'Location attached':'Preparing alert',76,1241,43,colors.muted,500);
     }
     text('Orchard residence',44,1427,33,colors.muted);
     rounded(276,1501,216,6,3,'#c5cec6');

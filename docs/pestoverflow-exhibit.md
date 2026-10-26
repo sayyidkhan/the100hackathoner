@@ -27,13 +27,12 @@ The textures are deterministic and tileable. Color maps use sRGB; height and rou
 The interface includes:
 
 - PestOverflow branding and an illustrative residence name.
-- Monitoring and pest-detected status.
+- A blank, dark sleeping screen before detection; pest details appear when detection wakes it.
 - A stylized kitchen camera-event illustration that uses the same cabinets, floor and mouse vocabulary as the physical room.
 - Kitchen / Camera 01 location information.
 - An owner-notified receipt after the signal arrives.
-- A property overview and conventional app navigation.
 
-The camera illustration is locally drawn concept artwork, not a feed from the 3D model or a real camera. The address, floor plan and interface are illustrative, and navigation is decorative within the exhibit. No camera data is requested, no SMS is sent and no incident history is persisted. The Node fallback preserves phase metadata and geometry without requiring a DOM canvas.
+The camera illustration is locally drawn concept artwork, not a feed from the 3D model or a real camera. The residence name and interface are illustrative. No camera data is requested, no SMS is sent and no incident history is persisted. The Node fallback preserves phase and screen-power metadata and geometry without requiring a DOM canvas.
 
 ## Animation
 
@@ -41,15 +40,14 @@ One seekable 18-second sequence runs on the shared pause/reduced-motion clock:
 
 | Time | Behaviour |
 | --- | --- |
-| 0–4 s | Mouse approaches across the clear kitchen floor; the app remains in monitoring state. |
-| 4–5.2 s | Mouse is inside the sensor area. Coral floor corners and the sensor indication activate; the camera illustration marks the activity. |
+| 0–4 s | Mouse approaches across the clear kitchen floor; the phone stays blank and dark, with no status bar, preview or home indicator. |
+| 4–5.2 s | Mouse is inside the sensor area. Coral floor corners and the sensor indication activate; the phone wakes with PEST DETECTED, kitchen details and Preparing alert. |
 | 5.2–6.5 s | One coral signal travels from the room camera toward the owner phone. The app has not yet confirmed notification. |
-| 6.5–12 s | The app shows the pest event and owner-notified receipt. The mouse rests with planted paws. The connection leaves view at 8.2 seconds. |
-| 12–13 s | Mouse turns on the open floor. |
-| 13–17 s | Mouse returns along the same lane. The detection and app receipt clear at 16.5 seconds. |
-| 17–18 s | Mouse returns to its initial heading for an exact loop reset. |
+| 6.5–13 s | The app shows the pest event and owner-notified receipt. The mouse rests with planted paws. The connection leaves view at 8.2 seconds. |
+| 13–16.5 s | Mouse fades out in place, keeping its original heading. The detection clears and the phone goes blank again at 16.5 seconds. |
+| 16.5–18 s | Mouse stays invisible for the reset. At the next loop it fades in over 0.6 seconds while approaching from the starting point. |
 
-The continuous mouse model retains fine coat bump, cupped ears, inset glossy eyes, whiskers and a tapered tail. Paws articulate during travel and stay fixed during the hold. No global orbit, unrelated object swaying or floating phone distracts from the detection-to-owner sequence.
+The continuous mouse model retains fine coat bump, cupped ears, inset glossy eyes, whiskers and a tapered tail. Paws articulate during the approach and stay fixed during the hold and fade. The mouse never turns or walks back; repositioning happens invisibly at the loop boundary. No global orbit, unrelated object swaying or floating phone distracts from the detection-to-owner sequence.
 
 `root.userData.story` publishes `index`, `step`, `title`, `detail`, `tone` and `phase` for shared captions. `pestMoment(time)` exposes phase timing. The app screen publishes its own phase metadata so notification order remains testable without rasterizing the display.
 
