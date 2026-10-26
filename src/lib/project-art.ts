@@ -1,6 +1,6 @@
 import p23 from '../../public/landing/assets/projects/023-pestoverflow-owner-alert-v2.png';
 import p24 from '../../public/landing/assets/projects/024-mynextgym-location-choice-v3.png';
-import p25 from '../../public/landing/assets/projects/025-neurosurge-v1.png';
+import p25 from '../../public/landing/assets/projects/025-neurosurge-v2.png';
 import p26 from '../../public/landing/assets/projects/026-amigo-cafe-v3.png';
 import p27 from '../../public/landing/assets/projects/027-grabhunt-v1.png';
 import p29 from '../../public/landing/assets/projects/029-uncle-dustbin-v2.png';
@@ -113,7 +113,7 @@ export interface ProjectArt {
 export const projectArt: Record<number, ProjectArt> = {
   23: { light:p23, dark:p23, alt:'A kitchen sensor detects a mouse and sends a Pest detected alert with the kitchen location to the owner’s phone.', caption:'Detect a pest. Know where it is. Alert the owner.', model:'/landing/artifacts/pestoverflow.js' },
   24: { light:p24, dark:p24, alt:'Pedestrian flows from transit, offices and homes converge at site B. A footfall comparison shows A 12, B 36 and C 20, then recommends opening the proposed gym at B.', caption:'Follow the footfall. Compare three sites. Open your next gym where the most people pass.', model:'/landing/artifacts/mynextgym.js' },
-  25: { light:p25, dark:p25, alt:'A miniature mnemonic kitchen with a walnut grocery cabinet, asparagus, mushroom and rosemary cards, recall tiles and a copper pan on a cream oven.', caption:'Grocery cues become memorable associations, then recipe ingredients are recalled in a mnemonic-learning prototype.', model:'/landing/artifacts/neurosurge.js' },
+  25: { light:p25, dark:p25, alt:'An open memory journal with an avocado sailboat, blueberry planets and a broccoli tree on three pastel flashcards, a grocery tray and a recall tablet.', caption:'Turn a grocery list into a story worth remembering. Learn the cues, hide them, and see what comes back.', model:'/landing/artifacts/neurosurge.js' },
   26: { light:p26, dark:p26, alt:'An Amigo conversation café with orange and teal armchairs, Hello and Hola speech bubbles, and bilingual vocabulary cards.', caption:'Pull up a chair. Exchange a greeting. Take a new word with you. Amigo reimagines reciprocal language practice.', model:'/landing/artifacts/amigo.js' },
   27: { light:p27, dark:p27, alt:'An emerald and brass rewards reservoir connects gold points to an exchange phone and an ivory credit-voucher kiosk.', caption:'From GrabPoints to e-credits. A sculptural interpretation of the GrabHunt hackathon concept.', model:'/landing/artifacts/grabhunt.js' },
   29: { light:p29, dark:p29, alt:'A blue two-wheel robot carries a large open ivory dustbin on four timber struts, following a dark route through a miniature home.', caption:'A little help at home. Follow Uncle Dustbin through the hallway to collect rubbish from residents in the bedroom, living room and kitchen.', model:'/landing/artifacts/uncle-dustbin.js' },

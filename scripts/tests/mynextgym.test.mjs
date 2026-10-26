@@ -109,3 +109,15 @@ test('app title, comparison rows and result panel stay in front of the housing',
   const hits=ray.intersectObject(model,true);assert.equal(hits[0]?.object,screen,'screen content must not be occluded by frame geometry');
  }
 });
+
+test('manual walkthrough holds a stage and can return to timed playback',()=>{
+ const model=createArtifact(T);
+ for(const [index,phase] of ['footfall','compare','selected','reveal','review'].entries()){
+  model.userData.setStep(index,100);model.userData.animate(101);
+  assert.equal(model.userData.story.phase,phase);
+  assert.equal(model.getObjectByName('mynextgym-proposed-gym').visible,index>=3);
+ }
+ model.userData.setStep(-1);assert.equal(model.userData.story.phase,'review');
+ model.userData.setStep(null,2);assert.equal(model.userData.story.phase,'footfall');
+ model.userData.animate(18);assert.equal(model.userData.story.phase,'reveal');
+});

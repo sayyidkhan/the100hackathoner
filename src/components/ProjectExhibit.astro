@@ -125,9 +125,9 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
         <p class="exhibit-story-detail" data-story-detail></p>
       </div>}
     </div>
-    {[18, 19, 20, 23, 24, 29].includes(number) && <div class="exhibit-walkthrough" data-walkthrough hidden>
-      {[18, 20].includes(number) && <div class="walkthrough-steps" role="group" aria-label={`Explore the ${title} workflow`}>
-        {(number === 18 ? ['Draft', 'Inspect', 'Review flags', 'Sample rewrite', 'Reset'] : ['Carbon input', 'Choose bananas', 'Banana comparison', 'Wood comparison']).map((label, index) => <button type="button" data-story-select={index} aria-pressed={index === 0 ? 'true' : 'false'}><span>{String(index + 1).padStart(2, '0')}</span>{label}</button>)}
+    {[18, 19, 20, 23, 24, 25, 29].includes(number) && <div class="exhibit-walkthrough" data-walkthrough hidden>
+      {[18, 20, 24, 25].includes(number) && <div class="walkthrough-steps" role="group" aria-label={`Explore the ${title} workflow`}>
+        {(number === 18 ? ['Draft', 'Inspect', 'Review flags', 'Sample rewrite', 'Reset'] : number === 24 ? ['Footfall', 'Compare', 'Select B', 'Proposed gym', 'Review'] : number === 25 ? ['Learn', 'Associate', 'Recall', 'Check answers'] : ['Carbon input', 'Choose bananas', 'Banana comparison', 'Wood comparison']).map((label, index) => <button type="button" data-story-select={index} aria-pressed={index === 0 ? 'true' : 'false'}><span>{String(index + 1).padStart(2, '0')}</span>{label}</button>)}
         <button type="button" data-story-auto aria-pressed="true">Auto-play</button>
       </div>}
       <div class="exhibit-story" style="position: static; max-width: none;" data-story aria-live="off" hidden>
@@ -142,7 +142,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     </div>}
     <div class="exhibit-controls" data-controls hidden>
       <span>{number === 49 ? 'Drag bunny to lift · Release to drop · Space + arrows also work' : 'Drag to rotate · Arrow keys to turn'}</span>
-      {[18, 20, 23, 24, 29, 35].includes(number) && <><button type="button" data-zoom="0.8" aria-label="Zoom out" disabled>−</button><button type="button" data-zoom="1.25" aria-label="Zoom in">+</button></>}
+      {[18, 20, 23, 24, 25, 29, 35].includes(number) && <><button type="button" data-zoom="0.8" aria-label="Zoom out" disabled>−</button><button type="button" data-zoom="1.25" aria-label="Zoom in">+</button></>}
       <button type="button" data-reset>{number === 49 ? 'Reset meadow' : number === 29 ? 'Replay route' : 'Reset view'}</button>
       <button type="button" data-pause aria-pressed="false">Pause motion</button>
     </div>

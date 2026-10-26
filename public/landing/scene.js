@@ -456,7 +456,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       Object.assign(key.shadow.camera, { left: -5, right: 5, top: 6, bottom: -4 });
       key.shadow.camera.updateProjectionMatrix();
     }
-    if (['lrnmate','amigo','dustbin'].includes(currentModel?.userData.studioProfile)) {
+    if (['lrnmate','amigo','dustbin','neurosurge'].includes(currentModel?.userData.studioProfile)) {
       const dark = currentTheme === 'dark';
       const amigo = ['amigo','dustbin'].includes(currentModel?.userData.studioProfile);
       const backdrop = dark ? (amigo ? 0x0c272c : 0x29231e) : 0xece5d9;
@@ -480,6 +480,16 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
         key.shadow.normalBias=.004;scene.environmentIntensity=.65;
       }
     }
+    if (currentModel?.userData.studioProfile === 'neurosurge') {
+      const backdrop = currentTheme === 'dark' ? 0x28202f : 0xede5ed;
+      scene.background.setHex(backdrop); scene.fog.color.setHex(backdrop);
+      renderer.setClearColor(backdrop, 1); floor.material.color.setHex(backdrop);
+      key.color.setHex(0xffefdc); key.intensity = 2.6;
+      fill.color.setHex(0xd9c9f2); fill.intensity = .65;
+      rim.color.setHex(0xe7c9de); rim.intensity = 1.8;
+      hemisphere.groundColor.setHex(0x574760);
+      scene.environmentIntensity = .55; renderer.toneMappingExposure = 1.04;
+    }
     if (currentModel?.userData.studioProfile === 'pestoverflow') {
       const dark = currentTheme === 'dark';
       const backdrop = dark ? 0x211e1b : 0xebe7df;
@@ -497,14 +507,14 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     }
     if (currentModel?.userData.studioProfile === 'mynextgym') {
       const dark = currentTheme === 'dark';
-      const backdrop = dark ? 0x211f1c : 0xece7de;
+      const backdrop = dark ? 0x172932 : 0xe7eceb;
       scene.background.setHex(backdrop); scene.fog.color.setHex(backdrop);
       renderer.setClearColor(backdrop, 1); floor.material.color.setHex(backdrop);
       hemisphere.color.setHex(0xf5ebdc); hemisphere.groundColor.setHex(0x354044); hemisphere.intensity=.42;
-      key.color.setHex(0xffe5c0); key.position.set(-4.5,6.5,3); key.intensity=2.8;
-      fill.color.setHex(0xc4e2ea); fill.intensity=.48;
-      rim.color.setHex(0xffddb4); rim.position.set(3,4,-3); rim.intensity=1.8;
-      scene.environmentIntensity=.68; renderer.toneMappingExposure=.98;
+      key.color.setHex(0xffe5c0); key.position.set(-4.5,6.5,3); key.intensity=3.0;
+      fill.color.setHex(0xc4e2ea); fill.intensity=.65;
+      rim.color.setHex(0xd0e5e7); rim.position.set(3,4,-3); rim.intensity=1.8;
+      scene.environmentIntensity=.68; renderer.toneMappingExposure=1.03;
       key.shadow.normalBias=.003; key.shadow.bias=-.00005; key.shadow.radius=5;
       Object.assign(key.shadow.camera,{left:-5,right:5,top:5,bottom:-4});key.shadow.camera.updateProjectionMatrix();
       contactShadow.material.opacity=0;paperContact.visible=true;
@@ -844,6 +854,12 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     if (midpointDistance <= fittedDistance * 1.002) {
       targetY = midpoint;
       fittedDistance = midpointDistance;
+    }
+    // Wide tabletop exhibits can specify their visual centre rather than
+    // inheriting the height selected by a flat camera-fit optimum.
+    if (Number.isFinite(currentModel.userData.framingTargetY)) {
+      targetY = currentModel.position.y + currentModel.userData.framingTargetY;
+      fittedDistance = distanceForTarget(targetY);
     }
     target.set(0, targetY, 0);
     distance = fittedDistance * 1.008;
