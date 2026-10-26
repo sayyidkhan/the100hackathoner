@@ -1,0 +1,7 @@
+/* CO2unter: a quiet instrument gallery, shared by artwork and live sculpture. */
+.project-exhibit[data-number='20'] { border-color:color-mix(in srgb,#8cae9d 30%,var(--line)); }
+.project-exhibit[data-number='20'] .exhibit-toolbar { background:color-mix(in srgb,#789e8b 7%,var(--bg)); }
+.project-exhibit[data-number='20'] .exhibit-toolbar>p { color:var(--muted);letter-spacing:.13em; }
+.project-exhibit[data-number='20'] .exhibit-walkthrough { background:color-mix(in srgb,#789e8b 7%,var(--bg)); }
+.project-exhibit[data-number='20'] .walkthrough-steps button[aria-pressed='true'] { background:#dce8ce;color:#183d3b;border-color:#dce8ce; }
+.project-exhibit[data-number='20'] .exhibit-story-step { color:#8ba797; }

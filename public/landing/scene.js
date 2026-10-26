@@ -63,7 +63,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     throw error;
   }
 
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, [49, 57].includes(Number(initialProject)) ? 2 : 1.75));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, [17, 24, 49, 57].includes(Number(initialProject)) ? 2 : 1.75));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.95;
@@ -140,6 +140,10 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     // the opposing bright strips that made the architecture look lacquered.
     environmentPanel(4, 5, 0xffebd2, 2.2, [-4, 4, 5]);
     environmentPanel(2, 4, 0xdce2e7, .65, [5, 2, 3]);
+  }
+  if (Number(initialProject) === 19) {
+    environmentPanel(6, 2.5, 0xffeed5, 1.8, [-2, 3, 7]);
+    environmentPanel(1, 5, 0xd5e7e0, 1.2, [5, 3, 4]);
   }
   const pmrem = new THREE.PMREMGenerator(renderer);
   let environment;
@@ -490,6 +494,34 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       hemisphere.groundColor.setHex(0x574760);
       scene.environmentIntensity = .55; renderer.toneMappingExposure = 1.04;
     }
+    if (currentModel?.userData.studioProfile === 'fasight') {
+      const dark=currentTheme==='dark',backdrop=dark?0x202824:0xe9e7db;
+      scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);
+      renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xf4edd9);hemisphere.groundColor.setHex(0x3c5143);hemisphere.intensity=.26;
+      key.color.setHex(0xffe4b9);key.position.set(-3.8,6,2.8);key.intensity=3.5;
+      fill.color.setHex(0xd5e5df);fill.intensity=.32;
+      rim.color.setHex(0xf4ce87);rim.position.set(3,4,-3);rim.intensity=2.5;
+      scene.environmentIntensity=.65;renderer.toneMappingExposure=1.0;
+      key.shadow.normalBias=.003;key.shadow.bias=-.00005;key.shadow.radius=5;
+      Object.assign(key.shadow.camera,{left:-5,right:5,top:5,bottom:-4});key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=dark?.40:.18;
+      paperContact.scale.set(1.2,1.08,1);
+    }
+    if (currentModel?.userData.studioProfile === 'co2unter') {
+      const dark=currentTheme==='dark',backdrop=dark?0x10272a:0xe1e9df;
+      scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);
+      renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xe4f0df);hemisphere.groundColor.setHex(0x314f4c);hemisphere.intensity=.40;
+      key.color.setHex(0xffecd0);key.position.set(-4,6,4);key.intensity=3.0;
+      fill.color.setHex(0xc1e4e2);fill.intensity=.55;
+      rim.color.setHex(0xc5e8dc);rim.position.set(3,4,-3);rim.intensity=2.3;
+      scene.environmentIntensity=.78;renderer.toneMappingExposure=1.0;
+      key.shadow.normalBias=.003;key.shadow.bias=-.00005;key.shadow.radius=5;
+      Object.assign(key.shadow.camera,{left:-5,right:5,top:5,bottom:-4});key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=dark?.42:.18;
+      paperContact.scale.set(1.25,1.12,1);
+    }
     if (currentModel?.userData.studioProfile === 'pestoverflow') {
       const dark = currentTheme === 'dark';
       const backdrop = dark ? 0x211e1b : 0xebe7df;
@@ -505,14 +537,29 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       contactShadow.material.opacity=0;paperContact.visible=true;
       paperContact.material.opacity=dark?.44:.18;paperContact.scale.set(1.3,1.1,1);
     }
+    if (currentModel?.userData.studioProfile === 'goldigloo') {
+      // The etched ivory labels need the same deep backdrop as the artwork in both themes.
+      const backdrop=0x102b27;
+      scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);
+      renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xe9f1df);hemisphere.groundColor.setHex(0x34453c);hemisphere.intensity=.48;
+      key.color.setHex(0xffedd3);key.position.set(-4,6,4);key.intensity=2.8;
+      fill.color.setHex(0xc7e7e2);fill.intensity=.6;
+      rim.color.setHex(0xf4dfb6);rim.position.set(3,4,-3);rim.intensity=2.0;
+      scene.environmentIntensity=.68;renderer.toneMappingExposure=1.04;
+      key.shadow.normalBias=.003;key.shadow.bias=-.00004;key.shadow.radius=5;
+      Object.assign(key.shadow.camera,{left:-5,right:5,top:5,bottom:-4});key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=.40;
+      paperContact.scale.set(1.3,1.1,1);
+    }
     if (currentModel?.userData.studioProfile === 'mynextgym') {
       const dark = currentTheme === 'dark';
-      const backdrop = dark ? 0x172932 : 0xe7eceb;
+      const backdrop = dark ? 0x101f29 : 0xe7eceb;
       scene.background.setHex(backdrop); scene.fog.color.setHex(backdrop);
       renderer.setClearColor(backdrop, 1); floor.material.color.setHex(backdrop);
       hemisphere.color.setHex(0xf5ebdc); hemisphere.groundColor.setHex(0x354044); hemisphere.intensity=.42;
-      key.color.setHex(0xffe5c0); key.position.set(-4.5,6.5,3); key.intensity=3.0;
-      fill.color.setHex(0xc4e2ea); fill.intensity=.65;
+      key.color.setHex(0xffe5c0); key.position.set(-4.5,6.5,3); key.intensity=2.1;
+      fill.color.setHex(0xa6d6ed); fill.intensity=.65;
       rim.color.setHex(0xd0e5e7); rim.position.set(3,4,-3); rim.intensity=1.8;
       scene.environmentIntensity=.68; renderer.toneMappingExposure=1.03;
       key.shadow.normalBias=.003; key.shadow.bias=-.00005; key.shadow.radius=5;
@@ -739,7 +786,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       }
       updateCamera();
       const story = currentModel?.userData.story ?? null;
-      const nextStoryKey = story ? JSON.stringify([story.step, story.title, story.detail, story.tone]) : null;
+      const nextStoryKey = story ? JSON.stringify([story.step, story.title, story.detail, story.tone, story.counts, story.comparison, story.winner]) : null;
       if (storyKey !== nextStoryKey) {
         storyKey = nextStoryKey;
         onStoryChange(story);
@@ -818,7 +865,8 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     function distanceForTarget(targetY) {
       let required = 1;
       // Include the full automatic sway so the larger view never clips.
-      for (const angle of [yaw - 0.14, yaw, yaw + 0.14]) {
+      const fitSway = currentModel.userData.cameraFitSway ?? 0.14;
+      for (const angle of [yaw - fitSway, yaw, yaw + fitSway]) {
         const sinYaw = Math.sin(angle);
         const cosYaw = Math.cos(angle);
         for (const point of points) {

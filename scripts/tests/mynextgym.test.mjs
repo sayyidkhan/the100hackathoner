@@ -2,7 +2,6 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as T from '../../public/landing/vendor/three.module.js';
 import {createArtifact,gymMoment,CANDIDATES,MYNEXTGYM_CYCLE} from '../../public/landing/artifacts/mynextgym.js';
-import {createGymScreen} from '../../public/landing/artifacts/mynextgym-app-screen.js';
 
 test('sample footfall accumulates before all three locations compare',()=>{
  assert.equal(MYNEXTGYM_CYCLE,24);
@@ -22,13 +21,13 @@ test('sample footfall accumulates before all three locations compare',()=>{
 });
 
 test('B is selected after comparison and the proposed gym follows the landed pin',()=>{
- const model=createArtifact(T),pin=model.getObjectByName('mynextgym-pin'),selection=model.getObjectByName('mynextgym-selected-B'),gym=model.getObjectByName('mynextgym-proposed-gym'),screen=model.getObjectByName('mynextgym-app-screen');
- assert(pin&&selection&&gym&&screen);
+ const model=createArtifact(T),pin=model.getObjectByName('mynextgym-pin'),selection=model.getObjectByName('mynextgym-selected-B'),gym=model.getObjectByName('mynextgym-proposed-gym');
+ assert(pin&&selection&&gym);
  for(const t of [0,3,7.99,8,9.5,11.99]){
-  model.userData.animate(t);assert.equal(pin.visible,false);assert.equal(selection.visible,false);assert.equal(gym.visible,false);assert.equal(screen.userData.winner,null);
+  model.userData.animate(t);assert.equal(pin.visible,false);assert.equal(selection.visible,false);assert.equal(gym.visible,false);assert.equal(model.userData.story.winner,null);
  }
  model.userData.animate(12);const high=pin.position.y;
- assert.equal(pin.visible,true);assert.equal(selection.visible,true);assert.equal(gym.visible,false);assert.equal(screen.userData.winner,'B');
+ assert.equal(pin.visible,true);assert.equal(selection.visible,true);assert.equal(gym.visible,false);assert.equal(model.userData.story.winner,'B');
  model.userData.animate(13);assert(pin.position.y<high);assert.equal(gym.visible,false);
  model.userData.animate(14);const landed=pin.position.y;
  assert(high-landed>.6,'pin has a visible descent into the chosen location');
@@ -38,7 +37,7 @@ test('B is selected after comparison and the proposed gym follows the landed pin
  assert.equal(gym.position.x,selection.position.x);assert.equal(gym.position.z,selection.position.z);
  assert.deepEqual(model.userData.flowRoutes.filter(f=>f.site==='B').map(f=>f.source).sort(),['homes','offices','transit']);
  assert.deepEqual(CANDIDATES.map(c=>model.userData.flowRoutes.filter(f=>f.site===c.id).reduce((sum,f)=>sum+f.sample,0)),[12,36,20],'each displayed total is supported by its pedestrian routes');
- assert.deepEqual(screen.userData.counts,[12,36,20]);
+ assert.deepEqual(model.userData.story.counts,[12,36,20]);
 });
 
 test('pedestrians stay on the map and hold their positions during comparison',()=>{
@@ -77,37 +76,38 @@ test('pedestrians stay on the map and hold their positions during comparison',()
 test('analytics geometry stays finite and deterministic through pause, reset and replay',()=>{
  const model=createArtifact(T);let meshes=0,vertices=0;
  model.traverse(o=>{if(o.isMesh){meshes++;vertices+=o.geometry.attributes.position.count;assert([...o.geometry.attributes.position.array].every(Number.isFinite));}});
- assert(meshes<125,'map, crowd and app draw-call budget');assert(vertices<350000,'map, crowd and app vertex budget');
- const state=t=>{model.userData.animate(t);model.updateMatrixWorld(true);const v=[];model.traverse(o=>v.push(o.visible,...o.matrixWorld.elements));return {v,story:model.userData.story,app:{...model.getObjectByName('mynextgym-app-screen').userData}};};
+ assert(meshes<130,'district, room variants and crowd draw-call budget');assert(vertices<350000,'district and crowd vertex budget');
+ const state=t=>{model.userData.animate(t);model.updateMatrixWorld(true);const v=[];model.traverse(o=>v.push(o.visible,...o.matrixWorld.elements));return {v,story:model.userData.story};};
  const first=state(4);assert.notDeepEqual(first,state(18));assert.deepEqual(first,state(4));assert.deepEqual(state(0),state(MYNEXTGYM_CYCLE));
  for(let t=0;t<=48;t+=.25){
   const s=state(t);assert(s.v.every(x=>typeof x==='boolean'||Number.isFinite(x)));
   for(const key of ['step','title','detail','tone'])assert.equal(typeof s.story[key],'string');
   assert(Number.isInteger(s.story.index));assert(s.story.index>=0&&s.story.index<5);
-  assert.equal(s.app.phase,gymMoment(t).phase);assert.deepEqual(s.app.counts,gymMoment(t).counts);
+  assert.equal(s.story.phase,gymMoment(t).phase);assert.deepEqual(s.story.counts,gymMoment(t).counts);
   assert(new T.Box3().setFromObject(model).min.y>=-.001,'animation must not push geometry below the plinth');
  }
 });
 
-test('app is available without a canvas and clamps invalid sample data',()=>{
- const app=createGymScreen(T),screen=app.mesh;
- assert.equal(screen.material.map,null,'Node fallback does not require a DOM');
- assert(screen.material.isMeshBasicMaterial);assert.equal(screen.material.toneMapped,false);assert.equal(screen.userData.noShadow,true);
- app.update({phase:'footfall',counts:[5,10,7],comparison:-1});assert.deepEqual(screen.userData.counts,[5,10,7]);assert.equal(screen.userData.winner,null);
- app.update({phase:'compare',counts:[12,36,20],comparison:1});assert.equal(screen.userData.comparison,1);assert.equal(screen.userData.winner,null);
- app.update({phase:'selected',counts:[12,36,20]});assert.equal(screen.userData.winner,'B');
- app.update({phase:'invalid',counts:[-10,Infinity,1000],comparison:7});assert.equal(screen.userData.phase,'footfall');assert.deepEqual(screen.userData.counts,[0,0,20]);assert.equal(screen.userData.comparison,-1);
- app.dispose();
+test('comparison rail receives exact counts and an honest staged recommendation',()=>{
+ const model=createArtifact(T);
+ for(const t of [0,1,4,7,8,9.5,11,12,14,18,21,24]){
+  model.userData.animate(t);const story=model.userData.story,s=gymMoment(t);
+  assert.deepEqual(story.counts,s.counts);
+  assert.equal(story.comparison,s.comparison);
+  assert.equal(story.winner,s.t>=12?'B':null);
+ }
+ assert(!model.getObjectByName('mynextgym-app-screen'),'city composition has no oversized screen');
 });
 
-test('app title, comparison rows and result panel stay in front of the housing',()=>{
- const model=createArtifact(T),screen=model.getObjectByName('mynextgym-app-screen');model.updateMatrixWorld(true);
- const forward=new T.Vector3(0,0,1).transformDirection(screen.matrixWorld);
- for(const [x,y]of [[0,1.1],[-.65,.25],[.65,.25],[0,-1.0]]){
-  const p=screen.localToWorld(new T.Vector3(x,y,0));
-  const ray=new T.Raycaster(p.clone().addScaledVector(forward,.5),forward.clone().negate());
-  const hits=ray.intersectObject(model,true);assert.equal(hits[0]?.object,screen,'screen content must not be occluded by frame geometry');
- }
+test('proposed gym has a transparent skylight above the interior',()=>{
+ const model=createArtifact(T);model.userData.animate(18);model.updateMatrixWorld(true);
+ const gym=model.getObjectByName('mynextgym-proposed-gym');
+ const point=gym.localToWorld(new T.Vector3(-.08,1,-.03));
+ const ray=new T.Raycaster(point,new T.Vector3(0,-1,0));
+ const hits=ray.intersectObject(gym,true);
+ assert(hits.length>1,'skylight has an interior below it');
+ assert(hits[0].object.material.isMeshPhysicalMaterial&&hits[0].object.material.transparent,'roof opening is glazed instead of covered with solid geometry');
+ assert(model.userData.framingPoints.every(p=>p.toArray().every(Number.isFinite)));
 });
 
 test('manual walkthrough holds a stage and can return to timed playback',()=>{
@@ -120,4 +120,27 @@ test('manual walkthrough holds a stage and can return to timed playback',()=>{
  model.userData.setStep(-1);assert.equal(model.userData.story.phase,'review');
  model.userData.setStep(null,2);assert.equal(model.userData.story.phase,'footfall');
  model.userData.animate(18);assert.equal(model.userData.story.phase,'reveal');
+});
+
+
+test('architectural glazing and foliage survive batching with bounded render cost',()=>{
+ const model=createArtifact(T),canopy=model.getObjectByName('mynextgym-botanical-canopy');
+ assert(canopy?.isInstancedMesh,'individual leaves retain their instance transforms');
+ assert(canopy.count>5000&&canopy.count<15000);
+ assert([...canopy.instanceMatrix.array].every(Number.isFinite));
+ assert(canopy.boundingBox.max.x-canopy.boundingBox.min.x>4,'leaf bounds describe the district, not a unit leaf');
+ assert(canopy.instanceColor,'foliage retains natural colour variation');
+ const roomMaps=new Set();let triangles=0;
+ model.traverse(o=>{
+  if(!o.isMesh)return;
+  triangles+=(o.geometry.index?.count??o.geometry.attributes.position.count)/3*(o.isInstancedMesh?o.count:1);
+  if(o.material.emissiveMap?.isDataTexture){
+   const data=o.material.emissiveMap.image.data;
+   assert(new Set(data).size>60,'window interiors retain tonal detail');roomMaps.add(o.material.emissiveMap);
+  }
+ });
+ assert.equal(roomMaps.size,6,'warm, cool and shaded interior variants remain distinct');
+ assert(triangles<450000,'expanded leaf instances are included in the triangle budget');
+ const repeat=createArtifact(T).getObjectByName('mynextgym-botanical-canopy');
+ assert.deepEqual(canopy.instanceMatrix.array,repeat.instanceMatrix.array,'procedural foliage is stable across rebuilds');
 });

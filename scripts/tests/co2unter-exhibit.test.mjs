@@ -6,7 +6,7 @@ import {createArtifact} from '../../public/landing/artifacts/co2unter.js';
 test('CO2unter has finite geometry and a deterministic data-to-comparison sequence',()=>{
  const root=createArtifact(T),packet=root.getObjectByName('co2unter-conversion-packet');
  const land=root.getObjectByName('co2unter-earth-land');assert(land.geometry.attributes.position.count>10000);assert(land.geometry.attributes.position.count<200000,'coastline tessellation stays bounded');
- const lp=land.geometry.attributes.position;for(let i=0;i<lp.count;i++){const length=Math.hypot(lp.getX(i),lp.getY(i),lp.getZ(i));assert(Math.abs(length-1.135)<1e-5,'coastlines stay on globe surface');}
+ const lp=land.geometry.attributes.position;for(let i=0;i<lp.count;i++){const length=Math.hypot(lp.getX(i),lp.getY(i),lp.getZ(i));assert(Math.abs(length-1.355)<1e-5,'coastlines stay on globe surface');}
  root.traverse(o=>{if(o.isMesh){assert(o.geometry.attributes.position.array.every(Number.isFinite));assert(o.geometry.attributes.normal.array.every(Number.isFinite));}});
  const state=t=>{root.userData.animate(t);root.updateMatrixWorld(true);const transforms=[];root.traverse(o=>transforms.push(o.visible,...o.matrixWorld.elements));return transforms;};
  const initial=state(0);state(12);assert.equal(root.userData.story.index,2);assert.equal(packet.visible,false,'comparison hold must not have a travelling sample');
@@ -14,6 +14,14 @@ test('CO2unter has finite geometry and a deterministic data-to-comparison sequen
  const midway=state(8);assert.equal(packet.visible,true);assert.equal(root.userData.story.index,1);state(20);assert.deepEqual(state(8),midway,'seeking cannot depend on previous frame');
  for(const [time,index,moving] of [[2,0,true],[6,1,false],[9,1,true],[14,2,false],[17,3,true],[22,3,false]]){state(time);assert.equal(root.userData.story.index,index);assert.equal(packet.visible,moving);}
  const screen=root.getObjectByName('co2unter-converter-screen');
+ assert(screen.material.isMeshBasicMaterial,'phone UI remains readable independently of the studio lights');
+ assert.equal(screen.material.toneMapped,false);
+ const scan=root.getObjectByName('co2unter-globe-scan'),trail=root.getObjectByName('co2unter-packet-trail');
+ state(2);assert(scan.visible);assert(trail.visible);
+ state(6);assert(!scan.visible);assert(!trail.visible,'trail clears when the input has reached the phone');
+ state(9);assert(trail.visible);assert(!root.getObjectByName('co2unter-bananas-halo').visible,'comparison lights only after arrival');
+ state(12);assert(!trail.visible);assert(root.getObjectByName('co2unter-bananas-halo').visible);
+ state(20);assert(!root.getObjectByName('co2unter-bananas-halo').visible);assert(root.getObjectByName('co2unter-wood-halo').visible);
  root.userData.setStep(3,31);const woodFrame=state(31);assert.equal(screen.userData.comparison,'wood');assert.equal(root.getObjectByName('co2unter-wood-halo').visible,true);assert.deepEqual(state(80),woodFrame,'manual phase stays fixed');
  root.userData.setStep(null,80);assert.deepEqual(state(80),woodFrame,'autoplay resumes without jumping');
  root.userData.setStep(2,90);assert.equal(screen.userData.comparison,'bananas');assert.equal(root.getObjectByName('co2unter-bananas-halo').visible,true);

@@ -52,6 +52,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
 {number === 40 && <link rel="stylesheet" href="/landing/two-rivers.css" />}
 {number === 42 && <link rel="stylesheet" href="/landing/astrodegen.css" />}
 {number === 46 && <link rel="stylesheet" href="/landing/hedera-agents.css" />}
+{number === 20 && <link rel="stylesheet" href="/landing/co2unter.css" />}
 <section class="project-exhibit" id={isScaleup ? 'scaleup-evolution' : undefined} data-scaleup={isScaleup || undefined} data-project-exhibit data-number={number} data-model={art.model} aria-label={`${title} concept exhibit`}>
   {isScaleup && <ScaleupJourney number={number} />}
   {number === 63 && <header class="tycoon-intro">
@@ -85,7 +86,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     {projectUrl && <a class="atlas-launch" href={projectUrl} target="_blank" rel="noopener noreferrer">Explore the app <span aria-hidden="true">↗</span></a>}
   </header>}
   <div class="exhibit-toolbar">
-    <p>{isScaleup ? 'THE SAME IDEA, EXPANDING' : number === 41 ? 'PROMPT ALCHEMIST · THE INVITATION STUDIO' : number === 45 ? 'ASTERIX · THE VIBE CHECK CONSOLE' : number === 63 ? 'INSIDE THE DATA CENTER EMPIRE' : number === 75 ? 'THE LIVING CULTURAL ATLAS' : number === 70 ? 'THE OPPORTUNITY ATLAS' : number === 72 ? 'EXPLORE THE THRESHOLD' : number === 69 ? 'INSIDE THE LITTLE SHOP' : 'THE PROJECT, REIMAGINED'}</p>
+    <p>{isScaleup ? 'THE SAME IDEA, EXPANDING' : number === 41 ? 'PROMPT ALCHEMIST · THE INVITATION STUDIO' : number === 45 ? 'ASTERIX · THE VIBE CHECK CONSOLE' : number === 17 ? 'GOLD IGLOO · PRINCIPLES MEET PURPOSE' : number === 24 ? 'MYNEXTGYM · LOCATION INTELLIGENCE' : number === 63 ? 'INSIDE THE DATA CENTER EMPIRE' : number === 75 ? 'THE LIVING CULTURAL ATLAS' : number === 70 ? 'THE OPPORTUNITY ATLAS' : number === 72 ? 'EXPLORE THE THRESHOLD' : number === 69 ? 'INSIDE THE LITTLE SHOP' : 'THE PROJECT, REIMAGINED'}</p>
     <div class="exhibit-actions">
       {number === 72 && projectUrl && <a class="cosmic-launch cosmic-toolbar-launch" href={projectUrl} target="_blank" rel="noopener noreferrer" aria-label="Open Alien Homecoming app (opens in a new tab)">Open app <span aria-hidden="true">↗</span></a>}
       {hasLabels && <button type="button" data-toggle-labels aria-expanded={number === 75 ? 'false' : 'true'}>{number === 75 ? 'Show labels' : 'Hide labels'}</button>}
@@ -96,6 +97,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     </div>
   </div>
   <figure>
+    {number === 24 && <header class="gym-intro"><div><span>GOOD BUSINESS STARTS WITH PLACE</span><h2>Find your next <em>great location.</em></h2></div><p>One neighbourhood. Three possibilities.<br />Follow the people to find the opportunity.</p></header>}
     <div class="exhibit-art" data-art>
       <picture>
         <source data-dark-art media="(prefers-color-scheme: dark)" srcset={dark.srcset} sizes="(max-width: 920px) 100vw, 920px" type="image/webp" />
@@ -108,6 +110,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
         </div>)}
       </div>}
     </div>
+
     <div class="exhibit-scene" data-scene hidden>
       <canvas tabindex="0" aria-label={number === 49 ? 'Interactive bunny meadow. Drag the bunny to pick it up; release to drop. Space picks up or releases; arrow keys move it while held. Drag the garden to rotate. Home resets.' : `Interactive 3D concept for ${title}. Drag or use arrow keys to rotate.`}></canvas>
       {number === 49 && <p class="bunny-interaction-hint" data-manipulation-status aria-live="polite">Pick up the bunny. Let it go. Let it rest.</p>}
@@ -125,9 +128,16 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
         <p class="exhibit-story-detail" data-story-detail></p>
       </div>}
     </div>
-    {[18, 19, 20, 23, 24, 25, 29].includes(number) && <div class="exhibit-walkthrough" data-walkthrough hidden>
-      {[18, 20, 24, 25].includes(number) && <div class="walkthrough-steps" role="group" aria-label={`Explore the ${title} workflow`}>
-        {(number === 18 ? ['Draft', 'Inspect', 'Review flags', 'Sample rewrite', 'Reset'] : number === 24 ? ['Footfall', 'Compare', 'Select B', 'Proposed gym', 'Review'] : number === 25 ? ['Learn', 'Associate', 'Recall', 'Check answers'] : ['Carbon input', 'Choose bananas', 'Banana comparison', 'Wood comparison']).map((label, index) => <button type="button" data-story-select={index} aria-pressed={index === 0 ? 'true' : 'false'}><span>{String(index + 1).padStart(2, '0')}</span>{label}</button>)}
+    {[17, 18, 19, 20, 23, 24, 25, 29].includes(number) && <div class="exhibit-walkthrough" data-walkthrough hidden>
+      {number === 24 && <div class="gym-evidence" aria-label="Illustrative pedestrian arrivals">
+        <div class="gym-evidence-heading"><span>SAMPLE FOOTFALL</span><span data-gym-result>Observing the neighbourhood</span></div>
+        <div class="gym-candidates">{[{id:'A',source:'Transit'}, {id:'B',source:'Transit · Offices · Homes'}, {id:'C',source:'Offices'}].map((site,index) => <div class="gym-candidate" data-gym-candidate={index}>
+          <span class="gym-candidate-letter">{site.id}</span><div class="gym-candidate-copy"><strong>Location {site.id}</strong><small>{site.source}</small><span class="gym-count-track"><i data-gym-bar={index}></i></span></div><span class="gym-count"><b data-gym-count={index}>0</b><small>people</small></span>
+        </div>)}</div>
+        <p>Illustrative sample · Watch the routes, compare arrivals, then reveal the proposed gym.</p>
+      </div>}
+      {[17, 18, 19, 20, 24, 25].includes(number) && <div class="walkthrough-steps" role="group" aria-label={`Explore the ${title} workflow`}>
+        {(number === 17 ? ['Business', 'Financial', 'Purification', 'Impact', 'Shortlist'] : number === 18 ? ['Draft', 'Inspect', 'Review flags', 'Sample rewrite', 'Reset'] : number === 19 ? ['Your details', 'Your assets', 'Trusted people', 'Review the plan'] : number === 24 ? ['Footfall', 'Compare', 'Select B', 'Proposed gym', 'Review'] : number === 25 ? ['Learn', 'Associate', 'Recall', 'Check answers'] : ['Carbon input', 'Choose bananas', 'Banana comparison', 'Wood comparison']).map((label, index) => <button type="button" data-story-select={index} aria-pressed={index === 0 ? 'true' : 'false'}><span>{String(index + 1).padStart(2, '0')}</span>{label}</button>)}
         <button type="button" data-story-auto aria-pressed="true">Auto-play</button>
       </div>}
       <div class="exhibit-story" style="position: static; max-width: none;" data-story aria-live="off" hidden>
@@ -142,7 +152,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     </div>}
     <div class="exhibit-controls" data-controls hidden>
       <span>{number === 49 ? 'Drag bunny to lift · Release to drop · Space + arrows also work' : 'Drag to rotate · Arrow keys to turn'}</span>
-      {[18, 20, 23, 24, 25, 29, 35].includes(number) && <><button type="button" data-zoom="0.8" aria-label="Zoom out" disabled>−</button><button type="button" data-zoom="1.25" aria-label="Zoom in">+</button></>}
+      {[17, 18, 20, 23, 24, 25, 29, 35].includes(number) && <><button type="button" data-zoom="0.8" aria-label="Zoom out" disabled>−</button><button type="button" data-zoom="1.25" aria-label="Zoom in">+</button></>}
       <button type="button" data-reset>{number === 49 ? 'Reset meadow' : number === 29 ? 'Replay route' : 'Reset view'}</button>
       <button type="button" data-pause aria-pressed="false">Pause motion</button>
     </div>
@@ -241,6 +251,45 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
 </section>
 <script is:inline type="module" src="/landing/project-exhibit.js"></script>
 <style is:inline>
+  .gym-intro { display:flex; justify-content:space-between; align-items:flex-end; gap:25px; padding:32px 34px 28px; background:#101f29; color:#edf4ed; }
+  .gym-intro span { display:block; margin-bottom:13px; font:9px/1.5 var(--mono); letter-spacing:.15em; color:#8cbbb2; }
+  .gym-intro h2 { margin:0; font:500 clamp(26px,3.1vw,38px)/1.14 var(--sans, sans-serif); letter-spacing:-.045em; }
+  .gym-intro h2 em { display:block; font-family:Georgia,serif; font-weight:400; color:#bce4ce; }
+  .gym-intro p { font-size:11px; line-height:1.7; color:#a5b9c4; margin:0 0 3px; }
+  .project-exhibit[data-number='24'] .exhibit-toolbar { padding:15px 24px; }
+  .project-exhibit[data-number='24'] .exhibit-scene { aspect-ratio:1.6; }
+  .project-exhibit[data-number='24'] .exhibit-walkthrough { background:#101f29; color:#edf4ed; padding:24px; }
+  .gym-evidence { margin-bottom:24px; }
+  .gym-evidence-heading { display:flex; justify-content:space-between; gap:12px; margin-bottom:14px; font:9px/1.5 var(--mono); letter-spacing:.12em; color:#9fb8c3; }
+  .gym-evidence-heading [data-gym-result] { color:#bce4ce; letter-spacing:0; }
+  .gym-candidates { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .gym-candidate { display:flex; align-items:center; gap:10px; padding:15px 12px; background:#1b303c; border:1px solid #34505c; border-radius:8px; }
+  .gym-candidate[data-selected='true'] { border-color:#9cd9bd; background:#21483f; }
+  .gym-candidate[data-comparing='true'] { border-color:#d6b87c; }
+  .gym-candidate-letter { align-self:flex-start; font:12px/1 var(--mono); color:#aac8c6; border:1px solid #56716f; border-radius:50%; padding:7px; }
+  .gym-candidate-copy { flex:1; min-width:0; }
+  .gym-candidate-copy strong { display:block; font-size:12px; font-weight:500; }
+  .gym-candidate-copy small { display:block; font-size:8px; color:#a4bec2; margin-top:5px; white-space:nowrap; }
+  .gym-count { text-align:right; }
+  .gym-count b { display:block; font:500 29px/1 var(--sans,sans-serif); font-variant-numeric:tabular-nums; letter-spacing:-.06em; }
+  .gym-count small { font-size:8px; color:#a4bec2; }
+  .gym-count-track { display:block; height:3px; background:#3f565e; border-radius:5px; margin-top:12px; }
+  .gym-count-track i { display:block; width:0; height:100%; background:#8dd3c2; border-radius:5px; }
+  .gym-evidence p { font-size:9px; color:#9ab1bd; margin:12px 0 0; }
+  .project-exhibit[data-number='24'] .walkthrough-steps button { color:#e6f0ec; border-color:#50616a; border-radius:6px; font-size:10px; padding:9px 11px; }
+  .project-exhibit[data-number='24'] .walkthrough-steps button[aria-pressed='true'] { background:#c2e5d3; border-color:#c2e5d3; color:#19372f; }
+  .project-exhibit[data-number='24'] .exhibit-story { color:#edf4ed; text-shadow:none; margin-top:20px; }
+  .project-exhibit[data-number='24'] .exhibit-story-detail, .project-exhibit[data-number='24'] .exhibit-story-step { color:#a5bac5; }
+  @media(max-width:600px) {
+    .gym-intro { padding:22px; display:block; } .gym-intro p { margin-top:14px; }
+    .gym-candidates { gap:6px; } .gym-candidate { flex-wrap:wrap; padding:10px; gap:6px; }
+    .gym-candidate-letter { display:none; } .gym-candidate-copy small { white-space:normal; min-height:22px; }
+    .gym-count b { font-size:24px; } .gym-count { flex-basis:100%; text-align:left; }
+    .gym-count small { display:none; } .gym-evidence-heading { font-size:8px; letter-spacing:.03em; }
+    .project-exhibit[data-number='24'] .exhibit-walkthrough { padding:16px; }
+    .project-exhibit[data-number='24'] .exhibit-scene { aspect-ratio:1.12; }
+  }
+
   .project-exhibit[data-number='69'] { --order-teal:#25463e; --order-gold:#a17842; border-radius:20px; }
   .order-intro { display:flex; justify-content:space-between; align-items:center; gap:28px; padding:32px 32px 28px; background:#eee6d5; color:#25463e; }
   .order-eyebrow { margin:0 0 16px; font:9px/1.5 var(--mono); letter-spacing:.17em; color:#816641; }

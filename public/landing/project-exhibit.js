@@ -48,6 +48,17 @@ for (const exhibit of document.querySelectorAll('[data-project-exhibit]')) {
     storyStep.textContent = value.step;
     storyTitle.textContent = value.title;
     storyDetail.textContent = value.detail;
+    if (exhibit.dataset.number === '24' && Array.isArray(value.counts)) {
+      exhibit.querySelectorAll('[data-gym-candidate]').forEach((card, index) => {
+        const count = value.counts[index] ?? 0;
+        card.querySelector('[data-gym-count]').textContent = String(count);
+        card.querySelector('[data-gym-bar]').style.width = `${count / 36 * 100}%`;
+        card.dataset.selected = String(value.winner === ['A', 'B', 'C'][index]);
+        card.dataset.comparing = String(value.comparison === index && !value.winner);
+      });
+      const result = exhibit.querySelector('[data-gym-result]');
+      if (result) result.textContent = value.winner ? 'B · The strongest footfall' : value.phase === 'compare' ? 'Comparing three locations' : 'Observing the neighbourhood';
+    }
     stepButtons.forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.storySelect) === value.index)));
   }
   const divisionLabels = new Map([...stage.querySelectorAll('[data-division]')].map(label => [label.dataset.division, label]));

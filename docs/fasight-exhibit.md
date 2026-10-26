@@ -25,16 +25,22 @@ One wide limestone plinth, dark petrol teal asset tray on the left, miniature iv
 
 The cameo portraits symbolize relationships and are not live figures. No people walk aimlessly. The house, ledger, tree, pen and all cameo medallions stay physically anchored.
 
-## Animation
+## Animation — revised 26 October 2026
 
-Twenty-second deterministic loop using the gallery's existing elapsed-time clock, with pause/reduced-motion support inherited from the gallery:
+Twenty-second deterministic loop using the shared elapsed-time clock and pause/reduced-motion support. Each five-second chapter has a visible physical action:
 
-1. 0–5 s: identity card rule is highlighted; story describes personal details.
-2. 5–10 s: asset tray is highlighted and one small teal marker follows the brass desk route toward the relationship tree.
-3. 10–15 s: the upper tree medallion gets a fine teal rim; story describes selecting a trusted person.
-4. 15–20 s: a fine brass review line draws across the ledger and holds. The story explicitly describes review as a concept whose source screen remains a placeholder.
+1. Personal details: a light trail travels from the identity card to the ledger; the pen lifts from its cradle and inks the three checklist rules.
+2. Assets: the asset-tray perimeter and house windows illuminate while the ledger records the asset categories.
+3. Trusted people: a light trail leaves the ledger for the tree, then five luminous branch paths draw from the roots toward their portrait medallions. Each portrait rim lights in sequence.
+4. Draft review: the gathered connections remain lit while the book shows the overview. This is an illustrative draft, not a completed or legally valid will.
 
-No signature, legal seal, approval claim, automatic fund transfer or floating object animation. All phases are directly seekable. `cycleDuration: 20`, `realTimeAnimation: true`, and `story` fields (`index`, `step`, `title`, `detail`, `tone`) support the shared overlay.
+In every chapter the pen approaches for 0.8 seconds, fills the rows from 1–3.7 seconds, lifts between rules, then returns to its cradle by 4.35 seconds. A subdivided sheet curls and turns around the binding during 4.35–5 seconds. Ink and nib share one deterministic timeline (`fasightMoment`); no independent timers. Paper geometry updates only while the turn amount changes, and the 1024px canvas redraws at quantized ink increments rather than on every frame. No legal signature or approval seal is animated.
+
+The new four chapter buttons call `setStep`. Manual inspection holds its frame; autoplay resumes continuously. Pause, reset and keyboard orbit remain shared with the gallery.
+
+## 3D refinement — revised 26 October 2026
+
+The ledger is larger and now has written chapter pages, a navigation checklist, paper shading, leather stitching, visible page edges and a bookmark. A brass-and-teal pen has a modelled nib, barrel rings, clip and a physical cradle. The asset tray is outlined instead of covered with a solid highlight. House windows and branch paths have a restrained emissive finish. A dedicated forest-and-amber studio profile improves separation and contact shadows. Framing uses component bounds; the limestone base sits on the studio floor. The existing artwork remains unchanged because this request targets the live 3D and its animation.
 
 ## Artwork generation
 
@@ -45,8 +51,21 @@ Prompt:
 
 > Use case: stylized-concept. Create a luxurious museum miniature sculpture photographed in a warm dark studio, landscape 3:2 image, for Fasight, an open-source digital will PLANNING prototype. Precisely compose this sculptural still life so it can be reproduced as an interactive 3D model: on one wide softly bevelled warm limestone plinth, left third a low dark petrol teal rectangular asset tray with a finely crafted small ivory gabled house, three short stacks of brass coins and a small ivory keepsake box; center a large open ivory paper ledger resting on a dark petrol teal book cover tilted up about 18 degrees towards the camera, two pages with fine engraved horizontal rules and brass binding rings at the center, one ivory page subtly curled at the outer corner; right third a beautiful branching brass relationship tree, shaped like a symmetrical elegant botanical sculpture, five branches ending in small round ivory portrait medallions with simple embossed profile cameos, on a round dark teal base. On the plinth foreground left a slightly angled small ivory identity card with tiny portrait and ruled lines, and foreground center a slender brass fountain pen. Small brass dotted inlay path connects identity card to asset tray to tree to ledger. Tiny inset brass-edged dark teal nameplate centered on front lip reading only 'Fasight'. Highly tactile ivory paper fibers, brushed aged brass, fine-grained limestone, dark teal leather binding, convincing bevels, rich contact shadows, warm key from upper left, gentle cool fill and rim, photographic material detail. Camera orthographic-ish front three-quarter, elevation about 25 degrees, entire sculpture fills most of frame with comfortable margins. Editorial product photography, refined thoughtful financial legacy theme. No living people, no figurines, no laptop, no UI overlay, no glowing holograms, no padlock, no legal seal, no extra text, no watermarks. The sculpture itself is the subject, one cohesive physical tableau.
 
-## Verification
+## Original verification
 
 Node geometry inspection: 18 meshes and 177,347 vertices without browser-only plaque text; all coordinates finite. Four expected phases and cycle reset verified. Static surfaces are batched by material; only the seven highlights, review group and route marker remain separately transformable. No per-frame geometry rebuilds or normal recomputation.
 
 Integration polish: the three exhibits share `planning-exhibit-surfaces.js`, a deterministic local limestone pore/albedo map. Phase captions sit below the canvas, leaving the sculpture unobscured. Shared pause/resume and reset controls remain in place.
+
+## V2 validation
+
+`node --test scripts/tests/fasight-motion.test.mjs scripts/tests/exhibits-18-20.test.mjs` checks five cases: finite scenes, exact loops, random-access motion, chapter selection/autoplay continuity, nib-to-ink alignment including lifted row transitions, pen return before page turns, and branch illumination/reset. Browser review checks the written ledger, chapter controls and updated material/lighting treatment. The original project-source limitations above still apply.
+
+### Fidelity pass — 26 October 2026
+
+- Replaced identical silhouette cutouts with actual Microsoft Rocketbox portrait geometry, cropped and compressed into ivory reliefs in dark enamel medallions. Two authored meshes, five viewing angles; the source MIT licence remains in `public/landing/assets/lrnmate-people/`. Reproducible conversion: `scripts/assets/build-fasight-cameos.mjs`. Shared geometry has 5,256 vertices after deduplication, with preserved smooth normals.
+- Rebuilt the miniature house with separate lapped slate tiles, ridge caps, masonry courses, quoins, recessed framed windows, steps, gutters and a brick chimney. Warm window panes are behind the mullions, avoiding overlapping signal geometry.
+- Added separate 512px albedo, linear height and roughness maps for leather, limestone, paper, brushed metal and slate. Added enamel settings, beaded medallion rims, coin milling, an inlaid keepsake box and a lathed lacquer fountain pen.
+- The ledger now has 22 layered leaves per side, thread stitching, a brass binding plate, a subtly curved writing surface and 1536px ink. Pen contact derives from the same paper-height function; writing and page-turn timing remain deterministic. Review inspection parks the pen in its cradle.
+- Warm metal highlights replace mint/neon outlines. Dedicated reflected softboxes, stronger directional modelling and a modest three-quarter camera reveal depth while retaining the original exhibit composition.
+- Validation: motion, seek/reset, page contact, finite geometry, portrait normals, texture colour spaces and a bounded scene draw-call/triangle budget are covered by the Fasight tests. This is a detailed real-time sculptural exhibit, not a photorealistic scan.

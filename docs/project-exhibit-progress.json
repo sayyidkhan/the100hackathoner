@@ -920,7 +920,7 @@
       "title": "MyNextGym",
       "source": null,
       "status": "needs-source-context",
-      "refinement": "2026-10-26: contoured single foundation, smaller dark console, denser architecture, warm windows, balconies, shops, street furniture and a larger detailed gym. Five selectable walkthrough stages."
+      "refinement": "2026-10-26 v4: city-first slate district with no upright console; readable HTML footfall rail, richer architecture, warm windows, genuine gym skylight, tight framing and matching v4 artwork. Five selectable walkthrough stages."
     },
     {
       "number": 23,
@@ -960,9 +960,12 @@
     },
     {
       "number": 17,
-      "title": "iceigloo",
-      "source": null,
-      "status": "needs-source-context"
+      "title": "Gold Igloo",
+      "source": "https://github.com/sayyidkhan/goldigloo",
+      "status": "implemented",
+      "artwork": "public/landing/assets/projects/017-goldigloo-research-v4.png",
+      "model": "public/landing/artifacts/goldigloo.js",
+      "notes": "Approved research-desk artwork with IceIgloo mascot; matching glass screening panels, shortlist folio, books and solar garden. Five-stage manual/automatic screening walkthrough, attached waving hand, scoped lighting and zoom controls. See docs/goldigloo-exhibit.md."
     },
     {
       "number": 16,

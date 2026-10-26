@@ -1,6 +1,6 @@
 import { medivoiceStudio } from './medivoice-studio.js';
 import { pestSurfaces } from './pestoverflow-surfaces.js';
-import { createGymScreen } from './mynextgym-app-screen.js';
+import { districtArchitecture } from './mynextgym-architecture.js';
 
 // Source-backed location analytics, with footfall explicitly clarified by the owner.
 // Routes, candidate sites and strengths illustrate the workflow, not measured data.
@@ -22,8 +22,8 @@ export function gymMoment(time) {
 export function createArtifact(T) {
   const {root,materials:m,mesh,box,disk,ball,line,texture,finish,batch}=medivoiceStudio(T);
   const material=(color,roughness=.65,metalness=0)=>new T.MeshStandardMaterial({color,roughness,metalness});
-  Object.assign(m,{stone:material(0xd9c8aa,.84),cream:material(0xf2e5ce,.74),brass:material(0xb89459,.34,.6),
-    ink:material(0x12262c,.52),map:material(0x182c3b,.76),road:material(0x66716f,.8),teal:material(0x4aaba0,.55),
+  Object.assign(m,{stone:material(0x9eacae,.84),cream:material(0xe7eee7,.74),brass:material(0x8eabad,.34,.45),
+    ink:material(0x12262c,.52),map:material(0x34464e,.76),road:material(0x586873,.8),teal:material(0x4aaba0,.55),
     amber:material(0xe2b764,.50),coral:material(0xc75f43,.56),glass:material(0x335459,.32,.12),
     signal:new T.MeshStandardMaterial({color:0xf6cf86,emissive:0xc09042,emissiveIntensity:.3,roughness:.5}),
     contour:material(0x294b53,.9),park:material(0x4f6855,.9),foliage:material(0x72876a,.85),cyan:new T.MeshStandardMaterial({color:0x73e4d6,emissive:0x2cbfaf,emissiveIntensity:.45,roughness:.5})});
@@ -32,7 +32,7 @@ export function createArtifact(T) {
   for(const family of [surfaces.oak,surfaces.plaster])for(const tex of Object.values(family))tex.dispose();
   m.glazing=new T.MeshPhysicalMaterial({color:0x8ab8bb,transparent:true,opacity:.26,roughness:.14,metalness:.06,depthWrite:false,side:T.DoubleSide});
   m.floor=new T.MeshStandardMaterial({color:0xc99f64,roughness:.78});
-  Object.assign(m,{brick:material(0xb78269,.88),limestone:material(0xe5ded1,.85),concrete:material(0xa5b3b0,.85),frame:material(0x40545a,.48,.3),bark:material(0x80674f,.95),leafDark:material(0x476859,.9),warmWindow:new T.MeshStandardMaterial({color:0xe7c28b,emissive:0xb98a45,emissiveIntensity:.18,roughness:.45}),paving:material(0xb3b4a4,.94)});
+  Object.assign(m,{brick:material(0xc8927d,.88),limestone:material(0xe4e5d9,.85),concrete:material(0xa5b3b0,.85),frame:material(0x40545a,.48,.3),bark:material(0x80674f,.95),leafDark:material(0x476859,.9),warmWindow:new T.MeshStandardMaterial({color:0xe7c28b,emissive:0xb98a45,emissiveIntensity:1.2,roughness:.45}),paving:material(0xb3b4a4,.94)});
   m.glass.roughness=.22;m.glass.metalness=.35;
   const reflectionData=new Uint8Array(64*128*4);
   for(let y=0;y<128;y++)for(let x=0;x<64;x++){
@@ -42,6 +42,7 @@ export function createArtifact(T) {
   const reflection=new T.DataTexture(reflectionData,64,128);reflection.colorSpace=T.SRGBColorSpace;reflection.magFilter=T.LinearFilter;reflection.needsUpdate=true;m.glass.map=reflection;m.glass.color.setHex(0xffffff);
 
 
+  const architecture=districtArchitecture(T,{root,materials:m,mesh,box});
   const preserved=[];
   function group(x=0,y=0,z=0,parent=root){const g=new T.Group();g.position.set(x,y,z);parent.add(g);return g;}
   function rounded(w,h,d,x,y,z,key,parent=root,r=.05){
@@ -58,17 +59,13 @@ export function createArtifact(T) {
     const map=new T.CanvasTexture(c);map.colorSpace=T.SRGBColorSpace;map.anisotropy=4;
     const o=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({map,transparent:true,depthWrite:false,toneMapped:false}));o.position.set(x,y,z);o.userData.noShadow=true;parent.add(o);if(preserve)preserved.push(o);return o;
   }
-  // One continuous architectural site model. The city is the focal point.
-  // The footprint follows the district and the console; no unused front apron.
-  const siteOutline=new T.Shape();siteOutline.moveTo(-3.72,-2.02);siteOutline.lineTo(.99,-2.02);siteOutline.quadraticCurveTo(1.20,-2.02,1.20,-1.81);siteOutline.lineTo(1.20,-.87);siteOutline.quadraticCurveTo(1.20,-.64,1.43,-.64);siteOutline.lineTo(2.98,-.64);siteOutline.quadraticCurveTo(3.20,-.64,3.20,-.42);siteOutline.lineTo(3.20,1.80);siteOutline.quadraticCurveTo(3.20,2.02,2.98,2.02);siteOutline.lineTo(-3.72,2.02);siteOutline.quadraticCurveTo(-3.94,2.02,-3.94,1.80);siteOutline.lineTo(-3.94,-1.80);siteOutline.quadraticCurveTo(-3.94,-2.02,-3.72,-2.02);
-  const siteGeometry=new T.ExtrudeGeometry(siteOutline,{depth:.20,bevelEnabled:true,bevelThickness:.018,bevelSize:.018,bevelSegments:3,curveSegments:12});siteGeometry.rotateX(-Math.PI/2);const siteBase=mesh(siteGeometry,'stone');siteBase.position.y=.35;
-
+  // The district occupies the entire exhibit: a thin dark architectural model,
+  // with evidence kept in the accessible HTML comparison rail below the canvas.
+  slab(5.16,4.05,.20,-1.25,.405,0,'ink',root,.18);
+  slab(5.13,4.02,.016,-1.25,.507,0,'teal',root,.17);
+  slab(5.10,3.99,.036,-1.25,.533,0,'concrete',root,.16);
   slab(4.92,3.72,.024,-1.25,.554,0,'map',root,.10);
-  // App toolbar lies on the map, with labels drawn as crisp UI lettering.
-  function mapText(text,w,x,z,color='#e9dbc1',h=.13){const o=label(text,w,h,x,.575,z,root,color);if(o)o.rotation.x=-Math.PI/2;}
-
-  mapText('PEDESTRIAN FLOWS',1.53,-2.70,1.63,'#dfb76e',.12);
-  mapText('ILLUSTRATIVE SCENARIO',1.55,-.35,1.63,'#aac7c0',.10);
+  const plaque=label('M Y N E X T G Y M',1.55,.105,-1.25,.417,2.045,root,'#dcefe6');
   // Street fabric is a flat map layer; small urban models remain contextual.
   for(const x of [-3.05,-1.32,.22])slab(.20,2.55,.009,x,.565,.12,'road',root,.015);
   for(const z of [-.71,-.05,.66,1.25])slab(4.25,.17,.009,-1.35,.566,z,'road',root,.015);
@@ -95,39 +92,22 @@ export function createArtifact(T) {
   const origins=[{id:'transit',x:-3.0,z:-1.12,label:'TRANSIT'},{id:'offices',x:-1.4,z:-1.12,label:'OFFICES'},{id:'homes',x:.35,z:-1.12,label:'HOMES'}];
   function originBuilding(x,z,w,d,h,office=false){
     slab(w+.07,d+.07,.03,x,.58,z,'stone');
-    rounded(w,h,d,x,.60+h/2,z,'glass',root,.015);
-    const rows=office?9:6,columns=office?4:3;
-    for(const side of [-1,1]){
-      for(let col=0;col<=columns;col++)box(.018,h,.035,x-w/2+col*w/columns,.60+h/2,z+side*(d/2+.01),'cream');
-      for(let row=0;row<=rows;row++)box(w+.035,.024,.04,x,.60+row*h/rows,z+side*(d/2+.012),'cream');
-      for(let row=0;row<rows;row++)for(let col=0;col<columns;col++)if((row+col)%3===0)box(w/columns*.65,h/rows*.64,.008,x-w/2+(col+.5)*w/columns,.60+(row+.5)*h/rows,z+side*(d/2+.024),'warmWindow');
-      for(let row=0;row<=rows;row++)box(.04,.02,d,x+side*w/2,.60+row*h/rows,z,'stone');
-    }
-    slab(w+.06,d+.06,.04,x,.62+h,z,'cream');slab(w*.76,d*.70,.018,x,.65+h,z,'road');
-    for(const side of [-1,1]){box(w,.07,.025,x,.68+h,z+side*d*.47,'cream');box(.025,.07,d,x+side*w*.47,.68+h,z,'cream');}
-    rounded(w*.38,.10,d*.35,x+w*.13,.70+h,z,'stone',root,.01);
-    for(let j=0;j<5;j++)box(.006,.04,d*.30,x+w*.02+j*.025,.77+h,z,'brass');
-    slab(w*.50,.17,.02,x,.84,z+d*.5+.035,'cream');
-    for(const side of [-1,1])box(.045,h,.045,x+side*(w/2-.02),.60+h/2,z+d/2+.02,'frame');
-    for(let j=0;j<3;j++)box(w*.2,.11,.012,x+(j-1)*w*.28,.68,z+d/2+.035,'warmWindow');
-    slab(w+.08,.12,.035,x,.82,z+d/2+.06,'frame');
-    if(!office)for(let row=1;row<rows;row++){
-      slab(w*.90,.085,.022,x,.62+row*h/rows,z+d/2+.035,'limestone');
-      box(w*.88,.035,.012,x,.66+row*h/rows,z+d/2+.075,'frame');
-      for(const side of [-1,1])box(.012,.035,.07,x+side*w*.42,.66+row*h/rows,z+d/2+.045,'frame');
-    }
-
+    architecture.building(x,z,w,d,h,{office});
   }
   origins.forEach((o,i)=>{
     disk(.13,.025,o.x,.594,o.z,'amber');
-    const badge=group(o.x,i===1?2.48:i===2?2.02:1.65,o.z+.09);
-    rounded(.94,.22,.035,0,0,0,'ink',badge,.045);label(o.label,.84,.15,0,0,.042,badge,'#f0e6ce');
+
     if(i===0){
       // Arched glazed railway concourse, curved ribs, platform and small train.
       const station=group(o.x,.60,o.z-.32);slab(.95,.62,.04,0,0,0,'cream',station);
       for(const x of [-.43,.43])box(.025,.30,.025,x,.15,0,'brass',station);
-      const roof=mesh(new T.CylinderGeometry(.44,.44,.56,28,1,true,0,Math.PI),'glazing',station);
-      roof.rotation.x=Math.PI/2;roof.rotation.z=Math.PI/2;roof.position.y=.30;
+      const roofVertices=[],roofIndices=[];
+      for(let j=0;j<=32;j++)for(const z of [-.28,.28]){
+        const a=j/32*Math.PI;roofVertices.push(Math.cos(a)*.44,.30+Math.sin(a)*.40,z);
+      }
+      for(let j=0;j<32;j++){const k=j*2;roofIndices.push(k,k+1,k+2,k+1,k+3,k+2);}
+      const roofGeometry=new T.BufferGeometry();roofGeometry.setAttribute('position',new T.Float32BufferAttribute(roofVertices,3));roofGeometry.setIndex(roofIndices);roofGeometry.computeVertexNormals();
+      mesh(roofGeometry,'archGlass',station);
       for(const z of [-.28,-.14,0,.14,.28]){
         const arch=Array.from({length:21},(_,j)=>{const a=j/20*Math.PI;return[Math.cos(a)*.44,.30+Math.sin(a)*.40,z];});line(arch,.009,'brass',station);
         for(const x of [-.43,.43])line([[x,0,z],[x,.30,z]],.009,'brass',station);
@@ -144,8 +124,8 @@ export function createArtifact(T) {
       for(const x of [-.46,.46]){box(.08,.04,.48,x,.065,0,'paving',station);for(let z=-.17;z<.2;z+=.08)box(.045,.005,.02,x,.088,z,'amber',station);}
 
     }else if(i===1){
-      originBuilding(o.x-.16,o.z-.30,.58,.47,1.67,true);
-      originBuilding(o.x+.30,o.z-.28,.30,.40,1.19,true);
+      originBuilding(o.x-.16,o.z-.30,.58,.47,1.83,true);
+      originBuilding(o.x+.30,o.z-.28,.30,.40,1.28,true);
     }else{
       originBuilding(o.x-.23,o.z-.29,.33,.38,1.15);
       originBuilding(o.x+.16,o.z-.23,.34,.35,.92);
@@ -170,35 +150,17 @@ export function createArtifact(T) {
     if(footprintRoutes.some(c=>Array.from({length:70},(_,j)=>c.getPointAt(j/69)).some(p=>Math.abs(p.x-x)<w/2+.06&&Math.abs(p.z-z)<d/2+.06)))continue;
     const i=blockIndex++;
     slab(w+.09,d+.09,.024,x,.565,z,'road',root,.018);
-    rounded(w,h,d,x,.58+h/2,z,['limestone','brick','concrete','cream'][i%4],root,.016);
-    slab(w+.02,d+.02,.018,x,.59+h,z,'cream',root,.015);
-    for(const sign of [-1,1])for(let row=0;row<Math.max(1,Math.floor(h/.11));row++)for(let j=0;j<3;j++){
-      box(.039,.052,.012,x-w*.31+j*w*.31,.635+row*.105,z+sign*(d/2+.015),'glass');
-      box(.045,.008,.02,x-w*.31+j*w*.31,.603+row*.105,z+sign*(d/2+.02),'brass');
-    }
-    // Ground-level shops, inset doors, shaded awnings and fine facade seams.
-    box(w*.7,.10,.009,x,.65,z+d/2+.023,'glass');
-    box(.028,.10,.012,x,.65,z+d/2+.030,'frame');
-    slab(w+.055,.10,.023,x,.73,z+d/2+.035,i%2?'teal':'brick',root,.005);
-    for(let row=1;row<Math.floor(h/.105);row++)box(w+.015,.008,.018,x,.60+row*.105,z+d/2+.021,'limestone');
-    for(const side of [-1,1])box(.012,h,.018,x+side*w*.47,.58+h/2,z+d/2+.02,'frame');
-    // Setback upper volumes, roof terraces and mechanical louvers vary the skyline.
-    if(i%4===0){rounded(w*.61,.12,d*.67,x,.65+h,z,'stone',root,.012);slab(w*.65,d*.70,.015,x,.72+h,z,'cream',root,.01);}
-    else if(i%4===1){slab(w*.65,d*.55,.018,x,.61+h,z,'park');for(let j=0;j<3;j++){const p=ball(.027,x-.055+j*.055,.635+h,z,'foliage');p.scale.y=.6;}}
-    else{box(w*.35,.034,d*.35,x,.615+h,z,'road');for(let j=0;j<4;j++)box(.004,.037,d*.30,x-w*.13+j*w*.085,.617+h,z,'brass');}
-    if(i%3===1)for(let j=0;j<5;j++)box(.008,h,.028,x-w*.40+j*w*.20,.58+h/2,z+d/2+.02,'brass');
+    architecture.building(x,z,w,d,h,{low:true,index:i});
   }
   for(let x=-3.45;x<.9;x+=.28)for(const z of [-1.70,1.66]){
-    if(nearRoute(x,z))continue;box(.14,.012,.10,x,.567,z,'park');
-    const trunk=mesh(new T.CylinderGeometry(.006,.009,.06,6),'brass');trunk.position.set(x,.605,z);
-    for(let i=0;i<3;i++){const leaf=mesh(new T.IcosahedronGeometry(.037,1),'foliage');leaf.position.set(x+(i-1)*.022,.66+(i%2)*.025,z);}
-  }
-  function streetTree(x,z,size=.10){
-    const trunk=mesh(new T.CylinderGeometry(.008,.012,.13,6),'bark');trunk.position.set(x,.64,z);
-    for(let j=0;j<5;j++){const a=j*2.4;const leaf=mesh(new T.IcosahedronGeometry(size*(.65+(j%2)*.2),1),j%2?'foliage':'leafDark');leaf.position.set(x+Math.cos(a)*size*.40,.76+(j%3)*size*.3,z+Math.sin(a)*size*.32);}
+    if(nearRoute(x,z))continue;
+    box(.14,.012,.10,x,.567,z,'park');
+    architecture.tree(x,z,.055);
   }
   for(const [x,z] of [[-3.48,.02],[-3.5,.93],[-2.48,1.38],[-1.86,1.44],[-.61,1.55],[.50,1.53],[.86,-.50],[-2.3,-1.65],[-.58,-1.65]]){
-    if(nearRoute(x,z))continue;slab(.18,.17,.035,x,.58,z,'concrete',root,.025);streetTree(x,z);
+    if(nearRoute(x,z))continue;
+    slab(.18,.17,.035,x,.58,z,'concrete',root,.025);
+    architecture.tree(x,z,.105);
   }
   for(const [x,z] of [[-3.48,-.55],[-3.45,.72],[-2.47,1.33],[-.58,1.53],[.82,.66],[.82,-.46],[-2.6,-1.60]]){
     const pole=mesh(new T.CylinderGeometry(.006,.009,.28,6),'frame');pole.position.set(x,.72,z);
@@ -207,10 +169,19 @@ export function createArtifact(T) {
     slab(.14,.07,.02,x-.05,.64,z+.13,'bark');
     for(const side of [-1,1])box(.012,.05,.05,x-.05+side*.05,.61,z+.13,'frame');
   }
+  for(const [x,z] of [[-3.48,.15],[-3.48,1.40],[.86,.96],[.84,-1.65]])architecture.tree(x,z,.12);
+  preserved.push(architecture.finishTrees());
+  // A small cafe terrace on a pedestrian corner.
+  for(const x of [-2.57,-2.38]){
+    const table=mesh(new T.CylinderGeometry(.045,.045,.012,16),'cream');table.position.set(x,.67,.53);
+    box(.012,.08,.012,x,.62,.53,'frame');
+    for(const z of [.45,.61]){box(.045,.012,.045,x,.63,z,'teal');box(.012,.055,.012,x,.60,z,'frame');}
+  }
   // Discreet paving joints around the front promenade.
   for(let x=-3.58;x<.96;x+=.12)box(.004,.003,.15,x,.58,1.49,'paving');
   // Sidewalk seams and zebra crossings register this as walkable street fabric.
   for(const [x,z] of [[-3.20,-.37],[-1.10,-.32],[.65,-.37],[-1.72,.10]])for(let i=0;i<4;i++)box(.14,.004,.021,x,.581,z+i*.043,'cream');
+  const pedestrianMaterial=new T.MeshStandardMaterial({vertexColors:true,roughness:.85});
   const tokens=[];
   for(const [fi,flow] of flows.entries()){
     const points=flow.points.map(([x,z])=>[x,.601,z]);flow.curve=new T.CatmullRomCurve3(points.map(p=>new T.Vector3(...p)));
@@ -231,6 +202,18 @@ export function createArtifact(T) {
         bone([side*.018,.11,0],[side*.030,.082,-side*.01]);bone([side*.030,.082,-side*.01],[side*.034,.069,-side*.018]);
       }
       batch(token);
+      token.traverse(o=>{
+        if(!o.isMesh)return;
+        const positions=o.geometry.attributes.position,colors=new Float32Array(positions.count*3);
+        const shirt=new T.Color([0x779f9a,0xd4b783,0xb56c59,0xc3d3cb,0x667c91][(j+fi)%5]);
+        const skin=new T.Color([0xc9926e,0x9e6d4e,0xe2b790][j%3]),trousers=new T.Color(0x283943);
+        for(let k=0;k<positions.count;k++){
+          const y=positions.getY(k),x=Math.abs(positions.getX(k));
+          const c=y>.118||(x>.028&&y<.085)?skin:y<.067?trousers:shirt;
+          colors.set([c.r,c.g,c.b],k*3);
+        }
+        o.geometry.setAttribute('color',new T.BufferAttribute(colors,3));o.material=pedestrianMaterial;
+      });
       preserved.push(token);const candidate=CANDIDATES.find(c=>c.id===flow.site),a=(j+fi*7)*2.39996;
       const radius=candidate.id==='B'?.48+(j%3)*.065:.26+(j%3)*.035;
       const endpoint=new T.Vector3(candidate.x+Math.cos(a)*radius,.601,candidate.z+Math.sin(a)*radius);
@@ -249,13 +232,6 @@ export function createArtifact(T) {
     label(c.id,.24,.23,0,.23,.195,marker,'#fff0d5',false);
     preserved.push(marker);markers.push({g:marker,face,id:c.id});
   });
-  // One integrated upright app housing; the dedicated screen owns readable data.
-  const panel=group(2.13,.55,-.15);panel.rotation.y=-.13;panel.scale.setScalar(.78);
-  slab(2.32,.72,.12,0,.07,0,'stone',panel,.12);
-  rounded(2.35,3.56,.18,0,1.84,0,'frame',panel,.14);
-  rounded(2.21,3.42,.025,0,1.84,.109,'ink',panel,.11);
-  const app=createGymScreen(T);const appMesh=app.mesh??app.group??app.root;
-  appMesh.position.set(0,1.84,.15);panel.add(appMesh);preserved.push(appMesh);
   const selection=group(CANDIDATES[1].x,.615,CANDIDATES[1].z);selection.name='mynextgym-selected-B';
   ring(.36,.02,0,0,0,'teal',selection);preserved.push(selection);
   const pin=group(CANDIDATES[1].x,.93,CANDIDATES[1].z-.06);pin.name='mynextgym-pin';
@@ -281,26 +257,41 @@ export function createArtifact(T) {
 
   for(const x of [-.30,-.10,.10,.30])box(.019,.36,.026,x,.24,.22,'brass',gym);
   for(const z of [-.23,.23])box(.65,.025,.025,0,.43,z,'brass',gym);
-  slab(.73,.59,.045,0,.46,0,'frame',gym,.025);
+  // Four roof edges surround a genuine glazed skylight opening.
+  for(const [x,z,w,d] of [[-.3225,0,.085,.59],[.2425,0,.245,.59],[-.08,.1975,.40,.195],[-.08,-.2275,.40,.135]])slab(w,d,.045,x,.46,z,'frame',gym,.008);
+  box(.54,.22,.008,0,.22,-.216,'warmWindow',gym);
+  for(const z of [-.21,.21])box(.58,.009,.012,0,.411,z,'warmWindow',gym);
   slab(.41,.27,.012,-.08,.49,-.03,'glazing',gym,.012);
-  for(const x of [-.28,.12])box(.012,.018,.28,x,.50,-.03,'silver',gym);
-  for(const z of [-.17,.11])box(.42,.018,.012,-.08,.50,z,'silver',gym);
+  for(const x of [-.28,.12])box(.012,.018,.28,x,.50,-.03,'archEdge',gym);
+  for(const z of [-.17,.11])box(.42,.018,.012,-.08,.50,z,'archEdge',gym);
   slab(.20,.48,.025,.25,.49,0,'park',gym,.01);
   for(let j=0;j<6;j++){const leaf=mesh(new T.IcosahedronGeometry(.035,1),'foliage',gym);leaf.position.set(.25,.52,-.19+j*.075);}
   slab(.48,.17,.015,0,.055,.32,'paving',gym,.01);
   for(const x of [-.26,.26]){disk(.035,.075,x,.09,.31,'stone',gym);const plant=mesh(new T.IcosahedronGeometry(.05,1),'foliage',gym);plant.position.set(x,.16,.31);}
 
   rounded(.58,.14,.025,0,.38,.25,'teal',gym,.018);
-  label('GYM',.41,.115,0,.38,.28,gym,'#a1f0db',false);
+  label('GYM',.41,.115,0,.38,.28,gym,'#edfff4',false);
   box(.08,.025,.017,-.055,.21,.245,'cream',gym);box(.08,.025,.017,.055,.21,.245,'cream',gym);
-  batch(gym);gym.scale.set(1.25,1,1.25);preserved.push(gym);
-  // Small engraved controls reinforce the app/tablet reading, not an urban diorama.
-  for(let i=0;i<3;i++){const x=-3.21+i*.44;slab(.32,.09,.012,x,.573,1.87,i===0?'teal':'road',root,.03);}
+  batch(gym);gym.traverse(o=>{if(o.isMesh)o.geometry.scale(1,1.42,1);});gym.scale.set(1.25,1,1.25);preserved.push(gym);
+  // Architectural corner ticks establish the map boundary without a decorative tray.
+  for(const x of [-3.58,1.08])for(const z of [-1.75,1.75]){box(.13,.004,.012,x,.578,z,'teal');box(.012,.004,.13,x,.578,z,'teal');}
   root.updateMatrixWorld(true);for(const o of preserved)root.attach(o);
+  const fitPoints=[];
+  root.updateMatrixWorld(true);
+  root.traverse(o=>{
+    if(!o.isMesh||o.name.startsWith('mynextgym-footstep'))return;
+    o.geometry.computeBoundingBox();const b=o.isInstancedMesh?o.boundingBox:o.geometry.boundingBox;
+    for(const x of [b.min.x,b.max.x])for(const y of [b.min.y,b.max.y])for(const z of [b.min.z,b.max.z])fitPoints.push(new T.Vector3(x,y,z).applyMatrix4(o.matrixWorld));
+  });
   const model=finish(24,preserved);
   const offset=markers[0].g.position.clone().sub(new T.Vector3(CANDIDATES[0].x,.59,CANDIDATES[0].z));
-  Object.assign(model.userData,{displayBase:false,groundLevel:0,studioProfile:'mynextgym',contactFootprint:false,initialYaw:-.12,initialElevation:.57,framingTargetY:1.15,autoOrbit:false,realTimeAnimation:true,
+  Object.assign(model.userData,{displayBase:false,groundLevel:0,studioProfile:'mynextgym',contactFootprint:false,initialYaw:-.24,initialElevation:.57,framingTargetY:.92,autoOrbit:false,realTimeAnimation:true,
     candidateSites:CANDIDATES.map(c=>({id:c.id,sources:[...c.sources],strength:c.strength,footfall:c.footfall})),flowRoutes:flows.map(f=>({source:f.source,site:f.site,sample:f.sample,points:f.points.map(p=>[...p])}))});
+  // A warm interior and two street pools tie the window lights to the ground.
+  const interiorLight=new T.PointLight(0xffc584,.65,1.4,2);interiorLight.position.set(0,.28,.05);gym.add(interiorLight);
+  for(const [x,z] of [[-2.7,-1.12],[.55,-1.12]]){
+    const light=new T.PointLight(0xffc58a,.18,.95,2);light.position.copy(new T.Vector3(x,.86,z).add(offset));model.add(light);
+  }
   const pinY=pin.position.y;
   const stories=[
     ['01 / FOOTFALL','Count the passing footfall','An illustrative sample follows pedestrians from transit, offices and homes.'],
@@ -314,7 +305,8 @@ export function createArtifact(T) {
   model.userData.animate=time=>{
     const s=gymMoment(selectedStep===null?time:[4,10,14,18,21.5][selectedStep]),copy=stories[s.index];
     model.userData.story={index:s.index,phase:s.phase,step:copy[0],title:copy[1],detail:copy[2],tone:'teal',counts:s.counts};
-    app.update(s);
+    model.userData.story.winner=s.t>=12?'B':null;
+    model.userData.story.comparison=s.comparison;
     densityFields.forEach((heat,i)=>{heat.material.opacity=(i===1?1:.48)*(s.counts[i]/CANDIDATES[i].footfall)*s.fade;});
     tokens.forEach(({g,arrival,walkCurve})=>{
       const travel=2.3,u=Math.max(0,Math.min(1,(Math.min(s.t,8)-arrival+travel)/travel));
@@ -323,11 +315,13 @@ export function createArtifact(T) {
       g.position.copy(p).add(offset);g.rotation.y=Math.atan2(tangent.x,tangent.z);g.scale.setScalar(.72*Math.max(.001,s.fade));
     });
     selection.visible=s.t>=12&&s.fade>.001;selection.scale.setScalar(Math.max(.001,s.selection*s.fade));
-    pin.visible=s.t>=12&&s.fade>.001;pin.position.y=pinY+.70*(1-s.selection)+.51*s.reveal*s.fade;pin.scale.setScalar(Math.max(.001,s.fade));
+    pin.visible=s.t>=12&&s.fade>.001;pin.position.y=pinY+.70*(1-s.selection)+.72*s.reveal*s.fade;pin.scale.setScalar(Math.max(.001,s.fade));
     gym.visible=s.t>=15&&s.fade>.001;gym.scale.y=Math.max(.001,s.reveal*s.fade);
     markers.forEach(({g,face,id})=>{g.visible=id!=='B'||s.t<15;face.material.color.setHex(id==='B'&&s.t>=12?0xc75f43:0x142d31);});
   };
-  model.userData.framingPoints=[];
-  for(const [xs,ys,zs] of [[[-3.94,3.24],[.32,.57],[-2.07,2.07]],[[-3.70,.95],[.58,2.66],[-1.9,-.85]],[[-3.7,.95],[.58,1.55],[-.85,1.85]],[[1.15,3.10],[.55,3.42],[-.50,.30]]])for(const x of xs)for(const y of ys)for(const z of zs)model.userData.framingPoints.push(new T.Vector3(x,y,z).add(offset));
+  // Fit actual component bounds, not the empty upper corners of the city.
+  model.userData.framingPoints=fitPoints.map(p=>p.add(offset));
+  for(const x of [-1.4,-.9])for(const y of [1.5,2.05])model.userData.framingPoints.push(new T.Vector3(x,y,.9).add(offset));
+  model.userData.cameraFitSway=0;
   model.userData.animate(0);return model;
 }

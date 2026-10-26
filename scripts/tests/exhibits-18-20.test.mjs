@@ -43,7 +43,7 @@ for (const [id, name] of [[18, 'checker-app'], [19, 'fasight'], [20, 'co2unter']
     assert.deepEqual(state(model.userData.cycleDuration), start, 'loop returns to initial state');
     const sample = state(3); state(11);
     assert.deepEqual(state(3), sample, 'seeking cannot accumulate drift');
-    if ([18, 20].includes(id)) {
+    if ([18, 19, 20].includes(id)) {
       assert.equal(typeof model.userData.setStep, 'function');
       model.userData.setStep(3, 30);
       const selected = state(30);
