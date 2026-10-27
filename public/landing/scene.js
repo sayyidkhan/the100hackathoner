@@ -593,8 +593,8 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=.40;
       paperContact.scale.set(1.35,1.15,1);
     }
-    if (currentModel?.userData.studioProfile === 'mailbox') {
-      const backdrop=0x18363d;
+    if (['mailbox','winwincusine'].includes(currentModel?.userData.studioProfile)) {
+      const backdrop=currentModel.userData.studioProfile==='winwincusine'?0x142e2b:0x18363d;
       scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);
       renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
       hemisphere.color.setHex(0xe9f1e9);hemisphere.groundColor.setHex(0x3b4843);hemisphere.intensity=.52;

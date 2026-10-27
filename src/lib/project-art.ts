@@ -1,6 +1,7 @@
 import xue1 from '../../public/landing/assets/projects/001-xueyiyi-microlearning-v2.png';
 import xue2 from '../../public/landing/assets/projects/002-xueyiyi-microlearning-v2.png';
 import mailboxArt from '../../public/landing/assets/projects/009-mailbox-lobby-v1.png';
+import cuisineArt from '../../public/landing/assets/projects/021-winwincusine-kopitiam-v1.png';
 import p13 from '../../public/landing/assets/projects/013-life-worth-observatory-v1.png';
 import p14 from '../../public/landing/assets/projects/014-smart-food-bridge-v1.png';
 import p15 from '../../public/landing/assets/projects/015-weatherguru-singapore-v2.png';
@@ -118,6 +119,7 @@ export interface ProjectArt {
 }
 
 export const projectArt: Record<number, ProjectArt> = {
+  21: { light:cuisineArt, dark:cuisineArt, alt:'Three food-preference cards connect to a shared table outside a Singapore kopitiam, with noodles, vegetables and curry beside a phone showing a group match.', caption:'Different tastes. One table. WinWinCusine combines everyone’s food preferences to recommend a place for the whole group.', model:'/landing/artifacts/winwincusine.js' },
   9: { light:mailboxArt, dark:mailboxArt, alt:'A Singapore apartment mailbox lobby with six steel letterboxes, an enlarged coral cutaway mailbox revealing its sensor, and a phone showing a mail-arrival notification.', caption:'A letter arrives. Your mailbox lets you know. A connected-mailbox concept, reimagined in a Singapore apartment lobby.', model:'/landing/artifacts/mailbox.js' },
   1: { light:xue1, dark:xue1, alt:'Xueyiyi microlearning app: a central phone with a three-minute lesson, practical takeaways and a quick knowledge check in jade and lime.', caption:'A few minutes. One useful skill. Bite-sized lessons, a quick check and feedback that helps learning stick.', model:'/landing/artifacts/xueyiyi-v1.js' },
   2: { light:xue2, dark:xue2, alt:'Xueyiyi microlearning app in indigo and lime: a short feedback lesson, three takeaways, a quiz and daily learning progress.', caption:'Small lessons, everyday progress. A mobile microlearning concept with practical examples, quick questions and useful feedback.', model:'/landing/artifacts/xueyiyi-v2.js' },

@@ -128,7 +128,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
         <p class="exhibit-story-detail" data-story-detail></p>
       </div>}
     </div>
-    {[1, 2, 9, 13, 14, 15, 17, 18, 19, 20, 23, 24, 25, 29].includes(number) && <div class="exhibit-walkthrough" data-walkthrough hidden>
+    {[1, 2, 9, 13, 14, 15, 17, 18, 19, 20, 21, 23, 24, 25, 29].includes(number) && <div class="exhibit-walkthrough" data-walkthrough hidden>
       {number === 24 && <div class="gym-evidence" aria-label="Illustrative pedestrian arrivals">
         <div class="gym-evidence-heading"><span>SAMPLE FOOTFALL</span><span data-gym-result>Observing the neighbourhood</span></div>
         <div class="gym-candidates">{[{id:'A',source:'Transit'}, {id:'B',source:'Transit · Offices · Homes'}, {id:'C',source:'Offices'}].map((site,index) => <div class="gym-candidate" data-gym-candidate={index}>
@@ -152,7 +152,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     </div>}
     <div class="exhibit-controls" data-controls hidden>
       <span>{number === 49 ? 'Drag bunny to lift · Release to drop · Space + arrows also work' : 'Drag to rotate · Arrow keys to turn'}</span>
-      {[1, 2, 9, 13, 14, 15, 17, 18, 20, 23, 24, 25, 29, 35].includes(number) && <><button type="button" data-zoom="0.8" aria-label="Zoom out" disabled>−</button><button type="button" data-zoom="1.25" aria-label="Zoom in">+</button></>}
+      {[1, 2, 9, 13, 14, 15, 17, 18, 20, 21, 23, 24, 25, 29, 35].includes(number) && <><button type="button" data-zoom="0.8" aria-label="Zoom out" disabled>−</button><button type="button" data-zoom="1.25" aria-label="Zoom in">+</button></>}
       <button type="button" data-reset>{number === 49 ? 'Reset meadow' : number === 29 ? 'Replay route' : 'Reset view'}</button>
       <button type="button" data-pause aria-pressed="false">Pause motion</button>
     </div>
