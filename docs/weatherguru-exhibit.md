@@ -9,14 +9,16 @@ The user approved a Singapore-context artwork before authorizing page integratio
 
 The original HTML/Tableau prototype provides rainy-day, rainfall-magnitude, clustering and flood-analysis views. The conceptual neighbourhood and moving water illustrate that subject; they do not represent a calibrated forecast or a specific Singapore flood event.
 
-The approved composition is represented with three HDB blocks, access corridors and void decks, rooftop services, shelters, a kopitiam, tropical trees and palms, a green bus and taxi, concrete canal banks, drains, bridge, railings, level ruler, rain gauge, layered cloud, and a chart panel. Raster artwork remains available in its own tab.
+The revised 3D composition makes analysis the focal point: a brass-framed rainfall-history display, a clearly separated amber outlook window, physical annual-rainfall columns, and five pattern clusters. A compact Singapore precinct retains detailed HDB blocks, tropical planting, covered walkways, bus, taxi, canal and rain. The mineral and satin-metal plinth unifies the two parts. The original raster artwork remains available in its own tab. All plotted values are illustrative normalized values; no invented dates or probabilities are shown.
 
 ## Motion and controls
 
-A deterministic 28-second sequence moves through Rainfall, Runoff, Water level and Analysis. Rainfall precedes the rise in water level; the level recedes before the loop resets. Instanced rain stops above the building roofs. The canal stays below the roadway. Canal current and surface texture drift continue while a manual step holds the illustrative water level. Pause and reduced motion use the shared viewer's elapsed clock. The viewer supports manual steps, Auto-play, zoom, rotation and reset.
+A deterministic 28-second sequence moves through History, Patterns, Risk window and Local impact. Rainfall bars rise, a scanner and tracer travel through the history, the forecast window appears only in the outlook stages, and a translucent street highlight connects the analysis to potential local exposure. Manual stages retain ambient rain and scanning motion. Pause freezes all motion through the shared viewer clock. The outlook is a conceptual risk window, not a calibrated flood date.
+
+The original canal and rain retain roof clearance and pavement bounds after scaling. Per-component framing points fit the asymmetric exhibit without fitting empty corners. Dashed forecast geometry is batched to keep draw calls bounded.
 
 ## Validation
 
-- Four Node tests in `scripts/tests/weatherguru.test.mjs`: timeline/loop, rain clearance and canal bounds, manual/auto behavior and deterministic pause, finite/batched geometry.
-- Astro check: 0 errors, 0 warnings (102 existing hints); 97 pages built.
-- Browser: artwork and 3D loading, stage selection, pause/resume, rotation/reset and both themes checked; no console errors.
+- Five Node tests: timeline and loop, scaled canal bounds and rain clearance, manual/auto/pause behaviour, finite geometry and rendering budget, forecast visibility and scanner/exposure stage behaviour.
+- Astro check: 0 errors, 0 warnings; production build: 97 pages.
+- Browser: revised scene and risk window, local-impact stage, pause/resume, rotation/reset, and auto-play checked; no browser errors.

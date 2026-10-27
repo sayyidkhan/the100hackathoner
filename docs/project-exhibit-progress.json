@@ -980,7 +980,7 @@
       "status": "implemented",
       "artwork": "public/landing/assets/projects/015-weatherguru-singapore-v2.png",
       "model": "public/landing/artifacts/weatherguru.js",
-      "notes": "Approved Singapore heartland artwork and matching HDB/canal exhibit. Four-stage rainfall, runoff, water-level and analysis sequence; conceptual rather than calibrated forecast. See docs/weatherguru-exhibit.md."
+      "notes": "Singapore artwork retained; revised 3D centres rainfall history, pattern scanning, an amber risk window and local exposure. Detailed precinct supports the analysis. Illustrative values, not a calibrated forecast. See docs/weatherguru-exhibit.md."
     },
     {
       "number": 14,
@@ -994,8 +994,11 @@
     {
       "number": 13,
       "title": "Life-Worth Evaluator",
-      "source": null,
-      "status": "needs-source-context"
+      "source": "https://github.com/sayyidkhan/test-app-net-worth-evaluator",
+      "status": "implemented",
+      "artwork": "public/landing/assets/projects/013-life-worth-observatory-v1.png",
+      "model": "public/landing/artifacts/life-worth.js",
+      "notes": "Original source reviewed. Time observatory interprets activity/hours/daily/monthly fields with explicitly illustrative data and a synchronized four-stage animation. See docs/life-worth-exhibit.md."
     },
     {
       "number": 12,
@@ -1060,14 +1063,22 @@
     {
       "number": 2,
       "title": "Xueyiyi V2.0",
-      "source": null,
-      "status": "needs-source-context"
+      "source": "https://github.com/sayyidkhan/xueyiyi",
+      "status": "implemented",
+      "model": "public/landing/artifacts/xueyiyi-v2.js",
+      "artwork": "public/landing/assets/projects/002-xueyiyi-microlearning-v2.png",
+      "evidence": "docs/xueyiyi-exhibits.md",
+      "verification": "2026-10-27: geometry, deterministic loop and manual stage tests; browser scene review; Astro check and 97-page build pass."
     },
     {
       "number": 1,
       "title": "Xueyiyi V1.0",
-      "source": null,
-      "status": "needs-source-context"
+      "source": "https://github.com/sayyidkhan/xueyiyi",
+      "status": "implemented",
+      "model": "public/landing/artifacts/xueyiyi-v1.js",
+      "artwork": "public/landing/assets/projects/001-xueyiyi-microlearning-v2.png",
+      "evidence": "docs/xueyiyi-exhibits.md",
+      "verification": "2026-10-27: geometry, deterministic loop and manual stage tests; browser scene review; Astro check and 97-page build pass."
     }
   ],
   "verification": {

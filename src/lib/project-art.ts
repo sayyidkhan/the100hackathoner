@@ -1,3 +1,6 @@
+import xue1 from '../../public/landing/assets/projects/001-xueyiyi-microlearning-v2.png';
+import xue2 from '../../public/landing/assets/projects/002-xueyiyi-microlearning-v2.png';
+import p13 from '../../public/landing/assets/projects/013-life-worth-observatory-v1.png';
 import p14 from '../../public/landing/assets/projects/014-smart-food-bridge-v1.png';
 import p15 from '../../public/landing/assets/projects/015-weatherguru-singapore-v2.png';
 import p17 from '../../public/landing/assets/projects/017-goldigloo-research-v4.png';
@@ -114,8 +117,11 @@ export interface ProjectArt {
 }
 
 export const projectArt: Record<number, ProjectArt> = {
+  1: { light:xue1, dark:xue1, alt:'Xueyiyi microlearning app: a central phone with a three-minute lesson, practical takeaways and a quick knowledge check in jade and lime.', caption:'A few minutes. One useful skill. Bite-sized lessons, a quick check and feedback that helps learning stick.', model:'/landing/artifacts/xueyiyi-v1.js' },
+  2: { light:xue2, dark:xue2, alt:'Xueyiyi microlearning app in indigo and lime: a short feedback lesson, three takeaways, a quiz and daily learning progress.', caption:'Small lessons, everyday progress. A mobile microlearning concept with practical examples, quick questions and useful feedback.', model:'/landing/artifacts/xueyiyi-v2.js' },
+  13: { light:p13, dark:p13, alt:'A brass 24-hour activity dial, glass hourglass and time-analysis dashboard on a travertine base, with an illustrative daily and monthly comparison.', caption:'Make time visible. Explore a day of activities, choose a sample rate, and see the daily and monthly perspective.', model:'/landing/artifacts/life-worth.js' },
   14: { light:p14, dark:p14, alt:'A Smart Food Bridge phone selects a vegetarian menu and traces a green route to Garden Bowl among three miniature Singapore food stalls, beside a detailed bowl of vegetables, rice and tofu.', caption:'Bring menus together. Find food that fits you. A dietary food-discovery concept, reimagined as a Singapore food court.', model:'/landing/artifacts/smart-food-bridge.js' },
-  15: { light:p15, dark:p15, alt:'A Singapore HDB precinct under a sculptural monsoon cloud, with covered walkways, tropical trees, a bus stop and a measured stormwater canal beside rainfall-analysis charts.', caption:'Read the rain. Follow the runoff. Weather Guru explores the patterns behind rainfall and flood likelihood.', model:'/landing/artifacts/weatherguru.js' },
+  15: { light:p15, dark:p15, alt:'A Singapore HDB precinct under a sculptural monsoon cloud, with covered walkways, tropical trees, a bus stop and a measured stormwater canal beside rainfall-analysis charts.', caption:'Read the past. Anticipate the risk. Weather Guru explores rainfall history and the patterns behind flood likelihood.', model:'/landing/artifacts/weatherguru.js' },
   17: { light:p17, dark:p17, alt:'A friendly IceIgloo mascot sits on Gold Igloo research reports beside glass Shariah and impact screening panels, an ivory shortlist folio and a small solar garden.', caption:'Two research lenses. One thoughtful shortlist. Gold Igloo brings Shariah screening and impact research together.', model:'/landing/artifacts/goldigloo.js' },
   23: { light:p23, dark:p23, alt:'A kitchen sensor detects a mouse and sends a Pest detected alert with the kitchen location to the owner’s phone.', caption:'Detect a pest. Know where it is. Alert the owner.', model:'/landing/artifacts/pestoverflow.js' },
   24: { light:p24, dark:p24, alt:'A miniature neighbourhood at dusk: transit, offices and homes feed pedestrian routes toward three sites. The selected gym at B glows at the heart of the district.', caption:'Follow the footfall. Compare three sites. Open your next gym where the most people pass.', model:'/landing/artifacts/mynextgym.js' },

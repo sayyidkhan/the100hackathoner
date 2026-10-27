@@ -537,6 +537,17 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       contactShadow.material.opacity=0;paperContact.visible=true;
       paperContact.material.opacity=dark?.44:.18;paperContact.scale.set(1.3,1.1,1);
     }
+    if (currentModel?.userData.studioProfile === 'life-worth') {
+      const dark=currentTheme==='dark',backdrop=dark?0x102b32:0xe8e4d9;
+      scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xe4e9e2);hemisphere.groundColor.setHex(0x253b40);hemisphere.intensity=.5;
+      key.color.setHex(0xffe3ba);key.position.set(-4,6,4);key.intensity=3.1;
+      fill.color.setHex(0xb2dae5);fill.intensity=.6;rim.color.setHex(0xe8c78e);rim.position.set(4,5,-3);rim.intensity=2.8;
+      scene.environmentIntensity=.85;renderer.toneMappingExposure=1.05;
+      key.shadow.normalBias=.003;key.shadow.bias=-.00005;key.shadow.radius=5;
+      Object.assign(key.shadow.camera,{left:-6,right:6,top:6,bottom:-4});key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=dark?.44:.20;paperContact.scale.set(1.3,1.2,1);
+    }
     if (currentModel?.userData.studioProfile === 'smart-food-bridge') {
       const dark=currentTheme==='dark',backdrop=dark?0x252a20:0xece6d7;
       scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);

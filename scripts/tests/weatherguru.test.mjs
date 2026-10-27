@@ -16,7 +16,7 @@ test('rain terminates above roofs; the canal stays below the pavement',()=>{
  const model=createArtifact(T),rain=model.getObjectByName('weather-rain'),water=model.getObjectByName('weather-canal-water');
  const matrix=new T.Matrix4(),pos=new T.Vector3(),q=new T.Quaternion(),scale=new T.Vector3();
  for(let t=0;t<28;t+=.25){
-  model.userData.animate(t);assert(water.position.y>=.279&&water.position.y<=.471);
+  model.userData.animate(t);assert(water.position.y>=.395&&water.position.y<=.495);assert(water.position.y+.012*.52<.25+.55*.52);
   model.userData.rainBounds.forEach((d,i)=>{rain.getMatrixAt(i,matrix);matrix.decompose(pos,q,scale);assert(pos.y>=d.bottom-1e-5);assert(pos.y<=4.0);assert(Number.isFinite(pos.y));});
  }
  const bounds=new T.Box3().setFromObject(model);assert(bounds.min.y>=-.001);assert(bounds.max.y<5);
@@ -35,4 +35,18 @@ test('model geometry is finite and batched within a practical rendering budget',
  const model=createArtifact(T);let meshes=0,vertices=0;
  model.traverse(o=>{if(o.isMesh){meshes++;const a=o.geometry.attributes.position;vertices+=a.count;assert([...a.array].every(Number.isFinite));}});
  assert(meshes<85);assert(vertices<230000);assert(model.getObjectByName('weather-tropical-foliage').count>1000);
+});
+
+
+test('forecast remains distinct from history and appears only in outlook stages',()=>{
+ const model=createArtifact(T),u=model.userData,forecast=model.getObjectByName('weather-forecast-window'),scan=model.getObjectByName('weather-history-scan'),tracer=model.getObjectByName('weather-pattern-tracer');
+ u.setStep(0,0);assert.equal(forecast.visible,false);assert.equal(scan.visible,false);
+ u.setStep(1,9);assert.equal(forecast.visible,false);assert.equal(scan.visible,true);assert.equal(tracer.visible,true);
+ assert(Math.abs(scan.position.x-tracer.position.x)<.12);
+ u.setStep(2,16);assert.equal(forecast.visible,true);assert.equal(scan.visible,false);assert.match(u.story.detail,/not an exact flood date/);
+ u.setStep(3,24);assert.equal(model.getObjectByName('weather-local-exposure').visible,true);
+ u.setStep(1,9);const scanX=scan.position.x;u.animate(10);assert.notEqual(scan.position.x,scanX);
+ const pose=tracer.position.toArray();u.animate(10);assert.deepEqual(tracer.position.toArray(),pose);
+ u.setStep(null,0);assert.equal(forecast.visible,false);assert.equal(model.getObjectByName('weather-local-exposure').visible,false);
+ assert(u.framingPoints.length>24);assert(u.framingPoints.every(p=>[p.x,p.y,p.z].every(Number.isFinite)));
 });

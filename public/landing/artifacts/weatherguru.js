@@ -3,11 +3,13 @@ import {medivoiceStudio} from './medivoice-studio.js';
 // Singapore-inspired interpretation of the original rainfall / flood analysis prototype.
 export const WEATHER_CYCLE=28;
 export const WEATHER_STEPS=[
- ['Rainfall','Observe the rainfall','Rainy-day patterns and rainfall magnitude are inputs explored by the original prototype.'],
- ['Runoff','Follow water through the neighbourhood','Rain drains from streets into the canal in this illustrative Singapore precinct.'],
- ['Water level','Watch the canal level','The gauge makes a changing water level visible. This is a concept sequence, not a live flood forecast.'],
- ['Analysis','Explore the rainfall patterns','The original Tableau prototype compares rainy days, rainfall magnitude and flood-analysis clusters.'],
+ ['History','Read the rainfall history','Annual rainfall and rainy-day patterns provide the starting point for flood analysis.'],
+ ['Patterns','Connect rainfall with past floods','Compare historical patterns and flood-analysis clusters to identify signals.'],
+ ['Risk window','Anticipate a period of elevated risk','The amber window illustrates a possible risk period, not an exact flood date or a live prediction.'],
+ ['Local impact','Bring the analysis back to the neighbourhood','Explore what the rainfall patterns could mean for a Singapore precinct. All plotted values are illustrative.'],
 ];
+// Illustrative normalized series, deliberately without fabricated dates or probabilities.
+export const RAINFALL_HISTORY=[.24,.38,.28,.51,.72,.45,.33,.56,.82,.63,.48,.75];
 const smooth=v=>{v=Math.max(0,Math.min(1,v));return v*v*(3-2*v);};
 export function weatherMoment(time){
  const t=((time%WEATHER_CYCLE)+WEATHER_CYCLE)%WEATHER_CYCLE;
@@ -32,7 +34,7 @@ export function createArtifact(T){
  function ell(x,y,z,sx,sy,sz,key,p=root){const o=mesh(new T.SphereGeometry(1,12,8),key,p);o.position.set(x,y,z);o.scale.set(sx,sy,sz);return o;}
  function label(text,w,h,x,y,z,p=root,color='#e3e8da',bg=null){
   if(typeof document==='undefined')return;
-  const c=document.createElement('canvas');c.width=1024;c.height=Math.max(100,Math.round(1024*h/w));const ctx=c.getContext('2d');
+  const c=document.createElement('canvas');c.width=1024;c.height=Math.max(32,Math.round(1024*h/w));const ctx=c.getContext('2d');
   if(bg){ctx.fillStyle=bg;ctx.fillRect(0,0,c.width,c.height);}ctx.fillStyle=color;ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`500 ${Math.round(c.height*.63)}px sans-serif`;ctx.fillText(text,512,c.height/2,970);
   const map=new T.CanvasTexture(c);map.colorSpace=T.SRGBColorSpace;map.anisotropy=8;
   const o=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({map,transparent:!bg,depthWrite:false,toneMapped:false}));o.position.set(x,y,z);o.userData.noShadow=true;p.add(o);return o;
@@ -163,19 +165,6 @@ export function createArtifact(T){
  const instrument=group(3.91,.55,-.66);disk(.055,.82,0,.41,0,'metal',instrument);disk(.17,.04,0,.94,0,'metal',instrument);disk(.17,.04,0,.56,0,'metal',instrument);
  const glass=mesh(new T.CylinderGeometry(.15,.15,.38,32,1,true),'cloud',instrument);glass.position.y=.75;
  const collected=disk(.14,.1,0,.63,0,'water',instrument);live.push(collected);
- // Source-inspired chart panel; labels and axes are crisp at normal viewing size.
- const panel=group(2.94,.55,-1.85);box(2.25,2.93,.075,0,1.50,0,'ink',panel);
- for(const x of [-1.14,1.14])box(.025,2.97,.09,x,1.50,0,'metal',panel);
- for(const y of [.01,2.99])box(2.30,.025,.09,0,y,0,'metal',panel);
- label('RAINFALL',1.82,.19,0,2.67,.046,panel);label('FLOOD ANALYSIS',1.94,.16,0,1.48,.046,panel);
- box(1.94,.009,.012,0,1.78,.05,'metal',panel);
- const bars=[];
- for(let i=0;i<23;i++){
-  const h=.1+(.5+.5*Math.sin(i*1.8))*.40+(i>9&&i<15?.20:0),bar=group(-.92+i*.082,1.79,.055,panel);box(.048,h,.016,0,h/2,0,'teal',bar);live.push(bar);bars.push(bar);
- }
- for(let col=0;col<3;col++)for(let row=0;row<3;row++){box(.31,.21,.017,-.77+col*.33,1.10-row*.23,.05,['grass','yellow','coral'][col],panel);}
- line([[.15,.58,.07],[.3,.62,.07],[.42,.73,.07],[.57,.76,.07],[.70,.93,.07],[.89,1.06,.07]],.012,'white',panel);
- label('ILLUSTRATIVE PATTERNS',1.90,.10,0,.30,.05,panel,'#9fb4b7');
  // A layered, scalloped glass cloud rather than a cluster of spheres.
  const cloud=group(-1.55,3.86,-1.35);cloud.name='weather-cloud';
  for(let layer=0;layer<4;layer++){
@@ -204,24 +193,120 @@ export function createArtifact(T){
  const foamSeeds=Array.from({length:54},()=>({x:random(),z:.65+random()*1.05,s:.03+random()*.07}));
  // Discrete runoff strands emerge from the roadside outlets.
  const runoff=[];for(const x of [-3.6,-1.4,1.1,3.65]){const g=group(x,.42,.48);line([[0,0,0],[0,-.08,.08],[0,-.17,.22]],.014,'water',g);live.push(g);runoff.push(g);}
- const plaque=group(-2.9,.32,2.42);box(2.35,.26,.045,0,0,0,'metal',plaque);label('WEATHER GURU',2.14,.18,0,0,.03,plaque);
+ // Reframe the detailed precinct as the local context of an analytical instrument.
+ const precinct=group();precinct.name='weather-singapore-precinct';
+ for(const o of [...root.children])if(o!==precinct)precinct.add(o);
+ const precinctScale=.52;precinct.scale.setScalar(precinctScale);precinct.position.set(-2.38,.25,.25);
+ // Satin metal, mineral stone, luminous data and smoked glass share one museum plinth.
+ m.slate=new T.MeshStandardMaterial({color:0x102d39,roughness:.39,metalness:.33});
+ m.brass=new T.MeshStandardMaterial({color:0xbba06c,roughness:.29,metalness:.78});
+ m.mint=new T.MeshStandardMaterial({color:0x8dd6cd,emissive:0x398c8b,emissiveIntensity:.55,roughness:.24,metalness:.35});
+ m.amber=new T.MeshStandardMaterial({color:0xffc880,emissive:0xc06b24,emissiveIntensity:.5,roughness:.30,metalness:.3});
+ m.signal=new T.MeshBasicMaterial({color:0xcdf8ea,toneMapped:false});
+ m.exposure=new T.MeshBasicMaterial({color:0xffbb70,transparent:true,opacity:.16,depthWrite:false});
+ m.riskGlass=new T.MeshBasicMaterial({color:0xffba69,transparent:true,opacity:.10,depthWrite:false,side:T.DoubleSide});
+ function rounded(w,h,d,x,y,z,key,parent=root,r=.12){
+  const shape=new T.Shape(),a=-w/2,b=-h/2;r=Math.min(r,w/2,h/2);
+  shape.moveTo(a+r,b);shape.lineTo(a+w-r,b);shape.quadraticCurveTo(a+w,b,a+w,b+r);shape.lineTo(a+w,b+h-r);shape.quadraticCurveTo(a+w,b+h,a+w-r,b+h);shape.lineTo(a+r,b+h);shape.quadraticCurveTo(a,b+h,a,b+h-r);shape.lineTo(a,b+r);shape.quadraticCurveTo(a,b,a+r,b);
+  const geo=new T.ExtrudeGeometry(shape,{depth:d,bevelEnabled:true,bevelThickness:.015,bevelSize:.015,bevelSegments:2,curveSegments:8});geo.translate(0,0,-d/2);const o=mesh(geo,key,parent);o.position.set(x,y,z);return o;
+ }
+ const base=rounded(10.15,5.2,.21,0,.12,0,'slate',root,.32);base.rotation.x=-Math.PI/2;
+ const inset=rounded(9.94,4.98,.035,0,.244,0,'cream',root,.29);inset.rotation.x=-Math.PI/2;
+ const edge=rounded(10.08,5.13,.025,0,.20,0,'brass',root,.31);edge.rotation.x=-Math.PI/2;
+ // The rear analysis instrument is the focal point: history to the left, a future window to the right.
+ const screen=group(2.22,.40,-1.45);
+ rounded(4.60,3.68,.12,0,1.84,0,'brass',screen,.18);
+ rounded(4.48,3.56,.10,0,1.84,.08,'slate',screen,.15);
+ for(const x of [-1.70,1.70]){box(.12,.35,.20,x,-.03,0,'brass',screen);box(.52,.045,.60,x,-.14,.10,'slate',screen);}
+ label('WEATHER GURU',3.93,.28,0,3.32,.15,screen);
+ label('RAINFALL HISTORY  /  FLOOD OUTLOOK',3.88,.17,0,3.03,.15,screen,'#a9c6cb');
+ const chartBase=1.13,chartTop=2.72;
+ for(let j=0;j<5;j++)box(3.86,.006,.008,0,chartBase+j*.36,.15,'metal',screen);
+ const bars=[];
+ RAINFALL_HISTORY.forEach((v,i)=>{
+  const g=group(-1.88+i*.225,chartBase,.18,screen);box(.12,v*1.50,.06,0,v*.75,0,'teal',g);g.name=`weather-history-${i}`;live.push(g);bars.push(g);
+ });
+ const curvePoints=RAINFALL_HISTORY.map((v,i)=>[-1.88+i*.225,chartBase+.18+v*1.5,.27]);
+ line(curvePoints,.015,'mint',screen);
+ for(const i of [4,8,11]){ell(curvePoints[i][0],curvePoints[i][1],.27,.040,.040,.025,'amber',screen);}
+ // Observations stop at the divider; a dashed path and translucent band distinguish the outlook.
+ const divider=.85;
+ for(let y=chartBase;y<2.79;y+=.12)box(.009,.062,.008,divider,y,.20,'brass',screen);
+ label('HISTORY',2.16,.17,-.64,.94,.18,screen,'#9cd6cc');label('OUTLOOK',1.0,.17,1.48,.94,.18,screen,'#ffd195');
+ const future=group(0,0,0,screen);future.name='weather-forecast-window';
+ box(1.02,1.60,.012,1.43,1.93,.17,'riskGlass',future);
+ for(const x of [.92,1.94])box(.012,1.60,.014,x,1.93,.18,'amber',future);
+ const forecastPath=new T.CatmullRomCurve3([new T.Vector3(.76,2.43,.29),new T.Vector3(1.1,2.56,.29),new T.Vector3(1.50,2.34,.29),new T.Vector3(1.94,2.15,.29)]);
+ for(let i=0;i<14;i++){const points=[forecastPath.getPoint(i/14),forecastPath.getPoint((i+.55)/14)].map(v=>v.toArray());line(points,.014,'amber',future);}
+ label('RISK WINDOW',1.0,.16,1.43,2.83,.21,screen,'#ffd195');batch(future);live.push(future);
+ // A luminous scanner and tracer reveal the relationship instead of animating unrelated props.
+ const scan=group(0,0,0,screen);scan.name='weather-history-scan';box(.012,1.59,.014,0,1.93,.31,'signal',scan);live.push(scan);
+ const tracer=group(0,0,0,screen);tracer.name='weather-pattern-tracer';ell(0,0,0,.054,.054,.035,'signal',tracer);live.push(tracer);
+ rounded(3.90,.40,.02,0,.57,.17,'ink',screen,.08);
+ label('ILLUSTRATIVE ANALYSIS',3.40,.17,0,.57,.20,screen,'#b5c9cc');
+ // Physical annual-rainfall bars sit on a low instrument desk in the foreground.
+ const desk=group(2.12,.30,1.12);
+ rounded(4.66,.23,1.92,0,.10,0,'slate',desk,.08);
+ label('01  /  ANNUAL RAINFALL',3.72,.13,0,.03,1.0,desk,'#d6e9e3');
+ const columns=[];
+ RAINFALL_HISTORY.forEach((v,i)=>{
+  const g=group(-1.98+i*.26,.235,-.17,desk);rounded(.15,v*.92,.19,0,v*.46,0,i===4||i===8||i===11?'amber':'mint',g,.035);live.push(g);columns.push(g);
+  for(let k=0;k<4;k++)box(.14,.007,.008,-1.98+i*.26,.28+k*.15,-.061,'slate',desk);
+ });
+ // Five clustered samples echo the actual project's cluster analysis without inventing percentages.
+ for(let i=0;i<5;i++){
+  const x=-1.8+i*.57;disk(.105,.025,x,.26,.57,i<3?'teal':'amber',desk);
+  for(let j=0;j<=i;j++){ell(x+Math.cos(j*2.4)*.045,.30+j*.024,.57+Math.sin(j*2.4)*.045,.022,.022,.022,'signal',desk);}
+ }
+ label('PATTERN CLUSTERS',2.8,.14,-.52,.28,.82,desk,'#a5c9c8');
+ // Potential local exposure is a surface highlight, not a simulated flood depth.
+ const exposure=group(-2.38,.565,.25);exposure.name='weather-local-exposure';
+ box(4.45,.006,.35,0,0,-.01,'exposure',exposure);
+ for(const z of [-.185,.165])line([[-2.22,.006,z],[0,.006,z],[2.22,.006,z]],.008,'amber',exposure);
+ batch(exposure);live.push(exposure);
+ // A compact pearl-like signal travels from the precinct to the analysis desk.
+ const dataRoute=new T.CatmullRomCurve3([new T.Vector3(-1.1,.31,1.55),new T.Vector3(-.48,.40,1.65),new T.Vector3(-.22,.46,1.15),new T.Vector3(.2,.54,.65)]);
+ line(dataRoute.getPoints(24).map(v=>v.toArray()),.012,'brass');
+ const packet=group();packet.name='weather-data-signal';ell(0,0,0,.055,.055,.055,'signal',packet);packet.position.copy(dataRoute.getPoint(0));live.push(packet);
+ label('SINGAPORE  /  LOCAL CONTEXT',3.75,.18,-2.35,.31,2.12,root,'#314f58');
+ const nameplate=group(-2.37,.13,2.64);rounded(3.35,.21,.03,0,0,0,'slate',nameplate,.04);label('FROM RAINFALL TO FORESIGHT',3.1,.10,0,0,.024,nameplate);
  root.updateMatrixWorld(true);for(const o of live)root.attach(o);
+ const screenPosition=screen.getWorldPosition(new T.Vector3());
+ const beforeBounds=new T.Box3().setFromObject(root),centre=beforeBounds.getCenter(new T.Vector3());
+ const sceneOffset=new T.Vector3(-centre.x,-beforeBounds.min.y,-centre.z);
+ screenPosition.add(sceneOffset);
+ // Fit occupied parts of the asymmetric exhibit, rather than its empty upper corners.
+ const framingPoints=[];
+ for(const child of root.children){const b=new T.Box3().setFromObject(child);if(b.isEmpty())continue;
+  for(const x of [b.min.x,b.max.x])for(const y of [b.min.y,b.max.y])for(const z of [b.min.z,b.max.z])framingPoints.push(new T.Vector3(x,y,z).add(sceneOffset));
+ }
+
  const model=finish(15,live);
- const waterY=water.position.y,cloudRest=cloud.position.clone(),collectedY=collected.position.y;
+ const waterY=water.position.y,cloudRest=cloud.position.clone(),collectedY=collected.position.y,collectedScale=collected.scale.y;
+ const screenOrigin=screenPosition,forecastScale=future.scale.clone();
+ const historyCurve=new T.CatmullRomCurve3(curvePoints.map(v=>new T.Vector3(...v)));
  const dummy=new T.Object3D();let selected=null;
- model.userData={...model.userData,displayBase:false,groundLevel:0,studioProfile:'weatherguru',initialYaw:.32,initialElevation:.37,autoOrbit:false,realTimeAnimation:true,contactFootprint:false,rainBounds:drops,source:'https://github.com/sayyidkhan/unesco-weatherguru'};
+ model.userData={...model.userData,displayBase:false,groundLevel:0,studioProfile:'weatherguru',initialYaw:.15,initialElevation:.34,framingPoints,cameraFitSway:.04,framingTargetY:1.65,autoOrbit:false,realTimeAnimation:true,contactFootprint:false,rainBounds:drops,source:'https://github.com/sayyidkhan/unesco-weatherguru'};
  model.traverse(o=>{if(o.isMesh&&(o.material.transparent||o.material.isMeshBasicMaterial))o.userData.noShadow=true;});
  model.userData.setStep=(index,time=0)=>{if(index!==null&&(!Number.isInteger(index)||index<0||index>3))return;selected=index;model.userData.animate(time);};
  model.userData.animate=time=>{
   const ambient=weatherMoment(time),s=weatherMoment(selected===null?time:[3.5,10.5,17.5,24.5][selected]),copy=WEATHER_STEPS[s.index];
   model.userData.story={index:s.index,step:`0${s.index+1} / 04`,title:copy[1],detail:copy[2],tone:'teal'};
-  water.position.y=waterY+s.level*.19;collected.position.y=collectedY+s.level*.05;collected.scale.y=1+s.level;
+  water.position.y=waterY+s.level*.19*precinctScale;collected.position.y=collectedY+s.level*.05*precinctScale;collected.scale.y=collectedScale*(1+s.level);
   cloud.position.copy(cloudRest);cloud.position.x+=Math.sin(ambient.t*Math.PI/14)*.025;
   m.rain.opacity=.12+s.rain*.45;ripple.offset.set(ambient.t/28,0);
   drops.forEach((d,i)=>{const travel=(ambient.t*d.speed/1.4+d.phase)%1;dummy.position.set(d.x,3.99-travel*(3.99-d.bottom),d.z);dummy.scale.set(1,.55+s.rain*.65,1);dummy.rotation.set(0,0,-.035);dummy.updateMatrix();rain.setMatrixAt(i,dummy.matrix);});rain.instanceMatrix.needsUpdate=true;
   foamSeeds.forEach((d,i)=>{dummy.position.set(-4.22+((d.x+ambient.t/28)%1)*8.44,.297+s.level*.19,d.z);dummy.rotation.set(0,0,0);dummy.scale.set(d.s,.002,d.s*.17);dummy.updateMatrix();foam.setMatrixAt(i,dummy.matrix);});foam.instanceMatrix.needsUpdate=true;
   runoff.forEach(g=>{g.visible=s.level>.05;g.scale.x=.45+s.rain*.55;});
-  bars.forEach((g,i)=>{g.scale.y=.72+.28*smooth((s.t-i*.12)/2);});
+  const outlook=smooth((s.t-12)/4),scanProgress=(ambient.t%7)/7;
+  bars.forEach((g,i)=>{g.scale.y=.12+.88*smooth((s.t-i*.20)/3);});
+  columns.forEach((g,i)=>{g.scale.y=.25+.75*smooth((s.t-i*.15)/3);});
+  exposure.visible=s.index===3;m.exposure.opacity=.12+.04*Math.sin(ambient.t*Math.PI/3.5);
+  future.visible=s.index>=2;future.scale.copy(forecastScale);m.riskGlass.opacity=.07+.09*outlook;
+  scan.position.x=screenOrigin.x-1.88+scanProgress*2.475;scan.visible=s.index===1;
+  const point=historyCurve.getPoint(scanProgress);tracer.position.copy(screenOrigin).add(point);tracer.visible=s.index===1;
+  packet.position.copy(dataRoute.getPoint((ambient.t%7)/7)).add(sceneOffset);packet.visible=s.index===1||s.index===3;
+
  };
  model.userData.animate(0);return model;
 }
