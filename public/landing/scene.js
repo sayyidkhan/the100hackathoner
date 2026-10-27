@@ -63,7 +63,7 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     throw error;
   }
 
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, [17, 24, 49, 57].includes(Number(initialProject)) ? 2 : 1.75));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, [15, 17, 24, 49, 57].includes(Number(initialProject)) ? 2 : 1.75));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.95;
@@ -536,6 +536,33 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       Object.assign(key.shadow.camera,{left:-5,right:5,top:5,bottom:-4});key.shadow.camera.updateProjectionMatrix();
       contactShadow.material.opacity=0;paperContact.visible=true;
       paperContact.material.opacity=dark?.44:.18;paperContact.scale.set(1.3,1.1,1);
+    }
+    if (currentModel?.userData.studioProfile === 'smart-food-bridge') {
+      const dark=currentTheme==='dark',backdrop=dark?0x252a20:0xece6d7;
+      scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);
+      renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xf1e6d2);hemisphere.groundColor.setHex(0x334832);hemisphere.intensity=.40;
+      key.color.setHex(0xffe2b3);key.position.set(-3.8,6,4);key.intensity=3.2;
+      fill.color.setHex(0xd9e9da);fill.intensity=.48;
+      rim.color.setHex(0xffdba0);rim.position.set(4,5,-3);rim.intensity=2.5;
+      scene.environmentIntensity=.72;renderer.toneMappingExposure=1.02;
+      key.shadow.normalBias=.003;key.shadow.bias=-.00005;key.shadow.radius=5;
+      Object.assign(key.shadow.camera,{left:-6,right:6,top:5,bottom:-4});key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=dark?.42:.19;paperContact.scale.set(1.3,1.2,1);
+    }
+    if (currentModel?.userData.studioProfile === 'weatherguru') {
+      const backdrop=0x1b2b34;
+      scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);
+      renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xdce7eb);hemisphere.groundColor.setHex(0x404a40);hemisphere.intensity=.65;
+      key.color.setHex(0xf0eee0);key.position.set(-4,7,4);key.intensity=2.6;
+      fill.color.setHex(0xbcd8e8);fill.intensity=.65;
+      rim.color.setHex(0xe1e9e6);rim.position.set(4,5,-3);rim.intensity=2;
+      scene.environmentIntensity=.75;renderer.toneMappingExposure=1.04;
+      key.shadow.normalBias=.003;key.shadow.bias=-.00004;key.shadow.radius=5;
+      Object.assign(key.shadow.camera,{left:-6,right:6,top:6,bottom:-5});key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=.40;
+      paperContact.scale.set(1.35,1.15,1);
     }
     if (currentModel?.userData.studioProfile === 'goldigloo') {
       // The etched ivory labels need the same deep backdrop as the artwork in both themes.

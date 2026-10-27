@@ -86,7 +86,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     {projectUrl && <a class="atlas-launch" href={projectUrl} target="_blank" rel="noopener noreferrer">Explore the app <span aria-hidden="true">↗</span></a>}
   </header>}
   <div class="exhibit-toolbar">
-    <p>{isScaleup ? 'THE SAME IDEA, EXPANDING' : number === 41 ? 'PROMPT ALCHEMIST · THE INVITATION STUDIO' : number === 45 ? 'ASTERIX · THE VIBE CHECK CONSOLE' : number === 17 ? 'GOLD IGLOO · PRINCIPLES MEET PURPOSE' : number === 24 ? 'MYNEXTGYM · LOCATION INTELLIGENCE' : number === 63 ? 'INSIDE THE DATA CENTER EMPIRE' : number === 75 ? 'THE LIVING CULTURAL ATLAS' : number === 70 ? 'THE OPPORTUNITY ATLAS' : number === 72 ? 'EXPLORE THE THRESHOLD' : number === 69 ? 'INSIDE THE LITTLE SHOP' : 'THE PROJECT, REIMAGINED'}</p>
+    <p>{isScaleup ? 'THE SAME IDEA, EXPANDING' : number === 41 ? 'PROMPT ALCHEMIST · THE INVITATION STUDIO' : number === 45 ? 'ASTERIX · THE VIBE CHECK CONSOLE' : number === 14 ? 'SMART FOOD BRIDGE · FIND YOUR FOOD' : number === 15 ? 'WEATHER GURU · READING THE RAIN' : number === 17 ? 'GOLD IGLOO · PRINCIPLES MEET PURPOSE' : number === 24 ? 'MYNEXTGYM · LOCATION INTELLIGENCE' : number === 63 ? 'INSIDE THE DATA CENTER EMPIRE' : number === 75 ? 'THE LIVING CULTURAL ATLAS' : number === 70 ? 'THE OPPORTUNITY ATLAS' : number === 72 ? 'EXPLORE THE THRESHOLD' : number === 69 ? 'INSIDE THE LITTLE SHOP' : 'THE PROJECT, REIMAGINED'}</p>
     <div class="exhibit-actions">
       {number === 72 && projectUrl && <a class="cosmic-launch cosmic-toolbar-launch" href={projectUrl} target="_blank" rel="noopener noreferrer" aria-label="Open Alien Homecoming app (opens in a new tab)">Open app <span aria-hidden="true">↗</span></a>}
       {hasLabels && <button type="button" data-toggle-labels aria-expanded={number === 75 ? 'false' : 'true'}>{number === 75 ? 'Show labels' : 'Hide labels'}</button>}
@@ -128,7 +128,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
         <p class="exhibit-story-detail" data-story-detail></p>
       </div>}
     </div>
-    {[17, 18, 19, 20, 23, 24, 25, 29].includes(number) && <div class="exhibit-walkthrough" data-walkthrough hidden>
+    {[14, 15, 17, 18, 19, 20, 23, 24, 25, 29].includes(number) && <div class="exhibit-walkthrough" data-walkthrough hidden>
       {number === 24 && <div class="gym-evidence" aria-label="Illustrative pedestrian arrivals">
         <div class="gym-evidence-heading"><span>SAMPLE FOOTFALL</span><span data-gym-result>Observing the neighbourhood</span></div>
         <div class="gym-candidates">{[{id:'A',source:'Transit'}, {id:'B',source:'Transit · Offices · Homes'}, {id:'C',source:'Offices'}].map((site,index) => <div class="gym-candidate" data-gym-candidate={index}>
@@ -136,8 +136,8 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
         </div>)}</div>
         <p>Illustrative sample · Watch the routes, compare arrivals, then reveal the proposed gym.</p>
       </div>}
-      {[17, 18, 19, 20, 24, 25].includes(number) && <div class="walkthrough-steps" role="group" aria-label={`Explore the ${title} workflow`}>
-        {(number === 17 ? ['Business', 'Financial', 'Purification', 'Impact', 'Shortlist'] : number === 18 ? ['Draft', 'Inspect', 'Review flags', 'Sample rewrite', 'Reset'] : number === 19 ? ['Your details', 'Your assets', 'Trusted people', 'Review the plan'] : number === 24 ? ['Footfall', 'Compare', 'Select B', 'Proposed gym', 'Review'] : number === 25 ? ['Learn', 'Associate', 'Recall', 'Check answers'] : ['Carbon input', 'Choose bananas', 'Banana comparison', 'Wood comparison']).map((label, index) => <button type="button" data-story-select={index} aria-pressed={index === 0 ? 'true' : 'false'}><span>{String(index + 1).padStart(2, '0')}</span>{label}</button>)}
+      {[14, 15, 17, 18, 19, 20, 24, 25].includes(number) && <div class="walkthrough-steps" role="group" aria-label={`Explore the ${title} workflow`}>
+        {(number === 14 ? ['Menus', 'Preference', 'Match', 'Route'] : number === 15 ? ['Rainfall', 'Runoff', 'Water level', 'Analysis'] : number === 17 ? ['Business', 'Financial', 'Purification', 'Impact', 'Shortlist'] : number === 18 ? ['Draft', 'Inspect', 'Review flags', 'Sample rewrite', 'Reset'] : number === 19 ? ['Your details', 'Your assets', 'Trusted people', 'Review the plan'] : number === 24 ? ['Footfall', 'Compare', 'Select B', 'Proposed gym', 'Review'] : number === 25 ? ['Learn', 'Associate', 'Recall', 'Check answers'] : ['Carbon input', 'Choose bananas', 'Banana comparison', 'Wood comparison']).map((label, index) => <button type="button" data-story-select={index} aria-pressed={index === 0 ? 'true' : 'false'}><span>{String(index + 1).padStart(2, '0')}</span>{label}</button>)}
         <button type="button" data-story-auto aria-pressed="true">Auto-play</button>
       </div>}
       <div class="exhibit-story" style="position: static; max-width: none;" data-story aria-live="off" hidden>
@@ -152,7 +152,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     </div>}
     <div class="exhibit-controls" data-controls hidden>
       <span>{number === 49 ? 'Drag bunny to lift · Release to drop · Space + arrows also work' : 'Drag to rotate · Arrow keys to turn'}</span>
-      {[17, 18, 20, 23, 24, 25, 29, 35].includes(number) && <><button type="button" data-zoom="0.8" aria-label="Zoom out" disabled>−</button><button type="button" data-zoom="1.25" aria-label="Zoom in">+</button></>}
+      {[14, 15, 17, 18, 20, 23, 24, 25, 29, 35].includes(number) && <><button type="button" data-zoom="0.8" aria-label="Zoom out" disabled>−</button><button type="button" data-zoom="1.25" aria-label="Zoom in">+</button></>}
       <button type="button" data-reset>{number === 49 ? 'Reset meadow' : number === 29 ? 'Replay route' : 'Reset view'}</button>
       <button type="button" data-pause aria-pressed="false">Pause motion</button>
     </div>

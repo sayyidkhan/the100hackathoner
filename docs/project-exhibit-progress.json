@@ -976,14 +976,20 @@
     {
       "number": 15,
       "title": "Weather Guru",
-      "source": null,
-      "status": "needs-source-context"
+      "source": "https://github.com/sayyidkhan/unesco-weatherguru",
+      "status": "implemented",
+      "artwork": "public/landing/assets/projects/015-weatherguru-singapore-v2.png",
+      "model": "public/landing/artifacts/weatherguru.js",
+      "notes": "Approved Singapore heartland artwork and matching HDB/canal exhibit. Four-stage rainfall, runoff, water-level and analysis sequence; conceptual rather than calibrated forecast. See docs/weatherguru-exhibit.md."
     },
     {
       "number": 14,
       "title": "Smart Food Bridge",
-      "source": null,
-      "status": "needs-source-context"
+      "source": "https://www.instagram.com/p/BgWUFk4FOSa/",
+      "status": "implemented",
+      "artwork": "public/landing/assets/projects/014-smart-food-bridge-v1.png",
+      "model": "public/landing/artifacts/smart-food-bridge.js",
+      "notes": "Source post and dietary-locator record reviewed. Illustrative Singapore food-court artwork and four-stage menu, preference, match and route animation. No repository recorded. See docs/smart-food-bridge-exhibit.md."
     },
     {
       "number": 13,

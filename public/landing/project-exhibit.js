@@ -164,6 +164,11 @@ for (const exhibit of document.querySelectorAll('[data-project-exhibit]')) {
   }));
   autoSteps?.addEventListener('click', () => {
     const enabled = autoSteps.getAttribute('aria-pressed') !== 'true';
+    // Explicitly playing the food walkthrough should also leave motion pause.
+    if (enabled && exhibit.dataset.number === '14' && !reduced.matches) {
+      paused = false;
+      pauseLabel();
+    }
     scene?.setStoryStep(enabled ? null : Number(stepButtons.find(button => button.getAttribute('aria-pressed') === 'true')?.dataset.storySelect ?? 0));
     autoSteps.setAttribute('aria-pressed', String(enabled));
   });

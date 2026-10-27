@@ -1,3 +1,5 @@
+import p14 from '../../public/landing/assets/projects/014-smart-food-bridge-v1.png';
+import p15 from '../../public/landing/assets/projects/015-weatherguru-singapore-v2.png';
 import p17 from '../../public/landing/assets/projects/017-goldigloo-research-v4.png';
 import p23 from '../../public/landing/assets/projects/023-pestoverflow-owner-alert-v2.png';
 import p24 from '../../public/landing/assets/projects/024-mynextgym-city-v4.png';
@@ -112,6 +114,8 @@ export interface ProjectArt {
 }
 
 export const projectArt: Record<number, ProjectArt> = {
+  14: { light:p14, dark:p14, alt:'A Smart Food Bridge phone selects a vegetarian menu and traces a green route to Garden Bowl among three miniature Singapore food stalls, beside a detailed bowl of vegetables, rice and tofu.', caption:'Bring menus together. Find food that fits you. A dietary food-discovery concept, reimagined as a Singapore food court.', model:'/landing/artifacts/smart-food-bridge.js' },
+  15: { light:p15, dark:p15, alt:'A Singapore HDB precinct under a sculptural monsoon cloud, with covered walkways, tropical trees, a bus stop and a measured stormwater canal beside rainfall-analysis charts.', caption:'Read the rain. Follow the runoff. Weather Guru explores the patterns behind rainfall and flood likelihood.', model:'/landing/artifacts/weatherguru.js' },
   17: { light:p17, dark:p17, alt:'A friendly IceIgloo mascot sits on Gold Igloo research reports beside glass Shariah and impact screening panels, an ivory shortlist folio and a small solar garden.', caption:'Two research lenses. One thoughtful shortlist. Gold Igloo brings Shariah screening and impact research together.', model:'/landing/artifacts/goldigloo.js' },
   23: { light:p23, dark:p23, alt:'A kitchen sensor detects a mouse and sends a Pest detected alert with the kitchen location to the owner’s phone.', caption:'Detect a pest. Know where it is. Alert the owner.', model:'/landing/artifacts/pestoverflow.js' },
   24: { light:p24, dark:p24, alt:'A miniature neighbourhood at dusk: transit, offices and homes feed pedestrian routes toward three sites. The selected gym at B glows at the heart of the district.', caption:'Follow the footfall. Compare three sites. Open your next gym where the most people pass.', model:'/landing/artifacts/mynextgym.js' },
