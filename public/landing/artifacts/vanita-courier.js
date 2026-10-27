@@ -1,0 +1,16 @@
+// Microsoft Rocketbox authored character; MIT license accompanies the shared asset.
+let source;
+export async function prepareCourier(){if(source)return;const r=await fetch(new URL('../assets/lrnmate-people/learner.bin',import.meta.url));if(!r.ok)throw new Error('Unable to load Vanita courier');source=await new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).json();}
+export function createCourier(T,override){
+ const pivot=new T.Group(),model=new T.ObjectLoader().parse(override??source);pivot.add(model);model.updateMatrixWorld(true);const bounds=new T.Box3().setFromObject(model),scale=1.55/(bounds.max.y-bounds.min.y);model.scale.setScalar(scale);model.position.y=-bounds.min.y*scale;
+ const bones={},materials=[];model.traverse(o=>{if(o.isBone)bones[o.name.replace('Bip01_','')]=o;if(o.isMesh){o.material=o.material.clone();o.material.color.setHex(0xe4d2ac);o.material.roughness=.82;o.material.transparent=true;materials.push(o.material);o.castShadow=o.receiveShadow=true;o.frustumCulled=false;}});
+ function aim(name,child,target){pivot.updateMatrixWorld(true);const b=bones[name],end=bones[child],start=b.getWorldPosition(new T.Vector3()),from=end.getWorldPosition(new T.Vector3()).sub(start).normalize(),to=model.localToWorld(new T.Vector3(...target)).sub(start).normalize();const world=new T.Quaternion().setFromUnitVectors(from,to).multiply(b.getWorldQuaternion(new T.Quaternion()));b.quaternion.copy(b.parent.getWorldQuaternion(new T.Quaternion()).invert().multiply(world));}
+ // Arms cradle the parcel. No unrelated stock dance or waving animation.
+ for(const [side,sign] of [['L',1],['R',-1]]){aim(`${side}_UpperArm`,`${side}_Forearm`,[sign*24,112,14]);aim(`${side}_Forearm`,`${side}_Hand`,[sign*13,113,39]);}
+ const arms=['L_UpperArm','R_UpperArm','L_Forearm','R_Forearm'].map(name=>({bone:bones[name],carry:bones[name].quaternion.clone()}));
+ for(const [side,sign] of [['L',1],['R',-1]]){aim(`${side}_UpperArm`,`${side}_Forearm`,[sign*20,106,1]);aim(`${side}_Forearm`,`${side}_Hand`,[sign*13,80,5]);}
+ for(const a of arms){a.relaxed=a.bone.quaternion.clone();a.bone.quaternion.copy(a.carry);}
+ const joints=['L_Thigh','R_Thigh','L_Calf','R_Calf','Head'].map(name=>({name,bone:bones[name],rest:bones[name].quaternion.clone()}));
+ function rotate(j,angle){pivot.updateMatrixWorld(true);const axis=new T.Vector3(1,0,0).applyQuaternion(model.getWorldQuaternion(new T.Quaternion()));const w=new T.Quaternion().setFromAxisAngle(axis,angle).multiply(j.bone.getWorldQuaternion(new T.Quaternion()));j.bone.quaternion.copy(j.bone.parent.getWorldQuaternion(new T.Quaternion()).invert().multiply(w));}
+ return {pivot,update(s){for(const a of arms)a.bone.quaternion.copy(a.carry).slerp(a.relaxed,s.delivered?Math.min(1,(s.t-18.5)*1.5):0);for(const j of joints)j.bone.quaternion.copy(j.rest);const ramp=s.walking?Math.min(1,(s.t-5)*3,(17-s.t)*3):0,step=(s.t-5)*5.4;for(const j of joints){const side=j.name.startsWith('L')?1:-1;if(j.name.endsWith('Thigh'))rotate(j,Math.sin(step)*.33*side*ramp);if(j.name.endsWith('Calf'))rotate(j,Math.max(0,-Math.sin(step)*side)*.45*ramp);if(j.name==='Head')rotate(j,s.phase===3?.10*Math.sin(s.handoff*Math.PI):.04);}materials.forEach(m=>{m.opacity=s.opacity;m.depthWrite=s.opacity>.95;});}};
+}

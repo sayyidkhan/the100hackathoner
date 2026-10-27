@@ -165,7 +165,7 @@ for (const exhibit of document.querySelectorAll('[data-project-exhibit]')) {
   autoSteps?.addEventListener('click', () => {
     const enabled = autoSteps.getAttribute('aria-pressed') !== 'true';
     // Explicitly playing these walkthroughs should also leave motion pause.
-    if (enabled && ['13', '14'].includes(exhibit.dataset.number) && !reduced.matches) {
+    if (enabled && ['8', '13', '14'].includes(exhibit.dataset.number) && !reduced.matches) {
       paused = false;
       pauseLabel();
     }

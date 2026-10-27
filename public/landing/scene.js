@@ -555,6 +555,39 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       contactShadow.material.opacity=0;paperContact.visible=true;
       paperContact.material.opacity=dark?.44:.18;paperContact.scale.set(1.3,1.1,1);
     }
+    if (currentModel?.userData.studioProfile === 'nestash') {
+      const backdrop=0x0c2028;
+      scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xe9eee4);hemisphere.groundColor.setHex(0x223b3f);hemisphere.intensity=.30;
+      key.color.setHex(0xffe6c1);key.position.set(-3.5,5,3.5);key.intensity=3.4;
+      fill.color.setHex(0xb9dbe5);fill.intensity=.40;rim.color.setHex(0xd7e8e7);rim.position.set(4,5,-3);rim.intensity=2.3;
+      scene.environmentIntensity=.58;renderer.toneMappingExposure=1.01;
+      key.shadow.normalBias=.003;key.shadow.bias=-.00004;key.shadow.radius=5;
+      Object.assign(key.shadow.camera,{left:-6,right:6,top:6,bottom:-4});key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=.42;paperContact.scale.set(1.3,1.2,1);
+    }
+    if (currentModel?.userData.studioProfile === 'vanita') {
+      const dark=currentTheme==='dark',backdrop=dark?0x142d39:0xe8e5dc;
+      scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xe5eee2);hemisphere.groundColor.setHex(0x243d48);hemisphere.intensity=.40;
+      key.color.setHex(0xffe4bd);key.position.set(-4,6,5);key.intensity=3.3;
+      fill.color.setHex(0xb5d9e9);fill.intensity=.48;rim.color.setHex(0xc3e5f7);rim.position.set(3,5,-4);rim.intensity=2.6;
+      scene.environmentIntensity=.75;renderer.toneMappingExposure=1.02;
+      key.shadow.normalBias=.002;key.shadow.bias=-.00004;key.shadow.radius=5;
+      Object.assign(key.shadow.camera,{left:-6,right:6,top:6,bottom:-4});key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=dark?.44:.20;paperContact.scale.set(1.45,1.15,1);
+    }
+    if (currentModel?.userData.studioProfile === 'vainster') {
+      const dark=currentTheme==='dark',backdrop=dark?0x142c25:0xe8ece3;
+      scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xe5eee2);hemisphere.groundColor.setHex(0x30483b);hemisphere.intensity=.40;
+      key.color.setHex(0xffe4bd);key.position.set(-4,6,5);key.intensity=3.3;
+      fill.color.setHex(0xb5ddcc);fill.intensity=.48;rim.color.setHex(0xd9f4df);rim.position.set(3,5,-4);rim.intensity=2.6;
+      scene.environmentIntensity=.75;renderer.toneMappingExposure=1.02;
+      key.shadow.normalBias=.002;key.shadow.bias=-.00004;key.shadow.radius=5;
+      Object.assign(key.shadow.camera,{left:-6,right:6,top:6,bottom:-4});key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=dark?.44:.20;paperContact.scale.set(1.45,1.15,1);
+    }
     if (currentModel?.userData.studioProfile === 'life-worth') {
       const dark=currentTheme==='dark',backdrop=dark?0x102b32:0xe8e4d9;
       scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
@@ -593,8 +626,8 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=.40;
       paperContact.scale.set(1.35,1.15,1);
     }
-    if (['mailbox','winwincusine'].includes(currentModel?.userData.studioProfile)) {
-      const backdrop=currentModel.userData.studioProfile==='winwincusine'?0x142e2b:0x18363d;
+    if (['mailbox','winwincusine','propertyguru'].includes(currentModel?.userData.studioProfile)) {
+      const backdrop=currentModel.userData.studioProfile==='propertyguru'?0x162b39:currentModel.userData.studioProfile==='winwincusine'?0x142e2b:0x18363d;
       scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);
       renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
       hemisphere.color.setHex(0xe9f1e9);hemisphere.groundColor.setHex(0x3b4843);hemisphere.intensity=.52;
@@ -605,6 +638,17 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       key.shadow.normalBias=.003;key.shadow.bias=-.00004;key.shadow.radius=5;
       Object.assign(key.shadow.camera,{left:-5,right:5,top:5,bottom:-4});key.shadow.camera.updateProjectionMatrix();
       contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=.32;paperContact.scale.set(1.3,1.1,1);
+    }
+    if (currentModel?.userData.studioProfile === 'propertyguru') {
+      // Grazing afternoon light separates recessed glazing, thin balconies and foliage.
+      hemisphere.intensity=.24;hemisphere.groundColor.setHex(0x344048);
+      key.color.setHex(0xffe4c4);key.position.set(-3.8,5.5,4);key.intensity=3.4;
+      fill.color.setHex(0xb1cfed);fill.intensity=.42;
+      rim.color.setHex(0xcce0f0);rim.position.set(4,5,-3);rim.intensity=1.7;
+      scene.environmentIntensity=.78;renderer.toneMappingExposure=.98;
+      key.shadow.normalBias=.0015;key.shadow.radius=4;
+      Object.assign(key.shadow.camera,{left:-5.2,right:5.2,top:5,bottom:-4});key.shadow.camera.updateProjectionMatrix();
+      paperContact.material.opacity=.42;
     }
     if (currentModel?.userData.studioProfile === 'goldigloo') {
       // The etched ivory labels need the same deep backdrop as the artwork in both themes.

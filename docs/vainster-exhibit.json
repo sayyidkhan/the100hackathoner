@@ -1,0 +1,14 @@
+{
+  "hackathon": 8,
+  "project": "Vainster",
+  "reviewedSources": [
+    {"title":"Vainster App","url":"https://docs.google.com/document/d/1njhNDgoBqiJPpmzVBc9yAu-wJCWz4NFhy4QFR2t0vjc/edit","evidence":"Original brief describes face mapping, weekly charts and an empathetic, positive personality. Original proposed organ/symptom inference is historical context, not validated capability."},
+    {"title":"Vainster presentation","url":"https://docs.google.com/presentation/d/1WFmJQQhNfRDe9LcMo1bHDZNLBIX-pXpOVakdg13AmuE/edit","evidence":"Five-slide pitch focuses on mental/physical wellbeing and future propositions."}
+  ],
+  "interpretation":"A contemporary face observatory with capture phone, ceramic portrait, facial landmarks and a weekly visual journal. All screen content and journal entries are illustrative. No camera access, health inference, medical diagnosis or external API call occurs.",
+  "artwork":"public/landing/assets/projects/008-vainster-face-observatory-v1.png",
+  "model":"public/landing/artifacts/vainster.js",
+  "animation":"28 seconds: capture 0–5; scan 5–12; facial regions 12–19; journal 19–26; transition/reset 26–28. Manual selection freezes the chosen stage. Autoplay resumes continuously. Shared viewer handles pause, reduced motion and hidden-page suspension.",
+  "portrait":{"source":"Microsoft Rocketbox Female_Adult_01_facial.fbx, derived from existing licensed learner.bin","revision":"0943055db6ec570bcef9f2c8b41c9e5467c808f9","license":"public/landing/assets/vainster/LICENSE-Rocketbox.txt","changes":"Baked pose, isolated head/neck, removed clothing and alpha surfaces, seam weld and two Loop-subdivision passes. Added ceramic shading and swept hair grooves. No real person's photo or health data used.","rebuild":"node scripts/build-vainster-bust.mjs"},
+  "validation":"node --test scripts/tests/vainster.test.mjs; npm run build; browser review of artwork, 3D, walkthrough and motion controls"
+}

@@ -2,23 +2,26 @@
 // Deterministic contact AO for the rigid #31 learning garden only. No direct-light
 // shadows are baked, so the moving moon, telescope and dome keep live lighting.
 // node scripts/bake-growthguru-ao.mjs [--rays=24] [--distance=.35] [--cell=.014]
+// node scripts/bake-growthguru-ao.mjs --model=propertyguru --rays=32 --distance=.45
 //   [--limit=1000] benchmarks without writing or replacing an asset.
 import { writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import * as THREE from '../public/landing/vendor/three.module.js';
 import { geometryObservatoryAOHash, OBSERVATORY_AO_MAGIC, OBSERVATORY_AO_QUANTIZATION } from '../public/landing/artifacts/astrodegen-occlusion.js';
-import { createArtifact } from '../public/landing/artifacts/growthguru.js';
 
 const rootPath = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const options = Object.fromEntries(process.argv.slice(2).map(arg => {
   const match = /^--([a-z]+)=(.+)$/.exec(arg);
-  if (!match || !['rays', 'distance', 'cell', 'limit', 'out'].includes(match[1])) throw new Error(`Unsupported bake option: ${arg}`);
+  if (!match || !['model', 'rays', 'distance', 'cell', 'limit', 'out'].includes(match[1])) throw new Error(`Unsupported bake option: ${arg}`);
   return [match[1], match[2]];
 }));
+const modelName=options.model??'growthguru';
+if(!['growthguru','propertyguru','nestash'].includes(modelName))throw new Error('Unsupported model');
+const {createArtifact}=await import(`../public/landing/artifacts/${modelName}.js`);
 const rays = Number(options.rays ?? 24), maxDistance = Number(options.distance ?? .35), cell = Number(options.cell ?? .014);
 const limit = options.limit === undefined ? Infinity : Number(options.limit);
-const output = resolve(rootPath, options.out ?? 'public/landing/assets/growthguru-ao-v1.bin');
+const output = resolve(rootPath, options.out ?? `public/landing/assets/${modelName}-ao-v1.bin`);
 if (!Number.isInteger(rays) || rays < 4 || rays > 256) throw new Error('rays must be an integer from 4 to 256.');
 if (!(maxDistance > 0 && maxDistance < 10) || !(cell > 0 && cell < .1) || !(limit > 0)) throw new Error('Invalid distance, cell or sample limit.');
 // Text and procedural texture pixels are irrelevant to geometric ray tests.

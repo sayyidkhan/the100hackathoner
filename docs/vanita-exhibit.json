@@ -1,0 +1,17 @@
+{
+  "hackathon": 7,
+  "project": "Vanita",
+  "concept": "Last-mile crowd delivery connecting women with businesses and distributors.",
+  "sources": [
+    {"title":"Vanita: Crowd Delivery","url":"https://docs.google.com/presentation/d/1wt2FYWMkl35yvQMCSg6XQuj5kZQMZZ2nEN93-YTbeU4/edit","observed":"Employment opportunity for women, last-mile infrastructure challenges, proposed Indonesian village pilot, Delivery. Done. Money. Earned. Respect. Won."},
+    {"title":"Pitch Speech","url":"https://docs.google.com/document/d/1FvLkcn8L3NtMMsx5EZxDu7zwOAcFfpqS0u24Efcegq8/edit","observed":"Connect unemployed and underemployed women to businesses and distributors."},
+    {"title":"Original app screenshots","files":["0BwNqucPex0K7LWRCanZfS2tham8","0BwNqucPex0K7akstWEpPYm8yTVk","0BwNqucPex0K7dzRUcUthd1NfX2M"],"observed":"Blue Vanita header, All Delivery and My Delivery tabs, accept jobs with distance and weight, accepted job list."}
+  ],
+  "interpretation":"Illustrative neighbourhood, fictional route and completion UI. Architecture and animation are contemporary concept art, not a reconstruction of a deployed service. Original source screenshots use Aceh examples.",
+  "artwork":"/landing/assets/projects/007-vanita-neighbourhood-v1.png",
+  "model":"/landing/artifacts/vanita.js",
+  "motion":"28-second deterministic loop: select, collect, carry on spline, turn to doorstep, confirm, fade and restart. No walk back. Real-time animation respects shared pause/reduced-motion behavior.",
+  "character":"Shared Microsoft Rocketbox authored learner mesh, locally rigged for parcel carrying and walking. MIT license in public/landing/assets/lrnmate-people/.",
+  "renderBudget":{"meshObjects":53,"triangles":169502},
+  "card":"Standard artwork/3D, reset and pause controls, short caption. No custom walkthrough controls."
+}

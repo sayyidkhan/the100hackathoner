@@ -1003,8 +1003,11 @@
     {
       "number": 12,
       "title": "Nestash",
-      "source": null,
-      "status": "needs-source-context"
+      "source": "Google Drive: NTU hackathon 2017 iNTUition; catalogue; user-confirmed predecessor to Iceigloo",
+      "status": "implemented",
+      "artwork": "public/landing/assets/projects/012-nestash-impact-v1.png",
+      "model": "public/landing/artifacts/nestash.js",
+      "notes": "Impact research studio: search console, energy/water/city landscapes and four-stage search-to-shortlist animation. Illustrative interpretation; original prototype contents were not fully readable. See docs/nestash-exhibit.md."
     },
     {
       "number": 11,
@@ -1060,8 +1063,12 @@
     {
       "number": 3,
       "title": "PropertyGuru Smart Algorithm",
-      "source": null,
-      "status": "needs-source-context"
+      "source": "https://www.slideshare.net/slideshow/big-data-analysis-of-property-guru-67557908/67557908",
+      "status": "implemented",
+      "model": "public/landing/artifacts/propertyguru.js",
+      "artwork": "public/landing/assets/projects/003-propertyguru-recommendations-v1.png",
+      "notes": "docs/propertyguru-exhibit.md",
+      "presentation": "Singapore architectural miniature combining property-similarity and enquiry-pattern signals into an animated shortlist. Illustrative interface; no claimed conversion gains."
     },
     {
       "number": 2,

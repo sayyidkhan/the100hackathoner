@@ -1,5 +1,9 @@
+import vanitaArt from '../../public/landing/assets/projects/007-vanita-neighbourhood-v1.png';
+import vainsterArt from '../../public/landing/assets/projects/008-vainster-face-observatory-v1.png';
+import nestashArt from '../../public/landing/assets/projects/012-nestash-impact-v1.png';
 import xue1 from '../../public/landing/assets/projects/001-xueyiyi-microlearning-v2.png';
 import xue2 from '../../public/landing/assets/projects/002-xueyiyi-microlearning-v2.png';
+import propertyArt from '../../public/landing/assets/projects/003-propertyguru-recommendations-v1.png';
 import mailboxArt from '../../public/landing/assets/projects/009-mailbox-lobby-v1.png';
 import cuisineArt from '../../public/landing/assets/projects/021-winwincusine-kopitiam-v1.png';
 import p13 from '../../public/landing/assets/projects/013-life-worth-observatory-v1.png';
@@ -119,6 +123,10 @@ export interface ProjectArt {
 }
 
 export const projectArt: Record<number, ProjectArt> = {
+  7: {light:vanitaArt,dark:vanitaArt,alt:"Vanita neighbourhood delivery: a delivery app, parcel collection kiosk, a woman courier and a blue route to a village home.",caption:"Local knowledge. New opportunities. Women connect businesses to the last doorstep.",model:"/landing/artifacts/vanita.js"},
+  8: { light:vainsterArt, dark:vainsterArt, alt:"Vainster face observatory: a ceramic portrait with mint facial landmarks, a capture phone and a weekly reflection journal on an ivory stone base.", caption:"A moment for yourself. Face mapping and a visual journal make space for daily reflection.", model:"/landing/artifacts/vainster.js" },
+  12: { light:nestashArt, dark:nestashArt, alt:'Nestash impact-investment search console beside miniature clean-energy, water and sustainable-city landscapes. Clean energy is highlighted and saved to a research shortlist.', caption:'Find investments that reflect the impact you care about. The idea that later evolved into Iceigloo.', model:'/landing/artifacts/nestash.js' },
+  3: { light:propertyArt, dark:propertyArt, alt:'A Singapore architectural miniature with HDB flats, terrace houses and a highlighted condominium. Property similarities and enquiry-pattern signals connect to a recommended-home shortlist.', caption:'Similar homes. Shared patterns. Better property choices. A recommendation concept that combines listing similarities with enquiry patterns to help visitors find a home worth enquiring about.', model:'/landing/artifacts/propertyguru.js' },
   21: { light:cuisineArt, dark:cuisineArt, alt:'Three food-preference cards connect to a shared table outside a Singapore kopitiam, with noodles, vegetables and curry beside a phone showing a group match.', caption:'Different tastes. One table. WinWinCusine combines everyone’s food preferences to recommend a place for the whole group.', model:'/landing/artifacts/winwincusine.js' },
   9: { light:mailboxArt, dark:mailboxArt, alt:'A Singapore apartment mailbox lobby with six steel letterboxes, an enlarged coral cutaway mailbox revealing its sensor, and a phone showing a mail-arrival notification.', caption:'A letter arrives. Your mailbox lets you know. A connected-mailbox concept, reimagined in a Singapore apartment lobby.', model:'/landing/artifacts/mailbox.js' },
   1: { light:xue1, dark:xue1, alt:'Xueyiyi microlearning app: a central phone with a three-minute lesson, practical takeaways and a quick knowledge check in jade and lime.', caption:'A few minutes. One useful skill. Bite-sized lessons, a quick check and feedback that helps learning stick.', model:'/landing/artifacts/xueyiyi-v1.js' },
