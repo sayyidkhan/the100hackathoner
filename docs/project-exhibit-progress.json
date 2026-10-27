@@ -1022,7 +1022,10 @@
       "number": 9,
       "title": "Mailbox IOT system",
       "source": null,
-      "status": "needs-source-context"
+      "status": "implemented",
+      "artwork": "public/landing/assets/projects/009-mailbox-lobby-v1.png",
+      "model": "public/landing/artifacts/mailbox.js",
+      "notes": "Singapore mailbox lobby with a coral cutaway. Letter insertion, sensor indication, transmission and phone notification share a deterministic 20-second sequence. Mechanism/UI are conceptual; original post confirms the Bosch smart-building context. See docs/mailbox-exhibit.md."
     },
     {
       "number": 8,

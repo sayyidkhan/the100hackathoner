@@ -593,6 +593,19 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=.40;
       paperContact.scale.set(1.35,1.15,1);
     }
+    if (currentModel?.userData.studioProfile === 'mailbox') {
+      const backdrop=0x18363d;
+      scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);
+      renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xe9f1e9);hemisphere.groundColor.setHex(0x3b4843);hemisphere.intensity=.52;
+      key.color.setHex(0xffedd7);key.position.set(-4,6,5);key.intensity=2.5;
+      fill.color.setHex(0xc0e5ed);fill.intensity=.7;
+      rim.color.setHex(0xf4e8d1);rim.position.set(4,5,-3);rim.intensity=2;
+      scene.environmentIntensity=.85;renderer.toneMappingExposure=1.03;
+      key.shadow.normalBias=.003;key.shadow.bias=-.00004;key.shadow.radius=5;
+      Object.assign(key.shadow.camera,{left:-5,right:5,top:5,bottom:-4});key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=.32;paperContact.scale.set(1.3,1.1,1);
+    }
     if (currentModel?.userData.studioProfile === 'goldigloo') {
       // The etched ivory labels need the same deep backdrop as the artwork in both themes.
       const backdrop=0x102b27;
