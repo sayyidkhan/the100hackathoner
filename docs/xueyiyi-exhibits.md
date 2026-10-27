@@ -33,3 +33,15 @@ Deterministic 24-second loop with four six-second stages: Discover, Short lesson
 ## Validation
 
 `node --test scripts/tests/xueyiyi.test.mjs` checks finite and bounded geometry, stage selection, deterministic seeking, loop reset and no-jump resume. Browser review checks both scenes, screen legibility, artwork, manual stage changes and autoplay. `npx astro check` and `npx astro build` check integration without the data-sync prebuild.
+
+## Artwork matching pass — 27 October 2026
+
+Approved raster artwork is unchanged. The native 3D UI was redrawn to follow its visual hierarchy: large app wordmark and headline, colored lesson hero, duration pill, raised conversation bubbles, separate lime CTA, a weekly activity row and icon navigation. Side cards now have rounded edge-to-edge cream faces with larger type, numbered takeaways and outlined answer choices. 1.0 has three upright icon tiles; 2.0 has three horizontal feature chips. The smartphone has a layered polished frame, lens, pill cutout, side buttons and rounded screen UVs. A dedicated Xueyiyi lighting profile retains an ivory product backdrop in both page themes without changing other exhibits.
+
+The four animation stages and manual selection remain. Conversation graphics only appear on the home screen; the quiz becomes feedback at completion. All four physical progress dots stay visible and completed dots change color. Automated regression snapshots include material color as well as transforms, and check screen UV bounds, stage-specific graphics and milestone count. Browser review covers both versions, the feedback view, autoplay and pause. Saved previews: `outputs/xueyiyi-review/v1-artwork-matched-3d.png` and `v2-artwork-matched-3d.png`.
+
+## Guided animation pass — 27 October 2026
+
+The 24-second loop now includes a home-screen conversation/typing motion and a start-button tap cue; sequential takeaway focus and staggered lesson-tile lifts; an initially unanswered quiz followed by a visible tap and answer selection; and a completion pulse. The phone screen crossfades over the final 750 ms of each stage. The quiz card crossfades into feedback and resets before the next lesson. Active cards ease forward and back, with neutral poses at boundaries. Four milestone dots remain visible and the current milestone pulses.
+
+All motion derives from absolute lesson time. Manual stage selection, pause, reduced-motion handling and no-jump resume retain the existing viewer contract. Canvas frames are prepared once and textures change only at content/selection boundaries, while opacity and transforms animate each frame. Tests cover tap-before-selection ordering, crossfade timing, sequenced takeaways, loop equivalence, deterministic scrubbing and frozen material opacity when manually inspecting a stage.

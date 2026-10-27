@@ -484,6 +484,24 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
         key.shadow.normalBias=.004;scene.environmentIntensity=.65;
       }
     }
+    if (currentModel?.userData.studioProfile === 'xueyiyi') {
+      // Product photography: neutral ivory cards and a crisp polished phone rim.
+      const backdrop = 0xf4eee4;
+      scene.background.setHex(backdrop); scene.fog.color.setHex(backdrop);
+      renderer.setClearColor(backdrop, 1); floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xfffaf1); hemisphere.groundColor.setHex(0x9c968d);
+      hemisphere.intensity = .85;
+      key.color.setHex(0xfff7eb); key.position.set(-3.5, 6, 7); key.intensity = 2.1;
+      fill.color.setHex(0xeef3ff); fill.intensity = .95;
+      rim.color.setHex(0xffffff); rim.intensity = 1.8;
+      scene.environmentIntensity = 1.05; renderer.toneMappingExposure = 1.08;
+      key.shadow.normalBias = .004; key.shadow.bias = -.00006; key.shadow.radius = 5;
+      Object.assign(key.shadow.camera, { left: -5, right: 5, top: 5, bottom: -4 });
+      key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity = 0;
+      paperContact.visible = true; paperContact.material.opacity = .12;
+      paperContact.scale.set(1.12, .85, 1);
+    }
     if (currentModel?.userData.studioProfile === 'neurosurge') {
       const backdrop = currentTheme === 'dark' ? 0x28202f : 0xede5ed;
       scene.background.setHex(backdrop); scene.fog.color.setHex(backdrop);
@@ -562,14 +580,14 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=dark?.42:.19;paperContact.scale.set(1.3,1.2,1);
     }
     if (currentModel?.userData.studioProfile === 'weatherguru') {
-      const backdrop=0x1b2b34;
+      const backdrop=0x102630;
       scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);
       renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
-      hemisphere.color.setHex(0xdce7eb);hemisphere.groundColor.setHex(0x404a40);hemisphere.intensity=.65;
-      key.color.setHex(0xf0eee0);key.position.set(-4,7,4);key.intensity=2.6;
-      fill.color.setHex(0xbcd8e8);fill.intensity=.65;
-      rim.color.setHex(0xe1e9e6);rim.position.set(4,5,-3);rim.intensity=2;
-      scene.environmentIntensity=.75;renderer.toneMappingExposure=1.04;
+      hemisphere.color.setHex(0xdce7eb);hemisphere.groundColor.setHex(0x404a40);hemisphere.intensity=.48;
+      key.color.setHex(0xffead2);key.position.set(-4,7,4);key.intensity=2.5;
+      fill.color.setHex(0xbcd8e8);fill.intensity=.55;
+      rim.color.setHex(0xe1e9e6);rim.position.set(4,5,-3);rim.intensity=2.7;
+      scene.environmentIntensity=.60;renderer.toneMappingExposure=.98;
       key.shadow.normalBias=.003;key.shadow.bias=-.00004;key.shadow.radius=5;
       Object.assign(key.shadow.camera,{left:-6,right:6,top:6,bottom:-5});key.shadow.camera.updateProjectionMatrix();
       contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=.40;

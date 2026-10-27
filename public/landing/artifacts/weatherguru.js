@@ -1,312 +1,307 @@
 import {medivoiceStudio} from './medivoice-studio.js';
 
-// Singapore-inspired interpretation of the original rainfall / flood analysis prototype.
-export const WEATHER_CYCLE=28;
-export const WEATHER_STEPS=[
- ['History','Read the rainfall history','Annual rainfall and rainy-day patterns provide the starting point for flood analysis.'],
- ['Patterns','Connect rainfall with past floods','Compare historical patterns and flood-analysis clusters to identify signals.'],
- ['Risk window','Anticipate a period of elevated risk','The amber window illustrates a possible risk period, not an exact flood date or a live prediction.'],
- ['Local impact','Bring the analysis back to the neighbourhood','Explore what the rainfall patterns could mean for a Singapore precinct. All plotted values are illustrative.'],
-];
-// Illustrative normalized series, deliberately without fabricated dates or probabilities.
+// An illustrative flood-analysis atlas, not a calibrated forecast for a real estate.
+export const WEATHER_CYCLE=32;
 export const RAINFALL_HISTORY=[.24,.38,.28,.51,.72,.45,.33,.56,.82,.63,.48,.75];
-const smooth=v=>{v=Math.max(0,Math.min(1,v));return v*v*(3-2*v);};
-export function weatherMoment(time){
- const t=((time%WEATHER_CYCLE)+WEATHER_CYCLE)%WEATHER_CYCLE;
- return {t,index:t<7?0:t<14?1:t<21?2:3,rain:.15+.85*smooth(t/3)*(1-smooth((t-16)/7)),level:smooth((t-3)/12)*(1-smooth((t-21)/7))};
+export const WEATHER_STEPS=[
+ ['History','Follow the rainfall, watch the water','The moving cursor links each rainfall observation to its illustrative canal response.'],
+ ['Patterns','Trace the rain through the city','Rain falls on roofs and roads, then travels through the drainage network.'],
+ ['Risk window','Look ahead, before the water rises','The amber band separates the outlook from the observations. It is a conceptual risk window, not a live forecast.'],
+ ['Local impact','See which streets the water reaches','At the peak, water overtops the canal and spreads across the road and riverside paths. Illustrative flood extent.'],
+];
+const clamp=x=>Math.max(0,Math.min(1,x));
+const ease=x=>{x=clamp(x);return x*x*(3-2*x);};
+export const RAINFALL_OUTLOOK=[.94,.98,.62,.24,.24];
+const SERIES=[...RAINFALL_HISTORY,...RAINFALL_OUTLOOK];
+function rainfallAt(sample){
+ const at=Math.max(0,Math.min(16,sample)),i=Math.floor(at);
+ return SERIES[i]+((SERIES[Math.min(16,i+1)]-SERIES[i])*ease(at-i));
 }
-export function createArtifact(T){
- const {root,materials:m,mesh,box,line,disk,texture,batch,finish}=medivoiceStudio(T);
- const palette={concrete:0xbac0b4,cream:0xe5e1cf,teal:0x608b86,trim:0xd6d8c7,ink:0x182e38,window:0x254954,metal:0x56696b,asphalt:0x344448,soil:0x6a7560,grass:0x546c40,leaf:0x3b6349,leafLight:0x728453,bark:0x686653,yellow:0xd1b668,red:0xa73d35,green:0x80a348,rubber:0x172126,white:0xe7e9df,roof:0x617478,coral:0xba7960};
- for(const [key,color] of Object.entries(palette))m[key]=new T.MeshStandardMaterial({color,roughness:key==='asphalt'?.24:.73,metalness:['metal','roof'].includes(key)?.45:0});
- const stone=texture('stone');for(const key of ['concrete','cream','teal','soil']){m[key].bumpMap=stone;m[key].bumpScale=.008;}
- m.asphalt.bumpMap=stone;m.asphalt.bumpScale=.002;
- m.lit=new T.MeshStandardMaterial({color:0xf3d395,emissive:0xf9b958,emissiveIntensity:.65,roughness:.55});
- m.water=new T.MeshStandardMaterial({color:0x163e4d,roughness:.27,metalness:.13});
- m.cloud=new T.MeshPhysicalMaterial({color:0x809da9,metalness:.08,roughness:.22,transparent:true,opacity:.42,depthWrite:false,side:T.DoubleSide});
- const ripplePixels=new Uint8Array(128*128*4);
- for(let y=0;y<128;y++)for(let x=0;x<128;x++){const v=128+Math.sin(x*.22+Math.sin(y*.16)*2)*29+Math.sin(y*.31+x*.08)*17,i=(y*128+x)*4;ripplePixels.set([v,v,v,255],i);}
- const ripple=new T.DataTexture(ripplePixels,128,128);ripple.wrapS=ripple.wrapT=T.RepeatWrapping;ripple.repeat.set(7,2);ripple.magFilter=T.LinearFilter;ripple.needsUpdate=true;m.water.bumpMap=ripple;m.water.bumpScale=.018;
- m.rain=new T.MeshBasicMaterial({color:0xc0dfeb,transparent:true,opacity:.48,depthWrite:false});
- m.foam=new T.MeshBasicMaterial({color:0xb7d9d7,transparent:true,opacity:.34,depthWrite:false});
- const live=[],hdbBounds=[];
- const group=(x=0,y=0,z=0,p=root)=>{const g=new T.Group();g.position.set(x,y,z);p.add(g);return g;};
- function ell(x,y,z,sx,sy,sz,key,p=root){const o=mesh(new T.SphereGeometry(1,12,8),key,p);o.position.set(x,y,z);o.scale.set(sx,sy,sz);return o;}
- function label(text,w,h,x,y,z,p=root,color='#e3e8da',bg=null){
-  if(typeof document==='undefined')return;
-  const c=document.createElement('canvas');c.width=1024;c.height=Math.max(32,Math.round(1024*h/w));const ctx=c.getContext('2d');
-  if(bg){ctx.fillStyle=bg;ctx.fillRect(0,0,c.width,c.height);}ctx.fillStyle=color;ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`500 ${Math.round(c.height*.63)}px sans-serif`;ctx.fillText(text,512,c.height/2,970);
-  const map=new T.CanvasTexture(c);map.colorSpace=T.SRGBColorSpace;map.anisotropy=8;
-  const o=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({map,transparent:!bg,depthWrite:false,toneMapped:false}));o.position.set(x,y,z);o.userData.noShadow=true;p.add(o);return o;
- }
- // A shallow cutaway of the precinct, with an open canal through the foreground.
- box(8.8,.14,4.8,0,.07,0,'ink');box(8.65,.34,2.7,0,.31,-.95,'soil');box(8.65,.08,2.7,0,.51,-.95,'concrete');
- box(8.65,.34,.45,0,.31,2.17,'soil');box(8.65,.08,.45,0,.51,2.17,'concrete');
- box(8.65,.08,1.6,0,.18,1.15,'concrete');
- function bank(z1,y1,z2,y2){
-  const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute([-4.325,y1,z1,4.325,y1,z1,-4.325,y2,z2,4.325,y1,z1,4.325,y2,z2,-4.325,y2,z2],3));geo.computeVertexNormals();const o=mesh(geo,'concrete');o.material=m.concrete.clone();o.material.side=T.DoubleSide;
- }
- bank(.40,.55,.72,.22);bank(1.65,.22,1.95,.55);
- for(let x=-4.2;x<4.3;x+=.34){line([[x,.554,.40],[x,.23,.71]],.003,'metal');line([[x,.23,1.65],[x,.554,1.95]],.003,'metal');}
- const water=group(0,.28,1.18);water.name='weather-canal-water';box(8.59,.024,1.30,0,0,0,'water',water);live.push(water);
- // Wet road, kerbs, markings and drains leading into the canal.
- box(8.64,.025,.66,0,.565,-.02,'asphalt');
- for(const z of [-.38,.34])box(8.64,.045,.055,0,.575,z,'trim');
- for(let x=-4.0;x<4.1;x+=.55)box(.24,.003,.017,x,.582,-.02,'white');
- for(const z of [.22,.25])box(8.35,.002,.009,0,.583,z,'yellow');
- for(const x of [-3.6,-1.4,1.1,3.65]){
-  box(.22,.015,.13,x,.59,.27,'ink');for(let i=0;i<6;i++)box(.012,.005,.11,x-.09+i*.035,.601,.27,'metal');
-  box(.22,.17,.035,x,.40,.46,'ink');box(.27,.025,.06,x,.49,.45,'trim');
- }
- function rail(x1,x2,z,y=.57){
-  for(let x=x1;x<=x2;x+=.18)box(.014,.28,.014,x,y+.14,z,'metal');
-  for(const yy of [.13,.29])box(x2-x1,.015,.017,(x1+x2)/2,y+yy,z,'metal');
- }
- for(const z of [.41,1.95]){rail(-4.3,-3.1,z);rail(-2.4,4.3,z);}
- // Pedestrian bridge and its railings span both banks.
- const bridge=group(-2.75,.62,1.17);box(.64,.085,1.72,0,0,0,'concrete',bridge);
- for(const x of [-.29,.29]){
-  for(let z=-.82;z<.85;z+=.13)box(.014,.27,.014,x,.18,z,'metal',bridge);
-  box(.024,.024,1.74,x,.32,0,'metal',bridge);
-  box(.09,.38,.17,x,-.22,-.59,'concrete',bridge);box(.09,.38,.17,x,-.22,.59,'concrete',bridge);
- }
- function hdb(x,z,w,floors,number){
-  const b=group(x,.55,z),d=.70,step=.235,base=.30,top=base+floors*step;
-  hdbBounds.push({x,z,w,d,top:top+.55});
-  for(let i=0;i<6;i++)box(.055,.30,d-.04,-w/2+.12+i*(w-.24)/5,.15,0,'cream',b);
-  box(w,.06,d,0,.31,0,'trim',b);
-  box(w,top-base,d-.12,0,base+(top-base)/2,-.06,'cream',b);
-  // Recessed access galleries, handrails, doors, windows and condensers.
-  for(let f=0;f<floors;f++){
-   const y=base+f*step;
-   box(w,.022,d+.06,0,y+.02,0,'trim',b);
-   box(w-.06,.15,.018,0,y+.115,.305,'window',b);
-   box(w,.014,.018,0,y+.11,.40,'trim',b);box(w,.015,.045,0,y+.175,.38,'cream',b);
-   for(let a=0;a<6;a++){
-    const xx=-w/2+.16+a*(w-.32)/5;
-    box(.13,.115,.018,xx,y+.12,-.365,(a+f)%7===0?'lit':'window',b);
-    box(.012,.12,.023,xx,y+.12,-.38,'trim',b);
-    box(.07,.13,.022,xx,y+.105,.32,(a+f)%5===0?'lit':'teal',b);
-    box(.012,.075,.015,xx,y+.14,.40,'metal',b);
-   }
-   for(const side of [-1,1]){
-    box(.018,.13,.23,side*(w/2+.008),y+.12,-.04,'window',b);
-    box(.07,.065,.10,side*(w/2+.04),y+.05,.14,'trim',b);
-    const fan=disk(.021,.004,side*(w/2+.08),y+.05,.14,'metal',b);fan.rotation.z=Math.PI/2;
-   }
-  }
-  // Lift tower, parapet and rooftop services are distinct from the repeated floors.
-  box(.23,top+.16,.82,-w*.24,(top+.16)/2,-.02,'teal',b);
-  box(w+.10,.065,d+.12,0,top+.06,0,'trim',b);
-  for(const side of [-1,1])box(.025,.12,d+.12,side*(w+.07)/2,top+.14,0,'cream',b);
-  for(const zz of [-.39,.39])box(w,.12,.025,0,top+.14,zz,'cream',b);
-  box(.36,.21,.29,w*.23,top+.17,-.05,'cream',b);disk(.13,.20,-w*.33,top+.22,-.06,'metal',b);
-  label(number,.19,.14,-w*.24,top-.24,.405,b,'#edf1e4');
- }
- hdb(-3.08,-1.65,1.96,10,'101');hdb(-.90,-1.69,1.92,11,'102');hdb(.68,-1.05,1.13,7,'103');
- // Long covered linkway, with slender columns and a ribbed barrel roof.
- const path=group(-.90,.55,-.64);box(6.45,.035,.28,0,0,0,'trim',path);
- for(let x=-3.1;x<3.2;x+=.38)for(const z of [-.12,.12])box(.018,.40,.018,x,.21,z,'cream',path);
- const roofGeo=new T.CylinderGeometry(.18,.18,6.50,20,1,true,0,Math.PI);roofGeo.rotateZ(Math.PI/2);roofGeo.rotateX(Math.PI/2);
- // A simple cambered section built explicitly keeps the canopy upright.
- const canopy=new T.Shape();canopy.moveTo(-.19,0);canopy.quadraticCurveTo(0,.12,.19,0);canopy.lineTo(.19,-.015);canopy.quadraticCurveTo(0,.10,-.19,-.015);canopy.closePath();
- const canopyGeo=new T.ExtrudeGeometry(canopy,{depth:6.5,bevelEnabled:false,curveSegments:12});canopyGeo.rotateY(Math.PI/2);canopyGeo.translate(-3.25,.42,0);mesh(canopyGeo,'roof',path);roofGeo.dispose();
- for(let x=-3.2;x<3.2;x+=.22)line([[x,.42,-.19],[x,.49,0],[x,.42,.19]],.005,'metal',path);
- // Kopitiam pavilion and bus shelter.
- const cafe=group(2.05,.55,-.75);box(1.13,.05,.62,0,.025,0,'trim',cafe);
- for(const x of [-.49,.49])for(const z of [-.24,.24])box(.04,.51,.04,x,.28,z,'cream',cafe);
- box(.93,.30,.035,0,.22,-.25,'lit',cafe);label('KOPITIAM',.73,.10,0,.45,.285,cafe,'#263c3b','#e2d8b8');
- for(const x of [-.28,.28]){disk(.105,.025,x,.16,.02,'cream',cafe);box(.025,.15,.025,x,.075,.02,'metal',cafe);for(const z of [-.14,.15])box(.12,.10,.07,x,.065,z,'teal',cafe);}
- for(const s of [-1,1]){const r=box(1.25,.035,.40,0,.56,s*.17,'roof',cafe);r.rotation.x=s*.26;}
- const shelter=group(2.82,.56,-.28);box(.97,.04,.32,0,.43,0,'roof',shelter);
- for(const x of [-.40,.40])box(.024,.42,.024,x,.21,-.10,'metal',shelter);
- box(.65,.07,.10,0,.12,-.06,'teal',shelter);box(.10,.26,.035,-.40,.25,.01,'lit',shelter);
- function vehicle(x,z,isBus){
-  const g=group(x,.60,z),w=isBus?.83:.46,d=isBus?.25:.20,h=isBus?.27:.13,key=isBus?'green':'red';
-  box(w,h,d,0,h/2+.04,0,key,g);box(w*.78,.10,d*.89,0,h+.03,0,isBus?'green':'red',g);
-  for(const zz of [-1,1]){
-   box(w*.83,isBus?.13:.075,.008,0,h*.76,zz*(d/2+.005),'window',g);
-   for(let j=0;j<(isBus?6:3);j++)box(.012,.14,.009,-w*.36+j*w*(isBus?.14:.32),h*.76,zz*(d/2+.01),'metal',g);
-   for(const xx of [-w*.32,w*.32]){const wheel=disk(.063,.025,xx,.04,zz*d*.49,'rubber',g);wheel.rotation.x=Math.PI/2;}
-  }
-  box(.009,.10,d*.78,w/2+.005,h*.74,0,'window',g);
-  for(const zz of [-d*.32,d*.32])box(.012,.025,.04,w/2+.01,.08,zz,'lit',g);
- }
- vehicle(2.85,-.17,true);vehicle(.95,.14,false);
- // Tropical canopy trees: branching trunks with layered irregular leaf clusters.
- let seed=15;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
- const leaves=[];
- function tree(x,z,h){
-  const g=group(x,.55,z);line([[0,0,0],[.02,h*.5,0],[0,h*.78,.02]],.026,'bark',g);
-  for(let i=0;i<9;i++){
-   const a=i*2.4,r=.11+random()*.20,xx=Math.cos(a)*r,zz=Math.sin(a)*r,y=h*(.65+random()*.25);
-   line([[0,h*.42,0],[xx*.6,y*.86,zz*.6],[xx,y,zz]],.011,'bark',g);
-   ell(xx,y,zz,.14,.095,.14,i%3?'leaf':'leafLight',g);
-   for(let j=0;j<20;j++){const a=random()*Math.PI*2,r=Math.sqrt(random())*.21;leaves.push({x:x+xx+Math.cos(a)*r,y:.55+y+(random()-.5)*.19,z:z+zz+Math.sin(a)*r,s:.035+random()*.025});}
-  }
- }
- for(const [x,z,h] of [[-4,-.75,.85],[-3.8,-.40,.70],[-2.8,-.46,.64],[-1.8,-.48,.67],[-.2,-.48,.64],[1.5,-.5,.72],[3.8,-.48,.8],[4,-1.4,.82],[1.4,-1.5,.75]])tree(x,z,h);
- const foliage=new T.InstancedMesh(new T.IcosahedronGeometry(1,0),m.leaf,leaves.length),leafDummy=new T.Object3D();
- foliage.name='weather-tropical-foliage';leaves.forEach((v,i)=>{leafDummy.position.set(v.x,v.y,v.z);leafDummy.scale.set(v.s*1.3,v.s*.65,v.s);leafDummy.rotation.set(i*.7,i*.3,i);leafDummy.updateMatrix();foliage.setMatrixAt(i,leafDummy.matrix);foliage.setColorAt(i,new T.Color().setHSL(.24+(i%7)*.012,.26,.56+(i%3)*.06));});foliage.computeBoundingBox();root.add(foliage);live.push(foliage);
- // A few palms add the familiar tropical street silhouette.
- for(const [x,z] of [[-3.3,-.42],[1.55,-.42],[3.8,-.95]]){
-  line([[x,.55,z],[x+.03,1.0,z],[x+.07,1.45,z]],.018,'bark');
-  for(let j=0;j<7;j++){
-   const a=j*Math.PI*2/7,cx=x+.07,cy=1.45;
-   line([[cx,cy,z],[cx+Math.cos(a)*.15,cy+.10,z+Math.sin(a)*.15],[cx+Math.cos(a)*.34,cy-.07,z+Math.sin(a)*.34]],.009,'leaf');
-   for(let k=1;k<7;k++){const u=k/7,px=cx+Math.cos(a)*.34*u,pz=z+Math.sin(a)*.34*u,py=cy+.08*Math.sin(u*Math.PI)-.07*u;
-    for(const side of [-1,1])line([[px,py,pz],[px+Math.cos(a+side*.8)*.09*(1-u*.5),py-.045,pz+Math.sin(a+side*.8)*.09*(1-u*.5)]],.005,'leaf');}
-  }
- }
- for(let i=0;i<45;i++){const x=-4.15+i*.187;ell(x,.60,2.13,.09,.06,.09,i%2?'leaf':'grass');}
- // Level ruler and a physical rain gauge next to the analytics panel.
- const gauge=group(.25,.22,.66);box(.12,.58,.035,0,.29,0,'white',gauge);
- for(let i=0;i<18;i++)box(i%3===0?.072:.040,.006,.006,-.01,i*.030+.02,.022,i%3===0?'red':'ink',gauge);
- const instrument=group(3.91,.55,-.66);disk(.055,.82,0,.41,0,'metal',instrument);disk(.17,.04,0,.94,0,'metal',instrument);disk(.17,.04,0,.56,0,'metal',instrument);
- const glass=mesh(new T.CylinderGeometry(.15,.15,.38,32,1,true),'cloud',instrument);glass.position.y=.75;
- const collected=disk(.14,.1,0,.63,0,'water',instrument);live.push(collected);
- // A layered, scalloped glass cloud rather than a cluster of spheres.
- const cloud=group(-1.55,3.86,-1.35);cloud.name='weather-cloud';
- for(let layer=0;layer<4;layer++){
-  const shape=new T.Shape();shape.moveTo(-2.08,.04);
-  shape.bezierCurveTo(-2.40,.10,-2.30,.36,-1.91,.36);
-  shape.bezierCurveTo(-1.89,.60,-1.49,.65,-1.27,.44);
-  shape.bezierCurveTo(-1.10,.88,-.54,.94,-.27,.70);
-  shape.bezierCurveTo(.02,1.03,.60,.91,.76,.63);
-  shape.bezierCurveTo(1.13,.86,1.60,.63,1.62,.42);
-  shape.bezierCurveTo(2.05,.58,2.41,.24,2.12,.10);
-  shape.bezierCurveTo(1.50,-.02,-1.35,-.07,-2.08,.04);shape.closePath();
-  const geo=new T.ExtrudeGeometry(shape,{depth:.12,bevelEnabled:true,bevelSize:.055,bevelThickness:.05,bevelSegments:3,curveSegments:12});
-  geo.scale(1-layer*.055,.72,1);geo.translate(layer*.025,layer*.055,-.45+layer*.26);mesh(geo,'cloud',cloud);
- }
- batch(cloud);live.push(cloud);
- // Instanced rain terminates at the nearest roof, so droplets do not cut through flats.
- const rainCount=210,rain=new T.InstancedMesh(new T.CylinderGeometry(.003,.003,.13,4),m.rain,rainCount),drops=[];
- rain.boundingBox=new T.Box3(new T.Vector3(-3.72,.55,-2),new T.Vector3(.85,4.1,-.7));
- rain.name='weather-rain';rain.userData.noShadow=true;rain.frustumCulled=false;root.add(rain);live.push(rain);
- for(let i=0;i<rainCount;i++){
-  const x=-3.70+random()*4.5,z=-1.96+random()*1.20;
-  let bottom=.58;for(const b of hdbBounds)if(Math.abs(x-b.x)<b.w/2+.08&&Math.abs(z-b.z)<b.d/2+.08)bottom=Math.max(bottom,b.top+.18);
-  drops.push({x,z,bottom,phase:random(),speed:.65+random()*.35});
- }
- const foam=new T.InstancedMesh(new T.SphereGeometry(1,8,4),m.foam,54);foam.boundingBox=new T.Box3(new T.Vector3(-4.32,.29,.53),new T.Vector3(4.32,.50,1.83));foam.name='weather-current';foam.userData.noShadow=true;foam.frustumCulled=false;root.add(foam);live.push(foam);
- const foamSeeds=Array.from({length:54},()=>({x:random(),z:.65+random()*1.05,s:.03+random()*.07}));
- // Discrete runoff strands emerge from the roadside outlets.
- const runoff=[];for(const x of [-3.6,-1.4,1.1,3.65]){const g=group(x,.42,.48);line([[0,0,0],[0,-.08,.08],[0,-.17,.22]],.014,'water',g);live.push(g);runoff.push(g);}
- // Reframe the detailed precinct as the local context of an analytical instrument.
- const precinct=group();precinct.name='weather-singapore-precinct';
- for(const o of [...root.children])if(o!==precinct)precinct.add(o);
- const precinctScale=.52;precinct.scale.setScalar(precinctScale);precinct.position.set(-2.38,.25,.25);
- // Satin metal, mineral stone, luminous data and smoked glass share one museum plinth.
- m.slate=new T.MeshStandardMaterial({color:0x102d39,roughness:.39,metalness:.33});
- m.brass=new T.MeshStandardMaterial({color:0xbba06c,roughness:.29,metalness:.78});
- m.mint=new T.MeshStandardMaterial({color:0x8dd6cd,emissive:0x398c8b,emissiveIntensity:.55,roughness:.24,metalness:.35});
- m.amber=new T.MeshStandardMaterial({color:0xffc880,emissive:0xc06b24,emissiveIntensity:.5,roughness:.30,metalness:.3});
- m.signal=new T.MeshBasicMaterial({color:0xcdf8ea,toneMapped:false});
- m.exposure=new T.MeshBasicMaterial({color:0xffbb70,transparent:true,opacity:.16,depthWrite:false});
- m.riskGlass=new T.MeshBasicMaterial({color:0xffba69,transparent:true,opacity:.10,depthWrite:false,side:T.DoubleSide});
- function rounded(w,h,d,x,y,z,key,parent=root,r=.12){
-  const shape=new T.Shape(),a=-w/2,b=-h/2;r=Math.min(r,w/2,h/2);
-  shape.moveTo(a+r,b);shape.lineTo(a+w-r,b);shape.quadraticCurveTo(a+w,b,a+w,b+r);shape.lineTo(a+w,b+h-r);shape.quadraticCurveTo(a+w,b+h,a+w-r,b+h);shape.lineTo(a+r,b+h);shape.quadraticCurveTo(a,b+h,a,b+h-r);shape.lineTo(a,b+r);shape.quadraticCurveTo(a,b,a+r,b);
-  const geo=new T.ExtrudeGeometry(shape,{depth:d,bevelEnabled:true,bevelThickness:.015,bevelSize:.015,bevelSegments:2,curveSegments:8});geo.translate(0,0,-d/2);const o=mesh(geo,key,parent);o.position.set(x,y,z);return o;
- }
- const base=rounded(10.15,5.2,.21,0,.12,0,'slate',root,.32);base.rotation.x=-Math.PI/2;
- const inset=rounded(9.94,4.98,.035,0,.244,0,'cream',root,.29);inset.rotation.x=-Math.PI/2;
- const edge=rounded(10.08,5.13,.025,0,.20,0,'brass',root,.31);edge.rotation.x=-Math.PI/2;
- // The rear analysis instrument is the focal point: history to the left, a future window to the right.
- const screen=group(2.22,.40,-1.45);
- rounded(4.60,3.68,.12,0,1.84,0,'brass',screen,.18);
- rounded(4.48,3.56,.10,0,1.84,.08,'slate',screen,.15);
- for(const x of [-1.70,1.70]){box(.12,.35,.20,x,-.03,0,'brass',screen);box(.52,.045,.60,x,-.14,.10,'slate',screen);}
- label('WEATHER GURU',3.93,.28,0,3.32,.15,screen);
- label('RAINFALL HISTORY  /  FLOOD OUTLOOK',3.88,.17,0,3.03,.15,screen,'#a9c6cb');
- const chartBase=1.13,chartTop=2.72;
- for(let j=0;j<5;j++)box(3.86,.006,.008,0,chartBase+j*.36,.15,'metal',screen);
- const bars=[];
- RAINFALL_HISTORY.forEach((v,i)=>{
-  const g=group(-1.88+i*.225,chartBase,.18,screen);box(.12,v*1.50,.06,0,v*.75,0,'teal',g);g.name=`weather-history-${i}`;live.push(g);bars.push(g);
- });
- const curvePoints=RAINFALL_HISTORY.map((v,i)=>[-1.88+i*.225,chartBase+.18+v*1.5,.27]);
- line(curvePoints,.015,'mint',screen);
- for(const i of [4,8,11]){ell(curvePoints[i][0],curvePoints[i][1],.27,.040,.040,.025,'amber',screen);}
- // Observations stop at the divider; a dashed path and translucent band distinguish the outlook.
- const divider=.85;
- for(let y=chartBase;y<2.79;y+=.12)box(.009,.062,.008,divider,y,.20,'brass',screen);
- label('HISTORY',2.16,.17,-.64,.94,.18,screen,'#9cd6cc');label('OUTLOOK',1.0,.17,1.48,.94,.18,screen,'#ffd195');
- const future=group(0,0,0,screen);future.name='weather-forecast-window';
- box(1.02,1.60,.012,1.43,1.93,.17,'riskGlass',future);
- for(const x of [.92,1.94])box(.012,1.60,.014,x,1.93,.18,'amber',future);
- const forecastPath=new T.CatmullRomCurve3([new T.Vector3(.76,2.43,.29),new T.Vector3(1.1,2.56,.29),new T.Vector3(1.50,2.34,.29),new T.Vector3(1.94,2.15,.29)]);
- for(let i=0;i<14;i++){const points=[forecastPath.getPoint(i/14),forecastPath.getPoint((i+.55)/14)].map(v=>v.toArray());line(points,.014,'amber',future);}
- label('RISK WINDOW',1.0,.16,1.43,2.83,.21,screen,'#ffd195');batch(future);live.push(future);
- // A luminous scanner and tracer reveal the relationship instead of animating unrelated props.
- const scan=group(0,0,0,screen);scan.name='weather-history-scan';box(.012,1.59,.014,0,1.93,.31,'signal',scan);live.push(scan);
- const tracer=group(0,0,0,screen);tracer.name='weather-pattern-tracer';ell(0,0,0,.054,.054,.035,'signal',tracer);live.push(tracer);
- rounded(3.90,.40,.02,0,.57,.17,'ink',screen,.08);
- label('ILLUSTRATIVE ANALYSIS',3.40,.17,0,.57,.20,screen,'#b5c9cc');
- // Physical annual-rainfall bars sit on a low instrument desk in the foreground.
- const desk=group(2.12,.30,1.12);
- rounded(4.66,.23,1.92,0,.10,0,'slate',desk,.08);
- label('01  /  ANNUAL RAINFALL',3.72,.13,0,.03,1.0,desk,'#d6e9e3');
- const columns=[];
- RAINFALL_HISTORY.forEach((v,i)=>{
-  const g=group(-1.98+i*.26,.235,-.17,desk);rounded(.15,v*.92,.19,0,v*.46,0,i===4||i===8||i===11?'amber':'mint',g,.035);live.push(g);columns.push(g);
-  for(let k=0;k<4;k++)box(.14,.007,.008,-1.98+i*.26,.28+k*.15,-.061,'slate',desk);
- });
- // Five clustered samples echo the actual project's cluster analysis without inventing percentages.
- for(let i=0;i<5;i++){
-  const x=-1.8+i*.57;disk(.105,.025,x,.26,.57,i<3?'teal':'amber',desk);
-  for(let j=0;j<=i;j++){ell(x+Math.cos(j*2.4)*.045,.30+j*.024,.57+Math.sin(j*2.4)*.045,.022,.022,.022,'signal',desk);}
- }
- label('PATTERN CLUSTERS',2.8,.14,-.52,.28,.82,desk,'#a5c9c8');
- // Potential local exposure is a surface highlight, not a simulated flood depth.
- const exposure=group(-2.38,.565,.25);exposure.name='weather-local-exposure';
- box(4.45,.006,.35,0,0,-.01,'exposure',exposure);
- for(const z of [-.185,.165])line([[-2.22,.006,z],[0,.006,z],[2.22,.006,z]],.008,'amber',exposure);
- batch(exposure);live.push(exposure);
- // A compact pearl-like signal travels from the precinct to the analysis desk.
- const dataRoute=new T.CatmullRomCurve3([new T.Vector3(-1.1,.31,1.55),new T.Vector3(-.48,.40,1.65),new T.Vector3(-.22,.46,1.15),new T.Vector3(.2,.54,.65)]);
- line(dataRoute.getPoints(24).map(v=>v.toArray()),.012,'brass');
- const packet=group();packet.name='weather-data-signal';ell(0,0,0,.055,.055,.055,'signal',packet);packet.position.copy(dataRoute.getPoint(0));live.push(packet);
- label('SINGAPORE  /  LOCAL CONTEXT',3.75,.18,-2.35,.31,2.12,root,'#314f58');
- const nameplate=group(-2.37,.13,2.64);rounded(3.35,.21,.03,0,0,0,'slate',nameplate,.04);label('FROM RAINFALL TO FORESIGHT',3.1,.10,0,0,.024,nameplate);
- root.updateMatrixWorld(true);for(const o of live)root.attach(o);
- const screenPosition=screen.getWorldPosition(new T.Vector3());
- const beforeBounds=new T.Box3().setFromObject(root),centre=beforeBounds.getCenter(new T.Vector3());
- const sceneOffset=new T.Vector3(-centre.x,-beforeBounds.min.y,-centre.z);
- screenPosition.add(sceneOffset);
- // Fit occupied parts of the asymmetric exhibit, rather than its empty upper corners.
- const framingPoints=[];
- for(const child of root.children){const b=new T.Box3().setFromObject(child);if(b.isEmpty())continue;
-  for(const x of [b.min.x,b.max.x])for(const y of [b.min.y,b.max.y])for(const z of [b.min.z,b.max.z])framingPoints.push(new T.Vector3(x,y,z).add(sceneOffset));
- }
+export function weatherSample(sample){
+ const rain=rainfallAt(sample);
+ // A deliberately illustrative lagged response, not a hydrological model.
+ const retained=.65*rainfallAt(sample-.7)+.35*rainfallAt(sample-1.4);
+ const level=clamp((retained-.29)/.59),flood=ease((level-.70)/.30);
+ return {rain,level,flood};
+}
+export const chartX=sample=>sample<=11?-3.92+sample*.43:.81+(sample-11)*.604;
+export function weatherMoment(time){
+ const t=((time%WEATHER_CYCLE)+WEATHER_CYCLE)%WEATHER_CYCLE,sample=t/2;
+ return {t,index:Math.floor(t/8),sample,...weatherSample(sample)};
+}
+export const canalZ=x=>.57+.34*Math.sin(x*.73);
+// Exaggerated extent makes the illustrative flood legible at the exhibit's scale.
+export function floodEdge(x,side,amount){
+ const spread=side<0?1.22:1.28;
+ return canalZ(x)+side*(.44+spread*amount+Math.sin(x*2.1)*.055*amount);
+}
+export const floodHeight=amount=>.408+.052*amount;
 
- const model=finish(15,live);
- const waterY=water.position.y,cloudRest=cloud.position.clone(),collectedY=collected.position.y,collectedScale=collected.scale.y;
- const screenOrigin=screenPosition,forecastScale=future.scale.clone();
- const historyCurve=new T.CatmullRomCurve3(curvePoints.map(v=>new T.Vector3(...v)));
- const dummy=new T.Object3D();let selected=null;
- model.userData={...model.userData,displayBase:false,groundLevel:0,studioProfile:'weatherguru',initialYaw:.15,initialElevation:.34,framingPoints,cameraFitSway:.04,framingTargetY:1.65,autoOrbit:false,realTimeAnimation:true,contactFootprint:false,rainBounds:drops,source:'https://github.com/sayyidkhan/unesco-weatherguru'};
+export function createArtifact(T){
+ const {root,materials:m,mesh,box,line,texture,batch,finish}=medivoiceStudio(T);
+ const colors={foundation:0x172f3e,edge:0x45616c,stone:0xd8ded8,pavement:0xc1c9c2,road:0x374e59,marking:0xf1e8ce,
+  facade:0xf0eee1,coral:0xc77d66,sage:0x8cae9f,glass:0x254d5b,frame:0xc8d7d2,roof:0x506971,
+  grass:0x799587,leaf:0x466f60,leafLight:0x7a9c73,bark:0x756858,steel:0x4b6770,white:0xf5f0dd,ink:0x173440};
+ for(const [key,color] of Object.entries(colors))m[key]=new T.MeshStandardMaterial({color,roughness:key==='glass'?.18:.65,metalness:['glass','steel','edge'].includes(key)?.35:.03});
+ const stone=texture('stone');for(const key of ['stone','facade','pavement']){m[key].bumpMap=stone;m[key].bumpScale=.004;}
+ m.water=new T.MeshPhysicalMaterial({color:0x096b78,roughness:.26,metalness:.25,clearcoat:1,clearcoatRoughness:.22,envMapIntensity:.35});
+ m.mint=new T.MeshStandardMaterial({color:0x92d9d3,emissive:0x4eafa4,emissiveIntensity:.5,roughness:.27,metalness:.2});
+ m.amber=new T.MeshStandardMaterial({color:0xf3b362,emissive:0xe8953e,emissiveIntensity:.65,roughness:.35});
+ m.windowLight=new T.MeshStandardMaterial({color:0xffe0a6,emissive:0xf3b768,emissiveIntensity:.55,roughness:.4});
+ m.signal=new T.MeshBasicMaterial({color:0xc6fff2,toneMapped:false});
+ m.rain=new T.MeshBasicMaterial({color:0xbce8ef,transparent:true,opacity:.36,depthWrite:false});
+ m.risk=new T.MeshBasicMaterial({color:0xffb866,transparent:true,opacity:.16,depthWrite:false,side:T.DoubleSide});
+ m.response=new T.MeshBasicMaterial({color:0x54bdfb,toneMapped:false});
+ m.floodWater=new T.MeshStandardMaterial({color:0x087da7,roughness:.30,metalness:.08,emissive:0x043b55,emissiveIntensity:.20,envMapIntensity:.12,transparent:true,opacity:.87,depthWrite:false});
+ m.floodFoam=new T.LineBasicMaterial({color:0xc8f9ff,transparent:true,opacity:.85,depthWrite:false});
+ m.chartGlass=new T.MeshStandardMaterial({color:0x1d4353,metalness:.15,roughness:.32});
+ const live=[],roofBounds=[],leafClusters=[];
+ const group=(x=0,y=0,z=0,p=root)=>{const g=new T.Group();g.position.set(x,y,z);p.add(g);return g;};
+ const cylinder=(r,h,x,y,z,key,p=root,n=20)=>{const o=mesh(new T.CylinderGeometry(r,r,h,n),key,p);o.position.set(x,y,z);return o;};
+ const ell=(x,y,z,sx,sy,sz,key,p=root)=>{const o=mesh(new T.SphereGeometry(1,12,8),key,p);o.position.set(x,y,z);o.scale.set(sx,sy,sz);return o;};
+ function slab(w,d,h,x,y,z,key,r=.12,p=root){
+  const s=new T.Shape(),a=-w/2,b=-d/2;s.moveTo(a+r,b);s.lineTo(a+w-r,b);s.quadraticCurveTo(a+w,b,a+w,b+r);s.lineTo(a+w,b+d-r);s.quadraticCurveTo(a+w,b+d,a+w-r,b+d);s.lineTo(a+r,b+d);s.quadraticCurveTo(a,b+d,a,b+d-r);s.lineTo(a,b+r);s.quadraticCurveTo(a,b,a+r,b);
+  const geo=new T.ExtrudeGeometry(s,{depth:h,bevelEnabled:false,curveSegments:6});geo.rotateX(-Math.PI/2);const o=mesh(geo,key,p);o.position.set(x,y,z);return o;
+ }
+ function label(text,w,h,x,y,z,p=root,color='#e2f1ea'){
+  if(typeof document==='undefined')return;
+  const canvas=document.createElement('canvas');canvas.width=1536;canvas.height=Math.max(64,Math.round(1536*h/w));
+  const c=canvas.getContext('2d');c.fillStyle=color;c.font=`600 ${Math.round(canvas.height*.66)}px sans-serif`;c.textAlign='center';c.textBaseline='middle';c.fillText(text,768,canvas.height/2,1490);
+  const map=new T.CanvasTexture(canvas);map.colorSpace=T.SRGBColorSpace;map.anisotropy=8;
+  const o=new T.Mesh(new T.PlaneGeometry(w,h),new T.MeshBasicMaterial({map,transparent:true,depthWrite:false,toneMapped:false}));o.position.set(x,y,z);p.add(o);return o;
+ }
+ // A single architectural site model. The edge reveals strata rather than a decorative pedestal.
+ slab(9.0,5.6,.20,0,0,0,'foundation',.25);
+ slab(8.96,5.56,.025,0,.20,0,'edge',.24);
+ slab(8.85,5.45,.085,0,.225,0,'stone',.23);
+ slab(8.65,2.95,.035,0,.31,-1.1,'grass',.15);
+ // Sinuous canal, accurately joined banks and an animated water surface.
+ function ribbon(width,y,key){
+  const p=[],uv=[],idx=[],segments=100;
+  for(let i=0;i<=segments;i++){const x=-4.36+i/segments*8.72,z=canalZ(x);p.push(x,y,z-width/2,x,y,z+width/2);uv.push(i/segments,0,i/segments,1);if(i<segments){const a=i*2;idx.push(a,a+1,a+2,a+1,a+3,a+2);}}
+  const geo=new T.BufferGeometry();geo.setAttribute('position',new T.Float32BufferAttribute(p,3));geo.setAttribute('uv',new T.Float32BufferAttribute(uv,2));geo.setIndex(idx);geo.computeVertexNormals();return mesh(geo,key);
+ }
+ ribbon(1.18,.346,'pavement');ribbon(.91,.351,'foundation');
+ const water=ribbon(.85,.367,'water');water.name='weather-canal-water';live.push(water);
+ const inundation=ribbon(1.75,.418,'floodWater');inundation.name='weather-inundation';live.push(inundation);
+ const floodFront=group();floodFront.name='weather-flood-front';
+ // Broken foam lines reveal the advancing edge, rather than a barely wider canal.
+ const frontGeometry=new T.BufferGeometry();frontGeometry.setAttribute('position',new T.Float32BufferAttribute(new Float32Array(100*2*2*3),3));
+ const fronts=new T.LineSegments(frontGeometry,m.floodFoam);fronts.frustumCulled=false;floodFront.add(fronts);live.push(floodFront);
+
+ for(const side of [-1,1]){
+  const points=Array.from({length:60},(_,i)=>{const x=-4.34+i/59*8.68;return [x,.395,canalZ(x)+side*.47];});line(points,.028,'stone');
+  // Upper railings leave the bridge opening clear.
+  for(let i=0;i<64;i++){const x=-4.25+i/63*8.5;if(Math.abs(x-1.35)<.47)continue;box(.012,.15,.012,x,.48,canalZ(x)+side*.52,'steel');}
+  for(const [a,b] of [[-4.3,.87],[1.83,4.3]])line(Array.from({length:28},(_,i)=>{const x=a+(b-a)*i/27;return[x,.56,canalZ(x)+side*.52];}),.012,'steel');
+ }
+ // Back street, pavement, crossings and storm drains.
+ slab(8.5,.54,.025,0,.36,-.42,'road',.10);
+ for(const z of [-.74,-.09])box(8.4,.025,.08,0,.37,z,'pavement');
+ for(let x=-4.05;x<4.1;x+=.46)box(.20,.003,.015,x,.375,-.42,'marking');
+ for(let i=0;i<7;i++)box(.22,.004,.035,1.35,.379,-.66+i*.07,'white');
+ for(const x of [-3.7,-1.6,-.2,2.6,3.8]){
+  box(.19,.007,.11,x,.39,-.08,'foundation');for(let j=0;j<6;j++)box(.012,.005,.095,x-.075+j*.03,.397,-.08,'steel');
+ }
+ // Recognisable HDB proportions: void decks, recessed galleries, vertical lift cores and rooftop tanks.
+ function housing(x,z,w,floors,color,number){
+  const g=group(x,.36,z),depth=.72,step=.225,height=.26+floors*step;
+  for(let j=0;j<6;j++)box(.055,.26,.65,-w/2+.09+j*(w-.18)/5,.13,0,'facade',g);
+  box(w,height-.26,depth-.08,0,.26+(height-.26)/2,-.04,color,g);
+  box(.24,height+.08,.79,-w*.28,(height+.08)/2,-.015,color==='facade'?'sage':'coral',g);
+  for(const side of [-1,1])box(.09,height-.22,.06,side*(w/2-.04),.25+(height-.22)/2,.37,color==='facade'?'sage':color,g);
+  for(let f=0;f<floors;f++){
+   const y=.26+f*step;box(w+.035,.028,.80,0,y,0,'facade',g);
+   box(w-.08,.13,.012,0,y+.105,.331,'glass',g);
+   for(let j=0;j<7;j++){
+    const xx=-w/2+.105+j*(w-.21)/6;
+    box(.10,.12,.014,xx,y+.105,.345,(j+f)%9===0?'windowLight':'glass',g);
+    box(.013,.14,.02,xx+.055,y+.105,.36,'frame',g);
+    box(.13,.12,.012,xx,y+.105,-.366,(j*3+f)%11===0?'windowLight':'glass',g);
+   }
+   box(w,.045,.032,0,y+.08,.40,'facade',g);box(w,.018,.035,0,y+.17,.40,'frame',g);
+   for(const side of [-1,1]){box(.013,.11,.26,side*(w/2+.005),y+.11,-.05,'glass',g);box(.055,.058,.09,side*(w/2+.027),y+.045,.17,'frame',g);}
+  }
+  slab(w+.10,.86,.06,0,height,0,'facade',.03,g);
+  for(const zz of [-.41,.41])box(w,.09,.025,0,height+.1,zz,'facade',g);
+  for(let j=0;j<7;j++){box(.075,.018,.16,-w*.35+j*w*.1,height+.075,-.22,'grass',g);}
+  box(.38,.19,.34,w*.20,height+.13,-.05,'stone',g);cylinder(.11,.20,-w*.3,height+.17,-.02,'roof',g);
+  for(let j=0;j<5;j++)box(.055,.012,.24,-.12+j*.075,height+.069,.03,'glass',g);
+  label(number,.23,.16,-w*.28,height-.22,.41,g,'#214752');
+  roofBounds.push({x,z,w:w+.15,d:.9,top:.36+height+.3});
+ }
+ housing(-3.05,-1.62,1.58,7,'sage','101');housing(-1.20,-1.80,1.60,10,'facade','102');housing(.61,-1.72,1.25,6,'coral','103');
+ // Covered walkway connects the flats and the bus stop.
+ for(let x=-3.82;x<1.3;x+=.36)box(.024,.31,.024,x,.53,-.96,'facade');
+ slab(5.3,.27,.032,-1.35,.70,-.96,'roof',.06);line([[-4,.72,-.96],[1.30,.72,-.96]],.012,'frame');
+ // A small group of Singapore shophouses frames the canal without hiding it.
+ for(let j=0;j<3;j++){
+  const x=-3.15+j*.67,g=group(x,.32,2.06),key=j===1?'sage':'coral';
+  box(.62,.71,.56,0,.355,0,key,g);box(.52,.26,.018,0,.17,.29,'glass',g);
+  for(const xx of [-.15,.15]){box(.16,.24,.025,xx,.52,.29,'facade',g);box(.115,.19,.029,xx,.52,.31,'glass',g);for(let k=0;k<4;k++)box(.12,.014,.008,xx,.45+k*.045,.329,key,g);}
+  for(const xx of [-.285,.285])box(.04,.72,.07,xx,.36,.30,'facade',g);
+  box(.66,.07,.64,0,.76,0,'facade',g);box(.64,.05,.21,0,.33,.36,'sage',g);
+  for(let k=0;k<7;k++)box(.037,.008,.20,-.28+k*.09,.359,.36,'white',g);
+  const roof=box(.65,.035,.39,0,.85,-.05,'coral',g);roof.rotation.x=-.20;
+  label(j===0?'KOPI':j===1?'BAKERY':'PROVISIONS',.44,.075,0,.28,.31,g,'#f5ead2');
+  roofBounds.push({x,z:2.06,w:.7,d:.8,top:1.3});
+ }
+ // Bridge: a shallow steel arch, timber deck and delicate vertical hangers.
+ const bx=1.35,bz=canalZ(bx);
+ box(.77,.075,1.65,bx,.51,bz,'stone');
+ for(let k=0;k<18;k++)box(.71,.01,.055,bx,.554,bz-.78+k*.092,'pavement');
+ for(const side of [-1,1]){
+  const xx=bx+side*.39,points=Array.from({length:32},(_,i)=>{const u=i/31;return[xx,.61+.40*Math.sin(u*Math.PI),bz-.85+1.7*u];});line(points,.022,'white');
+  for(let k=1;k<11;k++){const u=k/11,h=.06+.4*Math.sin(u*Math.PI);box(.008,h,.008,xx,.55+h/2,bz-.85+1.7*u,'steel');}
+ }
+ // Park paving, small terraces, mature rain trees and pedestrian detail.
+ slab(3.35,.82,.035,2.25,.32,2.03,'grass',.25);
+ slab(1.45,.68,.035,.05,.32,2.12,'grass',.20);
+ slab(2.15,.62,.018,2.55,.36,2.14,'pavement',.23);
+ // Paving joints and tactile crossing tiles ground the model at human scale.
+ for(let x=-4.15;x<4.2;x+=.22){box(.006,.002,.16,x,.387,-.78,'stone');box(.006,.002,.18,x,.339,2.57,'pavement');}
+ for(const z of [-.08,1.9])for(let i=0;i<7;i++)box(.026,.005,.055,.99+i*.10,.386,z,'marking');
+
+ slab(2.05,1.5,.035,2.9,.345,-1.62,'pavement',.25);
+ for(let j=0;j<3;j++)slab(1.7-j*.25,.38,.04,2.9,.38+j*.035,-1.7+j*.3,'grass',.15);
+ let seed=15;const random=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
+ function tree(x,z,s=1){
+  const g=group(x,.35,z);cylinder(.025*s,.46*s,0,.23*s,0,'bark',g,8);
+  for(let i=0;i<6;i++){const a=i*2.4,r=.13*s;line([[0,.25*s,0],[Math.cos(a)*r,.49*s,Math.sin(a)*r]],.01*s,'bark',g);ell(Math.cos(a)*r,(.51+(i%2)*.08)*s,Math.sin(a)*r,.18*s,.12*s,.18*s,i%3?'leaf':'leafLight',g);
+   for(let j=0;j<25;j++){const angle=random()*Math.PI*2,rad=Math.sqrt(random())*.18*s;leafClusters.push({x:x+Math.cos(a)*r+Math.cos(angle)*rad,y:.35+(.51+(i%2)*.08)*s+(random()-.5)*.18*s,z:z+Math.sin(a)*r+Math.sin(angle)*rad,size:(.025+random()*.035)*s});}}
+ }
+ for(const [x,z,s] of [[-4,-1,.8],[-3.9,2,.8],[-.6,1.9,.8],[.1,2.25,.9],[.8,2.25,.8],[2.2,2.1,1],[3.2,2.15,1.1],[3.9,1.8,.85],[2.3,-2,1.1],[3.3,-2.0,1.15],[3.9,-1.1,.9],[2.4,-1.2,.75]])tree(x,z,s);
+ for(const x of [2.3,3.25]){slab(.50,.18,.04,x,.48,1.70,'bark',.03);for(const xx of [-.19,.19])box(.025,.12,.025,x+xx,.41,1.70,'steel');}
+ const people=[];
+ for(const [x,z] of [[-2.6,-.8],[-.3,-.8],[1.35,.45],[1.35,1.25],[2.5,1.65],[3.4,-1.3],[-2.8,1.6]]){
+  cylinder(.018,.09,x,.415,z,'coral',root,8);ell(x,.48,z,.024,.027,.024,'white');for(const dx of [-.012,.012])box(.009,.055,.012,x+dx,.35+.027,z,'ink');people.push({x,z});
+ }
+ function bus(){
+  const g=group(2.35,.38,-.43);slab(.80,.23,.24,0,.045,0,'sage',.035,g);
+  for(const zz of [-.12,.12]){box(.68,.115,.008,0,.20,zz,'glass',g);for(let i=0;i<7;i++)box(.009,.12,.01,-.30+i*.10,.20,zz,'frame',g);for(const xx of [-.25,.25]){const wheel=cylinder(.065,.025,xx,.065,zz,'ink',g,16);wheel.rotation.x=Math.PI/2;}}
+  box(.01,.11,.19,.405,.20,0,'glass',g);box(.011,.025,.05,.412,.08,.07,'windowLight',g);
+ }bus();
+ const shelter=group(2.7,.36,-.9);slab(1.12,.32,.045,0,.38,0,'roof',.04,shelter);for(const x of [-.48,.48])box(.02,.38,.02,x,.19,0,'steel',shelter);box(.75,.04,.12,0,.13,0,'sage',shelter);
+ // Fine canopy silhouettes use one instanced draw call instead of smooth toy spheres.
+ const foliage=new T.InstancedMesh(new T.IcosahedronGeometry(1,0),m.leaf,leafClusters.length),leafDummy=new T.Object3D();
+ foliage.name='weather-tropical-foliage';leafClusters.forEach((v,i)=>{leafDummy.position.set(v.x,v.y,v.z);leafDummy.scale.set(v.size*1.4,v.size*.60,v.size);leafDummy.rotation.set(i*.3,i*.8,i*.5);leafDummy.updateMatrix();foliage.setMatrixAt(i,leafDummy.matrix);foliage.setColorAt(i,new T.Color().setHSL(.33+(i%5)*.007,.19,.32+(i%4)*.05));});foliage.computeBoundingBox();root.add(foliage);live.push(foliage);
+ // Small street lights; warm emissive lanterns provide scale.
+
+ for(const [x,z] of [[-4,.08],[-2,.1],[.2,.2],[2.5,.15],[4,.1],[-.5,1.6],[3.8,1.6]]){
+  cylinder(.009,.46,x,.58,z,'steel',root,8);box(.12,.015,.04,x+.04,.81,z,'steel');box(.08,.008,.035,x+.055,.799,z,'windowLight');
+ }
+ // One wide, frameless analysis ribbon stands behind the precinct. No tablet or gold furniture.
+ const chart=group(0,.48,-2.53);chart.name='weather-rainfall-atlas';
+ box(8.45,1.48,.06,0,3.52,0,'chartGlass',chart);
+ label('RAINFALL → FLOOD OUTLOOK',4.5,.28,-1.7,4.08,.05,chart);
+ label('— RAINFALL',1.25,.17,1.65,4.08,.05,chart,'#edf5ed');label('— CANAL',1.3,.17,3.14,4.08,.05,chart,'#54bdfb');
+ const historyBars=[];
+ for(let i=0;i<12;i++){
+  const x=-3.92+i*.43,g=group(x,2.98,.075,chart),h=RAINFALL_HISTORY[i]*.76;box(.20,h,.055,0,h/2,0,i===8?'white':'mint',g);g.name=`weather-history-${i}`;live.push(g);historyBars.push(g);
+ }
+ for(const y of [2.98,3.27,3.56,3.85])box(5.10,.005,.005,-1.55,y,.042,'edge',chart);
+ label('12 HISTORICAL YEARS',2.4,.13,-2.75,2.87,.055,chart,'#a3c8cc');
+ const chartPoint=(sample,key='rain')=>[chartX(sample),3.06+weatherSample(sample)[key]*.76,key==='rain'?.14:.17];
+ const historyPath=Array.from({length:111},(_,i)=>chartPoint(i/10));line(historyPath,.012,'white',chart);
+ line(Array.from({length:111},(_,i)=>chartPoint(i/10,'level')),.014,'response',chart);
+ for(let y=2.95;y<3.88;y+=.13)box(.008,.07,.01,1.25,y,.05,'frame',chart);
+ const forecast=group(0,0,0,chart);forecast.name='weather-forecast-window';
+ box(2.38,.90,.012,2.65,3.43,.07,'risk',forecast);
+ for(const y of [2.98,3.88])box(2.38,.012,.012,2.65,y,.08,'amber',forecast);
+ for(let i=0;i<30;i++){
+  const start=11+i/6,end=start+.10;
+  line([chartPoint(start),chartPoint((start+end)/2),chartPoint(end)],.015,'amber',forecast);
+  line([chartPoint(start,'level'),chartPoint((start+end)/2,'level'),chartPoint(end,'level')],.013,'response',forecast);
+ }
+ label('POTENTIAL RISK WINDOW',2.4,.14,2.65,2.86,.06,forecast,'#ffd294');batch(forecast);live.push(forecast);
+ const scan=group(0,0,0,chart);scan.name='weather-history-scan';box(.012,.96,.01,0,3.45,.19,'signal',scan);live.push(scan);
+ const rainPoint=group(0,3.1,.21,chart);rainPoint.name='weather-rain-point';ell(0,0,0,.048,.048,.025,'white',rainPoint);live.push(rainPoint);
+ const waterPoint=group(0,3.1,.23,chart);waterPoint.name='weather-response-point';ell(0,0,0,.048,.048,.025,'response',waterPoint);live.push(waterPoint);
+ // Legible live status shares the cursor's data, including manual selections.
+ let readout=null,readoutCanvas=null,readoutContext=null,lastReadout='';
+ if(typeof document!=='undefined'){
+  readoutCanvas=document.createElement('canvas');readoutCanvas.width=1800;readoutCanvas.height=110;readoutContext=readoutCanvas.getContext('2d');
+  const map=new T.CanvasTexture(readoutCanvas);map.colorSpace=T.SRGBColorSpace;map.anisotropy=8;
+  readout=new T.Mesh(new T.PlaneGeometry(7.8,.44),new T.MeshBasicMaterial({map,transparent:true,depthWrite:false,toneMapped:false}));readout.position.set(0,4.48,.07);chart.add(readout);live.push(readout);
+ }
+ // Separate bar materials allow a precise active-observation highlight without changing values.
+ for(const g of historyBars){g.children[0].material=g.children[0].material.clone();}
+
+ // A highlight travels from the observations down into the canal's drainage system.
+ const routes=[[-3.6,-.08],[-1.6,-.08],[-.2,-.08],[2.6,-.08]].map(([x,z])=>new T.CatmullRomCurve3([new T.Vector3(x,.41,z),new T.Vector3(x+.05,.41,.13),new T.Vector3(x+.12,.41,canalZ(x)-.37)]));
+ const particles=routes.map((curve,i)=>{line(curve.getPoints(12).map(v=>v.toArray()),.012,'mint');const g=group();ell(0,0,0,.035,.025,.035,'signal',g);g.name=`weather-runoff-${i}`;g.position.copy(curve.getPoint(0));live.push(g);return g;});
+ // A canal-side instrument visually links the risk outlook to observed water.
+ const meter=group(3.68,.36,canalZ(3.68)+.43);box(.12,.52,.045,0,.26,0,'white',meter);
+ for(let i=0;i<12;i++)box(i%3===0?.08:.045,.009,.008,-.01,.045+i*.039,.028,i>8?'coral':'steel',meter);
+ const marker=group(3.68,.40,canalZ(3.68)+.47);box(.16,.025,.02,0,0,0,'amber',marker);marker.name='weather-level-marker';live.push(marker);
+ // Exposure is a ground-level, bounded investigation area. It never paints the buildings.
+ const exposure=group();exposure.name='weather-local-exposure';
+ for(const [x,z] of [[-.45,1.45],[2.78,1.45]]){
+  const g=group(x,.365,z,exposure);slab(.93,.48,.005,0,0,0,'risk',.10,g);
+  for(const side of [-1,1])line([[-.45,.014,side*.23],[.45,.014,side*.23]],.012,'amber',g);
+  const ring=mesh(new T.TorusGeometry(.10,.014,6,24),'amber',g);ring.rotation.x=-Math.PI/2;ring.position.y=.025;
+ }
+ batch(exposure);live.push(exposure);
+ const floodLabels=group();floodLabels.name='weather-flood-labels';
+ for(const [x,z,text] of [[-.5,-.38,'ROAD FLOODED'],[2.7,1.95,'PATH FLOODED']]){
+  const g=group(x,0,z,floodLabels),labelY=z>1?1.34:1;line([[0,.47,0],[0,labelY-.14,0]],.012,'amber',g);
+  const ring=mesh(new T.TorusGeometry(.095,.016,6,24),'amber',g);ring.rotation.x=-Math.PI/2;ring.position.y=.47;
+  box(1.48,.25,.035,0,labelY,0,'foundation',g);box(.04,.25,.04,-.72,labelY,.005,'amber',g);label(text,1.33,.18,0,labelY,.026,g,'#ffdc9d');
+ }batch(floodLabels);live.push(floodLabels);
+
+ // Water highlights and raindrops are instanced, deterministic and confined to the site.
+ const current=new T.InstancedMesh(new T.SphereGeometry(1,6,4),m.signal,60);current.name='weather-current';current.frustumCulled=false;root.add(current);live.push(current);
+ const rain=new T.InstancedMesh(new T.CylinderGeometry(.003,.003,.095,4),m.rain,200);rain.name='weather-rain';rain.frustumCulled=false;root.add(rain);live.push(rain);
+ const drops=Array.from({length:200},()=>{const x=-4.1+random()*8.2,z=-2.15+random()*4.45;let bottom=.47;for(const b of roofBounds)if(Math.abs(x-b.x)<b.w/2&&Math.abs(z-b.z)<b.d/2)bottom=Math.max(bottom,b.top+.06);if(Math.abs(z+.96)<.22)bottom=Math.max(bottom,.80);if(Math.abs(x-1.35)<.5&&Math.abs(z-bz)<.95)bottom=Math.max(bottom,1.09);return{x,z,bottom,phase:random()};});
+ const streamSeeds=Array.from({length:60},()=>({u:random(),offset:(random()-.5)*.65,size:.025+random()*.055}));
+ // Edge typography is engraved into the architectural model, not attached as another prop.
+ label('WEATHER GURU',2.6,.19,-2.7,.12,2.805);
+ label('READ THE RAIN. ANTICIPATE THE RISK.',4.4,.13,1.75,.12,2.805,root,'#9dbbc5');
+ const seedMatrix=new T.Matrix4().makeScale(.001,.001,.001);seedMatrix.setPosition(0,.4,0);
+ for(const instanced of [rain,current])for(let i=0;i<instanced.count;i++)instanced.setMatrixAt(i,seedMatrix);
+ root.updateMatrixWorld(true);for(const o of live)root.attach(o);
+ const bounds=new T.Box3().setFromObject(root),center=bounds.getCenter(new T.Vector3()),offset=new T.Vector3(-center.x,-bounds.min.y,-center.z);
+ const chartOrigin=chart.getWorldPosition(new T.Vector3()).add(offset);
+ const framingPoints=[];
+ for(const child of root.children){if(child===rain||child===current)continue;const b=new T.Box3().setFromObject(child);for(const x of [b.min.x,b.max.x])for(const y of [b.min.y,b.max.y])for(const z of [b.min.z,b.max.z])framingPoints.push(new T.Vector3(x,y,z).add(offset));}
+ const model=finish(15,live),dummy=new T.Object3D(),waterPositions=water.geometry.attributes.position,waterBase=Array.from(waterPositions.array),floodPositions=inundation.geometry.attributes.position,floodBase=Array.from(floodPositions.array);
+ const baseWaterY=water.position.y,markerBaseY=marker.position.y;let selected=null;
+ model.userData={...model.userData,displayBase:false,groundLevel:0,studioProfile:'weatherguru',initialYaw:-.19,initialElevation:.38,framingPoints,framingTargetY:1.9,cameraFitSway:.02,autoOrbit:false,realTimeAnimation:true,contactFootprint:false,rainBounds:drops,waterBaseY:baseWaterY,source:'https://github.com/sayyidkhan/unesco-weatherguru'};
  model.traverse(o=>{if(o.isMesh&&(o.material.transparent||o.material.isMeshBasicMaterial))o.userData.noShadow=true;});
  model.userData.setStep=(index,time=0)=>{if(index!==null&&(!Number.isInteger(index)||index<0||index>3))return;selected=index;model.userData.animate(time);};
  model.userData.animate=time=>{
-  const ambient=weatherMoment(time),s=weatherMoment(selected===null?time:[3.5,10.5,17.5,24.5][selected]),copy=WEATHER_STEPS[s.index];
-  model.userData.story={index:s.index,step:`0${s.index+1} / 04`,title:copy[1],detail:copy[2],tone:'teal'};
-  water.position.y=waterY+s.level*.19*precinctScale;collected.position.y=collectedY+s.level*.05*precinctScale;collected.scale.y=collectedScale*(1+s.level);
-  cloud.position.copy(cloudRest);cloud.position.x+=Math.sin(ambient.t*Math.PI/14)*.025;
-  m.rain.opacity=.12+s.rain*.45;ripple.offset.set(ambient.t/28,0);
-  drops.forEach((d,i)=>{const travel=(ambient.t*d.speed/1.4+d.phase)%1;dummy.position.set(d.x,3.99-travel*(3.99-d.bottom),d.z);dummy.scale.set(1,.55+s.rain*.65,1);dummy.rotation.set(0,0,-.035);dummy.updateMatrix();rain.setMatrixAt(i,dummy.matrix);});rain.instanceMatrix.needsUpdate=true;
-  foamSeeds.forEach((d,i)=>{dummy.position.set(-4.22+((d.x+ambient.t/28)%1)*8.44,.297+s.level*.19,d.z);dummy.rotation.set(0,0,0);dummy.scale.set(d.s,.002,d.s*.17);dummy.updateMatrix();foam.setMatrixAt(i,dummy.matrix);});foam.instanceMatrix.needsUpdate=true;
-  runoff.forEach(g=>{g.visible=s.level>.05;g.scale.x=.45+s.rain*.55;});
-  const outlook=smooth((s.t-12)/4),scanProgress=(ambient.t%7)/7;
-  bars.forEach((g,i)=>{g.scale.y=.12+.88*smooth((s.t-i*.20)/3);});
-  columns.forEach((g,i)=>{g.scale.y=.25+.75*smooth((s.t-i*.15)/3);});
-  exposure.visible=s.index===3;m.exposure.opacity=.12+.04*Math.sin(ambient.t*Math.PI/3.5);
-  future.visible=s.index>=2;future.scale.copy(forecastScale);m.riskGlass.opacity=.07+.09*outlook;
-  scan.position.x=screenOrigin.x-1.88+scanProgress*2.475;scan.visible=s.index===1;
-  const point=historyCurve.getPoint(scanProgress);tracer.position.copy(screenOrigin).add(point);tracer.visible=s.index===1;
-  packet.position.copy(dataRoute.getPoint((ambient.t%7)/7)).add(sceneOffset);packet.visible=s.index===1||s.index===3;
+  const ambient=weatherMoment(time),s={...weatherMoment(selected===null?time:[4,16,24,27][selected]),index:selected??ambient.index},copy=WEATHER_STEPS[s.index];
+  const rainfallLabel=s.rain>.72?'HEAVY':s.rain>.42?'MODERATE':'LIGHT';
+  const levelLabel=s.flood>.55?'STREETS FLOODED':s.flood>.08?'SPILLING OVER':s.level>.55?'HIGH':s.level>.2?(s.level>=weatherSample(s.sample-.04).level?'RISING':'RECEDING'):'LOW';
+  const sampleLabel=s.sample<11.5?`YEAR ${String(Math.round(s.sample)+1).padStart(2,'0')}`:'OUTLOOK';
+  const status=`${sampleLabel}  ·  RAIN: ${rainfallLabel}  ·  CANAL: ${levelLabel}`;
+  model.userData.story={index:s.index,step:`0${s.index+1} / 04`,title:copy[1],detail:`${status}. ${copy[2]} Illustrative time-compressed response.`,tone:s.flood>.08?'amber':'teal'};
+  model.userData.hydrology={...s,status};
+  historyBars.forEach((g,i)=>{g.scale.y=1;g.children[0].material.color.setHex(Math.abs(s.sample-i)<.5?0xffca75:0x92d9d3);});
+  forecast.visible=s.sample>=11;scan.visible=true;scan.position.x=chartOrigin.x+chartX(s.sample);
+  rainPoint.position.set(scan.position.x,chartOrigin.y+3.06+s.rain*.76,chartOrigin.z+.21);
+  waterPoint.position.set(scan.position.x,chartOrigin.y+3.06+s.level*.76,chartOrigin.z+.23);
+  if(readout&&status!==lastReadout){
+   lastReadout=status;const c=readoutContext;c.clearRect(0,0,1800,110);c.fillStyle='#102b37';c.fillRect(0,0,1800,110);c.fillStyle=s.flood>.08?'#ffcb82':'#c1e9ef';c.font='600 47px sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(status,900,55,1740);readout.material.map.needsUpdate=true;
+  }
+  exposure.visible=s.flood>.08;m.risk.opacity=.13+.16*s.flood;
+  water.position.y=baseWaterY+s.level*.065+s.flood*.028;marker.position.y=markerBaseY+s.level*.39;
+  inundation.visible=s.flood>.005;floodFront.visible=s.flood>.015;floodLabels.visible=s.flood>.45;m.floodWater.opacity=.68+.20*s.flood;
+  for(let i=0;i<floodPositions.count;i++){
+   const x=floodBase[i*3],side=i%2===0?-1:1;
+   floodPositions.setZ(i,floodEdge(x,side,s.flood));
+   floodPositions.setY(i,floodHeight(s.flood)+.002*Math.sin(x*8+ambient.t*2));
+  }floodPositions.needsUpdate=true;inundation.geometry.computeVertexNormals();
+  const frontPositions=frontGeometry.attributes.position;let edgeIndex=0;
+  for(const side of [-1,1])for(let i=0;i<100;i++)for(const end of [0,.62]){
+   const x=-4.35+(i+end)/100*8.7,z=floodEdge(x,side,s.flood);
+   frontPositions.setXYZ(edgeIndex++,x,floodHeight(s.flood)+.004,z);
+  }frontPositions.needsUpdate=true;
 
+  for(let i=0;i<waterPositions.count;i++){const x=waterBase[i*3],z=waterBase[i*3+2];waterPositions.setY(i,waterBase[i*3+1]+.004*Math.sin(x*9+z*5+ambient.t*2));}waterPositions.needsUpdate=true;water.geometry.computeVertexNormals();
+  particles.forEach((g,i)=>{g.position.copy(routes[i].getPoint((ambient.t*.25+i*.23)%1)).add(offset);g.visible=s.rain>.30;g.scale.setScalar(.6+s.rain*.7);});
+  drops.forEach((d,i)=>{const u=(ambient.t*.61+d.phase)%1;dummy.position.set(d.x,3.68-u*(3.68-d.bottom),d.z);dummy.scale.set(1,.45+s.rain*.55,1);dummy.rotation.set(0,0,-.06);dummy.updateMatrix();rain.setMatrixAt(i,dummy.matrix);});rain.instanceMatrix.needsUpdate=true;m.rain.opacity=.05+s.rain*.55;rain.count=Math.round(35+165*s.rain);
+  streamSeeds.forEach((d,i)=>{const x=-4.25+((d.u+ambient.t/16)%1)*8.5;dummy.position.set(x,.376+s.level*.065+s.flood*.028,canalZ(x)+d.offset);dummy.scale.set(d.size,.0015,.007);dummy.rotation.set(0,-.25*Math.cos(x*.73),0);dummy.updateMatrix();current.setMatrixAt(i,dummy.matrix);});current.instanceMatrix.needsUpdate=true;
  };
  model.userData.animate(0);return model;
 }

@@ -1,24 +1,21 @@
 # Weather Guru — hackathon 15
 
-The user approved a Singapore-context artwork before authorizing page integration and an interactive 3D version.
+Source: https://github.com/sayyidkhan/unesco-weatherguru . The original HTML/Tableau prototype provides rainy-day, rainfall-magnitude, clustering and flood-analysis views. The scene is an illustrative interpretation, not a calibrated forecast or a specific Singapore flood event.
 
-- Artwork: `public/landing/assets/projects/015-weatherguru-singapore-v2.png`
-- Original review and prompt: `outputs/weatherguru-review/`
-- Model: `public/landing/artifacts/weatherguru.js`
-- Source: https://github.com/sayyidkhan/unesco-weatherguru
+## Rebuilt flood atlas — 27 October 2026
 
-The original HTML/Tableau prototype provides rainy-day, rainfall-magnitude, clustering and flood-analysis views. The conceptual neighbourhood and moving water illustrate that subject; they do not represent a calibrated forecast or a specific Singapore flood event.
+The previous dashboard, miniature precinct, glass cloud, physical bars and brass plinth have been replaced. `public/landing/artifacts/weatherguru.js` now constructs a single architectural precinct with a continuous sinuous canal, steel arch footbridge, HDB void decks and access galleries, rooftop services, terracotta shophouses, covered linkway, bus shelter, tropical planting and street furniture. A wide analysis ribbon sits above the buildings with 12 historical observations and a visually separate amber outlook. No dates or probabilities are invented.
 
-The revised 3D composition makes analysis the focal point: a brass-framed rainfall-history display, a clearly separated amber outlook window, physical annual-rainfall columns, and five pattern clusters. A compact Singapore precinct retains detailed HDB blocks, tropical planting, covered walkways, bus, taxi, canal and rain. The mineral and satin-metal plinth unifies the two parts. The original raster artwork remains available in its own tab. All plotted values are illustrative normalized values; no invented dates or probabilities are shown.
+The existing approved raster artwork remains at `public/landing/assets/projects/015-weatherguru-singapore-v2.png`. This request rebuilt the interactive 3D view only.
 
-## Motion and controls
+## Motion
 
-A deterministic 28-second sequence moves through History, Patterns, Risk window and Local impact. Rainfall bars rise, a scanner and tracer travel through the history, the forecast window appears only in the outlook stages, and a translucent street highlight connects the analysis to potential local exposure. Manual stages retain ambient rain and scanning motion. Pause freezes all motion through the shared viewer clock. The outlook is a conceptual risk window, not a calibrated flood date.
+A deterministic 32-second cycle samples one shared series: 12 historical rainfall observations followed by an illustrative outlook and recession. A white rainfall curve, blue lagged canal-response curve, cursor, active bar and live status strip all read the same sample. Rain density/intensity follows rainfall; the gauge and water height follow the response. Above the overflow threshold, strongly coloured water spreads across both road lanes and riverside paths. An animated foam edge marks the advancing boundary; elevated ROAD FLOODED / PATH FLOODED labels identify the affected areas. The extent is deliberately exaggerated for legibility, remains within the site, and leaves the footbridge deck above water. The flood recedes as the response drops. Rain stops above roofs and the bridge; animated currents stay in the channel. This compresses annual observations into a visual scenario, not a hydrological simulation or depth measurement.
 
-The original canal and rain retain roof clearance and pavement bounds after scaling. Per-component framing points fit the asymmetric exhibit without fitting empty corners. Dashed forecast geometry is batched to keep draw calls bounded.
+Manual stages hold the graph cursor, rainfall intensity, water level and flood extent together while retaining ambient droplet/current motion. Pause freezes the shared animation clock. History and forecast remain visually distinct. Four existing stage buttons, rotation, zoom and reset remain available.
 
 ## Validation
 
-- Five Node tests: timeline and loop, scaled canal bounds and rain clearance, manual/auto/pause behaviour, finite geometry and rendering budget, forecast visibility and scanner/exposure stage behaviour.
-- Astro check: 0 errors, 0 warnings; production build: 97 pages.
-- Browser: revised scene and risk window, local-impact stage, pause/resume, rotation/reset, and auto-play checked; no browser errors.
+Seven Node tests cover timeline lead/lag and loop continuity, per-sample graph/rain/gauge/water/flood synchronization, roof/bridge clearance and flood extent, manual-stage synchronization, deterministic pause, outlook/overflow visibility, finite geometry, rendering budget, and explicit road/path coverage at the peak followed by complete withdrawal. Static geometry is batched and foliage, rain and currents use instancing.
+
+Run `node --test scripts/tests/weatherguru.test.mjs` and `npm run build`. Browser review includes the new scene, forecast and local-impact stages, rotation/reset and pause. Review screenshot: `outputs/weatherguru-review/page-flood-atlas-visible-flood.png`.

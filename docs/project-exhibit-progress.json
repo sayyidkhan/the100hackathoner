@@ -980,7 +980,7 @@
       "status": "implemented",
       "artwork": "public/landing/assets/projects/015-weatherguru-singapore-v2.png",
       "model": "public/landing/artifacts/weatherguru.js",
-      "notes": "Singapore artwork retained; revised 3D centres rainfall history, pattern scanning, an amber risk window and local exposure. Detailed precinct supports the analysis. Illustrative values, not a calibrated forecast. See docs/weatherguru-exhibit.md."
+      "notes": "Rebuilt from scratch as a Singapore flood atlas: HDB precinct, shophouses, continuous canal, arch bridge, rainfall-history ribbon and separate amber outlook. Deterministic rain, runoff, current and exposure sequence. Illustrative, not a calibrated forecast. See docs/weatherguru-exhibit.md."
     },
     {
       "number": 14,
