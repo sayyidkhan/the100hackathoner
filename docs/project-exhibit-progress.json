@@ -889,8 +889,11 @@
     {
       "number": 28,
       "title": "Kitar-GO",
-      "source": null,
-      "status": "needs-source-context"
+      "source": "docs/kitar-go-exhibit.json",
+      "status": "implemented",
+      "model": "public/landing/artifacts/kitar-go.js",
+      "artwork": "public/landing/assets/projects/028-kitar-go-v1.png",
+      "notes": "Original pitch and exported app flow reviewed. AR-style route, bin recognition, bottle deposit and post-deposit rewards; simple exhibit card."
     },
     {
       "number": 27,

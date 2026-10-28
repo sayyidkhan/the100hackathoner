@@ -1,0 +1,36 @@
+{
+  "project": 28,
+  "title": "Kitar-GO",
+  "reviewed": "2026-10-28",
+  "sources": [
+    {
+      "title": "Kitar-GO pitch deck",
+      "url": "https://docs.google.com/presentation/d/1O4VkP1KRxxV7XNPtUTFojoH1LQch2vQQmJ1nNPuXAug/edit",
+      "coverage": "All 19 slides read in HTML view.",
+      "evidence": "Prepare a plastic bottle, set target recycling bin, drop bottle, redeem. Existing recycling-bin network, youth challenges, leaderboards, merchants and recycling companies. Proposed fees for merchant transactions and facilitated challenges. Historical statistics and incomplete validation placeholders are not repeated in exhibit."
+    },
+    {
+      "title": "Original exported UI",
+      "url": "https://drive.google.com/drive/u/0/folders/1j2pDzWbq21VEU-X1EY4TY4odRdzrdOdZ",
+      "coverage": "Home screen and all seven deposit screenshots visually inspected.",
+      "evidence": "Mint green UI; nearest-bin location; AR directional arrows; arrival confirmation; bin recognition outline; bottle detection; deposit successful followed by bottle and distance points. Source's inconsistent point arithmetic is not reproduced."
+    },
+    {
+      "title": "Original Instagram post",
+      "url": "https://www.instagram.com/p/B2JzcFglegx/",
+      "coverage": "Caption read in signed-in browser.",
+      "evidence": "28th hackathon, SWSG 2019; gamification app encouraging recycling of plastic bottles."
+    },
+    {
+      "title": "Project source folder",
+      "url": "https://drive.google.com/drive/u/0/folders/1LiFSXNplF6DjDk8N3YVU3-sAP-XgaXOf",
+      "coverage": "Inventory reviewed. Adobe XD, video mockups, presentation variants and prototype files located; XD and videos not opened or claimed as reviewed."
+    }
+  ],
+  "interpretation": "The app screens are a redesigned concept, not the original running app. The mall nook, leaf reward plaque and navigation marker are visual metaphors. Existing wood-clad bins and the AR recognition sequence follow the exported prototype. No production computer-vision verification or actual reward redemption is claimed.",
+  "animation": "30-second deterministic loop: locate 0\u20134s; route 4\u201311s; arrive and recognize 11\u201315s; bottle deposit 16\u201319s; reward only from 19s; settle and reset 27\u201330s. No reverse bottle motion. UI and 3D share the same state.",
+  "model": "public/landing/artifacts/kitar-go.js",
+  "artwork": "public/landing/assets/projects/028-kitar-go-v1.png",
+  "generation": "Built-in image generation, new opaque image; final prompt in outputs/kitar-review/artwork-prompt.txt.",
+  "verification": "Two targeted tests cover causal timing, route monotonicity, vertical deposit, deterministic reset/seek, finite geometry and mesh budget. Standard card with artwork/3D toggle, rotation, reset and pause. Final production build: 97 pages, 0 check errors. Browser verified artwork/3D switching, animated recognition/deposit/reward sequence, reset/pause/resume, both themes and no console errors. Geometry: 78 meshes, 77,658 triangles."
+}

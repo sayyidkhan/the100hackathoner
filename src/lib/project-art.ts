@@ -1,3 +1,4 @@
+import kitarArt from '../../public/landing/assets/projects/028-kitar-go-v1.png';
 import socapOne from '../../public/landing/assets/projects/004-socapasia-v1.png';
 import socapTwo from '../../public/landing/assets/projects/006-socapasia-v2.png';
 import goblinArt from '../../public/landing/assets/projects/016-goblin-collection-studio-v1.png';
@@ -127,6 +128,7 @@ export interface ProjectArt {
 }
 
 export const projectArt: Record<number, ProjectArt> = {
+  28: {light:kitarArt,dark:kitarArt,alt:'Kitar-GO: a mint navigation trail connects a phone to wood-clad recycling bins. A plastic bottle is highlighted above the correct opening, with a leaf reward plaque beside it.',caption:'Find a bin. Make it count. Kitar-GO turns a plastic-bottle recycling trip into an AR-guided journey with rewards.',model:'/landing/artifacts/kitar-go.js'},
   4: {light:socapOne,dark:socapOne,alt:'Social Capital Asia 1.0: a borrower phone connects a community profile network to a rural bank through an application route.',caption:'1.0 · A way into the financial system. Social connections become a borrower profile and a loan application for bank review.',model:'/landing/artifacts/socap-v1.js'},
   6: {light:socapTwo,dark:socapTwo,alt:'Social Capital Asia 2.0: the borrower phone grows into a lender workspace, digital ledger and outcome feedback loop.',caption:'2.0 · From an application to a connected platform. The Bootcamp developed the lender view, digital ledger and loan-outcome feedback.',model:'/landing/artifacts/socap-v2.js'},
   5: {light:saywhatArt,dark:saywhatArt,alt:"SayWhat lecture search studio: a microphone, headphones, a keyword search display and a sculpted waveform with highlighted timestamps.",caption:"Find the idea. Replay the moment. SayWhat makes lecture recordings searchable by concept.",model:"/landing/artifacts/saywhat.js"},
