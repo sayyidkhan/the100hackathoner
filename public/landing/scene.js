@@ -577,6 +577,17 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       Object.assign(key.shadow.camera,{left:-6,right:6,top:6,bottom:-4});key.shadow.camera.updateProjectionMatrix();
       contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=dark?.44:.20;paperContact.scale.set(1.45,1.15,1);
     }
+    if (currentModel?.userData.studioProfile === 'socap') {
+      const dark=currentTheme==='dark',backdrop=dark?0x102b34:0xe9e8dd;
+      scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xe5eee2);hemisphere.groundColor.setHex(0x30483b);hemisphere.intensity=.40;
+      key.color.setHex(0xffe4bd);key.position.set(-4,6,5);key.intensity=3.3;
+      fill.color.setHex(0xb5dce1);fill.intensity=.48;rim.color.setHex(0xd9f4df);rim.position.set(3,5,-4);rim.intensity=2.6;
+      scene.environmentIntensity=.75;renderer.toneMappingExposure=1.02;
+      key.shadow.normalBias=.002;key.shadow.bias=-.00004;key.shadow.radius=5;
+      Object.assign(key.shadow.camera,{left:-6,right:6,top:6,bottom:-4});key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=dark?.44:.20;paperContact.scale.set(1.45,1.15,1);
+    }
     if (currentModel?.userData.studioProfile === 'saywhat') {
       const dark=currentTheme==='dark',backdrop=dark?0x142923:0xe8e6db;
       scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);

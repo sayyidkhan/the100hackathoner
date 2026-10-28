@@ -1048,8 +1048,11 @@
     {
       "number": 6,
       "title": "SocialCapitalAsia",
-      "source": null,
-      "status": "needs-source-context"
+      "source": "docs/socapasia-exhibits.json",
+      "status": "implemented",
+      "model": "public/landing/artifacts/socap-v2.js",
+      "artwork": "public/landing/assets/projects/006-socapasia-v2.png",
+      "notes": "Version 2.0: original decks and UI reviewed; distinct artwork and animated narrative with continuity across both chapters. Simple card and reciprocal evolution link."
     },
     {
       "number": 5,
@@ -1063,8 +1066,11 @@
     {
       "number": 4,
       "title": "SocialCapitalAsia",
-      "source": null,
-      "status": "needs-source-context"
+      "source": "docs/socapasia-exhibits.json",
+      "status": "implemented",
+      "model": "public/landing/artifacts/socap-v1.js",
+      "artwork": "public/landing/assets/projects/004-socapasia-v1.png",
+      "notes": "Version 1.0: original decks and UI reviewed; distinct artwork and animated narrative with continuity across both chapters. Simple card and reciprocal evolution link."
     },
     {
       "number": 3,

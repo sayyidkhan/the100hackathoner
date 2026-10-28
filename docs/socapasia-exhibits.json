@@ -1,0 +1,27 @@
+{
+  "projects": [4,6],
+  "reviewed": "2026-10-28",
+  "versionMapping": {"4":"Social Capital Asia 1.0 — Fintech Festival 2016", "6":"Social Capital Asia 2.0 — SO.IMPACT Bootcamp 2017"},
+  "sources": [
+    {"title":"socialCapitalAsia Slides v3.0.pdf","url":"https://drive.google.com/file/d/0BzUcUD5nonwBYjlZczRMZ0QzRE0/view","coverage":"Nine-page deck; borrower and social analytics screens, variable payment analysis, problem/solution and traction content reviewed.","evidence":"Borrower registration, connected social profiles, application and repayment views; communal responsibility and social safety net as collective collateral. Original teal/yellow butterfly identity."},
+    {"title":"SocialCapitalAsia Product V1.0.pdf","url":"https://drive.google.com/file/d/0BzUcUD5nonwBT0l6OUxXcHc2cXc/view","coverage":"18-page product document; portfolio and client-management screens inspected.","evidence":"Lender portfolio, clients, billing, support and reports already existed as design concepts in November 2016. Do not claim the lender view was invented in 2.0."},
+    {"title":"SO.ImpactBootcamp - Social Capital","url":"https://docs.google.com/presentation/d/1qG3QzigEXQ7f93bz3Mo6LxKXveciqx4z91G5KryYz84/edit","coverage":"All six slides and speaker notes read.","evidence":"Bootcamp explicitly focused on improving lender view with rural-bank and Singapore bank-executive feedback, predictive analysis, mobile stability, digital infrastructure and separate consumer/business landing pages. Mobile/social data mapped to loan outcomes in a digital ledger."},
+    {"title":"ALP Event - Social Capital Asia","url":"https://docs.google.com/presentation/d/11ZpE9V4zZ2cvGQjVXYnoP9NLomK6P-jvUQq9VaCDa14/edit","coverage":"All twelve slides and speaker notes read.","evidence":"Mobile capture, lender CRM, outcome data, institutional workflow and planned regional expansion. Historical simulation and pilot statements are not independently verified."},
+    {"title":"Socialcapitalasia Business Synopsis","url":"https://docs.google.com/document/d/17SPd5FWfjLAJguMDiySsPksm6kLe2XQLIRThHb87d0Q/edit","coverage":"Goal, problem, solution, stakeholders, revenue, traction/roadmap and marketing sections reviewed; private contact details excluded.","evidence":"B2B business model, rural banks as paying stakeholders, analysis per application and proposed annual service. Regional market plans remain proposals."},
+    {"title":"Ingredient for social capital asia mobile ui v1.5.ai","url":"https://drive.google.com/file/d/0BzUcUD5nonwBMENnVUw4c2hBQU0/view","coverage":"25-page Illustrator preview; onboarding, permission, social connection, contact and loan-detail states inspected.","evidence":"Mobile details and social profile connection, confirmation, application purpose and submission. Teal/cyan, sand palette and Oxygen typography."},
+    {"title":"SocialCapitalAsia logo v5.2.pdf","url":"https://drive.google.com/file/d/0BzUcUD5nonwBX0tsbG9vZV9fZWc/view","coverage":"Visual logo exploration sheet inspected.","evidence":"Butterfly identity explored in faceted blue/cyan variants."},
+    {"title":"socialcapitaltest.mp4 / v5.82 folder","url":"https://drive.google.com/file/d/0BzUcUD5nonwBUWxzQzVQQXpSZ2M/view","coverage":"Attempted playback; Drive remained on loading. Folder contains Rhino logo models and a KeyShot file, so this must not be described as a verified application demo."}
+  ],
+  "growth": {
+    "continuity":"Financial inclusion, borrower mobile experience, social profile context, rural-bank relationship and butterfly identity.",
+    "one":"Focus on one borrower's path: connect profile, assemble social connections, send application, await institution review.",
+    "two":"Broader operating workflow: assemble mobile/social/application records, inspect an applicant in the lender workspace, return a loan outcome into the digital ledger.",
+    "distinction":"Different emphasis and refinement, not a claim that all institutional features first appeared in 2017. Version labels are the user's requested exhibit framing, not source-file revision numbers."
+  },
+  "interpretation":"Original concepts reimagined as tactile physical exhibits. Sample applicant IDs, bank architecture, animated rails, ledger cards and interface copy are illustrative. No real borrower data, actual lending decisions, historical performance guarantees or verified pilot results are displayed. Generated artwork may contain fictional applicant names.",
+  "assets":["public/landing/assets/projects/004-socapasia-v1.png","public/landing/assets/projects/006-socapasia-v2.png"],
+  "models":["public/landing/artifacts/socap-v1.js","public/landing/artifacts/socap-v2.js"],
+  "animation":"1.0: 28 seconds, five connections assemble, one application travels to bank, review opens on arrival, reset. 2.0: 34 seconds, records assemble, application arrives, lender reviews, outcome returns and ledger updates after arrival. Shared deterministic state drives screen and geometry; pause/reduced motion supported.",
+  "presentation":"Standard exhibit card; short version-specific caption and reciprocal chapter link. No new walkthrough controls.",
+  "prompts":"outputs/socap-review/artwork-prompts.txt"
+}

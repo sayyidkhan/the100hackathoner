@@ -1,3 +1,5 @@
+import socapOne from '../../public/landing/assets/projects/004-socapasia-v1.png';
+import socapTwo from '../../public/landing/assets/projects/006-socapasia-v2.png';
 import goblinArt from '../../public/landing/assets/projects/016-goblin-collection-studio-v1.png';
 import saywhatArt from '../../public/landing/assets/projects/005-saywhat-lecture-search-v1.png';
 import vanitaArt from '../../public/landing/assets/projects/007-vanita-neighbourhood-v1.png';
@@ -125,6 +127,8 @@ export interface ProjectArt {
 }
 
 export const projectArt: Record<number, ProjectArt> = {
+  4: {light:socapOne,dark:socapOne,alt:'Social Capital Asia 1.0: a borrower phone connects a community profile network to a rural bank through an application route.',caption:'1.0 · A way into the financial system. Social connections become a borrower profile and a loan application for bank review.',model:'/landing/artifacts/socap-v1.js'},
+  6: {light:socapTwo,dark:socapTwo,alt:'Social Capital Asia 2.0: the borrower phone grows into a lender workspace, digital ledger and outcome feedback loop.',caption:'2.0 · From an application to a connected platform. The Bootcamp developed the lender view, digital ledger and loan-outcome feedback.',model:'/landing/artifacts/socap-v2.js'},
   5: {light:saywhatArt,dark:saywhatArt,alt:"SayWhat lecture search studio: a microphone, headphones, a keyword search display and a sculpted waveform with highlighted timestamps.",caption:"Find the idea. Replay the moment. SayWhat makes lecture recordings searchable by concept.",model:"/landing/artifacts/saywhat.js"},
   7: {light:vanitaArt,dark:vanitaArt,alt:"Vanita neighbourhood delivery: a delivery app, parcel collection kiosk, a woman courier and a blue route to a village home.",caption:"Local knowledge. New opportunities. Women connect businesses to the last doorstep.",model:"/landing/artifacts/vanita.js"},
   8: { light:vainsterArt, dark:vainsterArt, alt:"Vainster face observatory: a ceramic portrait with mint facial landmarks, a capture phone and a weekly reflection journal on an ivory stone base.", caption:"A moment for yourself. Face mapping and a visual journal make space for daily reflection.", model:"/landing/artifacts/vainster.js" },
