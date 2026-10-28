@@ -1,0 +1,16 @@
+{
+  "hackathon": 5,
+  "project": "SayWhat",
+  "concept": "Search a concept in lecture recordings and jump to its timestamped explanation.",
+  "sources": [
+    {"title":"Original SayWhat? pitch deck, 14 slides and speaker notes","url":"https://docs.google.com/presentation/d/1YVQkVEHoHJv49ge9GsfGzj3wH-BJ3nX47MwD-sTkagA/edit","observed":"Speech recognition, text indexing, concept keywords and timestamp navigation across lecture recordings. Original UI uses emerald and charcoal, a lecture library, waveform and the search term persona."},
+    {"title":"Local hackathon catalog","path":"src/data/hackathons.json","observed":"SayWhat, Edu-Tech Hackathon 2017, NUS. No linked source repository."}
+  ],
+  "interpretation":"Contemporary lecture-search studio inspired by the original deck. The 35-minute recording, transcript, lecture titles and three timestamps are illustrative. Playback is a visual demonstration; no audio recording is loaded. This does not claim the original prototype was deployed.",
+  "artwork":"/landing/assets/projects/005-saywhat-lecture-search-v1.png",
+  "model":"/landing/artifacts/saywhat.js",
+  "motion":"28-second deterministic sequence: capture lecture, type persona, reveal three timestamp matches, seek to 14:28, play the matched passage, fade and restart. Screen and physical waveform share one timing state. Shared pause, reset and reduced-motion support retained.",
+  "materials":"Ivory stone plinth, satin brass, jade waveform, microphone grille, leather headphone cushions and paper notebook. Instanced waveform bars and batched static geometry.",
+  "card":"Standard artwork/3D tabs, reset and pause controls with one short caption. No custom walkthrough panel.",
+  "prompt":"outputs/saywhat-review/artwork-prompt.txt"
+}

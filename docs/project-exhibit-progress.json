@@ -970,8 +970,11 @@
     {
       "number": 16,
       "title": "Goblin (E-Waste Collector)",
-      "source": null,
-      "status": "needs-source-context"
+      "source": "https://docs.google.com/presentation/d/1kvbFb2VfOMNGsGcyKK-ThsMvjOVkfle8nQH1hgkcxBg/edit",
+      "status": "implemented",
+      "artwork": "public/landing/assets/projects/016-goblin-collection-studio-v1.png",
+      "model": "public/landing/artifacts/goblin.js",
+      "notes": "Original pitch and implementation plan reviewed. Community collection booth, detailed ambassador/resident figures, two sequential device inspections and separate refurbishment/material recovery routes. Simple card with reset/pause. See docs/goblin-exhibit.json."
     },
     {
       "number": 15,
@@ -1051,8 +1054,11 @@
     {
       "number": 5,
       "title": "SayWhat",
-      "source": null,
-      "status": "needs-source-context"
+      "source": "https://docs.google.com/presentation/d/1YVQkVEHoHJv49ge9GsfGzj3wH-BJ3nX47MwD-sTkagA/edit",
+      "status": "implemented",
+      "model": "public/landing/artifacts/saywhat.js",
+      "context": "docs/saywhat-exhibit.json",
+      "refinement": "Lecture keyword search studio with matching artwork and a synchronized recording, search, timestamp selection and playback animation. Standard simple exhibit card."
     },
     {
       "number": 4,

@@ -1,0 +1,13 @@
+// Authored Microsoft Rocketbox figures. The shared MIT licence ships with assets.
+let sources;
+export async function prepareGoblinPeople(){if(sources)return;sources=await Promise.all(['mentor','learner'].map(async name=>{const r=await fetch(new URL(`../assets/lrnmate-people/${name}.bin`,import.meta.url));if(!r.ok)throw new Error('Unable to load Goblin ambassador');return new Response(r.body.pipeThrough(new DecompressionStream('gzip'))).json();}));}
+export function goblinPeople(T,override){return (override??sources).map((data,index)=>{
+ const seated=index===0,pivot=new T.Group(),model=new T.ObjectLoader().parse(data);pivot.add(model);pivot.name=seated?'goblin-ambassador':'goblin-resident';model.updateMatrixWorld(true);const bounds=new T.Box3().setFromObject(model),scale=(seated?1.95:1.8)/(bounds.max.y-bounds.min.y);model.scale.setScalar(scale);model.position.y=-bounds.min.y*scale-(seated?.42:0);
+ const bones={};model.traverse(o=>{if(o.isBone)bones[o.name.replace('Bip01_','')]=o;if(o.isMesh){o.castShadow=o.receiveShadow=true;o.frustumCulled=false;o.material=o.material.clone();o.material.color.setHex(seated?0xdac9a8:0xe7dcc2);o.material.roughness=.78;}});
+ function aim(name,child,target){pivot.updateMatrixWorld(true);const b=bones[name],start=b.getWorldPosition(new T.Vector3()),from=bones[child].getWorldPosition(new T.Vector3()).sub(start).normalize(),to=model.localToWorld(new T.Vector3(...target)).sub(start).normalize();const world=new T.Quaternion().setFromUnitVectors(from,to).multiply(b.getWorldQuaternion(new T.Quaternion()));b.quaternion.copy(b.parent.getWorldQuaternion(new T.Quaternion()).invert().multiply(world));}
+ if(seated)for(const [side,sign] of [['L',1],['R',-1]]){pivot.updateMatrixWorld(true);const foot=bones[`${side}_Foot`],q=foot.getWorldQuaternion(new T.Quaternion());aim(`${side}_Thigh`,`${side}_Calf`,[sign*10,94,42]);aim(`${side}_Calf`,`${side}_Foot`,[sign*10,50,42]);foot.quaternion.copy(foot.parent.getWorldQuaternion(new T.Quaternion()).invert().multiply(q));}
+ for(const [side,sign] of [['L',1],['R',-1]]){aim(`${side}_UpperArm`,`${side}_Forearm`,[sign*24,112,13]);aim(`${side}_Forearm`,`${side}_Hand`,[sign*16,seated?131:116,seated?34:32]);}
+ const tracked=['Head','R_UpperArm','R_Forearm'].map(name=>({bone:bones[name],rest:bones[name].quaternion.clone()}));
+ aim('R_UpperArm','R_Forearm',[-26,120,15]);aim('R_Forearm','R_Hand',[-14,137,36]);for(const j of tracked){j.greet=j.bone.quaternion.clone();j.bone.quaternion.copy(j.rest);}
+ return {pivot,update(s){const a=s.devices[s.active].age,w=a<2?Math.sin(Math.max(0,a)/2*Math.PI)*.6:0;for(const j of tracked)j.bone.quaternion.copy(j.rest).slerp(j.greet,w);}};
+ });}

@@ -1,0 +1,33 @@
+{
+  "project": 16,
+  "name": "Goblin (E-Waste Collector)",
+  "reviewed": "2026-10-28",
+  "sources": [
+    {
+      "title": "Team 10 Goblin E-Waste PitchDeck Plan",
+      "url": "https://docs.google.com/presentation/d/1kvbFb2VfOMNGsGcyKK-ThsMvjOVkfle8nQH1hgkcxBg/edit",
+      "evidence": [
+        "E-waste ambassadors collect smartphones for recycling firms",
+        "Social enterprise creates work for less-abled and less-fortunate people",
+        "Advocacy and environmental improvement"
+      ]
+    },
+    {
+      "title": "Team 10 Goblin E-Waste Implementation Plan",
+      "url": "https://docs.google.com/document/d/1NV1HDLX8sJirwZQpjXXdTLrCCdzj6xg55ZjtZVLw_xY/edit",
+      "evidence": [
+        "Proposed collection campaign around Jurong East",
+        "Refurbished devices and recovered materials as revenue sources"
+      ]
+    }
+  ],
+  "interpretation": "The neighbourhood booth, inspection display and branching conveyor explain the concept; they are not a claim that the original project deployed automated sorting. No original application source or UI was available. Historical prices, forecasts and proposed partnerships are not displayed.",
+  "animation": "32-second deterministic loop. Intact device received, moves, stops for inspection, then follows refurbishment branch. Second damaged device follows the same inspection and takes material-recovery branch. Results activate on arrival. Reset after end transition; no reverse travel.",
+  "assets": "New generated artwork. Existing MIT-licensed Microsoft Rocketbox mentor/learner meshes reused under public/landing/assets/lrnmate-people.",
+  "verification": [
+    "2 focused Node tests passed: causal timing, reset, finite geometry, detailed meshes, deterministic seeking",
+    "183921 triangles; 35 meshes in Node scene (browser adds labels)",
+    "Astro check: 0 errors and 0 warnings; production build: 97 pages",
+    "Browser: artwork and 3D render; pause switches to resume; no console errors"
+  ]
+}
