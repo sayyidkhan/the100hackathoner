@@ -377,9 +377,9 @@
         "public/landing/assets/projects/062-ask-buzo-dark-v1.png"
       ],
       "model": "public/landing/artifacts/ask-buzo.js",
-      "detail": "Rebuilt only the 3D to match the approved illustration: café awning/chairs/cups, arched theatre with curtains and instruments, rooftop lounge with stairs/string lights/crescent, backup venue, river and two bridges, city blocks/trees, readable clock and ticket. Existing artwork unchanged.",
+      "detail": "Rebuilt only the 3D to match the approved illustration: caf\u00e9 awning/chairs/cups, arched theatre with curtains and instruments, rooftop lounge with stairs/string lights/crescent, backup venue, river and two bridges, city blocks/trees, readable clock and ticket. Existing artwork unchanged.",
       "animation": "Moving itinerary markers, conversational dots and a rotating clock hand use the gallery clock; pause/reset/reduced motion remain supported.",
-      "lighting": "Ten warm practical lights illuminate the café, theatre, rooftop string lights, windows and backup venue in dark mode."
+      "lighting": "Ten warm practical lights illuminate the caf\u00e9, theatre, rooftop string lights, windows and backup venue in dark mode."
     },
     {
       "number": 61,
@@ -1024,8 +1024,11 @@
     {
       "number": 10,
       "title": "Swagmylife",
-      "source": null,
-      "status": "needs-source-context"
+      "source": "docs/swagmylife-exhibit.json",
+      "status": "implemented",
+      "artwork": "public/landing/assets/projects/010-swagmylife-v1.png",
+      "model": "public/landing/artifacts/swagmylife.js",
+      "notes": "Original deck, script, product review and linked XD flow inspected. Teal Singapore lifestyle planner: choose home, rebalance illustrative monthly allocation, connect food and leisure. Simple card. Shared prototype has later Warriors & Mages branding; original Swagmylife deck controls identity."
     },
     {
       "number": 9,

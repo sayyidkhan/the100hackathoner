@@ -1,0 +1,42 @@
+{
+  "project": 10,
+  "title": "Swagmylife",
+  "reviewed": "2026-10-28",
+  "sources": [
+    {
+      "title": "Team 17 presentation",
+      "url": "https://docs.google.com/presentation/d/1xnBNIZnCGWQ-GYbw33OVvVkJIuMrnxfcr_QJYb-6aKU/edit",
+      "coverage": "All 12 slides and available speaker notes read in HTML view; original teal Swag my life login and persona UI visually inspected on slides 8\u20139.",
+      "evidence": "Singapore relocation and housing decisions; high living costs; persona-based property and lifestyle recommendations; portfolio budgeting; flats, food and events. Future lifestyle comparisons were proposals, not demonstrated production functionality."
+    },
+    {
+      "title": "Script for datadriven.sg hackathon",
+      "url": "https://docs.google.com/document/d/10ACJgxDp8pcdf8XXt6R8AEmVL6agcS2gWu-nhWeCFo8/edit",
+      "coverage": "One-page script visually read.",
+      "evidence": "Help users achieve their desired lifestyle in the country they are going to live in, through budget and lifestyle planning."
+    },
+    {
+      "title": "Data-Hackathon 2017, team 17:swagmylife",
+      "url": "https://docs.google.com/document/d/1JzkW735nN1VOjLVa8iCvkTa375NaxhutHjoLjBEhZc4/edit",
+      "coverage": "Product-review sections visually read; unrelated personal/event reflections not reproduced.",
+      "evidence": "Combined PropertyGuru housing listings, TabSquare food choices and Esplanade events datasets. A housing choice changes remaining food and entertainment budget. Warrior/Mage preferences influence nearby activity recommendations."
+    },
+    {
+      "title": "Shared Adobe XD prototype linked by original deck",
+      "url": "https://xd.adobe.com/view/d191c79a-d51e-44a1-bab4-bf45a1520843/",
+      "coverage": "Screens 1\u20139 visually inspected. The live link is now titled warriorsandmages and shows later blue branding, allowance/savings, preferences, allocation and recommendations.",
+      "caveat": "Do not present the later blue student-budget screens as the original Swagmylife UI. Original deck controls this exhibit's identity and relocation context."
+    },
+    {
+      "title": "swagmylife.xd",
+      "url": "https://drive.google.com/file/d/0BzUcUD5nonwBWWVxb2QzZm5UdnM/view?resourcekey=0-ImtqJ6Ms4rBk3nFksrq-1g",
+      "coverage": "Archive located and its contents listed in Drive. Download returned a Google 503 error; archive artboards were not extracted. Live prototype and deck screenshots were used instead."
+    }
+  ],
+  "interpretation": "Reimagined architectural miniature and app UI, not a reproduction of a running backend. Apartment, cafe and cultural pavilion represent the original housing/food/events datasets. Percentages are an illustrative portfolio only, not historical or current prices. No live recommendation or booking is claimed.",
+  "animation": "34-second deterministic sequence: preferences 0\u20135s; home exploration 5\u201310s; selected-home pin settles 10\u201311.1s; allocation rebalances 11\u201316s; food path connects 17\u201320.5s; leisure connects 21\u201324.5s; combined result from 25s; fade/reset 31\u201334s. Screen, markers and allocation use one state function.",
+  "model": "public/landing/artifacts/swagmylife.js",
+  "artwork": "public/landing/assets/projects/010-swagmylife-v1.png",
+  "generation": "Built-in image generation; prompt in outputs/swagmylife-review/artwork-prompt.txt.",
+  "verification": "Two targeted tests pass: causal sequence, 100% portfolio invariant, repeatable seek/reset and finite geometry. 35 model meshes, 327,400 triangles in headless check. Production build: 97 pages, 0 errors, 0 warnings (124 existing/unused-code hints). Browser verified artwork/3D toggle, selection and budget changes, pause/resume, reset and light/dark rendering. No browser warning/error logs. Standard simple card retained."
+}
