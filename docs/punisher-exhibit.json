@@ -1,0 +1,39 @@
+{
+  "project": 30,
+  "title": "The Punisher",
+  "sourceReview": "docs/punisher-source-review.json",
+  "artwork": "public/landing/assets/projects/030-punisher-v5.png",
+  "model": "public/landing/artifacts/punisher.js",
+  "characters": {
+    "source": "Shared Microsoft Rocketbox authored meshes in public/landing/assets/lrnmate-people",
+    "license": "public/landing/assets/lrnmate-people/LICENSE-Rocketbox.txt",
+    "treatment": "Ivory sculpture, burgundy drapery, layered wing geometry, restrained horns and halo; original skeletons posed with fixed feet and bounded gestures."
+  },
+  "animation": {
+    "cycleSeconds": 32,
+    "phases": [
+      "Rock-paper-scissors role choice",
+      "Timed task agreement",
+      "Example grocery task completed",
+      "Approval requested, then confirmed by partner"
+    ],
+    "controls": [
+      "Manual phase selection",
+      "Autoplay",
+      "Pause",
+      "Reset view",
+      "Drag/keyboard orbit"
+    ],
+    "note": "An illustrative successful task journey, not a complete simulation of every reward/punishment rule.",
+    "presentation": "Larger viewer-facing game tokens, raised folio with a progressive signature, three staggered grocery deliveries, readable phone status, partner gesture and a large approval seal with expanding gold rings. Gentle camera push during focal actions."
+  },
+  "validation": {
+    "tests": "node --test scripts/tests/punisher.test.mjs (2 pass)",
+    "build": "npm run build (97 pages, zero errors/warnings; existing hints)",
+    "browser": "Verified artwork/3D toggle, manual Agreement step and autoplay in localhost preview.",
+    "preview": "outputs/punisher-review/3d-motion-v2.png"
+  },
+  "limitations": [
+    "Real-time interpretation of the artwork; characters use adapted existing authored meshes rather than custom sculptures matching the generated faces."
+  ]
+}

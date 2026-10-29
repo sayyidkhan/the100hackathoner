@@ -1,0 +1,6 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import * as T from '../../public/landing/vendor/three.module.js';
+import {instaMoment,INSTA_CYCLE} from '../../public/landing/artifacts/insta-timing.js';
+import {createArtifact} from '../../public/landing/artifacts/instareadr.js';
+test('AI processes source before ten sections or video appear',()=>{for(let t=0;t<40;t+=.1){const s=instaMoment(t);assert.equal(s.cards.length,10);if(s.process>0)assert.equal(s.ingest,1);if(s.cards.some(v=>v>0))assert.equal(s.process,1);if(s.video>0)assert.ok(s.cards.every(v=>v===1));}assert.equal(instaMoment(18).cards.filter(v=>v===1).length,10);assert.deepEqual(instaMoment(12),instaMoment(12+INSTA_CYCLE));});
+test('seek and reset are deterministic; geometry is finite and bounded',()=>{const g=createArtifact(T);g.userData.animate(30);assert.equal(g.userData.story.phase,3);g.userData.animate(0);assert.equal(g.userData.story.video,0);assert.ok(g.userData.story.cards.every(v=>v===0));let meshes=0,triangles=0;g.traverse(o=>{if(o.isMesh){meshes++;triangles+=(o.geometry.index?.count??o.geometry.attributes.position.count)/3;for(const v of o.geometry.attributes.position.array)assert.ok(Number.isFinite(v));}});console.log({meshes,triangles});assert.ok(meshes<100);assert.ok(triangles<350000);});

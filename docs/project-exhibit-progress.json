@@ -1,8 +1,18 @@
 {
-  "updated": "2026-10-12",
+  "updated": "2026-10-28",
   "scope": "Research linked project repositories first, then create light/dark concept artwork and matching procedural 3D on detail pages. Work sequentially; flag missing context.",
   "method": "Built-in image_gen for raster artwork; Three.js procedural geometry for interactive interpretations.",
   "projects": [
+    {
+      "number": 82,
+      "title": "FitStake",
+      "source": "https://github.com/sayyidkhan/fitstake",
+      "status": "implemented",
+      "model": "public/landing/artifacts/fitstake.js",
+      "assets": [
+        "public/landing/assets/projects/082-fitstake-light-v1.png"
+      ]
+    },
     {
       "number": 81,
       "title": "The Next 8 Seconds: Draw Your Way Home",
@@ -377,9 +387,9 @@
         "public/landing/assets/projects/062-ask-buzo-dark-v1.png"
       ],
       "model": "public/landing/artifacts/ask-buzo.js",
-      "detail": "Rebuilt only the 3D to match the approved illustration: caf\u00e9 awning/chairs/cups, arched theatre with curtains and instruments, rooftop lounge with stairs/string lights/crescent, backup venue, river and two bridges, city blocks/trees, readable clock and ticket. Existing artwork unchanged.",
+      "detail": "Rebuilt only the 3D to match the approved illustration: café awning/chairs/cups, arched theatre with curtains and instruments, rooftop lounge with stairs/string lights/crescent, backup venue, river and two bridges, city blocks/trees, readable clock and ticket. Existing artwork unchanged.",
       "animation": "Moving itinerary markers, conversational dots and a rotating clock hand use the gallery clock; pause/reset/reduced motion remain supported.",
-      "lighting": "Ten warm practical lights illuminate the caf\u00e9, theatre, rooftop string lights, windows and backup venue in dark mode."
+      "lighting": "Ten warm practical lights illuminate the café, theatre, rooftop string lights, windows and backup venue in dark mode."
     },
     {
       "number": 61,
@@ -541,7 +551,13 @@
       "number": 54,
       "title": "Gigradar",
       "source": null,
-      "status": "needs-source-context"
+      "status": "implemented",
+      "priorSourceStatus": "needs-source-context",
+      "model": "public/landing/artifacts/gigradar.js",
+      "assets": [
+        "public/landing/assets/projects/054-gigradar-light-v1.png",
+        "public/landing/assets/projects/054-gigradar-dark-v1.png"
+      ]
     },
     {
       "number": 53,
@@ -714,12 +730,6 @@
       "model": "public/landing/artifacts/vibewater.js"
     },
     {
-      "number": 43,
-      "title": "F1 Degens",
-      "source": null,
-      "status": "needs-source-context"
-    },
-    {
       "number": 42,
       "title": "AstroDegen",
       "source": "https://github.com/sayyidkhan/nosana-ci-agent-challenge",
@@ -758,7 +768,13 @@
       "number": 40,
       "title": "Sarawak AI Hackathon 2025",
       "source": null,
-      "status": "needs-source-context"
+      "status": "implemented",
+      "priorSourceStatus": "needs-source-context",
+      "model": "public/landing/artifacts/two-rivers.js",
+      "assets": [
+        "public/landing/assets/projects/040-two-rivers-light-v2.png",
+        "public/landing/assets/projects/040-two-rivers-v1.png"
+      ]
     },
     {
       "number": 39,
@@ -817,10 +833,15 @@
       "number": 36,
       "title": "UpsacleAI",
       "source": "http://github.com/cheonglol/superai-next-hackathon-2025",
-      "status": "source-unavailable",
+      "status": "implemented",
       "research": {
         "finding": "Linked GitHub repository returned HTTP 404 for README and HEAD tree. Need accessible source or project brief before generating."
-      }
+      },
+      "priorSourceStatus": "source-unavailable",
+      "model": "public/landing/artifacts/scaleup-origin.js",
+      "assets": [
+        "public/landing/assets/projects/036-scaleup-origin-v2.png"
+      ]
     },
     {
       "number": 35,
@@ -859,32 +880,73 @@
     {
       "number": 33,
       "title": "Structur3",
-      "source": null,
-      "status": "needs-source-context"
+      "source": "https://drive.google.com/drive/u/0/folders/1VaB7zA0iIdrB60X79jCPcMBdhI0YaoPX",
+      "status": "implemented",
+      "assets": [
+        "public/landing/assets/projects/033-structur3-v2.png"
+      ],
+      "model": "public/landing/artifacts/structur3.js",
+      "research": {
+        "finding": "Original nine-slide pitch reviewed: design, approve, deploy canister on ICP, then view live site. Conceptual animated page builder: sections assemble into one website, then publish."
+      }
     },
     {
       "number": 32,
       "title": "Instareadr",
-      "source": null,
-      "status": "needs-source-context"
+      "source": "https://docs.google.com/presentation/d/1ydQKgbxLSPIRXV--bGxcDcbX8LePDRpf4nGYD3er_6M/edit",
+      "status": "implemented",
+      "assets": [
+        "public/landing/assets/projects/032-instareadr-v5.png"
+      ],
+      "model": "public/landing/artifacts/instareadr.js",
+      "research": {
+        "finding": "Original 13-slide pitch and speaker notes reviewed in docs/instareadr-exhibit.json. Original concept: ingest whitepapers into 5–10 visual learning cards; quiz and rewards proposed. Current ten-section or explainer-video exhibit follows the later user direction."
+      }
     },
     {
       "number": 31,
       "title": "GrowthGuru",
       "source": null,
-      "status": "needs-source-context"
+      "status": "implemented",
+      "priorSourceStatus": "needs-source-context",
+      "model": "public/landing/artifacts/growthguru.js",
+      "assets": [
+        "public/landing/assets/projects/031-growthguru-garden-v2.png"
+      ]
     },
     {
       "number": 30,
       "title": "The Punisher",
-      "source": null,
-      "status": "needs-source-context"
+      "source": "https://docs.google.com/presentation/d/169uaZbCwc4KpUQfK8pMnH51Rh7Y6l9WjipS3yvOSsuQ/edit",
+      "status": "implemented",
+      "sourceReviewDate": "2026-10-28",
+      "research": {
+        "finding": "Original Drive folder located. All 18 slides and available speaker notes read. Slides 3–4 describe Angel/Devil task, reward and punishment roles. Most other slides retain unrelated mailbox-project content; do not attribute those features or statistics to The Punisher. Event album contains no application UI.",
+        "folder": "https://drive.google.com/drive/u/0/folders/17n2LxsLBPqBxfVhc1Av3XgtK3JOxkRod",
+        "usableSlides": [
+          3,
+          4
+        ],
+        "limitation": "Original XD prototype available; executable code and precise outcome adjudication remain unverified.",
+        "xdFinding": "User supplied original XD: 18 artboards covering partner invitation, rock-paper-scissors role selection, demands, timed task contracts, completion/approval and win/lose outcomes. See dedicated source review; supersedes previous absence of original UI evidence."
+      },
+      "artwork": "public/landing/assets/projects/030-punisher-v5.png",
+      "artworkNotes": "Artwork v5 and animated 3D integrated. Detailed authored Rocketbox humans, layered wings, shared contract, timed task completion and partner approval. Simple standard exhibit card.",
+      "originalDesignSource": "/Volumes/Ultra Touch/hackathon/Hackathon Portfolio/30 the punisher/the punisher.xd",
+      "sourceReview": "docs/punisher-source-review.json",
+      "model": "public/landing/artifacts/punisher.js",
+      "verification": "Two deterministic timing/rig tests pass; production build passes; live browser visual review, phase selection and autoplay verified."
     },
     {
       "number": 29,
-      "title": "MyNextGym",
+      "title": "Uncle Dustbin",
       "source": null,
-      "status": "needs-source-context"
+      "status": "implemented",
+      "priorSourceStatus": "needs-source-context",
+      "model": "public/landing/artifacts/uncle-dustbin.js",
+      "assets": [
+        "public/landing/assets/projects/029-uncle-dustbin-v2.png"
+      ]
     },
     {
       "number": 28,
@@ -899,76 +961,131 @@
       "number": 27,
       "title": "GrabHunt",
       "source": null,
-      "status": "needs-source-context"
+      "status": "implemented",
+      "priorSourceStatus": "needs-source-context",
+      "model": "public/landing/artifacts/grabhunt.js",
+      "assets": [
+        "public/landing/assets/projects/027-grabhunt-v1.png"
+      ]
     },
     {
       "number": 26,
       "title": "Amigo",
       "source": null,
-      "status": "needs-source-context"
+      "status": "implemented",
+      "priorSourceStatus": "needs-source-context",
+      "model": "public/landing/artifacts/amigo.js",
+      "assets": [
+        "public/landing/assets/projects/026-amigo-cafe-v3.png"
+      ]
     },
     {
       "number": 25,
       "title": "NeuroSurge",
       "source": null,
-      "status": "needs-source-context",
+      "status": "implemented",
       "assets": [
         "public/landing/assets/projects/025-neurosurge-v2.png"
       ],
       "artDirection": "A memory-learning journal with avocado boat, blueberry planets and broccoli tree association cards; grocery cues and a recall tablet.",
-      "animation": "Selectable Learn, Associate, Recall and Check answers stages; a deterministic 28-second loop conceals all cues before ordered recall."
+      "animation": "Selectable Learn, Associate, Recall and Check answers stages; a deterministic 28-second loop conceals all cues before ordered recall.",
+      "priorSourceStatus": "needs-source-context",
+      "model": "public/landing/artifacts/neurosurge.js"
     },
     {
       "number": 24,
       "title": "MyNextGym",
       "source": null,
-      "status": "needs-source-context",
-      "refinement": "2026-10-26 v4: city-first slate district with no upright console; readable HTML footfall rail, richer architecture, warm windows, genuine gym skylight, tight framing and matching v4 artwork. Five selectable walkthrough stages."
+      "status": "implemented",
+      "refinement": "2026-10-26 v4: city-first slate district with no upright console; readable HTML footfall rail, richer architecture, warm windows, genuine gym skylight, tight framing and matching v4 artwork. Five selectable walkthrough stages.",
+      "priorSourceStatus": "needs-source-context",
+      "model": "public/landing/artifacts/mynextgym.js",
+      "assets": [
+        "public/landing/assets/projects/024-mynextgym-city-v4.png"
+      ]
     },
     {
       "number": 23,
       "title": "PestOverflow",
       "source": null,
-      "status": "needs-source-context"
+      "status": "implemented",
+      "priorSourceStatus": "needs-source-context",
+      "model": "public/landing/artifacts/pestoverflow.js",
+      "assets": [
+        "public/landing/assets/projects/023-pestoverflow-owner-alert-v2.png"
+      ]
     },
     {
       "number": 22,
       "title": "ShoeObituaries",
-      "source": null,
-      "status": "needs-source-context"
+      "source": "/Volumes/Ultra Touch/hackathon/Hackathon Portfolio/22 shoeobituaries - super silly hackathon 2018/shoeobituaries.xd",
+      "status": "implemented",
+      "sourceReviewDate": "2026-10-28",
+      "research": {
+        "finding": "Reviewed all 14 original XD artboards: add a shoe, name and backstory, burial and coffin choice, collection/payment concept, obituary creation and social sharing. Original MoMo example retained. Detailed extraction in docs/shoeobituaries-source-review.json."
+      },
+      "model": "public/landing/artifacts/shoeobituaries.js",
+      "assets": [
+        "public/landing/assets/projects/022-shoeobituaries-v9.png",
+        "public/landing/assets/shoeobituaries-ao-v9.bin",
+        "public/landing/assets/shoe-walnut-v1.webp"
+      ],
+      "verification": "5 tests pass: all six shoes, deterministic animation, matching AO, lid attachment/clearance, fixed-length stays and per-vertex interior wall/floor clearance across the loop. 306,718 triangles.",
+      "fidelity": "Three matching left/right pairs (six shoes), individually modeled and arranged toes forward inside the three lined coffins. Ivory silk lid insets use bronze lettering with shared colour, raised-thread bump and roughness maps; no paper borders, status badges or unlit overlay. Lettering follows lid geometry and studio lighting.",
+      "fitRefinement": "Body depth and lid length extended together 50%. Larger shoes fill approximately 80% of interior width and 91% of depth. Pairs remain seated and clear walls and closed lids throughout the loop. Rebuilt contact shading and framing for taller covers."
     },
     {
       "number": 21,
       "title": "WinWinCusine",
       "source": null,
-      "status": "needs-source-context"
+      "status": "implemented",
+      "priorSourceStatus": "needs-source-context",
+      "model": "public/landing/artifacts/winwincusine.js",
+      "assets": [
+        "public/landing/assets/projects/021-winwincusine-kopitiam-v1.png"
+      ]
     },
     {
       "number": 20,
       "title": "CO2unter",
       "source": null,
-      "status": "needs-source-context"
+      "status": "implemented",
+      "priorSourceStatus": "needs-source-context",
+      "model": "public/landing/artifacts/co2unter.js",
+      "assets": [
+        "public/landing/assets/projects/020-co2unter-v3.png"
+      ]
     },
     {
       "number": 19,
       "title": "Fasight",
       "source": null,
-      "status": "needs-source-context"
+      "status": "implemented",
+      "priorSourceStatus": "needs-source-context",
+      "model": "public/landing/artifacts/fasight.js",
+      "assets": [
+        "public/landing/assets/projects/019-fasight-v1.png"
+      ]
     },
     {
       "number": 18,
       "title": "Checker App",
       "source": null,
-      "status": "needs-source-context"
+      "status": "implemented",
+      "priorSourceStatus": "needs-source-context",
+      "model": "public/landing/artifacts/checker-app.js",
+      "assets": [
+        "public/landing/assets/projects/018-checker-app-v2.png"
+      ]
     },
     {
       "number": 17,
       "title": "Gold Igloo",
       "source": "https://github.com/sayyidkhan/goldigloo",
       "status": "implemented",
-      "artwork": "public/landing/assets/projects/017-goldigloo-research-v4.png",
+      "artwork": "public/landing/assets/projects/017-goldigloo-evolution-v5.png",
       "model": "public/landing/artifacts/goldigloo.js",
-      "notes": "Approved research-desk artwork with IceIgloo mascot; matching glass screening panels, shortlist folio, books and solar garden. Five-stage manual/automatic screening walkthrough, attached waving hand, scoped lighting and zoom controls. See docs/goldigloo-exhibit.md."
+      "notes": "Nestash progression: matched navy-and-brass artwork and animated 3D, Islamic-finance and sustainability research panels, detailed shared energy/water/city landscapes, IceIgloo mascot and converging shortlist workflow. Scoped lighting, baked contact shading and deterministic stage controls. See docs/goldigloo-exhibit.md."
     },
     {
       "number": 16,
@@ -1018,8 +1135,11 @@
     {
       "number": 11,
       "title": "Warriors&Mages",
-      "source": null,
-      "status": "needs-source-context"
+      "source": "docs/warriors-mages-exhibit.json",
+      "status": "implemented",
+      "artwork": "public/landing/assets/projects/011-warriors-mages-v2.png",
+      "model": "public/landing/artifacts/warriors-mages.js",
+      "notes": "Original 11-slide pitch deck and all 12 XD screens reviewed. Student budgeting quest: choose Mage, plan $500 across four needs and savings. Open quest-book composition with a central app, coloured budget compass, circular spending destinations, arcing coins and a warm utilities light. Matching artwork and map texture. Standard simple card retained."
     },
     {
       "number": 10,
@@ -1043,13 +1163,23 @@
       "number": 8,
       "title": "Vainster",
       "source": null,
-      "status": "needs-source-context"
+      "status": "implemented",
+      "priorSourceStatus": "needs-source-context",
+      "model": "public/landing/artifacts/vainster.js",
+      "assets": [
+        "public/landing/assets/projects/008-vainster-face-observatory-v1.png"
+      ]
     },
     {
       "number": 7,
       "title": "Vanita",
       "source": null,
-      "status": "needs-source-context"
+      "status": "implemented",
+      "priorSourceStatus": "needs-source-context",
+      "model": "public/landing/artifacts/vanita.js",
+      "assets": [
+        "public/landing/assets/projects/007-vanita-neighbourhood-v1.png"
+      ]
     },
     {
       "number": 6,
@@ -1107,9 +1237,22 @@
       "artwork": "public/landing/assets/projects/001-xueyiyi-microlearning-v2.png",
       "evidence": "docs/xueyiyi-exhibits.md",
       "verification": "2026-10-27: geometry, deterministic loop and manual stage tests; browser scene review; Astro check and 97-page build pass."
+    },
+    {
+      "number": 43,
+      "title": "F1 Degens",
+      "status": "implemented",
+      "source": "User supplied six-slide F1-DEGENS-Trade-Drivers-Like-racecoins.pptx",
+      "model": "public/landing/artifacts/f1-degens.js",
+      "assets": [
+        "public/landing/assets/projects/043-f1-degens-v1.png"
+      ],
+      "verification": "Four tests pass: causal sequence, finite geometry, car movement/reset, and independent driver markets with track-consistent rank. Production build passes.",
+      "fidelity": "Enlarged near-square trading display with high-contrast hierarchy, simplified chart and large phase actions. Rear pit pavilion preserves race visibility. Lofted car bodywork, multi-element wings, halo, suspension, tire sidewalls, layered barriers and asphalt bump texture. Per-component camera framing and readable HTML phase description.",
+      "market": "Three separate color-matched animated driver charts with shared scales, independent illustrative price histories, race-synchronized P1/P2/P3 positions, comparison before betting and highlighted chosen position. Rivals remain visible after selection and sale."
     }
   ],
-  "verification": {
+  "historicalVerification": {
     "astroCheck": "0 errors, 0 warnings; vendor hints remain",
     "astroBuild": "96 static pages built successfully",
     "newModels": 34,
@@ -1118,5 +1261,52 @@
     "sourceLimit": "41 catalog entries lack linked source context; links for #59, #58 and #36 could not be read. These remain pending.",
     "homepage": "Existing gallery opened in 3D and switched from #81 to #80 with no console errors.",
     "kingdomOfPal": "Project #71: revised light/dark sheikh artwork, articulated sheikh and seven companions, messenger delivery loop and tool motion; deterministic pause/reset and finite transforms checked; all 35 artifact factories pass geometry checks; Astro check and 96-page build pass."
+  },
+  "verification": {
+    "date": "2026-10-28",
+    "catalogProjects": 82,
+    "configuredExhibits": 79,
+    "missingExhibits": [
+      22,
+      30,
+      43
+    ],
+    "missingReferencedFiles": [],
+    "correctedStaleStatuses": [
+      7,
+      8,
+      18,
+      19,
+      20,
+      21,
+      23,
+      24,
+      25,
+      26,
+      27,
+      29,
+      31,
+      36,
+      40,
+      54
+    ],
+    "astroCheck": "0 errors, 0 warnings",
+    "astroBuild": "97 pages built successfully",
+    "targetedTests": "7/7 passed for #11, #32 and #33",
+    "note": "Asset presence does not imply visual approval or complete source evidence. Historical checks retained separately.",
+    "browser": "2026-10-28: #11, #32 and #33 opened in 3D in the local app; rendered scenes and evolving animation states inspected; no captured browser warnings/errors.",
+    "pendingWork": {
+      "uncommittedExhibits": [
+        11,
+        32,
+        33
+      ],
+      "database": "Binary differs from HEAD, but table row comparison found no logical data differences.",
+      "visualReview": {
+        "11": "Still needs visual approval against artwork: flatter lighting/material response and simpler backdrop; improved geometry alone does not close the artwork fidelity gap.",
+        "32": "Integrated and animated; ten sections/video flow is an illustrative expansion, not a claim that the original prototype shipped all these features.",
+        "33": "Integrated and animated; Form & Field is an illustrative page-builder example."
+      }
+    }
   }
 }

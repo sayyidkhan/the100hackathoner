@@ -1,0 +1,22 @@
+{
+  "project": 33,
+  "title": "Structur3",
+  "source": "https://drive.google.com/drive/u/0/folders/1VaB7zA0iIdrB60X79jCPcMBdhI0YaoPX",
+  "reviewed": {
+    "title": "structur3_pitch_deck",
+    "url": "https://docs.google.com/presentation/d/1EZMploU5yqEKH60phn87OXV_CCpmAthn4rr958l-2CI/edit",
+    "coverage": "All nine slides read in HTML presentation view, including skipped solution slide. Title slide inspected visually.",
+    "findings": [
+      "User-friendly studio for decentralized applications on ICP.",
+      "Flow: develop UI, approve design, smart contracts deploy canister, view live website after successful deployment.",
+      "Pitch proposes pay-per-use, staking tiers, Web3 payments, and targeting small businesses and influencers.",
+      "Original visual identity combines blue, teal, gold and a Structur3 wordmark."
+    ]
+  },
+  "interpretation": "A visual page builder assembles Hero, Gallery and Contact modules into one sample creative-studio website. The sections, illustrative Form & Field website and small ICP network nodes are new concept visuals, not verified original UI. The nine-slide pitch establishes design, approval, canister deployment and live publication; the scene presents that workflow without implying a hardware product.",
+  "artwork": "public/landing/assets/projects/033-structur3-v2.png",
+  "generation": "Built-in imagegen; prompt saved in outputs/structur3-review/artwork-v2-prompt.txt",
+  "model": "public/landing/artifacts/structur3.js",
+  "animation": "40-second deterministic sequence: three raised page sections move from library to page at 1\u20137s, approve 8\u201310s, deploy 11\u201319s, show Live and ICP check 19\u201327s, dissolve modules then restart. Cursor follows active section. Pause and reset use the shared clock.",
+  "verification": "Three tests cover publishing prerequisites, deterministic seeking/reset, actual section movement and stable placed positions, dissolve/reset, and finite geometry. 32 meshes / 78056 triangles without browser text. Browser review of rebuilt scene confirms text readability, publication state and pause."
+}

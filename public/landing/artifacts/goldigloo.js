@@ -1,5 +1,7 @@
 import {medivoiceStudio} from './medivoice-studio.js';
 import {planningExhibitSurfaces} from './planning-exhibit-surfaces.js';
+import {nestashLandscapes} from './nestash-landscapes.js';
+import {applyObservatoryAO} from './astrodegen-occlusion.js';
 
 // An interpretation of the 2018 prototype, not a live stock screener.
 export const GOLDIGLOO_CYCLE=24;
@@ -7,24 +9,23 @@ export const GOLDIGLOO_STEPS=[
  ['Business activity','Review the company’s business','The prototype begins by screening business activities against its Shariah criteria.'],
  ['Financial screening','Look at the financial structure','The original research also examines company financial ratios.'],
  ['Purification','Review dividend purification','The third Shariah screening step in the original prototype.'],
- ['Impact','Look for environmental and social impact','The prototype combines Shariah screening with sustainable-impact research.'],
- ['Shortlist','Bring both research lenses together','Explore companies that meet both sets of criteria. These cards are illustrative, not stock recommendations.'],
+ ['Sustainability','Connect the research to real-world impact','Clean energy, water resilience and sustainable cities illustrate the sustainability lens.'],
+ ['Shortlist','Bring both research lenses together','Both research lenses feed a shortlist of illustrative themes for further investigation.'],
 ];
 const ease=v=>{v=Math.max(0,Math.min(1,v));return v*v*(3-2*v);};
 export function goldiglooMoment(time){
  const t=((time%GOLDIGLOO_CYCLE)+GOLDIGLOO_CYCLE)%GOLDIGLOO_CYCLE;
  return {t,index:t<4?0:t<8?1:t<12?2:t<17?3:4,shariah:[0,4,8].map(start=>ease((t-start)/2)),impact:ease((t-12)/3),impactRows:[12,13.1,14.2].map(start=>ease((t-start)/1.2)),shortlist:ease((t-17)/3)};
 }
-export function createArtifact(T){
- const k=medivoiceStudio(T),{root,materials:m,mesh,box,ball,line,finish,batch,texture}=k;
+export function createArtifact(T,options={}){
+ const k=medivoiceStudio(T),{root,materials:m,mesh,box,disk,ball,line,finish,batch,texture}=k;
  const live=[],material=(color,roughness=.65,metalness=0)=>new T.MeshStandardMaterial({color,roughness,metalness});
- Object.assign(m,{stone:material(0xe5dbc8,.8),paper:material(0xeee5d5,.82),leather:material(0x1d3936,.74),gold:material(0xc4a466,.30,.75),edge:material(0x97b6a4,.35,.45),jade:material(0x267568,.5),ink:material(0x173c3b,.42),dark:material(0x102a29,.48),soil:material(0x737256,.95),bark:material(0x79704b,.9),leaf:material(0x657c4a,.8),leafLight:material(0x93a267,.8),solar:material(0x1c3a4f,.28,.3),white:material(0xf2eee2,.5),ice:material(0xcce8ea,.24,.03),seam:material(0xf3f5e9,.57),cheek:material(0xeab19a,.7),warm:new T.MeshStandardMaterial({color:0xffdf9b,emissive:0xffc36b,emissiveIntensity:.65,roughness:.6}),glass:new T.MeshPhysicalMaterial({color:0xa7cdc2,roughness:.13,metalness:.06,transparent:true,opacity:.19,depthWrite:false,side:T.DoubleSide})});
+ Object.assign(m,{stone:material(0xe5dbc8,.8),paper:material(0xeee5d5,.82),leather:material(0x12303b,.74),gold:material(0xc4a466,.30,.75),edge:material(0x97b6a4,.35,.45),jade:material(0x267568,.5),ink:material(0x173c3b,.42),dark:material(0x0a2029,.48),soil:material(0x737256,.95),bark:material(0x79704b,.9),leaf:material(0x657c4a,.8),leafLight:material(0x93a267,.8),solar:material(0x1c3a4f,.28,.3),white:material(0xf2eee2,.5),ice:material(0xcce8ea,.24,.03),seam:material(0xf3f5e9,.57),cheek:material(0xeab19a,.7),warm:new T.MeshStandardMaterial({color:0xffdf9b,emissive:0xffc36b,emissiveIntensity:.65,roughness:.6}),glass:new T.MeshPhysicalMaterial({color:0xa7cdc2,roughness:.13,metalness:.06,transparent:true,opacity:.19,depthWrite:false,side:T.DoubleSide})});
  const stone=planningExhibitSurfaces(T).stone;m.stone.map=stone;m.stone.bumpMap=stone;m.stone.bumpScale=.008;
- const grain=texture('cloth');m.leather.bumpMap=grain;m.leather.bumpScale=.006;m.paper.bumpMap=grain;m.paper.bumpScale=.003;m.ice.bumpMap=texture('stone');m.ice.bumpScale=.002;
- // Locally generated green marble, shared by colour and micro-relief.
- const n=256,pixels=new Uint8Array(n*n*4);
- for(let y=0;y<n;y++)for(let x=0;x<n;x++){const u=x/n,v=y/n,s=Math.sin(u*33+Math.sin(v*17)*2+Math.sin(u*9+v*11)),vein=Math.pow(Math.max(0,1-Math.abs(s)*4),4),i=(y*n+x)*4;pixels.set([44+vein*82,64+vein*77,61+vein*66,255],i);}
- const marble=new T.DataTexture(pixels,n,n);marble.colorSpace=T.SRGBColorSpace;marble.wrapS=marble.wrapT=T.RepeatWrapping;marble.repeat.set(2,1.3);marble.magFilter=T.LinearFilter;marble.needsUpdate=true;m.marble=new T.MeshStandardMaterial({map:marble,roughness:.32,metalness:.08,bumpMap:marble,bumpScale:.001});
+ const grain=texture('cloth');m.leather.bumpMap=grain;m.leather.bumpScale=.006;m.paper.bumpMap=grain;m.paper.bumpScale=.003;m.ice.bumpMap=texture('stone');m.ice.bumpScale=.002;m.seam.color.setHex(0x89b6bc);m.ice.roughness=.26;
+ m.ice.metalness=.08;
+ m.grid=material(0x95b9c5,.36,.45);m.water=material(0x398f99,.22,.25);
+ m.leather.map=texture('stone');m.leather.map.colorSpace=T.SRGBColorSpace;m.leather.bumpScale=.009;
  const group=(x=0,y=0,z=0,parent=root)=>{const g=new T.Group();g.position.set(x,y,z);parent.add(g);return g;};
  function rounded(w,h,d,x,y,z,key,parent=root,r=.045){
   r=Math.min(r,w*.45,h*.45);const s=new T.Shape();s.moveTo(-w/2+r,-h/2);s.lineTo(w/2-r,-h/2);s.quadraticCurveTo(w/2,-h/2,w/2,-h/2+r);s.lineTo(w/2,h/2-r);s.quadraticCurveTo(w/2,h/2,w/2-r,h/2);s.lineTo(-w/2+r,h/2);s.quadraticCurveTo(-w/2,h/2,-w/2,h/2-r);s.lineTo(-w/2,-h/2+r);s.quadraticCurveTo(-w/2,-h/2,-w/2+r,-h/2);
@@ -44,94 +45,92 @@ export function createArtifact(T){
   line([[x-s*.48,y-s*.58,z],[x+s*.48,y+s*.63,z]],.006,key,parent);
  }
  // A shallow desktop slice rather than a ceremonial pedestal.
- slab(6.8,3.8,.12,0,.08,0,'dark',root,.18);slab(6.8,3.8,.055,0,.16,0,'marble',root,.18);
+ slab(8.8,4.45,.20,0,.10,0,'dark',root,.24);
+ slab(8.76,4.41,.025,0,.216,0,'gold',root,.24);slab(8.70,4.35,.035,0,.25,0,'leather',root,.24);
+ rounded(2.4,.24,.04,0,.12,2.245,'gold');rounded(2.32,.18,.018,0,.12,2.274,'dark');label('G O L D  I G L O O',2.18,.14,0,.12,2.293);
+ const lineage=label('NESTASH  /  EVOLVED',1.6,.11,-3.15,.28,1.70,root,'#bca57c',65);if(lineage)lineage.rotation.x=-Math.PI/2;
  // Tactile research reports, sewn signatures, foil title and a proper nibbed pen.
- const books=group(-2.40,.22,.1);books.rotation.y=-.12;
+ const books=group(-3.25,.29,.12);books.rotation.y=-.12;books.scale.setScalar(1.22);
  for(let i=0;i<3;i++){
   const z=(i%2)*.06,y=i*.16;slab(1.47,1.17,.022,0,y,z,'leather',books);slab(1.40,1.10,.11,.025,y+.065,z,'paper',books);slab(1.47,1.17,.023,0,y+.13,z,'leather',books);
   for(let j=0;j<7;j++)box(1.37,.002,.003,.025,y+.025+j*.013,z+.553,'gold',books);
   box(.025,.13,1.10,-.71,y+.065,z,'leather',books);
  }
  const bookTitle=label('G O L D  I G L O O',1.18,.17,0,.475,.39,books,'#d8b67b');if(bookTitle)bookTitle.rotation.x=-Math.PI/2;
- const pen=group(-2.35,.24,1.02);pen.rotation.y=-.18;
+ const pen=group(-3.12,.32,1.12);pen.rotation.y=-.18;
  const barrel=mesh(new T.CylinderGeometry(.034,.034,1.05,24),'gold',pen);barrel.rotation.z=Math.PI/2;
  const grip=mesh(new T.CylinderGeometry(.035,.032,.22,24),'leather',pen);grip.rotation.z=Math.PI/2;grip.position.x=.55;
  const nib=mesh(new T.ConeGeometry(.031,.17,12),'gold',pen);nib.rotation.z=-Math.PI/2;nib.position.x=.73;
  for(const x of [-.50,-.39,.39]){const r=ring(.037,.004,x,0,0,'gold',pen);r.rotation.y=Math.PI/2;}
- // Two real optical panels with crisp, independently generated label textures.
+ // Ivory research panels with crisp labels, brass frames and separate scan/check layers.
  const checks=[],panelFrames=[],scans=[];
- m.scan=new T.MeshBasicMaterial({color:0xffe4aa,transparent:true,opacity:.72,depthWrite:false});
- m.scanHalo=new T.MeshBasicMaterial({color:0xffe4aa,transparent:true,opacity:.10,depthWrite:false});
- const specs=[{x:-.76,z:-.68,title:'S H A R I A H',rows:['Business activity','Financial screening','Purification']},{x:1.09,z:-.34,title:'I M P A C T',rows:['Climate','Clean energy','Life on land & water']}];
+ m.scan=new T.MeshBasicMaterial({color:0x357f70,transparent:true,opacity:.72,depthWrite:false});
+ m.scanHalo=new T.MeshBasicMaterial({color:0x357f70,transparent:true,opacity:.10,depthWrite:false});
+ const specs=[{x:-1.20,z:-.72,title:'ISLAMIC FINANCE',subtitle:'Shariah research',rows:['Business activity','Financial screening','Purification']},{x:.94,z:-.72,title:'SUSTAINABILITY',subtitle:'Impact research',rows:['Clean energy','Water & resilience','Sustainable cities']}];
  specs.forEach((s,pi)=>{
-  const panel=group(s.x,.24,s.z);panel.name=`goldigloo-panel-${pi}`;
-  rounded(2.30,2.67,.024,0,1.36,0,'glass',panel,.025);
+  const panel=group(s.x,.30,s.z);panel.scale.x=.86;panel.name=`goldigloo-panel-${pi}`;
+  rounded(2.38,2.77,.10,0,1.36,-.055,'gold',panel,.075);
+  rounded(2.33,2.72,.11,0,1.36,-.028,'dark',panel,.065);
+  rounded(2.22,2.60,.035,0,1.36,.035,'paper',panel,.045);
+  label(`0${pi+1} / RESEARCH LENS`,1.85,.10,0,2.51,.062,panel,'#777d70',54);
   for(const x of [-1.15,1.15])box(.012,2.68,.024,x,1.36,0,'edge',panel);
   for(const y of [.02,2.70])box(2.31,.012,.024,0,y,0,'edge',panel);
   for(const x of [-.87,.87]){rounded(.22,.12,.15,x,.05,0,'gold',panel,.018);slab(.32,.19,.014,x,-.025,0,'gold',panel);}
-  label(s.title,1.88,.23,0,2.34,.024,panel,'#f5edda',80);
+  label(s.title,1.96,.20,0,2.30,.068,panel,'#183f3d',82);
+  label(s.subtitle,1.86,.15,0,2.08,.068,panel,'#6b796d',64);
+  label('Illustrative research workflow',1.88,.105,0,.25,.068,panel,'#7a7c6e',60);
   for(let i=0;i<3;i++){
-   const y=1.78-i*.55;box(1.82,.004,.004,0,y-.23,.025,'edge',panel);
-   ring(.068,.006,-.88,y,.035,'gold',panel);label(s.rows[i],1.67,.17,.12,y,.035,panel,'#eee8d8',69);
-   const mark=group(-.88,y,.042,panel);check(0,0,0,mark,'gold');live.push(mark);checks.push(mark);
+   const y=1.78-i*.55;box(1.82,.004,.004,0,y-.23,.066,'edge',panel);
+   ring(.068,.006,-.88,y,.074,'gold',panel);label(s.rows[i],1.67,.17,.12,y,.074,panel,'#244d48',69);
+   const mark=group(-.88,y,.085,panel);check(0,0,0,mark,'jade');live.push(mark);checks.push(mark);
   }
-  const glow=group(0,0,.018,panel);glow.name=`goldigloo-active-frame-${pi}`;
+  const glow=group(0,0,.078,panel);glow.name=`goldigloo-active-frame-${pi}`;
   for(const x of [-1.15,1.15])box(.014,2.67,.012,x,1.36,0,'warm',glow);
   for(const y of [.025,2.695])box(2.30,.014,.012,0,y,0,'warm',glow);
   live.push(glow);panelFrames.push(glow);
-  const scan=group(0,0,.061,panel);scan.name=`goldigloo-scan-${pi}`;
+  const scan=group(0,0,.090,panel);scan.name=`goldigloo-scan-${pi}`;
   box(1.89,.014,.006,0,0,0,'scan',scan);box(1.89,.075,.004,0,.012,-.003,'scanHalo',scan);
   ball(.026,-.97,0,0,'warm',scan);live.push(scan);scans.push(scan);
  });
  // The shortlist folio and thin, textured research cards rest in the foreground.
- const folio=group(.75,.235,1.05);folio.rotation.y=-.10;
+ const folio=group(-.05,.30,1.34);folio.rotation.y=-.10;
  slab(2.98,1.34,.055,0,0,0,'paper',folio,.075);
  for(const z of [-.60,.60])for(let j=0;j<58;j++)box(.021,.003,.004,-1.40+j*.049,.038,z,'gold',folio);
  for(const x of [-1.40,1.40])for(let j=0;j<23;j++)box(.004,.003,.021,x,.038,-.56+j*.05,'gold',folio);
  box(.008,.01,1.16,0,.035,0,'stone',folio);
- const tab=group(.73,.13,-.59,folio);tab.rotation.x=-.3;rounded(1.30,.25,.035,0,0,0,'paper',tab,.03);label('THE SHORTLIST',1.19,.15,0,0,.027,tab,'#4e5d4d');
+ const tab=group(.73,.13,-.59,folio);tab.rotation.x=-.3;rounded(1.30,.25,.035,0,0,0,'paper',tab,.03);label('RESEARCH SHORTLIST',1.19,.15,0,0,.027,tab,'#4e5d4d');
  const cards=[],cardBadges=[];
  function card(x,y,z,angle,parent,index,animated=false){
   const g=group(x,y,z,parent);g.rotation.x=-Math.PI/2;g.rotation.z=angle;g.name=`goldigloo-company-${index}`;
   rounded(.73,.97,.015,0,0,0,'paper',g,.038);
-  if(index%2)leafIcon(-.09,.24,.02,g,.19,'jade');else {const icon=mesh(new T.CircleGeometry(.14,5),'jade',g);icon.position.set(-.08,.23,.025);}
-  for(let j=0;j<4;j++)box(.49-j*.045,.012,.003,-j*.02,-.10-j*.065,.020,'edge',g);
-  const badge=group(.25,.35,.025,g);ring(.052,.004,0,0,0,'jade',badge);check(0,0,0,badge,'jade',.55);
+  const medallion=mesh(new T.CircleGeometry(.15,48),'jade',g);medallion.position.set(0,.23,.024);
+  if(index===0){for(const x of [-.07,.07]){box(.008,.17,.007,x,.23,.031,'paper',g);for(let b=0;b<3;b++){const blade=box(.006,.08,.004,0,.04,0,'paper',group(x,.30,.033,g));blade.parent.rotation.z=b*Math.PI*2/3;}}}
+  else if(index===1){for(let j=0;j<3;j++)line([[-.11,.19+j*.045,.032],[0,.17+j*.045,.032],[.11,.19+j*.045,.032]],.005,'paper',g);}
+  else{for(let j=0;j<3;j++)box(.046,.10+j*.035,.008,-.065+j*.065,.22+j*.017,.032,'paper',g);}
+  label(['Energy','Water','Cities'][index%3],.62,.13,0,.02,.027,g,'#214b44',85);
+  label('Illustrative theme',.61,.075,0,-.14,.027,g,'#778475',52);
+  label('Shariah   +   Impact',.60,.075,0,-.28,.027,g,'#657a68',50);
+  const badge=group(0,-.38,.025,g);for(const x of [-.17,.17]){ring(.036,.003,x,0,0,'jade',badge);check(x,0,0,badge,'jade',.42);}
   if(animated){badge.name=`goldigloo-shortlist-check-${index}`;cardBadges.push(badge);batch(g);live.push(g);cards.push(g);}return g;
  }
  for(let i=0;i<3;i++)card(-.91+i*.89,.062,.015,(i-1)*-.045,folio,i,true);
- card(-2.38,.22,1.55,.20,root,3);
- // Small planted impact vignette: a solar roof, fine leaves, stones and water.
- const garden=group(2.62,.21,-.1);slab(1.15,1.85,.16,0,.08,0,'stone',garden,.15);slab(1.02,1.70,.015,0,.17,0,'soil',garden,.10);
- slab(.31,.70,.012,-.32,.19,.42,'jade',garden,.1);
- for(let i=0;i<12;i++){const a=i*2.4;ell(Math.cos(a)*.45,.22,Math.sin(a)*.72,.07,.055,.08,'stone',garden);}
- const hut=group(.12,.20,.10,garden);
- slab(.70,.56,.025,0,0,0,'stone',hut);
- for(const x of [-.28,.28])for(const z of [-.20,.20])box(.034,.34,.034,x,.18,z,'white',hut);
- const roof=group(0,.40,0,hut);roof.rotation.x=.17;slab(.76,.63,.035,0,0,0,'white',roof);
- for(let i=0;i<3;i++)for(let j=0;j<2;j++){
-  slab(.22,.26,.008,-.24+i*.24,.026,-.145+j*.29,'solar',roof,.006);
-  for(let q=0;q<4;q++)box(.20,.002,.003,-.24+i*.24,.032,-.24+j*.29+q*.062,'edge',roof);
- }
- const plants=[];
- let seed=1704;const rnd=()=>{seed=(Math.imul(seed,1664525)+1013904223)>>>0;return seed/4294967296;};
- for(const [x,z,h] of [[.30,-.67,1.35],[-.35,-.57,.75],[.38,.62,.53],[-.36,.64,.35]]){
-  const plant=group(0,0,0,garden);plant.name=`goldigloo-plant-${plants.length}`;
-  line([[x,.19,z],[x-.02,h*.58,z],[x+.06,h,z+.03]],.016,'bark',plant);
-  for(let b=0;b<9;b++){
-   const a=b*2.4,y=.3+(h-.3)*b/9,end=[x+Math.cos(a)*.23,y+.16,z+Math.sin(a)*.19];
-   line([[x,y,z],end],.007,'bark',plant);
-   for(let j=0;j<9;j++){
-    const l=ell(end[0]+(rnd()-.5)*.23,end[1]+(rnd()-.5)*.16,end[2]+(rnd()-.5)*.20,.032,.084,.012,j%2?'leaf':'leafLight',plant);l.rotation.set(rnd(),a+rnd(),rnd()*1.8-.9);
-   }
-  }
-  // Move the pivot to the stem base before preserving the whole plant.
-  batch(plant);plant.children.forEach(o=>o.position.sub(new T.Vector3(x,.19,z)));plant.position.set(x,.19,z);
-  live.push(plant);plants.push(plant);
- }
+
+ // Nestash's three impact miniatures are now connected to a second research lens.
+ const islands=[],impactRings=[];
+ const centers=[[2.62,.30,.66,.64],[2.68,.55,-1.05,.60],[3.60,.30,-.12,.62]],radii=[1.13,.86,.86];
+ centers.forEach(([x,y,z,scale],i)=>{
+  const g=group(x,y,z);g.scale.setScalar(scale);islands.push(g);const r=radii[i];
+  disk(r,.09,0,.045,0,'dark',g);disk(r*.99,.025,0,.104,0,'gold',g);disk(r*.965,.16,0,.198,0,'stone',g);
+  const highlight=ring(r*.95,.015,0,.292,0,'warm',g);highlight.rotation.x=-Math.PI/2;highlight.name=`goldigloo-impact-${i}`;impactRings.push(highlight);live.push(highlight);
+ });
+ const {rotors,ripples,flows}=nestashLandscapes(T,{materials:m,mesh,box,disk,line,group,slab,rounded,batch},islands,live);
+ // Two separate paths become a single shortlist only after both lenses complete.
+ const routes=[new T.CatmullRomCurve3([[-1.20,.30,-.55],[-1.72,.30,.18],[-1.75,.30,.78],[0,.34,.94]].map(v=>new T.Vector3(...v))),new T.CatmullRomCurve3([[.94,.30,-.55],[1.56,.30,.20],[1.73,.30,.84],[0,.34,.94]].map(v=>new T.Vector3(...v)))];
+ const signals=[];const junction=ball(.052,0,.34,.94,'warm');junction.name='goldigloo-convergence';live.push(junction);
+ routes.forEach((route,i)=>{mesh(new T.TubeGeometry(route,72,.013,8,false),'gold');for(let j=0;j<3;j++){const o=ball(.033,0,0,0,'warm');o.name=`goldigloo-research-signal-${i}-${j}`;signals.push({o,i,j});live.push(o);}});
  // IceIgloo, sculpted as staggered curved ice blocks. The entrance is a doorway,
  // separate from the small friendly face, matching the approved artwork.
- const mascot=group(-2.40,.70,-.02);mascot.name='goldigloo-mascot';
+ const mascot=group(-3.25,.89,.12);mascot.name='goldigloo-mascot';mascot.scale.setScalar(1.60);
  const body=group(0,0,0,mascot);
  const core=mesh(new T.SphereGeometry(.508,40,24,0,Math.PI*2,0,Math.PI/2),'seam',body);core.scale.y=.97;
  for(let row=0;row<5;row++){
@@ -159,16 +158,17 @@ export function createArtifact(T){
  }
  const badge=group(-.34,.36,.27,body);badge.rotation.y=-.45;leafIcon(0,0,0,badge,.11,'gold');
  batch(body);batch(wave);live.push(mascot);
- root.updateMatrixWorld(true);
+ root.updateMatrixWorld(true);const framingPoints=[];
+ root.traverse(o=>{if(!o.isMesh||signals.some(s=>s.o===o))return;const b=new T.Box3().setFromObject(o);for(const x of [b.min.x,b.max.x])for(const y of [b.min.y,b.max.y])for(const z of [b.min.z,b.max.z])framingPoints.push(new T.Vector3(x,y,z));});
  // Preserve only dynamic roots; the mascot's hand remains attached to its body.
  for(const o of live)if(o!==mascot)root.attach(o);
- const model=finish(17,live);
+ const before=mascot.position.clone(),model=finish(17,live),offset=mascot.position.clone().sub(before);framingPoints.forEach(p=>p.add(offset));
  model.traverse(o=>{if(o.isMesh&&(o.material.transparent||o.material.isMeshBasicMaterial)){o.userData.noShadow=true;}});
  const cardRest=cards.map(c=>({p:c.position.clone(),q:c.quaternion.clone()}));
  const waveRest=wave.rotation.z,mascotRest=mascot.position.clone();
- const scanRest=scans.map(o=>o.position.clone()),plantRest=plants.map(o=>o.quaternion.clone());
+ const scanRest=scans.map(o=>o.position.clone()),rotorRest=rotors.map(o=>o.quaternion.clone()),rippleScale=ripples.map(o=>o.scale.clone()),flowScale=flows.map(o=>o.scale.clone()),ringScale=impactRings.map(o=>o.scale.clone());
  const tilt=new T.Quaternion(),axis=new T.Vector3(1,0,0);
- Object.assign(model.userData,{displayBase:false,groundLevel:0,studioProfile:'goldigloo',contactFootprint:false,initialYaw:-.10,initialElevation:.38,autoOrbit:false,realTimeAnimation:true,source:'https://github.com/sayyidkhan/goldigloo',screeningConcept:true});
+ Object.assign(model.userData,{framingPoints,cameraFitSway:0,framingTargetY:1.08,displayBase:false,groundLevel:0,studioProfile:'goldigloo',contactFootprint:false,initialYaw:-.08,initialElevation:.40,autoOrbit:false,realTimeAnimation:true,source:'https://github.com/sayyidkhan/goldigloo',screeningConcept:true});
  let selected=null;
  model.userData.setStep=(index,time=0)=>{if(index!==null&&(!Number.isInteger(index)||index<0||index>=GOLDIGLOO_STEPS.length))return;selected=index;model.userData.animate(time);};
  model.userData.animate=time=>{
@@ -181,11 +181,16 @@ export function createArtifact(T){
   const clock=goldiglooMoment(time).t,breath=Math.sin(clock*Math.PI/3);
   const greeting=(clock%8),waveEnvelope=ease(greeting/.45)*(1-ease((greeting-2.6)/.6));
   wave.rotation.z=waveRest+.12+waveEnvelope*(.16+Math.sin(greeting*8)*.34);
-  mascot.scale.set(1-breath*.008,1+breath*.014,1-breath*.008);
+  mascot.scale.set(1-breath*.008,1+breath*.014,1-breath*.008).multiplyScalar(1.60);
   mascot.position.copy(mascotRest);
   const blinkPhase=clock%6,blink=1-ease((blinkPhase-3.0)/.09)*(1-ease((blinkPhase-3.13)/.12));
   eyes.forEach(o=>{o.scale.y=Math.max(.08,blink);});
-  plants.forEach((o,i)=>{o.quaternion.copy(plantRest[i]);o.rotateZ(Math.sin(clock*Math.PI/3+i)*.028);o.rotateX(Math.sin(clock*Math.PI/6+i)*.012);});
+  rotors.forEach((o,i)=>{o.quaternion.copy(rotorRest[i]);o.rotateZ(-clock*Math.PI*(i?1/3:1/2));});
+  ripples.forEach((o,i)=>o.scale.copy(rippleScale[i]).multiplyScalar(.88+.12*Math.sin(clock*Math.PI/2+i)));
+  flows.forEach((o,i)=>{o.scale.copy(flowScale[i]);o.scale.x*=.88+.12*Math.sin(clock*Math.PI*2+i*.7);});
+  junction.visible=moment.index===4;junction.scale.setScalar(1+.10*Math.sin(clock*Math.PI*2));
+  impactRings.forEach((o,i)=>{o.visible=moment.impactRows[i]>.01;o.scale.copy(ringScale[i]).multiplyScalar(.99+.01*moment.impactRows[i]);});
+  signals.forEach(({o,i,j})=>{o.visible=i===0?moment.t>=10&&moment.t<17:moment.t>=16&&moment.t<22;o.position.copy(routes[i].getPointAt((clock*.25+j/3)%1)).add(offset);});
   scans.forEach((o,i)=>{
    const stageTime=selected===null?moment.t:([0,4,8,12,17][selected]+clock%3.6);
    const local=i===0?stageTime%4:(stageTime-12)%1.1;
@@ -205,5 +210,7 @@ export function createArtifact(T){
    cardBadges[i].visible=moment.t>=18.8+i*.65;
   });
  };
+ for(const o of model.children)if(o.isMesh&&!o.material.isMeshBasicMaterial&&!o.material.transparent&&!live.includes(o))o.userData.observatoryAO=true;
+ if(typeof window!=='undefined'&&!options.bake)applyObservatoryAO(T,model,{url:new URL('../assets/goldigloo-ao-v1.bin',import.meta.url)});
  model.userData.animate(0);return model;
 }

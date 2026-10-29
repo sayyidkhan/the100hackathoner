@@ -1,0 +1,43 @@
+{
+  "project": 22,
+  "title": "Shoe Obituaries \u2014 three-tribute gallery",
+  "source": "14 original Adobe XD artboards; public listing includes all three tributes.",
+  "tributes": [
+    {
+      "name": "MoMo",
+      "years": "2010\u20132018",
+      "type": "Nike Air Max",
+      "quote": "Resting in God\u2019s Garden"
+    },
+    {
+      "name": "ZuZu",
+      "years": "2012\u20132016",
+      "type": "Nike Air Max",
+      "quote": "Resting in Shoe Heaven"
+    },
+    {
+      "name": "BuBu",
+      "years": "2007\u20132010",
+      "type": "Nike Air Jordan",
+      "quote": "Resting in Basketball Heaven"
+    }
+  ],
+  "interpretation": "Names, dates, shoe types and quotes are original. Colours and modeled sneakers are visual interpretations, not exact branded replicas. Only MoMo has a supplied backstory; none invented for ZuZu or BuBu.",
+  "artwork": {
+    "path": "public/landing/assets/projects/022-shoeobituaries-v9.png",
+    "generator": "Built-in image_gen",
+    "prompt": "Use case: stylized-concept. Create a premium photorealistic 3D collectible memorial gallery for the 2018 playful website \"Shoe Obituaries\". Landscape 3:2. ONE cohesive physically buildable studio diorama. Three equally sized open walnut shoe coffins in a gentle shallow arc, side by side on a wide rounded ivory limestone plinth; each contains ONE lovingly worn detailed sneaker. Behind each coffin is a slim upright cream obituary card with fine brass frame, all three cards fully readable and not obscured by lids: coffin lids are opened behind the boxes but below text area. Left: burgundy/ivory layered mesh running sneaker with rounded aerodynamic sole, suede stitched overlays and worn laces, label \"MoMo\", \"2010 \u2014 2018\", \"Resting in God's Garden\". Middle: faded sage/ivory mesh running sneaker with different layered panels and worn rubber, label \"ZuZu\", \"2012 \u2014 2016\", \"Resting in Shoe Heaven\". Right: navy/ivory high-top basketball sneaker with ankle collar, padded tongue, detailed laces and stitching, label \"BuBu\", \"2007 \u2014 2010\", \"Resting in Basketball Heaven\". Each card has small \"In loving memory\" above its name. Shoe geometry sophisticated, organically curved, sewn leather edges, tiny stitches, mesh weave, creases and real rubber tread. Walnut boxes have raised inset panels, brass hinges, velvet cream lining in real fabric folds. A delicate single white rose across the front of the plinth, a brass engraved small front plaque \"Shoe Obituaries\". Tiny soft amber lights under the brass edged boxes. Dark desaturated sage studio backdrop, soft warm key from upper left, gentle cool rim, realistic ambient occlusion and contact shadows, museum product photography, tactile materials, dignified yet whimsical through subject alone. Camera at three-quarter front with moderate elevated angle, close framing, all objects entirely in frame. Restrained scene, no extra shoes, no cartoon, no characters, no gravestones, no crosses, no flames, no skulls, no floating UI, no flashy neon, no extra unreadable text. Make the three memorials equally important.",
+    "latestEdit": "docs/shoeobituaries-artwork-v9.json",
+    "proportions": "Visibly taller upholstered lids and larger adult shoe pairs, with padding margins retained. Raster dimensions visually assessed."
+  },
+  "model": "public/landing/artifacts/shoeobituaries.js",
+  "animation": "30-second loop: all closed for 2 seconds; MoMo opens at 2\u20134s, ZuZu at 9\u201311s, BuBu at 16\u201318s, with earlier lids staying open. All remain open until 24s, close together at 24\u201327s, then hold closed until restart. Shoes remain seated throughout. Manual tribute selection opens its lid; All tributes opens all three.",
+  "fidelity": "Three matching left/right pairs (six shoes), individually modeled and arranged toes forward inside the three lined coffins. Ivory silk lid insets use bronze lettering with shared colour, raised-thread bump and roughness maps; no paper borders, status badges or unlit overlay. Lettering follows lid geometry and studio lighting.",
+  "verification": "5 tests pass: all six shoes, deterministic animation, matching AO, lid attachment/clearance, fixed-length stays and per-vertex interior wall/floor clearance across the loop. 306,718 triangles. Production build passed (97 pages). Live browser verification unavailable: browser use disabled in Work settings.",
+  "preview": "public/landing/assets/projects/022-shoeobituaries-v9.png",
+  "lidRefinement": "2026-10-29: Original memorial inscriptions now appear on the upholstered underside of each rear-hinged cover in both artwork and 3D. Separate frames and supports removed. Text follows lid motion. Fixed-length brass stays and shoe clearance retained.",
+  "textureProvenance": "docs/shoe-walnut-texture.json",
+  "occlusion": "public/landing/assets/shoeobituaries-ao-v9.bin",
+  "fitRefinement": "Body depth and lid length extended together 50%. Larger shoes fill approximately 80% of interior width and 91% of depth. Pairs remain seated and clear walls and closed lids throughout the loop. Rebuilt contact shading and framing for taller covers.",
+  "upholsteryRefinement": "Raised gathered floor cushion, full-height pleated inner-wall padding and padded bolsters around each lid inscription. Shoes raised with the cushioned floor; default viewing angle elevated to reveal interiors. Memorial map aspect corrected to match the lid panel, with larger dark-brown embroidery on brighter ivory silk. Artwork v9 retained."
+}

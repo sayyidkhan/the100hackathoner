@@ -17,7 +17,7 @@ const options = Object.fromEntries(process.argv.slice(2).map(arg => {
   return [match[1], match[2]];
 }));
 const modelName=options.model??'growthguru';
-if(!['growthguru','propertyguru','nestash'].includes(modelName))throw new Error('Unsupported model');
+if(!['growthguru','propertyguru','nestash','goldigloo'].includes(modelName))throw new Error('Unsupported model');
 const {createArtifact}=await import(`../public/landing/artifacts/${modelName}.js`);
 const rays = Number(options.rays ?? 24), maxDistance = Number(options.distance ?? .35), cell = Number(options.cell ?? .014);
 const limit = options.limit === undefined ? Infinity : Number(options.limit);

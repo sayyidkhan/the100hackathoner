@@ -1,24 +1,35 @@
-# Gold Igloo — hackathon 17
+# Gold Igloo / IceIgloo — Nestash's evolution
 
-Approved artwork: `public/landing/assets/projects/017-goldigloo-research-v4.png`.
-Review source: `outputs/goldigloo-review/goldigloo-mascot-v4.png`.
-Model: `public/landing/artifacts/goldigloo.js`.
+## Context
 
-The user approved the revised IceIgloo mascot before requesting the page integration and 3D implementation. The exhibit follows the approved investment-research desk composition: pale ice-block mascot on research reports, glass Shariah and impact panels, ivory shortlist folio, brass pen, and planted solar garden. Earlier dome/gate concepts are not used.
+Hackathon #17 is Gold Igloo (#Mosque-Tech Challenge 2018). The user identifies IceIgloo as Nestash's evolution, combining sustainability and Islamic finance. The original repository describes that combination and uses Ice Igloo in its introduction: https://github.com/sayyidkhan/goldigloo . Its historical prototype uses business-activity screening, financial screening and dividend purification alongside impact research. The original stack was HTML/CSS/JS, Tableau and Google Sheets.
 
-Product research: https://github.com/sayyidkhan/goldigloo (README, original index and about pages). The 2018 prototype uses business-activity screening, financial screening, and dividend purification, then sustainable-impact research. Its original stack includes HTML/CSS/JavaScript, Tableau, and Google Sheets. The page uses the repository's Gold Igloo name while retaining IceIgloo as the mascot reference. Company cards in the exhibit are illustrative.
+The page retains the catalogue's Gold Igloo title and the previously approved ice-block mascot. The three landscapes and shortlist cards are illustrative research themes, not live company results or a compliance certification.
 
-## Interaction
+## Matched artwork and 3D
 
-The 24-second deterministic loop advances through business activity (0–4s), financial screening (4–8s), purification (8–12s), impact (12–17s), and shortlist (17–24s). Check marks appear progressively. A gold scan line visits each criterion, with impact check marks appearing in sequence. The shortlist cards lift 0.42 units, tilt toward the viewer and settle one by one; their badges follow the reveal. IceIgloo waves in greeting phrases, blinks and breathes, while the garden plants sway around their stem bases. The mascot's waving hand remains attached to the body. Manual stage controls hold the chosen research step while ambient motion continues; Auto-play resumes the timeline. All motion uses the shared elapsed clock, so pause and reduced-motion mode stop both story and ambient animation. Rotation, zoom, pause/resume and reset use the shared exhibit controls.
+- Artwork: `public/landing/assets/projects/017-goldigloo-evolution-v5.png`
+- Generated with the built-in image-generation tool from the previous approved mascot artwork and Nestash's artwork. Prompt: `outputs/goldigloo-evolution/artwork-prompt.txt`.
+- Scene: `public/landing/artifacts/goldigloo.js`
+- Shared landscape geometry: `public/landing/artifacts/nestash-landscapes.js`
+- Static contact shading: `public/landing/assets/goldigloo-ao-v1.bin`
 
-The model batches static geometry by material and preserves only animation roots. The ivory lettering uses canvas textures. The deep green studio backdrop is retained in both page themes for contrast. Reduced-motion behavior is inherited from the shared viewer.
+The composition keeps Nestash's navy leather, brass edges, limestone miniatures and warm studio lighting. IceIgloo sits on research journals at left. Two legible ivory research panels distinguish Islamic finance from sustainability. The right side reuses Nestash's detailed energy, reservoir and planted-city models, making the progression visible. Two brass paths converge on the shortlist folio. Each theme card gains paired research checks after screening completes.
+
+The 3D uses actual geometry throughout; the artwork remains a higher-detail rendered interpretation. The base and framing accommodate the wider composition. Static geometry is batched by material; the 336 KB contact bake modifies indirect lighting only, retaining real-time shadows and animated surfaces.
+
+## Animation
+
+The deterministic 24-second loop follows business activity (0–4s), financial screening (4–8s), purification (8–12s), sustainability (12–17s) and shortlist (17–24s). Each criterion is scanned and checked. The sustainability platforms illuminate in row order. Separate signals leave the research panels only after the respective research stages complete; the shared junction lights when the shortlist stage begins. Cards lift and settle sequentially and show paired checks only after both research paths finish.
+
+The mascot waves, blinks and breathes. Turbines turn and reservoir water moves on the same shared clock. Manual stage selection holds the story while ambient motion continues. Pause, reduced motion and visibility handling are inherited from the shared viewer. Rotation, zoom and reset remain available.
 
 ## Validation
 
-- `node --test scripts/tests/goldigloo.test.mjs`: 5 tests pass, covering stage gates, manual/auto modes, badges, attached hand, deterministic replay, finite geometry and bounds.
-- `npx astro check && npx astro build`: succeeds; 97 pages built. Astro check: 0 errors, 0 warnings, 102 hints.
-- Browser checked artwork/3D switching, shortlist selection, pause, zoom/reset, and light/dark appearance. No browser errors captured.
-- Screenshots: `outputs/goldigloo-review/page-artwork.png`, `outputs/goldigloo-review/page-3d.png`.
+`node --test scripts/tests/goldigloo.test.mjs` covers stage order, manual mode, deterministic replay, attached hand, blink, paused-clock stability, bounded geometry, sequential card movement, research-route gates, impact-platform highlights and loop reset. The scene stays under 130 meshes and 450,000 vertices in the headless geometry check.
 
-Animation refinement verified on 2026-10-26: five Node tests cover sequential card lifting/settling, moving scan line, blink, continuous ambient motion during manual step selection, exact replay/pause determinism and scene bounds. Browser playback, selected-step motion and pause/resume checked.
+Rebuild contact shading after geometry edits:
+
+`node scripts/bake-growthguru-ao.mjs --model=goldigloo --rays=24 --distance=.38 --cell=.018`
+
+The bake validates geometry signatures before applying, preventing stale shading after model changes. Final browser proof is saved under `outputs/goldigloo-evolution/`.

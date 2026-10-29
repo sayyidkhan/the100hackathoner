@@ -1,0 +1,104 @@
+{
+  "project": 30,
+  "title": "The Punisher",
+  "reviewed": "2026-10-28",
+  "source": "/Volumes/Ultra Touch/hackathon/Hackathon Portfolio/30 the punisher/the punisher.xd",
+  "sha256": "5fb9300398bae74895301b3910bc06d02dde7099942b2ba1b437435d7d71089d",
+  "method": "Read all 18 artboard text trees, inspected embedded home preview, and inspected prototype interaction data. Full visual rendering of every artboard has not been performed.",
+  "artboards": [
+    {
+      "name": "MobileApp - HomePage",
+      "path": "artboard-ae2a5391-2e52-4e6f-9f9b-f6ef0ad07c54"
+    },
+    {
+      "name": "MobileApp - Select Your Character (choose character)",
+      "path": "artboard-ca4ad697-c67b-4fbc-af26-fcaf8c6f3b84"
+    },
+    {
+      "name": "MobileApp - Connect With Partner",
+      "path": "artboard-38b21230-639a-40b7-b7d0-1998c8bbbab2"
+    },
+    {
+      "name": "MobileApp - Select Your Character (play short game)",
+      "path": "artboard-8a92e02d-3d07-45fa-beb8-c6d344e5693c"
+    },
+    {
+      "name": "MobileApp - Select Your Character (play short game)",
+      "path": "artboard-62ea5fdb-5b26-47fc-ab98-8c252bea1c64"
+    },
+    {
+      "name": "MobileApp - Your Demands",
+      "path": "artboard-c087089c-3038-4e65-84c2-5577426092ee"
+    },
+    {
+      "name": "MobileApp - Partner Demands",
+      "path": "artboard-719f8e19-8ea1-485e-9d01-0583b751f461"
+    },
+    {
+      "name": "MobileApp - Task Overview ",
+      "path": "artboard-4ddce713-dfeb-4d75-b321-bd0a63daff63"
+    },
+    {
+      "name": "MobileApp - Task Overview – selected 1 time",
+      "path": "artboard-88b492f3-f9db-449f-85f0-cc8ebf384a31"
+    },
+    {
+      "name": "MobileApp - Partner Demands – 1",
+      "path": "artboard-9249b720-755c-481f-8498-abe331167846"
+    },
+    {
+      "name": "MobileApp - Task Overview – selected 1 time – 1",
+      "path": "artboard-0b6fd0e3-597c-4c34-b0e0-27d99145cf2d"
+    },
+    {
+      "name": "MobileApp - Task Overview – selected 1 time – 2",
+      "path": "artboard-e3eba7a2-df36-42a4-9220-71c42a237244"
+    },
+    {
+      "name": "MobileApp - Task Overview – selected 1 time – 3",
+      "path": "artboard-5f84de4c-5816-4d35-be45-277508a135d0"
+    },
+    {
+      "name": "MobileApp - HomePage – 1",
+      "path": "artboard-06fbcb42-ace8-450c-aa49-da187dee0115"
+    },
+    {
+      "name": "MobileApp - HomePage – 2",
+      "path": "artboard-76d1c0b4-5d9a-464d-8c3e-69a41b3f314c"
+    },
+    {
+      "name": "MobileApp - HomePage – 3",
+      "path": "artboard-d59f2f91-45ca-4814-b7a6-6f75ed018063"
+    },
+    {
+      "name": "MobileApp - HomePage – 4",
+      "path": "artboard-525275f9-5725-4cbc-a04e-8eccec901c15"
+    },
+    {
+      "name": "MobileApp - HomePage – 5",
+      "path": "artboard-b8128f71-3171-4bdc-92cb-af73a3077693"
+    }
+  ],
+  "confirmedFlow": [
+    "Log in and connect with a partner by user ID.",
+    "Play a short rock–paper–scissors game; the winner gets priority choosing Angel or Devil.",
+    "Set your demand/punishment and review the partner demand.",
+    "Review tasks with Me/Partner columns; add/remove tasks and set a time limit.",
+    "Finalise a contract and view current contracts with role, duration and time remaining.",
+    "Track Completed/Not Done and request approval with Approve Me.",
+    "Separate You Won and You Lost screens display the applicable punishment."
+  ],
+  "originalExamples": [
+    "Buy groceries for the week",
+    "Tidy the room",
+    "No sweet drinks for one week",
+    "Wash the toilet for one week",
+    "Belanja the partner for one week"
+  ],
+  "limits": [
+    "Prototype design evidence, not executable application source or proof of shipped behavior.",
+    "Role/reward labels exist, but precise outcome adjudication and all reward branches need further visual/prototype review.",
+    "Current Plan our date, gift and dish stack were illustrative choices, not recovered screen content."
+  ],
+  "artDirectionRecommendation": "Retain the softened sculptural Angel and Devil, but center the composition on a shared timed contract. Show bilateral tasks and approval on the phone, small rock/paper/scissors tokens for role choice, and a grocery basket and cleaning prop drawn from original examples. Characters should negotiate or play, rather than simply pose romantically. Keep one cohesive scene and avoid crowding it with every prototype screen."
+}

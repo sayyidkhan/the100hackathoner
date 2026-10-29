@@ -1,0 +1,34 @@
+{
+  "project": 11,
+  "title": "Warriors & Mages",
+  "reviewed": "2026-10-28",
+  "sources": [
+    {
+      "title": "Warriors and Mages original pitch deck",
+      "url": "https://docs.google.com/presentation/d/1r_dzAt74ZUJsYj604zoqO6DAEPQ8-f4lHftW9KvTRAk/edit",
+      "coverage": "All 11 slides and available speaker notes read in HTML view.",
+      "evidence": "SUTD WhatTheHack, 30 September\u20131 October 2017. Student financial awareness and lifestyle planning. Persona-based recommendations, allowance and portfolio budgeting. Final categories: food, entertainment, utility, transport.",
+      "caveat": "Some notes reuse the earlier Swagmylife relocation pitch. This exhibit follows the deck's explicit student audience and the linked student prototype."
+    },
+    {
+      "title": "Original warriorsandmages Adobe XD prototype",
+      "url": "https://xd.adobe.com/view/d191c79a-d51e-44a1-bab4-bf45a1520843/",
+      "coverage": "All 12 screens visually reviewed, including persona selection, allowance, savings, needs, financial overview, recommendations, goals and accomplishments.",
+      "evidence": "Warrior represents exercise/social interests; Mage represents reading/quiet places. The prototype shows allowance 500, savings 5000, and food/entertainment/utilities/transport allocations. Accomplishments are longer-term saving and spending habits.",
+      "caveat": "Original inconsistent chart labels are not reproduced. The exhibit uses an explicitly illustrative $500 plan: $150 food, $200 entertainment, $50 utilities, $50 transport and $50 savings. No achievement is instantly awarded for merely making a plan."
+    },
+    {
+      "title": "Original Tableau demonstration linked by slide 11",
+      "url": "https://public.tableau.com/shared/BG6GBMWDQ?:display_count=yes",
+      "coverage": "Opened; redirects to Tableau's not-found page. Dashboard contents could not be reviewed."
+    }
+  ],
+  "interpretation": "Reimagined student-budgeting quest based on the 2017 deck and prototype, not a functioning bank. An open leather-bound book, illustrated parchment, a central app and five-part budget compass connect four everyday spending destinations and savings. The map is decorative fantasy artwork, not geographic recommendation data. Small original persona tokens replace the previous oversized medallions.",
+  "animation": "34-second deterministic loop. Persona choice 0\u20134s; allowance 4\u20138s; sequential allocation to food, entertainment, utilities, transport and savings from 8\u201321.6s; completed plan from 22s; habit-building message from 28s; fade/reset 31\u201334s. Chest begins opening at 18s before the savings transfer. Phone, moving coins, stacks, category lights and chest use one shared timing function. The pending amount plus allocations always totals $500.",
+  "artwork": "public/landing/assets/projects/011-warriors-mages-v2.png",
+  "model": "public/landing/artifacts/warriors-mages.js",
+  "generation": "Built-in image generation. Artwork prompt: outputs/warriors-mages-review/artwork-v2-prompt.txt. Map texture prompt: outputs/warriors-mages-review/map-texture-prompt.txt.",
+  "verification": "Two targeted tests pass: ordering, $500 conservation, deterministic reset/seek, wheel draw ranges, utility light state, transparent glass shadow opt-out, finite geometry and existing mesh/triangle budgets. Headless model: 111 meshes, 327,958 triangles (down from 375,018 in v2). Production build succeeds: 97 pages, 0 errors, 0 warnings. Browser verified animated allocations, opening chest, orbit, pause/resume, and no warning/error logs. Final screenshot: outputs/warriors-mages-review/3d-v3-dark.png.",
+  "texture": "public/landing/assets/projects/011-quest-map-v1.png",
+  "revision": "Third fidelity pass: solid curved book page blocks, leather boards with brass corner details, continuous stitched satin bookmark with tassels, cobalt porcelain bowl, open padded headphones with yokes and engraved cups, detailed city bus with doors/glazing/wipers/mirrors/roof vent/tyre tread, transmitting Edison glass and coiled filaments, hollow riveted savings chest, warm gold allocation paths, warmer raking light and cooler rim. Approved artwork v2 and simple card retained."
+}

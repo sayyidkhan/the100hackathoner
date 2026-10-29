@@ -1,3 +1,9 @@
+import shoeArt from '../../public/landing/assets/projects/022-shoeobituaries-v9.png';
+import punisherArt from '../../public/landing/assets/projects/030-punisher-v5.png';
+import f1Art from '../../public/landing/assets/projects/043-f1-degens-v1.png';
+import instaArt from '../../public/landing/assets/projects/032-instareadr-v5.png';
+import warriorsArt from '../../public/landing/assets/projects/011-warriors-mages-v2.png';
+import structurArt from '../../public/landing/assets/projects/033-structur3-v2.png';
 import swagArt from '../../public/landing/assets/projects/010-swagmylife-v1.png';
 import kitarArt from '../../public/landing/assets/projects/028-kitar-go-v1.png';
 import socapOne from '../../public/landing/assets/projects/004-socapasia-v1.png';
@@ -15,7 +21,7 @@ import cuisineArt from '../../public/landing/assets/projects/021-winwincusine-ko
 import p13 from '../../public/landing/assets/projects/013-life-worth-observatory-v1.png';
 import p14 from '../../public/landing/assets/projects/014-smart-food-bridge-v1.png';
 import p15 from '../../public/landing/assets/projects/015-weatherguru-singapore-v2.png';
-import p17 from '../../public/landing/assets/projects/017-goldigloo-research-v4.png';
+import p17 from '../../public/landing/assets/projects/017-goldigloo-evolution-v5.png';
 import p23 from '../../public/landing/assets/projects/023-pestoverflow-owner-alert-v2.png';
 import p24 from '../../public/landing/assets/projects/024-mynextgym-city-v4.png';
 import p25 from '../../public/landing/assets/projects/025-neurosurge-v2.png';
@@ -129,12 +135,23 @@ export interface ProjectArt {
 }
 
 export const projectArt: Record<number, ProjectArt> = {
+  22: {light:shoeArt,dark:shoeArt,alt:"Shoe Obituaries: MoMo, ZuZu and BuBu, three beloved pairs in lined walnut coffins with embroidered memorial inscriptions inside their open lids.",caption:"Every step, remembered. MoMo, ZuZu and BuBu — three beloved pairs, three tributes. A farewell for the shoes, a place to keep their stories.",model:"/landing/artifacts/shoeobituaries.js"},
+  30: {light:punisherArt,dark:punisherArt,alt:"The Punisher: a sculptural Angel and gentle Devil review a shared task contract, with rock-paper-scissors tokens, groceries and household task props.",caption:"A little accountability, together. Choose your roles, agree on tasks and consequences, then ask your partner to approve what you complete.",model:"/landing/artifacts/punisher.js"},
+  43: {light:f1Art,dark:f1Art,alt:"F1 Degens miniature racing circuit and driver-token trading terminal.",caption:"Compare the grid. Follow each driver’s chart, back your pick and sell before the finish. An illustrative simulation of the original F1 Degens concept.",model:"/landing/artifacts/f1-degens.js"},
+  32: {light:instaArt,dark:instaArt,alt:"Large source material flows through an AI distillation chamber into ten Instagram-style learning sections or one explainer video.",caption:"Large information, made easy to learn. AI digests and distils the source into 10 Instagram-style learning sections—or one simple explainer video.",model:"/landing/artifacts/instareadr.js"},
   28: {light:kitarArt,dark:kitarArt,alt:'Kitar-GO: a mint navigation trail connects a phone to wood-clad recycling bins. A plastic bottle is highlighted above the correct opening, with a leaf reward plaque beside it.',caption:'Find a bin. Make it count. Kitar-GO turns a plastic-bottle recycling trip into an AR-guided journey with rewards.',model:'/landing/artifacts/kitar-go.js'},
   4: {light:socapOne,dark:socapOne,alt:'Social Capital Asia 1.0: a borrower phone connects a community profile network to a rural bank through an application route.',caption:'1.0 · A way into the financial system. Social connections become a borrower profile and a loan application for bank review.',model:'/landing/artifacts/socap-v1.js'},
   6: {light:socapTwo,dark:socapTwo,alt:'Social Capital Asia 2.0: the borrower phone grows into a lender workspace, digital ledger and outcome feedback loop.',caption:'2.0 · From an application to a connected platform. The Bootcamp developed the lender view, digital ledger and loan-outcome feedback.',model:'/landing/artifacts/socap-v2.js'},
   5: {light:saywhatArt,dark:saywhatArt,alt:"SayWhat lecture search studio: a microphone, headphones, a keyword search display and a sculpted waveform with highlighted timestamps.",caption:"Find the idea. Replay the moment. SayWhat makes lecture recordings searchable by concept.",model:"/landing/artifacts/saywhat.js"},
   7: {light:vanitaArt,dark:vanitaArt,alt:"Vanita neighbourhood delivery: a delivery app, parcel collection kiosk, a woman courier and a blue route to a village home.",caption:"Local knowledge. New opportunities. Women connect businesses to the last doorstep.",model:"/landing/artifacts/vanita.js"},
   8: { light:vainsterArt, dark:vainsterArt, alt:"Vainster face observatory: a ceramic portrait with mint facial landmarks, a capture phone and a weekly reflection journal on an ivory stone base.", caption:"A moment for yourself. Face mapping and a visual journal make space for daily reflection.", model:"/landing/artifacts/vainster.js" },
+  33: {
+    light: structurArt, dark: structurArt,
+    alt: 'Structur3 visual website builder: sections move from a component library into one website, then publish to ICP.',
+    caption: 'Build a page from sections. Approve the design. Publish your website to ICP.',
+    model: '/landing/artifacts/structur3.js',
+  },
+  11: { light:warriorsArt, dark:warriorsArt, alt:"An open illustrated quest book with the Warriors & Mages app at its centre, a coloured budget compass, four spending destinations and a savings chest.", caption:"Choose your persona. Plan your allowance. Warriors & Mages turns student budgeting into a quest across food, entertainment, utilities, transport and savings.", model:"/landing/artifacts/warriors-mages.js?v=8" },
   10: { light:swagArt, dark:swagArt, alt:"Swagmylife lifestyle planner: a teal budget app connects a detailed Singapore apartment, neighbourhood café and bronze-roofed cultural venue, with a rebalancing monthly budget strip.", caption:"Choose a home. Make room for living. Swagmylife brings housing, food and leisure into one monthly lifestyle plan.", model:"/landing/artifacts/swagmylife.js" },
   12: { light:nestashArt, dark:nestashArt, alt:'Nestash impact-investment search console beside miniature clean-energy, water and sustainable-city landscapes. Clean energy is highlighted and saved to a research shortlist.', caption:'Find investments that reflect the impact you care about. The idea that later evolved into Iceigloo.', model:'/landing/artifacts/nestash.js' },
   3: { light:propertyArt, dark:propertyArt, alt:'A Singapore architectural miniature with HDB flats, terrace houses and a highlighted condominium. Property similarities and enquiry-pattern signals connect to a recommended-home shortlist.', caption:'Similar homes. Shared patterns. Better property choices. A recommendation concept that combines listing similarities with enquiry patterns to help visitors find a home worth enquiring about.', model:'/landing/artifacts/propertyguru.js' },
@@ -146,7 +163,7 @@ export const projectArt: Record<number, ProjectArt> = {
   14: { light:p14, dark:p14, alt:'A Smart Food Bridge phone selects a vegetarian menu and traces a green route to Garden Bowl among three miniature Singapore food stalls, beside a detailed bowl of vegetables, rice and tofu.', caption:'Bring menus together. Find food that fits you. A dietary food-discovery concept, reimagined as a Singapore food court.', model:'/landing/artifacts/smart-food-bridge.js' },
   15: { light:p15, dark:p15, alt:'A Singapore HDB precinct under a sculptural monsoon cloud, with covered walkways, tropical trees, a bus stop and a measured stormwater canal beside rainfall-analysis charts.', caption:'Read the past. Anticipate the risk. Weather Guru explores rainfall history and the patterns behind flood likelihood.', model:'/landing/artifacts/weatherguru.js' },
   16: { light:goblinArt, dark:goblinArt, alt:"Goblin community e-waste collection: an ambassador welcomes a resident, while phones pass through inspection towards refurbishment and material recovery.", caption:"Give old tech a useful next chapter. Community collection creates opportunities through reuse and recycling.", model:"/landing/artifacts/goblin.js" },
-  17: { light:p17, dark:p17, alt:'A friendly IceIgloo mascot sits on Gold Igloo research reports beside glass Shariah and impact screening panels, an ivory shortlist folio and a small solar garden.', caption:'Two research lenses. One thoughtful shortlist. Gold Igloo brings Shariah screening and impact research together.', model:'/landing/artifacts/goldigloo.js' },
+  17: { light:p17, dark:p17, alt:'IceIgloo beside Islamic-finance and sustainability research panels, converging into a shortlist with detailed clean-energy, water and sustainable-city miniatures.', caption:'From Nestash to Gold Igloo: sustainability meets Islamic finance. Two research lenses, one thoughtful shortlist.', model:'/landing/artifacts/goldigloo.js' },
   23: { light:p23, dark:p23, alt:'A kitchen sensor detects a mouse and sends a Pest detected alert with the kitchen location to the owner’s phone.', caption:'Detect a pest. Know where it is. Alert the owner.', model:'/landing/artifacts/pestoverflow.js' },
   24: { light:p24, dark:p24, alt:'A miniature neighbourhood at dusk: transit, offices and homes feed pedestrian routes toward three sites. The selected gym at B glows at the heart of the district.', caption:'Follow the footfall. Compare three sites. Open your next gym where the most people pass.', model:'/landing/artifacts/mynextgym.js' },
   25: { light:p25, dark:p25, alt:'An open memory journal with an avocado sailboat, blueberry planets and a broccoli tree on three pastel flashcards, a grocery tray and a recall tablet.', caption:'Turn a grocery list into a story worth remembering. Learn the cues, hide them, and see what comes back.', model:'/landing/artifacts/neurosurge.js' },

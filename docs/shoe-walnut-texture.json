@@ -1,0 +1,6 @@
+{
+  "generator": "Built-in image_gen",
+  "prompt": "Use case: product-mockup. A seamless square PBR base-color texture of finely figured antique dark walnut wood veneer, for mapping onto a real-time 3D memorial shoebox. Strictly flat orthographic material scan, fills the entire image edge to edge, wood grain runs horizontally left to right. Rich natural brown walnut, fine irregular long flowing fibres, subtle darker growth bands, gentle broad burl variation, microscopic pores. Real photographed wood, sophisticated and restrained, no huge knots. Even neutral diffuse illumination only: no baked reflections, no highlights, no cast shadows, no shading gradient, no perspective, no object borders, no seams, no frame, no text, no logos. Repeatable edges. Medium-dark warm brown base, retain wood detail in the darker areas. Single material only.",
+  "asset": "public/landing/assets/shoe-walnut-v1.webp",
+  "processing": "Resized to 1024 square and encoded WebP quality 88 for runtime texture use."
+}

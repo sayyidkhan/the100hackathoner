@@ -32,17 +32,17 @@ test('mascot hand stays attached; geometry and animation are bounded and determi
  assert.equal(hand.parent,mascot);
  let vertices=0,meshes=0;
  model.traverse(o=>{if(o.isMesh){meshes++;const a=o.geometry.attributes.position;vertices+=a.count;assert([...a.array].every(Number.isFinite));}});
- assert(meshes<75);assert(vertices<350000);
+ assert(meshes<130,`${meshes} meshes`);assert(vertices<450000,`${vertices} vertices`);
  const snapshot=t=>{model.userData.animate(t);model.updateMatrixWorld(true);const values=[];model.traverse(o=>values.push(o.visible,...o.matrixWorld.elements));return values;};
  const initial=snapshot(0),anchor=hand.position.toArray(),angle=hand.rotation.z;
  snapshot(1);assert.notEqual(hand.rotation.z,angle);assert.deepEqual(hand.position.toArray(),anchor);
  const pose=snapshot(19);snapshot(8);assert.deepEqual(snapshot(19),pose);assert.deepEqual(snapshot(24),initial);
- for(let t=0;t<=24;t+=.5){snapshot(t);const b=new T.Box3().setFromObject(model);assert(b.min.y>-.001);assert(b.max.y<3.1);assert(b.max.x-b.min.x<7);}
+ for(let t=0;t<=24;t+=.5){snapshot(t);const b=new T.Box3().setFromObject(model);assert(b.min.y>-.001);assert(b.max.y<3.3);assert(b.max.x-b.min.x<9);}
 });
 
 
 test('holding a story step keeps ambient motion alive; replaying a time freezes all motion',()=>{
- const model=createArtifact(T),u=model.userData,hand=model.getObjectByName('goldigloo-wave'),eye=model.getObjectByName('goldigloo-eye-0'),plant=model.getObjectByName('goldigloo-plant-0');
+ const model=createArtifact(T),u=model.userData,hand=model.getObjectByName('goldigloo-wave'),eye=model.getObjectByName('goldigloo-eye-0'),plant=model.getObjectByName('nestash-turbine-0');
  u.setStep(1,0);const angle=hand.rotation.z,branch=plant.quaternion.clone();
  u.animate(1);assert.equal(u.story.index,1);assert.notEqual(hand.rotation.z,angle);assert(!plant.quaternion.equals(branch));
  u.animate(3.12);assert(eye.scale.y<.1,'mascot blinks');u.animate(3.4);assert.equal(eye.scale.y,1);
@@ -60,4 +60,16 @@ test('cards lift from the folio in sequence and settle before the loop resets',(
  assert(!cards[0].quaternion.equals(rest[0].q));
  u.animate(23);cards.forEach((c,i)=>{assert(c.position.distanceTo(rest[i].p)<1e-10);assert(c.quaternion.angleTo(rest[i].q)<1e-7);});
  u.setStep(4,23);u.animate(80);cards.forEach((c,i)=>assert(c.position.distanceTo(rest[i].p)<1e-10,'manual shortlist rests on the folio'));
+});
+
+test('both research routes complete before convergence and shortlist approval',()=>{
+ const model=createArtifact(T),u=model.userData;
+ const shariah=model.getObjectByName('goldigloo-research-signal-0-0'),impact=model.getObjectByName('goldigloo-research-signal-1-0'),junction=model.getObjectByName('goldigloo-convergence');
+ const rings=[0,1,2].map(i=>model.getObjectByName(`goldigloo-impact-${i}`));
+ u.animate(9);assert(!shariah.visible);assert(!impact.visible);assert(!junction.visible);assert(rings.every(o=>!o.visible));
+ u.animate(10);assert(shariah.visible);assert(!impact.visible);
+ u.animate(12.5);assert(rings[0].visible);assert(!rings[1].visible);assert(!rings[2].visible);
+ u.animate(16);assert(impact.visible);assert(rings.every(o=>o.visible));assert(!junction.visible);
+ u.animate(19);assert(junction.visible);assert(model.getObjectByName('goldigloo-shortlist-check-0').visible);
+ u.animate(24);assert(!junction.visible);assert(!shariah.visible);assert(!impact.visible);assert(rings.every(o=>!o.visible));
 });

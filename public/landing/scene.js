@@ -460,10 +460,10 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       Object.assign(key.shadow.camera, { left: -5, right: 5, top: 6, bottom: -4 });
       key.shadow.camera.updateProjectionMatrix();
     }
-    if (['lrnmate','amigo','dustbin','neurosurge'].includes(currentModel?.userData.studioProfile)) {
+    if (['lrnmate','amigo','dustbin','neurosurge','punisher','shoeobituaries'].includes(currentModel?.userData.studioProfile)) {
       const dark = currentTheme === 'dark';
       const amigo = ['amigo','dustbin'].includes(currentModel?.userData.studioProfile);
-      const backdrop = dark ? (amigo ? 0x0c272c : 0x29231e) : 0xece5d9;
+      const backdrop = currentModel?.userData.studioProfile === 'shoeobituaries' ? (dark ? 0x242d27 : 0xe3e6d8) : (dark ? (amigo ? 0x0c272c : 0x29231e) : 0xece5d9);
       scene.background.setHex(backdrop); scene.fog.color.setHex(backdrop);
       renderer.setClearColor(backdrop, 1); floor.material.color.setHex(backdrop);
       hemisphere.color.setHex(0xffeed5); hemisphere.groundColor.setHex(0x504338);
@@ -483,6 +483,17 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
         rim.color.setHex(0xaed4d3);rim.intensity=2;
         key.shadow.normalBias=.004;scene.environmentIntensity=.65;
       }
+    }
+    if (currentModel?.userData.studioProfile === 'shoeobituaries') {
+      // Warm grazing light reveals walnut mouldings, fabric folds and stitched uppers.
+      hemisphere.intensity = .28;
+      key.position.set(-4.5, 6, 4.5); key.color.setHex(0xffe0b9); key.intensity = 3.05;
+      fill.color.setHex(0xcbd8d4); fill.intensity = .30;
+      rim.color.setHex(0xf6ddb4); rim.intensity = 1.85;
+      scene.environmentIntensity = .55; renderer.toneMappingExposure = 1.0;
+      key.shadow.normalBias = .004;
+      Object.assign(key.shadow.camera, { left: -6, right: 6, top: 6, bottom: -4 });
+      key.shadow.camera.updateProjectionMatrix();
     }
     if (currentModel?.userData.studioProfile === 'xueyiyi') {
       // Product photography: neutral ivory cards and a crisp polished phone rim.
@@ -588,6 +599,17 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       Object.assign(key.shadow.camera,{left:-6,right:6,top:6,bottom:-4});key.shadow.camera.updateProjectionMatrix();
       contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=dark?.44:.20;paperContact.scale.set(1.45,1.15,1);
     }
+    if (currentModel?.userData.studioProfile === 'structur3') {
+      const dark=currentTheme==='dark',backdrop=dark?0x142437:0xe7e9ed;
+      scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xe5eee2);hemisphere.groundColor.setHex(0x30483b);hemisphere.intensity=.40;
+      key.color.setHex(0xffe4bd);key.position.set(-4,6,5);key.intensity=3.0;
+      fill.color.setHex(0xb8ceff);fill.intensity=.52;rim.color.setHex(0xa4c6ff);rim.position.set(3,5,-4);rim.intensity=2.6;
+      scene.environmentIntensity=.75;renderer.toneMappingExposure=1.02;
+      key.shadow.normalBias=.002;key.shadow.bias=-.00004;key.shadow.radius=5;
+      Object.assign(key.shadow.camera,{left:-6,right:6,top:6,bottom:-4});key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=dark?.44:.20;paperContact.scale.set(1.45,1.15,1);
+    }
     if (currentModel?.userData.studioProfile === 'swagmylife') {
       const dark=currentTheme==='dark',backdrop=dark?0x102e34:0xe9e8dd;
       scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
@@ -595,6 +617,39 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
       key.color.setHex(0xffe4bd);key.position.set(-4,6,5);key.intensity=3.0;
       fill.color.setHex(0xb5dce1);fill.intensity=.52;rim.color.setHex(0xd9f4df);rim.position.set(3,5,-4);rim.intensity=2.6;
       scene.environmentIntensity=.75;renderer.toneMappingExposure=1.02;
+      key.shadow.normalBias=.002;key.shadow.bias=-.00004;key.shadow.radius=5;
+      Object.assign(key.shadow.camera,{left:-6,right:6,top:6,bottom:-4});key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=dark?.44:.20;paperContact.scale.set(1.45,1.15,1);
+    }
+    if (currentModel?.userData.studioProfile === 'instareadr') {
+      const dark=currentTheme==='dark',backdrop=dark?0x102b2c:0xe9e8dd;
+      scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xe5eee2);hemisphere.groundColor.setHex(0x30483b);hemisphere.intensity=.40;
+      key.color.setHex(0xffe4bd);key.position.set(-4,6,5);key.intensity=2.6;
+      fill.color.setHex(0xb5dce1);fill.intensity=.70;rim.color.setHex(0xd9f4df);rim.position.set(3,5,-4);rim.intensity=3.1;
+      scene.environmentIntensity=.75;renderer.toneMappingExposure=1.02;
+      key.shadow.normalBias=.002;key.shadow.bias=-.00004;key.shadow.radius=5;
+      Object.assign(key.shadow.camera,{left:-6,right:6,top:6,bottom:-4});key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=dark?.44:.20;paperContact.scale.set(1.45,1.15,1);
+    }
+    if (currentModel?.userData.studioProfile === 'f1-degens') {
+      const dark=currentTheme==='dark',backdrop=dark?0x101c25:0xdce3e5;
+      scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xe5eee2);hemisphere.groundColor.setHex(0x30483b);hemisphere.intensity=.28;
+      key.color.setHex(0xffe4bd);key.position.set(-4,6,5);key.intensity=3.6;
+      fill.color.setHex(0xb5dce1);fill.intensity=.85;rim.color.setHex(0x80e9e1);rim.position.set(3,5,-4);rim.intensity=4.0;
+      scene.environmentIntensity=.75;renderer.toneMappingExposure=1.02;
+      key.shadow.normalBias=.002;key.shadow.bias=-.00004;key.shadow.radius=5;
+      Object.assign(key.shadow.camera,{left:-8,right:8,top:8,bottom:-5});key.shadow.camera.updateProjectionMatrix();
+      contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=dark?.44:.20;paperContact.scale.set(1.45,1.15,1);
+    }
+    if (currentModel?.userData.studioProfile === 'warriors-mages') {
+      const dark=currentTheme==='dark',backdrop=dark?0x0b1526:0xe6e8ed;
+      scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
+      hemisphere.color.setHex(0xe5eee2);hemisphere.groundColor.setHex(0x25364c);hemisphere.intensity=.25;
+      key.color.setHex(0xffe3b0);key.position.set(-5,7,3);key.intensity=3.8;
+      fill.color.setHex(0xabc9ed);fill.intensity=.38;rim.color.setHex(0xc3d9fc);rim.position.set(3,5,-4);rim.intensity=3.2;
+      scene.environmentIntensity=.65;renderer.toneMappingExposure=1.08;
       key.shadow.normalBias=.002;key.shadow.bias=-.00004;key.shadow.radius=5;
       Object.assign(key.shadow.camera,{left:-6,right:6,top:6,bottom:-4});key.shadow.camera.updateProjectionMatrix();
       contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=dark?.44:.20;paperContact.scale.set(1.45,1.15,1);
@@ -707,16 +762,16 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     }
     if (currentModel?.userData.studioProfile === 'goldigloo') {
       // The etched ivory labels need the same deep backdrop as the artwork in both themes.
-      const backdrop=0x102b27;
+      const backdrop=0x10272d;
       scene.background.setHex(backdrop);scene.fog.color.setHex(backdrop);
       renderer.setClearColor(backdrop,1);floor.material.color.setHex(backdrop);
-      hemisphere.color.setHex(0xe9f1df);hemisphere.groundColor.setHex(0x34453c);hemisphere.intensity=.48;
-      key.color.setHex(0xffedd3);key.position.set(-4,6,4);key.intensity=2.8;
-      fill.color.setHex(0xc7e7e2);fill.intensity=.6;
-      rim.color.setHex(0xf4dfb6);rim.position.set(3,4,-3);rim.intensity=2.0;
-      scene.environmentIntensity=.68;renderer.toneMappingExposure=1.04;
+      hemisphere.color.setHex(0xe9f1df);hemisphere.groundColor.setHex(0x34453c);hemisphere.intensity=.32;
+      key.color.setHex(0xffedd3);key.position.set(-4.5,5,4);key.intensity=3.3;
+      fill.color.setHex(0xc7e7e2);fill.intensity=.43;
+      rim.color.setHex(0xf4dfb6);rim.position.set(3,4,-3);rim.intensity=2.5;
+      scene.environmentIntensity=.58;renderer.toneMappingExposure=1.02;
       key.shadow.normalBias=.003;key.shadow.bias=-.00004;key.shadow.radius=5;
-      Object.assign(key.shadow.camera,{left:-5,right:5,top:5,bottom:-4});key.shadow.camera.updateProjectionMatrix();
+      Object.assign(key.shadow.camera,{left:-6,right:6,top:5,bottom:-4});key.shadow.camera.updateProjectionMatrix();
       contactShadow.material.opacity=0;paperContact.visible=true;paperContact.material.opacity=.40;
       paperContact.scale.set(1.3,1.1,1);
     }

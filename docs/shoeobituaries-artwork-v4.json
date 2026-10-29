@@ -1,0 +1,7 @@
+{
+  "project": 22,
+  "mode": "Built-in image_gen edit",
+  "source": "public/landing/assets/projects/022-shoeobituaries-v3.png",
+  "output": "public/landing/assets/projects/022-shoeobituaries-v4.png",
+  "prompt": "Use case: precise-object-edit. Edit target: supplied Shoe Obituaries artwork.\nMove each entire obituary inscription INTO the cream interior of its corresponding open walnut coffin lid. Remove all THREE standalone framed placards above/behind the boxes completely, including supports. Each lid itself becomes the memorial: elegant dark brown serif lettering printed or embossed on a smooth ivory silk inset inside the walnut cover, surrounded by a narrow padded cream border. No additional frame hovering above, no duplicate memorial. Text centred, clearly legible and contained inside each lid:\nLeft: \"In loving memory\", \"MoMo\", \"2010 — 2018\", \"Resting in God's Garden\".\nMiddle: \"In loving memory\", \"ZuZu\", \"2012 — 2016\", \"Resting in Shoe Heaven\".\nRight: \"In loving memory\", \"BuBu\", \"2007 — 2010\", \"Resting in Basketball Heaven\".\nPreserve the physically full-depth correctly fitted lids, real brass hinges/stays, all three detailed shoes, coffin bases, folded linings, white rose, limestone base, engraved \"Shoe Obituaries\" plaque, photographic lighting and colour palette. Reframe composition to fill the space after removing standalone cards, without cropping anything. Landscape 3:2. Refined photorealistic product image. Change only memorial placement and framing needed for it; keep existing rich realism. No website UI."
+}

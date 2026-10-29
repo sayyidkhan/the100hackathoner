@@ -1,0 +1,24 @@
+{
+  "project": 32,
+  "title": "Instareadr",
+  "reviewed": "2026-10-28",
+  "sources": [
+    {
+      "url": "https://docs.google.com/presentation/d/1ydQKgbxLSPIRXV--bGxcDcbX8LePDRpf4nGYD3er_6M/edit",
+      "review": "Read all 13 slides and exposed speaker notes through HTML presentation using the authorised Sayyid Chrome profile; visually inspected technology-flow slide."
+    }
+  ],
+  "evidence": [
+    "Long Web3 white papers are difficult to digest; shorten them into 5\u201310 visual cards.",
+    "Generative AI ingests, simplifies and prepares infographic-ready content.",
+    "Quiz-based reinforcement and NFT certification are goals, not verified shipped functionality.",
+    "Reading and commenting increase engagement levels; rewards are proposed for milestones.",
+    "Proposed stack: Next.js, React and ICP storage; token gating and article tokenisation are proposed revenue streams."
+  ],
+  "interpretation": "Explicit three-stage pipeline: source book, AI chip labelled Digest / Distil / Simplify, then phone with ten numbered lesson sections and a separate alternative video panel. Video is user-directed concept expansion, not a verified feature from the 2023 deck.",
+  "animation": "40-second loop: source ingestion 1\u20135s, AI processing 5\u201310s, ten sections revealed 10\u201317s, reading 17\u201327s, alternative video 27\u201336s, fade/reset 38\u201340s.",
+  "artwork": "public/landing/assets/projects/032-instareadr-v5.png",
+  "model": "public/landing/artifacts/instareadr.js",
+  "refinement": "Approved 2D artwork retained. 3D chamber rebuilt with transparent glass, machined ring fittings, bolts, internal circuitry and luminous particles; smaller AI chip allows the chamber to remain visible. Source stack enlarged. Ten output tiles now have varied miniature illustrations. Separate video stand beside phone avoids covering the sections.",
+  "userClarification": "Large information passes through AI, distilled into ten Instagram-style learning sections OR one video."
+}
