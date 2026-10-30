@@ -1,6 +1,7 @@
 ---
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import BookSection from "../components/BookSection.astro";
 import SeoHead from "../components/SeoHead.astro";
 import { Image, getImage } from "astro:assets";
 import workbenchLight from "../../public/landing/assets/hackathon-workbench.png";
@@ -315,60 +316,7 @@ const benchDark = await responsive(workbenchDark, [400, 720, 1100]);
         </button>
       </section>
 
-      <section class="book-section wrap section">
-        <div class="section-visual">
-          <p class="eyebrow">02 / BEYOND THE NUMBER</p>
-          <figure class="memoir-book">
-            <div class="memoir-stage">
-            <div class="memoir-pages" aria-hidden="true">
-              <span class="page-kicker">FROM THE FIELD / 001</span>
-              <span class="page-heading">Keep<br />showing up.</span>
-              <div class="page-notes">
-                <span class="written-note note-one">Start with an idea.</span>
-                <span class="written-note note-two">Build something real.</span>
-                <span class="written-note note-three">Learn. Then go again.</span>
-                <svg class="book-underline" viewBox="0 0 260 24" fill="none" aria-hidden="true"><path pathLength="1" d="M3 15Q118 3 253 12" /></svg>
-              </div>
-              <span class="page-footnote">A LIFE IN PROTOTYPES</span>
-              <span class="page-number">01</span>
-            </div>
-            <div class="memoir-cover memoir-original" aria-label="Concept cover for The 100 Hackathoner by Sayyid Khan">
-              <span class="memoir-kicker">THE 100 HACKATHONER</span>
-              <strong class="memoir-mark">100</strong>
-              <span class="memoir-author">SAYYID KHAN</span>
-            </div>
-            <div class="memoir-cover memoir-forward" aria-label="Concept cover for The Forward Deployed Hackathoner by Sayyid Khan">
-              <span class="memoir-kicker">THE FORWARD DEPLOYED<br />HACKATHONER</span>
-              <strong class="memoir-mark" aria-hidden="true">↗</strong>
-              <span class="memoir-author">SAYYID KHAN</span>
-            </div>
-            </div>
-            <figcaption>FUTURE BOOKS · COVER CONCEPTS</figcaption>
-          </figure>
-        </div>
-        <div>
-          <h2>A hundred hackathons.<br /><span>More stories to tell.</span></h2>
-          <p>
-            The projects, the people, the failures, the turning points. The 100
-            Hackathoner is my living memoir of how building things changes the
-            person doing the building.
-          </p>
-          <a class="primary-button" href="/waitlist/">Join the book waitlist <span aria-hidden="true">↗</span></a>
-          <fieldset class="book-titles">
-            <legend>ON THE HORIZON / WORKING TITLES</legend>
-            <label>
-              <input type="radio" name="book-title" value="memoir" checked />
-              <span><small>01 / THE MEMOIR</small>The 100 Hackathoner</span>
-              <span class="book-choice-arrow" aria-hidden="true">↗</span>
-            </label>
-            <label>
-              <input type="radio" name="book-title" value="forward" />
-              <span><small>02 / THE NEXT CHAPTER</small>The Forward Deployed Hackathoner</span>
-              <span class="book-choice-arrow" aria-hidden="true">↗</span>
-            </label>
-          </fieldset>
-        </div>
-      </section>
+      <BookSection />
       <section class="invitation wrap section">
         <p class="eyebrow">03 / LET’S TAKE IT OUT OF THE BROWSER</p>
         <div class="invitation-grid">
@@ -435,8 +383,6 @@ const benchDark = await responsive(workbenchDark, [400, 720, 1100]);
     </script>
     <script is:inline src="/landing/app.js" type="module"></script>
     <script>
-      const book = document.querySelector('.memoir-book');
-      const motionAllowed = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const artObserver = new IntersectionObserver(entries => {
         entries.forEach(entry => {
           entry.target.classList.toggle('is-art-visible', entry.isIntersecting);
@@ -444,20 +390,6 @@ const benchDark = await responsive(workbenchDark, [400, 720, 1100]);
       }, { threshold: 0.4 });
       document.querySelectorAll('.workbench-light, .workbench-dark, .invitation-art img')
         .forEach(image => artObserver.observe(image));
-      if (book && motionAllowed) {
-        const observer = new IntersectionObserver(([entry]) => {
-          book.classList.toggle('is-visible', entry.isIntersecting);
-          if (entry.isIntersecting) book.classList.add('is-playing');
-        }, { threshold: 0.35 });
-        observer.observe(book);
-      }
-      document.querySelectorAll('input[name="book-title"]').forEach(input => {
-        input.addEventListener('change', () => {
-          book?.classList.remove('is-playing');
-          void book?.getBoundingClientRect();
-          if (motionAllowed) book?.classList.add('is-playing');
-        });
-      });
     </script>
   </body>
 </html>

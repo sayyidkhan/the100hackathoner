@@ -1,0 +1,108 @@
+---
+interface Props { page: number }
+const { page } = Astro.props;
+const memoir = [
+  ['01 / THE CALL', 'Enter the', 'first room.', '2016 · Xueyiyi. One first attempt becomes the start of a much longer journey.'],
+  ['02 / THE TRIALS', 'Meet the', 'messy middle.', 'Deadlines, teams, wrong turns. Each attempt changes the next one.'],
+  ['03 / THE CHANGE', 'Become more', 'than a builder.', 'Consulting. Freelance. Banking. Agentic AI. A wider view of what matters.'],
+  ['04 / THE RETURN', 'Bring the', 'lessons home.', 'Carry the code, friendships and judgement forward. The founder chapter is still unfolding.'],
+];
+const principles = [
+  ['01 / EXPERIMENT', 'Ship', 'to learn.', 'A working prototype reveals more than another week of private certainty.'],
+  ['02 / PRACTISE', 'Repetition', 'creates range.', 'Different rooms, teams and constraints build adaptable judgement.'],
+  ['03 / TAKE OWNERSHIP', 'Own the', 'outcome.', 'Follow the work beyond the demo. Make it useful to the person it serves.'],
+  ['04 / COMPOUND', 'Compound', 'the record.', 'Leave an asset behind: code, insight, trust, a story or a new option.'],
+];
+---
+{[memoir, principles].map((pages, mode) => (
+  <div class:list={['folio-content', mode === 0 ? 'memoir-page' : 'principles-page']}>
+    <span class="folio-kicker">{pages[page][0]}</span>
+    <strong class="folio-heading">{pages[page][1]}<br /><em>{pages[page][2]}</em></strong>
+    <svg class:list={['folio-art', mode === 0 ? 'journey-art' : 'principle-art']} viewBox="0 0 200 140" fill="none" aria-hidden="true">
+      {mode === 0 && page === 0 && <>
+        <path class="landscape" d="M8 119H192M27 119V21H107V119M37 119V31H97V119M107 21L132 36V119"/>
+        <path class="route" pathLength="1" d="M183 119C153 117 126 112 101 104S76 81 76 64"/>
+        <circle class="traveller entry-traveller" cx="0" cy="0" r="4"/>
+        <path class="accent" d="M57 60L76 44L94 60M76 45V81"/>
+        <text x="30" y="137">SINGAPORE · 2016</text>
+      </>}
+      {mode === 0 && page === 1 && <>
+        <path class="landscape" d="M7 113L44 65L73 102L122 27L192 113M105 52L122 60L136 50"/>
+        <path class="route" pathLength="1" d="M10 119C48 119 74 99 60 89S33 96 54 111S105 113 126 80S157 59 185 62"/>
+        <circle class="traveller trials-traveller" cx="0" cy="0" r="4"/>
+        <g class="allies"><circle cx="152" cy="31" r="6"/><circle cx="172" cy="35" r="5"/><path d="M142 50Q152 37 162 50M165 52Q172 43 180 52"/></g>
+        <text x="22" y="137">TRY · FAIL · LEARN · RETURN</text>
+      </>}
+      {mode === 0 && page === 2 && <>
+        <path class="landscape" d="M10 119H190"/>
+        {[0,1,2,3].map(i=><g class="career-step" style={`--step:${i}`}><rect x={15+i*45} y={95-i*23} width="32" height={24+i*23}/><path d={`M${22+i*45} ${103-i*23}h18`}/></g>)}
+        <path class="route" pathLength="1" d="M16 87L61 64L106 41L153 18"/>
+        <path class="accent" d="M142 18H154V30"/>
+        <text x="14" y="137">ENGINEER → FOUNDER</text>
+      </>}
+      {mode === 0 && page === 3 && <>
+        <path class="landscape" d="M57 91V61L99 28L141 61V91M69 91V68H129V91M87 91V72H111V91"/>
+        <path class="route" pathLength="1" d="M149 33C193 60 181 114 112 118S17 99 22 61S56 20 75 24"/>
+        <path class="accent" d="M62 16L76 24L63 33"/>
+        <g class="allies"><circle cx="52" cy="104" r="4"/><circle cx="99" cy="118" r="4"/><circle cx="151" cy="104" r="4"/></g>
+        <text x="32" y="137">THE JOURNEY CONTINUES</text>
+      </>}
+      {mode === 1 && page === 0 && <>
+        <rect class="landscape" x="45" y="16" width="110" height="71" rx="3"/><path class="landscape" d="M36 94H164L176 104H24Z"/>
+        <g class="prototype-build"><path d="M60 34H104M60 44H140M60 55H126"/><rect x="60" y="65" width="31" height="10"/></g>
+        <path class="feedback" pathLength="1" d="M164 34C197 39 194 119 105 119H61"/><path class="accent" d="M71 112L60 119L71 126"/>
+        <text x="38" y="138">PROTOTYPE → FEEDBACK</text>
+      </>}
+      {mode === 1 && page === 1 && <>
+        {[0,1,2].map(i=><g class="range-card" style={`--step:${i}`}><rect x={12+i*62} y="30" width="51" height="62" rx="3"/><path d={`M${22+i*62} 47h30M${22+i*62} 58h21M${22+i*62} 69h25`}/></g>)}
+        <path class="feedback" pathLength="1" d="M36 103Q99 133 162 103"/><path class="accent" d="M151 105L163 103L160 115"/>
+        <text x="28" y="137">NEW CONSTRAINTS · NEW RANGE</text>
+      </>}
+      {mode === 1 && page === 2 && <>
+        <g class="landscape"><rect x="10" y="45" width="54" height="49" rx="4"/><path d="M21 59H53M21 70H45M21 81H48"/><circle cx="157" cy="43" r="15"/><path d="M132 100V83C132 58 183 58 183 83V100"/></g>
+        <path class="feedback" pathLength="1" d="M73 70H119"/><path class="accent" d="M110 63L120 70L110 77"/>
+        <g class="outcome-check"><circle cx="167" cy="95" r="15"/><path d="M159 95L165 101L176 88"/></g>
+        <text x="23" y="137">BUILD → USE → REAL VALUE</text>
+      </>}
+      {mode === 1 && page === 3 && <>
+        {[0,1,2,3].map(i=><g class="asset-stack" style={`--step:${i}`}><path d={`M32 ${109-i*22}l67 -13 68 13 -68 14Z`}/><path d={`M32 ${109-i*22}v7l67 14 68-14v-7`}/></g>)}
+        <path class="feedback" pathLength="1" d="M178 114V19H157"/><path class="accent" d="M164 12L156 19L164 26"/>
+        <text x="29" y="137">EACH BUILD LEAVES AN ASSET</text>
+      </>}
+    </svg>
+    <span class="folio-caption">{pages[page][3]}</span>
+    <span class="folio-footer">{mode === 0 ? 'THE JOURNEY' : 'THE PRINCIPLES'}<b>0{page+1}</b></span>
+  </div>
+))}
+<style>
+  .folio-content { height:100%; display:flex; flex-direction:column; min-height:0; }
+  .principles-page { display:none; }
+  :global(#book:has(input[value="forward"]:checked)) .memoir-page { display:none; }
+  :global(#book:has(input[value="forward"]:checked)) .principles-page { display:flex; }
+  .folio-kicker { font:8px/1.5 var(--mono); color:#75654e; letter-spacing:.04em; }
+  .folio-heading { font:400 30px/1.1 Georgia,serif; letter-spacing:-.04em; margin:20px 0 8px; }
+  .folio-heading em { color:#b12631; }
+  .folio-art { width:100%; height:auto; max-height:150px; margin:8px 0; flex-shrink:1; min-height:45px; stroke:#665843; stroke-width:1.5; stroke-linejoin:round; stroke-linecap:round; }
+  .folio-art text { font:7px var(--mono); fill:#75654e; stroke:none; }
+  .route,.accent,.feedback,.outcome-check { stroke:#b12631; }
+  .traveller { fill:#b12631; stroke:#fff7e6; stroke-width:2; }
+  .folio-caption { font:italic 13px/1.5 Georgia,serif; margin:7px 0 12px; }
+  .folio-footer { display:flex; justify-content:space-between; margin-top:auto; border-top:1px solid #c6b99c70; padding-top:12px; font:7px/1.5 var(--mono); color:#75654e; }
+  :global(.is-animated) .route { stroke-dasharray:1; animation:journey-line 7s ease-in-out infinite; }
+  :global(.is-animated) .entry-traveller { offset-path:path('M183 119C153 117 126 112 101 104S76 81 76 64'); animation:travel 7s ease-in-out infinite; }
+  :global(.is-animated) .trials-traveller { offset-path:path('M10 119C48 119 74 99 60 89S33 96 54 111S105 113 126 80S157 59 185 62'); animation:travel 7s ease-in-out infinite; }
+  :global(.is-animated) .allies { animation:arrive 7s ease-in-out infinite; }
+  :global(.is-animated) .career-step { transform-box:fill-box; transform-origin:bottom; animation:grow 7s ease-in-out infinite; animation-delay:calc(var(--step)*.35s); }
+  :global(.is-animated) .feedback { stroke-dasharray:1; animation:journey-line 4s ease-in-out infinite; }
+  :global(.is-animated) .prototype-build { animation:arrive 4s ease-in-out infinite; }
+  :global(.is-animated) .range-card { animation:arrive 4s ease-in-out infinite; animation-delay:calc(var(--step)*.4s); }
+  :global(.is-animated) .outcome-check { animation:arrive 4s ease-in-out infinite; animation-delay:.8s; }
+  :global(.is-animated) .asset-stack { animation:stack 4s ease-in-out infinite; animation-delay:calc(var(--step)*.3s); }
+  @keyframes journey-line { 0%,10% {stroke-dashoffset:1;} 75%,100% {stroke-dashoffset:0;} }
+  @keyframes travel { 0%,10% {offset-distance:0%;opacity:0;} 15% {opacity:1;} 80%,95% {offset-distance:100%;opacity:1;} 100% {offset-distance:100%;opacity:0;} }
+  @keyframes arrive { 0%,12% {opacity:.15;} 40%,90% {opacity:1;} 100% {opacity:.15;} }
+  @keyframes grow { 0%,10% {transform:scaleY(.25);opacity:.3;} 55%,100% {transform:scaleY(1);opacity:1;} }
+  @keyframes stack { 0%,10% {transform:translateY(12px);opacity:0;} 45%,90% {transform:translateY(0);opacity:1;} 100% {transform:translateY(0);opacity:0;} }
+  @media(max-width:1000px) { .folio-heading {font-size:26px;margin-top:14px;} .folio-caption {font-size:12px;} }
+  @media(max-width:760px) { .folio-kicker {font-size:6px;} .folio-heading {font-size:23px;margin-top:12px;} .folio-caption {font-size:11px;line-height:1.4;} .folio-footer {font-size:6px;padding-top:8px;} .folio-art {max-height:110px;margin:4px 0;} }
+</style>

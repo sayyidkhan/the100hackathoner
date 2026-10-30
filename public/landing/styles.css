@@ -707,19 +707,6 @@ img {
 .secondary-button:hover {
   background: var(--soft);
 }
-.book-section {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
-  gap: 60px;
-}
-.book-section > div { min-width: 0; }
-.book-section .primary-button { max-width: 100%; white-space: normal; justify-content: space-between; }
-.book-section .primary-button > span { flex-shrink: 0; }
-.book-titles label > span:first-of-type { min-width: 0; overflow-wrap: anywhere; }
-.book-section > div > p {
-  max-width: 580px;
-  margin-top: 28px;
-}
 .section-picture {
   display: block;
   width: 100%;
@@ -750,89 +737,6 @@ img {
 :root[data-theme="dark"] .section-visual .book-light { display: none; }
 :root[data-theme="dark"] .section-visual .book-dark { display: block; }
 .invitation .section-picture { max-width: 520px; }
-.memoir-book { margin: 32px 12px 0 0; perspective: 1100px; }
-.memoir-cover {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 360px;
-  aspect-ratio: 3 / 4;
-  padding: 28px 24px 28px 32px;
-  border-radius: 3px 8px 8px 3px;
-  color: #f6f3eb;
-  background: linear-gradient(90deg, #08090a 0%, #303032 4%, #181819 8%, #181819 100%);
-  box-shadow: 6px 3px 0 #e9e3d5, 9px 4px 0 #b8b3aa, 14px 18px 28px #0003;
-  transform: rotateY(-12deg) rotateZ(-3deg);
-}
-.memoir-kicker { font: 11px var(--body); letter-spacing: .16em; text-align: center; }
-.memoir-cover .memoir-mark {
-  display: grid;
-  place-items: center;
-  width: 80%;
-  aspect-ratio: 1;
-  margin: auto;
-  border: 2px solid #f34a50;
-  border-radius: 50%;
-  color: #f34a50;
-  font: 500 clamp(64px, 7vw, 106px)/1 var(--body);
-  letter-spacing: -.075em;
-  padding-right: .075em;
-}
-.memoir-cover strong span { color: #f34a50; font-size: clamp(74px, 8vw, 120px); line-height: 1.1; }
-.book-section .memoir-cover p { font: 13px/1.6 var(--body); color: #d7d3cb !important; margin: 24px 0 32px; }
-.memoir-author { padding-top: 18px; font: 10px var(--body); letter-spacing: .18em; text-align: center; }
-.memoir-book figcaption { margin-top: 26px; color: var(--muted); font: 10px var(--mono); letter-spacing: .06em; }
-.memoir-stage { position: relative; perspective: 1100px; transform: rotateY(-12deg) rotateZ(-3deg); }
-.memoir-stage .memoir-cover { transform: none; transform-origin: left center; backface-visibility: hidden; }
-.memoir-pages {
-  position: absolute; inset: 0; overflow: hidden; color: #302c26;
-  padding: 10% 10% 10% 13%;
-  background: linear-gradient(90deg, #d3c7b2 0%, #f4eddf 5%, #fff9ed 15%, #f6efdf 100%);
-  border-radius: 3px 8px 8px 3px;
-  box-shadow: 6px 3px 0 #e9e3d5, 9px 4px 0 #b8b3aa, 14px 18px 28px #0003;
-  opacity: 0; pointer-events: none;
-}
-.page-kicker { display: block; font: 9px var(--mono); letter-spacing: .14em; color: #847561; }
-.page-heading { display: block; margin-top: 14%; font: 400 clamp(30px, 3.2vw, 48px)/1.04 Georgia, serif; letter-spacing: -.045em; }
-.page-notes { position: relative; margin-top: 15%; padding-bottom: 8px; }
-.written-note { display: block; padding: 10px 0; border-bottom: 1px solid #c5b79c55; white-space: nowrap; font: italic clamp(15px, 1.55vw, 23px)/1.3 Georgia, serif; clip-path: inset(0 100% 0 0); }
-.note-two { transform: rotate(-1deg); }
-.note-three { transform: rotate(.5deg); }
-.book-underline { display: block; width: 88%; height: 18px; margin-top: 4px; }
-.book-underline path { stroke: #d8222c; stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; }
-.page-footnote { position: absolute; bottom: 7%; left: 13%; color: #847561; font: 8px var(--mono); letter-spacing: .12em; }
-.page-number { position: absolute; bottom: 7%; right: 10%; font: 9px var(--mono); color: #847561; }
-.is-playing .memoir-cover { animation: book-cover-cycle 14s ease-in-out infinite; }
-.is-playing .memoir-pages { animation: book-page-cycle 14s ease-in-out infinite; }
-.is-playing .written-note { animation: book-note-cycle 14s linear infinite; }
-.is-playing .note-two { animation-delay: .8s; }
-.is-playing .note-three { animation-delay: 1.6s; }
-.is-playing .book-underline path { animation: book-underline-cycle 14s ease-in-out infinite; }
-.memoir-book:not(.is-visible) * { animation-play-state: paused; }
-@keyframes book-cover-cycle {
-  0%, 12%, 82%, 100% { transform: rotateY(0); opacity: 1; }
-  22%, 72% { transform: rotateY(-96deg); opacity: 0; }
-}
-@keyframes book-page-cycle { 0%, 13%, 83%, 100% { opacity: 0; } 20%, 76% { opacity: 1; } }
-@keyframes book-note-cycle { 0%, 23%, 88%, 100% { clip-path: inset(0 100% 0 0); } 33%, 82% { clip-path: inset(0); } }
-@keyframes book-underline-cycle { 0%, 48%, 88%, 100% { stroke-dashoffset: 1; } 54%, 82% { stroke-dashoffset: 0; } }
-@media (prefers-reduced-motion: reduce) {
-  .memoir-book * { animation: none !important; }
-}
-.memoir-forward { display: none; }
-.memoir-forward .memoir-kicker { line-height: 1.7; }
-.memoir-forward .memoir-mark { letter-spacing: 0; padding-right: 0; }
-.book-section:has(input[value="forward"]:checked) .memoir-original { display: none; }
-.book-section:has(input[value="forward"]:checked) .memoir-forward { display: flex; }
-.book-titles { border: 0; padding: 0; margin: 32px 0; min-width: 0; }
-.book-titles legend { color: var(--muted); font: 10px var(--mono); letter-spacing: .08em; margin-bottom: 12px; }
-.book-titles label { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); cursor: pointer; color: var(--muted); font: 18px/1.4 var(--body); }
-.book-titles input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
-.book-titles small { display: block; font: 10px var(--mono); letter-spacing: .06em; margin-bottom: 6px; }
-.book-titles label:has(input:checked) { color: var(--ink); }
-.book-titles label:has(input:checked) small, .book-titles label:has(input:checked) .book-choice-arrow { color: var(--accent); }
-.book-titles label:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 4px; }
-.book-choice-arrow { font-size: 24px; flex-shrink: 0; }
 .invitation .invitation-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: center; gap: 48px; margin-top: 40px; }
 .invitation-copy { min-width: 0; }
 .invitation-copy h2 { font-size: clamp(36px, 4.6vw, 64px); line-height: 1.08; }
@@ -871,25 +775,22 @@ footer a {
 .footer-copyright { display: none; }
 /* Align the public record and supporting sections on the same desktop gutters. */
 @media (min-width: 761px) {
-  .story-section, .collection, .book-section, .invitation {
+  .story-section, .collection, .invitation {
     max-width: 1280px;
     padding-block: 72px;
   }
-  .story-section, .book-section {
+  .story-section {
     grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
     gap: clamp(40px, 5vw, 72px);
     align-items: center;
   }
-  .story-section h2, .book-section h2, .invitation-copy h2 {
+  .story-section h2, .invitation-copy h2 {
     font-size: clamp(40px, 3.6vw, 56px);
     line-height: 1.08;
   }
   .story-section .section-picture { margin-top: 24px; }
   .story-section .journey-count { margin-top: 24px; }
   .story-section .journey-count strong { font-size: 100px; }
-  .book-section .memoir-book { max-width: 320px; margin-top: 28px; }
-  .book-section .book-titles { margin-bottom: 0; }
-  .book-section .book-titles label { padding-block: 14px; }
   .invitation .invitation-grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 340px);
     gap: clamp(40px, 5vw, 72px);
@@ -1406,13 +1307,6 @@ body:has(dialog[open]) {
   .project-row .number {
     font-size: 10px;
   }
-  .book-section {
-    grid-template-columns: 1fr;
-    gap: 22px;
-  }
-  .book-section > div > p {
-    margin-top: 22px;
-  }
   .invitation .primary-button {
     font-size: 12px;
   }
@@ -1630,30 +1524,6 @@ button.attempt-tile:focus-visible { transform: translateY(-3px); border-color: v
   .attempt-preview #preview-open { grid-column: 2; grid-row: auto; justify-content: start; margin: 8px 0 0; }
   .collection .attempt-preview #preview-description,
   .collection .attempt-preview #preview-award { grid-column: 1 / -1; }
-}
-@media (max-width: 900px) {
-  .book-section {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 32px;
-  }
-  .book-section .memoir-book {
-    width: min(220px, 70%);
-    margin: 28px auto 0;
-  }
-  .book-section .memoir-cover {
-    min-height: 0;
-    padding: 22px 18px;
-  }
-  .book-section .memoir-kicker { font-size: 9px; }
-  .book-section .memoir-author { font-size: 9px; }
-  .book-section .memoir-mark { font-size: 68px; }
-  .book-section .memoir-book figcaption { text-align: center; line-height: 1.5; margin-top: 20px; }
-  .book-section h2 { font-size: clamp(30px, 5.5vw, 42px); line-height: 1.12; }
-  .book-section > div > p { font-size: 15px; line-height: 1.7; margin-top: 20px; }
-  .book-section .primary-button { display: flex; width: 100%; margin-top: 20px; gap: 16px; padding: 15px 20px; font-size: 14px; }
-  .book-section .book-titles { margin: 28px 0 0; }
-  .book-section .book-titles legend { line-height: 1.5; }
-  .book-section .book-titles label { font-size: 16px; gap: 12px; padding-block: 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
   html {
