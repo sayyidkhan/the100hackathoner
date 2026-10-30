@@ -159,7 +159,6 @@ const principles = [
           <li>Speaking</li><li>Judging</li><li>Mentoring</li><li>Workshops</li><li>Building</li>
         </ul>
         <p><a href="/workshops/">Explore the practical AI prototyping workshop <span aria-hidden="true">↗</span></a></p>
-        <p><a href="mailto:sayyidkhan92@hotmail.com">sayyidkhan92@hotmail.com</a></p>
       </div>
       <form id="contact-form" action="mailto:sayyidkhan92@hotmail.com?subject=Collaboration%20inquiry" method="post" enctype="text/plain">
         <label>
@@ -189,7 +188,7 @@ const principles = [
     const body = `Name: ${data.get("name")}\nEmail: ${data.get("email")}\n\n${data.get("message")}`;
     window.location.href = `mailto:sayyidkhan92@hotmail.com?subject=${encodeURIComponent("Collaboration inquiry")}&body=${encodeURIComponent(body)}`;
     const status = document.querySelector("#contact-status");
-    if (status) status.textContent = "Your email app should open with a draft. Send it to complete your inquiry. If nothing opens, email sayyidkhan92@hotmail.com directly.";
+    if (status) status.textContent = "Your email app should open with a draft. Send it to complete your inquiry. If nothing opens, check that a default email app is configured.";
   });
 </script>
 
