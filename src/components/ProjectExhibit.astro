@@ -128,7 +128,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
         <p class="exhibit-story-detail" data-story-detail></p>
       </div>}
     </div>
-    {number === 43 && <div class="exhibit-story f1-story" style="position:static; max-width:none; padding:20px 28px 0;" data-walkthrough data-story aria-live="off" hidden>
+    {(number === 43 || number === 81) && <div class="exhibit-story f1-story" style={`position:static; max-width:none; padding:20px 28px ${number === 81 ? 20 : 0}px;`} data-walkthrough data-story aria-live="off" hidden>
       <p class="exhibit-story-heading"><span class="exhibit-story-step" data-story-step></span><span data-story-title></span></p>
       <p class="exhibit-story-detail" data-story-detail></p>
     </div>}
@@ -156,7 +156,7 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
     </div>}
     <div class="exhibit-controls" data-controls hidden>
       <span>{number === 49 ? 'Drag bunny to lift · Release to drop · Space + arrows also work' : 'Drag to rotate · Arrow keys to turn'}</span>
-      {[1, 2, 9, 13, 14, 15, 17, 18, 20, 21, 22, 23, 24, 25, 29, 35].includes(number) && <><button type="button" data-zoom="0.8" aria-label="Zoom out" disabled>−</button><button type="button" data-zoom="1.25" aria-label="Zoom in">+</button></>}
+      {[1, 2, 9, 13, 14, 15, 17, 18, 20, 21, 22, 23, 24, 25, 29, 35, 81].includes(number) && <><button type="button" data-zoom="0.8" aria-label="Zoom out" disabled>−</button><button type="button" data-zoom="1.25" aria-label="Zoom in">+</button></>}
       <button type="button" data-reset>{number === 49 ? 'Reset meadow' : number === 29 ? 'Replay route' : 'Reset view'}</button>
       <button type="button" data-pause aria-pressed="false">Pause motion</button>
     </div>
@@ -435,6 +435,8 @@ const [light, dark] = await Promise.all([variants(art.light), variants(art.dark)
   .exhibit-scene { position: relative; }
   /* Keep this wide research desk readable instead of letterboxing it in a square. */
   .project-exhibit[data-number='17'] .exhibit-scene { aspect-ratio: 1.6; }
+  .project-exhibit[data-number="81"] .exhibit-story-heading { font-size: 1rem; }
+  .project-exhibit[data-number="81"] .exhibit-story-detail { font-size: .85rem; margin-left: 0; }
   .exhibit-story { --story-accent: #cb493f; position: absolute; top: 22px; left: 22px; max-width: calc(100% - 44px); pointer-events: none; color: var(--ink); text-shadow: 0 1px 8px var(--bg); }
   .exhibit-story[data-tone='thinking'] { --story-accent: #b48a38; }
   .exhibit-story[data-tone='flowing'] { --story-accent: #547eff; }

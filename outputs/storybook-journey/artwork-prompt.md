@@ -1,0 +1,12 @@
+# Storybook journey artwork
+
+## Light-theme variant
+
+undefined
+
+Generated with the built-in image-generation tool. Dark reference: `public/landing/assets/storybook-dark-v1.jpg`.
+
+Use case: compositing. Asset type: polished landscape 3:2 concept artwork for hackathon #81, Draw Your Way Home.
+Edit target: the supplied dark-background red storybook artwork. Preserve the beautiful tactile open red cloth-bound book, layered ivory pages, folded-paper mountains and pine trees, cobalt-blue ribbon path leading to the warmly lit cottage, black studio background, soft cinematic lighting and photographic paper detail.
+Change the empty landscape into a clear story about Bob drawing solutions and resisting peer pressure. On the foreground-right page beside the blue route, add a clearly visible young schoolboy Bob with brown hair, a red jacket, navy trousers, mustard satchel, holding a pencil and actively drawing on an upright cream sketch sheet. He should be large enough to read immediately, around one fifth of the landscape height, a finely crafted expressive paper sculpture, not a plastic toy. The sheet shows a bold dark-blue line drawing of a friendly person. Beside Bob on the blue path is the supportive friend he has drawn, in a teal-green jacket and navy trousers, turning toward the home destination. Make their faces and hands clean and charming. Further off the blue path on the right, a separate pair of peers in muted plum and indigo clothing beckon Bob toward them; a clean paper speech bubble above ONLY that pair reads exactly "Come with us!" and underneath "You can go home later." Bob stays turned toward his sketch and home rather than the beckoning pair.
+Along the upper blue path, a modest pencil-drawn doorway outline is becoming a real folded-paper open door, suggesting drawn solutions, and a small elegant paper sketch of a phone with a directions arrow supports the journey without competing with the main drawing. Keep the route continuous and the home clearly recognizable. No game controllers, joystick icons, UI screenshots, stage numbers, extra captions, watermarks or decorative dashboards. Balanced premium museum miniature composition, entire book inside frame, actors distinctly separated, physical grounded feet and believable contact shadows. Keep the handmade paper material palette and existing composition while making the characters and drawing the focal point.

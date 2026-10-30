@@ -1192,10 +1192,10 @@ export function createGalleryScene({ canvas, container, onError = () => {}, onSt
     zoom = 1;
     cancelManipulation();
     currentModel?.userData.manipulation?.reset();
-    guidedCamera = false;
+    guidedCamera = currentModel?.userData.restartGuidedCamera === true;
     yaw = Number.isFinite(currentModel?.userData.initialYaw) ? currentModel.userData.initialYaw : INITIAL_YAW;
     elevation = Number.isFinite(currentModel?.userData.initialElevation) ? currentModel.userData.initialElevation : INITIAL_ELEVATION;
-    if (!currentModel?.userData.cameraCue) elapsed = 0;
+    if (!currentModel?.userData.cameraCue || currentModel?.userData.restartGuidedCamera) elapsed = 0;
     lastInteraction = performance.now();
     fitCamera();
     requestFrame();

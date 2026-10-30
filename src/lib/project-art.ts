@@ -91,8 +91,8 @@ import p63Dark from '../../public/landing/assets/projects/063-data-center-rivals
 import p64Light from '../../public/landing/assets/projects/064-data-center-destroyer-light-v1.png';
 import p64Dark from '../../public/landing/assets/projects/064-data-center-destroyer-dark-v1.png';
 import type { ImageMetadata } from 'astro';
-import bookLight from '../../public/landing/assets/storybook-concept-v3.jpg';
-import bookDark from '../../public/landing/assets/storybook-dark-v1.jpg';
+import bookLight from '../../public/landing/assets/storybook-road-light-v3.png';
+import bookDark from '../../public/landing/assets/storybook-road-dark-v3.png';
 import crowLight from '../../public/landing/assets/crow-sharingan-light-v3.png';
 import crowDark from '../../public/landing/assets/crow-sharingan-dark-v3.png';
 import borneoLight from '../../public/landing/assets/borneo-concept-v3.jpg';
@@ -219,7 +219,7 @@ export const projectArt: Record<number, ProjectArt> = {
   75: { light: buzoNight, dark: buzoNight, alt: 'An illuminated ivory atlas links a miniature concert stage, framed artwork and cultural venue with golden routes across a midnight city.', caption: 'Mapping the relationships, rights and decisions behind a cultural portfolio.', model: '/landing/artifacts/buzo-atlas-world.js' },
   76: { light: agrimLight, dark: agrimDark, alt: 'Mayor Agrim, wearing glasses and a black hoodie, directs a community marketplace, modern glass academy and server district from a central city-planning table.', caption: 'One mayor. Three different worlds. Agrim commands the city from the center.', model: '/landing/artifacts/agrim-tycoon.js' },
   77: { light: zoLight, dark: zoDark, alt: 'A red scrapbook unfolds into walls of ivory travel-photo cards, with two small figures and a blue shared timeline.', caption: 'Different perspectives. One shared story. Photos, films and voices woven into a living journal.', model: '/landing/artifacts/zo-memories.js' },
-  81: { light: bookLight, dark: bookDark, alt: 'A red storybook opens into a paper landscape with a blue path leading home.', caption: 'Drawing a way through peer pressure, one choice at a time.', model: '/landing/artifacts/storybook.js' },
+  81: { light: bookLight, dark: bookDark, alt: 'Bob draws a supportive friend on a paper-book landscape, ignoring beckoning peers and following a blue road toward a warmly lit home.', caption: 'Drawing a way through peer pressure, one choice at a time.', model: '/landing/artifacts/storybook.js' },
   80: { light: crowLight, dark: crowDark, alt: 'An origami crow soars above a miniature ivory city on a cobalt base.', caption: 'A bird’s-eye view turns an unfamiliar destination into a place to explore.', model: '/landing/artifacts/itachi-crow.js' },
   79: { light: borneoLight, dark: borneoDark, alt: 'A timber longhouse stands among paper forest and a winding blue river.', caption: 'A digital welcome to Long Taa and the landscape around it.', model: '/landing/models.js' },
   78: { light: peterLight, dark: peterDark, alt: 'An open red relationship journal and raised portrait cards connected by blue paths, with a red introduction route leading to a warmly lit archway.', caption: 'Remember the conversation. Find the warm path to the next opportunity.', model: '/landing/artifacts/peterindex.js' },

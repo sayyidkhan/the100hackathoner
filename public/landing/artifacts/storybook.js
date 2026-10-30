@@ -1,9 +1,10 @@
 import { createStorybookPages } from './storybook-pages.js';
 import { createStorybookDetails } from './storybook-details.js';
+import { createStorybookJourney } from './storybook-journey.js';
 import { applyBakedAO } from './storybook-surface.js';
 
 // A physical paper sculpture of the concept artwork: cloth, deckled pages,
-// folded relief and a satin-blue route, with local tactile paper maps.
+// folded relief and a grounded blue road, with local tactile paper maps.
 export function createArtifact(THREE, { bake = false } = {}) {
   const root = new THREE.Group(); root.name = 'draw-your-way-home';
   let seed = 81027;
@@ -41,7 +42,9 @@ export function createArtifact(THREE, { bake = false } = {}) {
     red: new THREE.MeshPhysicalMaterial({ color: 0x9c171c, roughness: .73, bumpMap: clothGrain, bumpScale: .013, sheen: .25, sheenColor: 0xbd352e, sheenRoughness: .75 }),
     redDark: new THREE.MeshStandardMaterial({ color: 0x66121b, roughness: .86, bumpMap: clothGrain, bumpScale: .010 }),
     gold: new THREE.MeshStandardMaterial({ color: 0xb99756, roughness: .56, metalness: .5 }),
-    cobalt: new THREE.MeshPhysicalMaterial({ color: 0x0730a8, roughness: .50, metalness: 0, bumpMap: clothGrain, bumpScale: .002, sheen: .22, sheenColor: 0x456aff, clearcoat: .025, clearcoatRoughness: .6, side: THREE.DoubleSide }),
+    cobalt: new THREE.MeshStandardMaterial({ color: 0x164f94, roughness: .94, metalness: 0, bumpMap: paperGrain, bumpScale: .0015, side: THREE.DoubleSide }),
+    roadPaint: new THREE.MeshStandardMaterial({ color: 0xfff7df, roughness: .9, side: THREE.DoubleSide }),
+    curb: new THREE.MeshStandardMaterial({ color: 0xd6c8ad, roughness: .95, side: THREE.DoubleSide }),
     ink: new THREE.MeshStandardMaterial({ color: 0x443c32, roughness: .88 }),
     wood: new THREE.MeshStandardMaterial({ color: 0x8c7050, roughness: .89, bumpMap: paperGrain, bumpScale: .008 }),
     window: new THREE.MeshStandardMaterial({ color: 0xf4cb84, emissive: 0xffa342, emissiveIntensity: .3, roughness: .45 }),
@@ -100,33 +103,31 @@ export function createArtifact(THREE, { bake = false } = {}) {
   const p = new THREE.Vector3(), tangent = new THREE.Vector3();
   for (let j = 0; j <= steps; j++) {
     const t = j / steps; route.getPoint(t, p); route.getTangent(t, tangent);
-    // The tail slips into the binding, widening naturally into the satin path.
-    const width = (.16 + Math.sin(t * Math.PI) * .018) * THREE.MathUtils.lerp(.26, 1, THREE.MathUtils.smoothstep(t,0,.08));
+    // A constant-width carriageway rests on the page, with no fabric banking or curl.
+    const width = .30;
     for (let k = 0; k <= across; k++) {
       const side = (k / across - .5) * width;
       const x = p.x - tangent.z * side, z = p.z + tangent.x * side;
-      const bank = Math.sin(t * Math.PI * 4) * .15 + .075;
-      const lift = .020 + Math.abs(bank) * width / 2 + .009 * Math.sin(t * Math.PI * 8) ** 2;
-      const crown = .003 * Math.sin(k / across * Math.PI);
-      const restingY = height(x,z) + lift + side * bank + crown;
+      const crown = .002 * Math.sin(k / across * Math.PI);
+      const restingY = height(x,z) + .014 + crown;
       const arrival = THREE.MathUtils.smoothstep(t, .87, 1);
       const y = THREE.MathUtils.lerp(restingY, target.y + crown, arrival);
       pathPositions.push(x,y,z); pathUV.push(t * 9, k / across);
       if (j < steps && k < across) { const a = j * (across + 1) + k; pathIndices.push(a,a+1,a+across+1,a+1,a+across+2,a+across+1); }
     }
   }
-  function ribbonSurface(pos,uv,ix,name) {
+  function roadSurface(pos,uv,ix,name,material=materials.cobalt) {
     const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));
     geometry.setAttribute('uv',new THREE.Float32BufferAttribute(uv,2));
     geometry.setIndex(ix);geometry.computeVertexNormals();
-    add(geometry,materials.cobalt).name=name;
+    add(geometry,material).name=name;
   }
-  ribbonSurface(pathPositions,pathUV,pathIndices,'satin-blue-way-home');
+  roadSurface(pathPositions,pathUV,pathIndices,'blue-road-home');
   const underside=pathPositions.map((n,i)=>i%3===1?n-.005:n);
   const reverse=[];for(let i=0;i<pathIndices.length;i+=3)reverse.push(pathIndices[i],pathIndices[i+2],pathIndices[i+1]);
-  ribbonSurface(underside,pathUV,reverse,'woven-ribbon-underside');
-  // Fine fabric edges give the ribbon a visible thickness in oblique views.
+  roadSurface(underside,pathUV,reverse,'roadbed-underside');
+  // A thin roadbed meets the paper terrain along both edges.
   for (const edge of [0,across]) {
     const pos=[],uv=[],ix=[];
     for(let j=0;j<=steps;j++){
@@ -134,8 +135,29 @@ export function createArtifact(THREE, { bake = false } = {}) {
       pos.push(...pathPositions.slice(a,a+3),...underside.slice(a,a+3));uv.push(j/steps*9,0,j/steps*9,1);
       if(j<steps){const n=j*2;if(edge===0)ix.push(n,n+2,n+1,n+1,n+2,n+3);else ix.push(n,n+1,n+2,n+1,n+3,n+2);}
     }
-    ribbonSurface(pos,uv,ix,'fine-satin-selvedge');
+    roadSurface(pos,uv,ix,'roadbed-edge');
   }
+
+  // Paint follows the exact road mesh. Pale shoulders and dashed centre markings
+  // distinguish a walkable road from a loose strip of fabric at every camera angle.
+  function roadStrip(lo,hi,lift,material,name,dashed=false){
+    const pos=[],uv=[],ix=[];
+    for(let j=0;j<=steps;j++){
+      for(const f of [lo,hi]){
+        const k=f*across, a=Math.min(across-1,Math.floor(k)), blend=k-a;
+        const i=(j*(across+1)+a)*3;
+        pos.push(...[0,1,2].map(c=>THREE.MathUtils.lerp(pathPositions[i+c],pathPositions[i+3+c],blend)+(c===1?lift:0)));
+        uv.push(j/steps,f);
+      }
+      if(j<steps&&(!dashed||j%9<4)){const n=j*2;ix.push(n,n+1,n+2,n+1,n+3,n+2);}
+    }
+    roadSurface(pos,uv,ix,name,material);
+  }
+  roadStrip(0,.065,.008,materials.curb,'left-road-shoulder');
+  roadStrip(.935,1,.008,materials.curb,'right-road-shoulder');
+  roadStrip(.11,.135,.003,materials.roadPaint,'left-road-edge-line');
+  roadStrip(.865,.89,.003,materials.roadPaint,'right-road-edge-line');
+  roadStrip(.477,.523,.003,materials.roadPaint,'dashed-road-centreline',true);
 
   // Retain articulated parts; merge everything else by material with UVs intact.
   root.updateMatrixWorld(true);
@@ -164,6 +186,20 @@ export function createArtifact(THREE, { bake = false } = {}) {
   root.userData.setTheme = theme => { root.userData.studioLightScale=theme==='dark'?.9:1;details.setTheme?.(theme); };
   root.userData.setTheme('light');root.userData.animate(0);
   if (!bake && typeof document !== 'undefined') applyBakedAO(THREE, root);
+  // Capture only the unchanged environment for its existing AO bake. Dynamic
+  // actors own their materials and are added afterwards, so the bake stays valid.
+  if (!bake) {
+    const sample = t => {
+      const f=Math.max(0,Math.min(1,t))*steps, a=Math.min(steps-1,Math.floor(f)), blend=f-a;
+      const i=(a*(across+1)+across/2)*3, j=((a+1)*(across+1)+across/2)*3;
+      return new THREE.Vector3(...[0,1,2].map(k=>THREE.MathUtils.lerp(pathPositions[i+k],pathPositions[j+k],blend))).add(offset).add(new THREE.Vector3(0,.008,0));
+    };
+    const journey=createStorybookJourney(THREE,{sample,ground:(x,z)=>height(x-offset.x,z-offset.z)+offset.y+.012});root.add(journey.group);
+    const environmentAnimate=root.userData.animate;
+    Object.assign(root.userData,{autoOrbit:false,realTimeAnimation:true,cycleDuration:48,framingTargetY:1.1,restartGuidedCamera:true});
+    root.userData.animate=t=>{environmentAnimate(t);root.userData.story=journey.animate(t);root.userData.cameraCue=journey.group.userData.cameraCue;};
+    root.userData.animate(0);
+  }
   return root;
 }
 

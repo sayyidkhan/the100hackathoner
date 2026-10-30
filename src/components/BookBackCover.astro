@@ -1,0 +1,51 @@
+<div class="back-design memoir-back" aria-hidden="true">
+  <img src="/images/books/the-100-hackathoner-back.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async" />
+  <svg viewBox="0 0 300 450" xmlns="http://www.w3.org/2000/svg">
+    <text x="38" y="43" class="eyebrow">THE STORY BEHIND THE BUILDS</text>
+    <text x="38" y="78" class="headline"><tspan x="38">What stays with you</tspan><tspan x="38" dy="27">after the demo?</tspan></text>
+    <path d="M38 122H79"/>
+    <text x="38" y="147" class="blurb">
+      <tspan x="38">In 2016, one hackathon became the start</tspan>
+      <tspan x="38" dy="15">of a much longer journey.</tspan>
+      <tspan x="38" dy="24">Through teams, deadlines and wrong turns,</tspan>
+      <tspan x="38" dy="15">a Singapore engineer keeps showing up —</tspan>
+      <tspan x="38" dy="15">and begins to see beyond the code.</tspan>
+      <tspan x="38" dy="24">The pursuit of one hundred hackathons.</tspan>
+      <tspan x="38" dy="15">The lessons that last beyond a weekend.</tspan>
+      <tspan x="38" dy="15">The founder he is still becoming.</tspan>
+    </text>
+    <text x="38" y="290" class="author">SAYYID KHAN</text>
+  </svg>
+</div>
+<div class="back-design principles-back" aria-hidden="true">
+  <img src="/images/books/forward-deployed-back.webp" alt="" width="1024" height="1536" loading="lazy" decoding="async" />
+  <svg viewBox="0 0 300 450" xmlns="http://www.w3.org/2000/svg">
+    <text x="38" y="43" class="eyebrow">FROM BUILDER TO OPERATOR</text>
+    <text x="38" y="78" class="headline"><tspan x="38">Build with intent.</tspan><tspan x="38" dy="27">Make it matter.</tspan></text>
+    <path d="M38 122H79"/>
+    <text x="38" y="146" class="principle">Ship to learn.</text>
+    <text x="38" y="160" class="blurb">Let real use challenge your assumptions.</text>
+    <text x="38" y="183" class="principle">Repetition creates range.</text>
+    <text x="38" y="197" class="blurb">Build judgement across different rooms.</text>
+    <text x="38" y="220" class="principle">Own the outcome.</text>
+    <text x="38" y="234" class="blurb">Follow the work beyond the demo.</text>
+    <text x="38" y="257" class="principle">Compound the record.</text>
+    <text x="38" y="271" class="blurb">Leave something the next build can use.</text>
+    <text x="38" y="302" class="author">SAYYID KHAN</text>
+  </svg>
+</div>
+<style>
+  .back-design { position:absolute; inset:0; overflow:hidden; border-radius:inherit; background:#102437; --back-shade:#102437ed; }
+  img, svg { display:block; position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .back-design::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,transparent 36%,var(--back-shade) 61%,transparent 79%); }
+  svg { z-index:1; fill:#f7ead0; }
+  path { stroke:#caa575; stroke-width:1; }
+  .eyebrow { font:6px Arial,sans-serif; letter-spacing:1.1px; fill:#ddbd8b; }
+  .headline { font:22px Georgia,serif; letter-spacing:-.5px; }
+  .blurb { font:10.3px Georgia,serif; }
+  .principle { font:italic 13px Georgia,serif; fill:#ead0a0; }
+  .author { font:7px Arial,sans-serif; letter-spacing:1.8px; fill:#ddbd8b; }
+  .principles-back { display:none; background:#153c32; --back-shade:#12362bea; }
+  :global(#book:has(input[value="forward"]:checked)) .memoir-back { display:none; }
+  :global(#book:has(input[value="forward"]:checked)) .principles-back { display:block; }
+</style>

@@ -1,5 +1,7 @@
 ---
 import BookJourneyPage from "./BookJourneyPage.astro";
+import BookCover from "./BookCover.astro";
+import BookBackCover from "./BookBackCover.astro";
 ---
 <section id="book" class="book-premiere wrap" aria-labelledby="book-heading">
   <header class="book-header">
@@ -14,23 +16,34 @@ import BookJourneyPage from "./BookJourneyPage.astro";
           <div class="leaf-front page-face"><BookJourneyPage page={1} /></div>
           <div class="leaf-back page-face"><BookJourneyPage page={2} /></div>
         </div>
+        <div class="book-backboard" aria-hidden="true"></div>
+        <div class="book-back-cover" aria-hidden="true"><BookBackCover /></div>
+        <div class="book-spine" aria-hidden="true"><span class="memoir-copy">THE 100 HACKATHONER</span><span class="principles-copy">THE FORWARD DEPLOYED HACKATHONER</span><b>SK</b></div>
         <div class="book-paper" aria-hidden="true"></div>
-        <div class="book-ribbon" aria-hidden="true"></div>
+        <div class="book-fore-edge" aria-hidden="true"></div>
+        <div class="book-top-edge" aria-hidden="true"></div>
+        <div class="book-bottom-edge" aria-hidden="true"></div>
+        <div class="book-headband" aria-hidden="true"></div>
+        <!-- A bound ribbon runs between the pages, then folds over the bottom edge.
+             Each section has two fabric faces and a 1.2px woven edge. -->
+        <div class="book-ribbon" aria-hidden="true">
+          <div class="ribbon-section ribbon-root">
+            <i class="ribbon-face ribbon-front"></i><i class="ribbon-face ribbon-back"></i>
+            <i class="ribbon-edge ribbon-left"></i><i class="ribbon-edge ribbon-right"></i>
+            <div class="ribbon-section ribbon-fold">
+              <i class="ribbon-face ribbon-front"></i><i class="ribbon-face ribbon-back"></i>
+              <i class="ribbon-edge ribbon-left"></i><i class="ribbon-edge ribbon-right"></i>
+              <div class="ribbon-section ribbon-tip">
+                <i class="ribbon-face ribbon-front"></i><i class="ribbon-face ribbon-back"></i>
+                <i class="ribbon-edge ribbon-left"></i><i class="ribbon-edge ribbon-right"></i>
+                <i class="ribbon-hem"></i>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="book-lid">
           <div class="inside-cover page-face" aria-hidden="true"><BookJourneyPage page={0} /></div>
-        <div class="book-cover">
-          <span class="cover-edition"><span class="memoir-copy">A LIFE IN PROTOTYPES</span><span class="principles-copy">PRINCIPLES FROM THE FIELD</span></span>
-          <div class="cover-memoir">
-            <span class="cover-title">THE <strong>100</strong> HACKATHONER</span>
-            <span class="cover-rule" aria-hidden="true"></span>
-            <span class="cover-subtitle">The things we build.<br />The people we become.</span>
-          </div>
-          <div class="cover-forward">
-            <span class="forward-title">The Forward<br />Deployed<br /><em>Hackathoner.</em></span>
-            <span class="forward-symbol" aria-hidden="true">↗</span>
-            <span class="cover-subtitle">Build. Learn. Own.<br />Make the work compound.</span>
-          </div>
-          <span class="cover-author">SAYYID KHAN</span>
+        <div class="book-cover"><BookCover />
         </div>
         </div>
       </div>
@@ -68,26 +81,69 @@ import BookJourneyPage from "./BookJourneyPage.astro";
 
 <style>
   .book-premiere { max-width:1280px; padding-block:80px; border-top:1px solid var(--line); scroll-margin-top:24px; }
+  .book-exhibit::before { content:""; position:absolute; left:22%; right:18%; bottom:9%; height:22px; border-radius:50%; background:#0002; filter:blur(18px); pointer-events:none; }
   .book-header { display:flex; align-items:center; justify-content:space-between; gap:20px; margin-bottom:42px; }
   .book-layout { display:grid; grid-template-columns:minmax(0,.95fr) minmax(0,1fr); gap:clamp(32px,5vw,80px); align-items:center; }
   .book-exhibit { margin:0; position:relative; display:flex; flex-direction:column; align-items:center; padding:28px 30px 22px; background:radial-gradient(ellipse at 50% 45%,var(--raised),var(--soft)); border:1px solid var(--line); overflow:hidden; perspective:1400px; }
-  .book-object { position:relative; width:min(76%,300px); height:auto; min-height:0; aspect-ratio: .69; flex:none; margin:34px 0 42px; transform:rotateY(-13deg) rotateZ(-6deg); transform-style:preserve-3d; --spread-scale:.78; --book-duration:28s; }
-  .book-paper { position:absolute; inset:6px -10px -5px 9px; border:1px solid #b9ad99; border-radius:3px 8px 8px 3px; background:repeating-linear-gradient(0deg,#e7dfcd 0 1px,#faf5e9 1px 3px); box-shadow:15px 24px 28px #0003; }
-  .book-ribbon { position:absolute; bottom:-28px; left:55%; width:22px; height:60px; background:#bf2731; clip-path:polygon(0 0,100% 0,100% 100%,50% 84%,0 100%); }
-  .book-cover { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:space-between; padding:9% 10% 9% 13%; border-radius:3px 5px 5px 3px; color:#f5eedf; border:1px solid #464344; border-left:9px solid #bd2530; background:linear-gradient(90deg,#08090b 0%,#373436 3%,#19191b 8%,#222225 97%,#303032); box-shadow:inset 0 0 0 1px #ffffff0b; }
-  .book-cover::after { content:""; position:absolute; inset:0; pointer-events:none; opacity:.18; background:repeating-linear-gradient(0deg,transparent 0 2px,#ffffff18 2px 3px),repeating-linear-gradient(90deg,transparent 0 2px,#0004 2px 3px); }
-  .cover-edition { font:8px/1.5 var(--mono); letter-spacing:.16em; color:#cec4b3; }
-  .cover-title { display:block; font:12px/1.4 var(--body); letter-spacing:.17em; }
-  .cover-title strong { display:block; font:400 clamp(88px,10vw,148px)/1 var(--body); letter-spacing:-.09em; color:#f84e54; margin:10px 0 14px -5px; }
-  .cover-rule { display:block; height:1px; background:#f84e54; width:40px; margin:24px 0 16px; }
-  .cover-subtitle { display:block; font:italic 14px/1.5 Georgia,serif; color:#e4dcca; }
-  .cover-author { font:9px/1.5 var(--body); letter-spacing:.2em; }
-  .cover-forward { display:none; }
-  .forward-title { display:block; font:26px/1.15 Georgia,serif; letter-spacing:-.03em; }
-  .forward-title em { color:#f84e54; }
-  .forward-symbol { display:block; color:#f84e54; font:90px/1.2 var(--body); }
-  .book-premiere:has(input[value="forward"]:checked) .cover-memoir { display:none; }
-  .book-premiere:has(input[value="forward"]:checked) .cover-forward { display:block; }
+  .book-object { position:relative; width:min(76%,300px); height:auto; min-height:0; aspect-ratio: 2 / 3; flex:none; margin:34px 0 42px; transform:rotateY(-20deg) rotateZ(-6deg); transform-style:preserve-3d; --spread-scale:.78; --book-duration:40s; --binding:#152334; }
+  /* Both boards share one footprint; the paper block is inset from it. */
+  .book-backboard { position:absolute; inset:0; border-radius:3px 5px 5px 3px; background:var(--binding); border:1px solid #bc9b6240; transform:translateZ(-16px); box-shadow:0 1px 2px #0005; }
+  .book-back-cover { position:absolute; inset:0; border-radius:3px 5px 5px 3px; transform:translateZ(-18px) rotateY(180deg); backface-visibility:hidden; border:1px solid #d6b67d66; box-shadow:inset 0 1px 1px #ead2a460; }
+  /* Opaque cloth blocks the page-edge planes behind the rounded binding. */
+  .book-spine {
+    position:absolute; left:0; top:0; height:100%; width:23px;
+    box-sizing:border-box; transform-origin:left;
+    transform:translateZ(-18px) rotateY(-90deg); backface-visibility:hidden;
+    border-radius:1px; background-color:var(--binding);
+    background-image:
+      repeating-linear-gradient(0deg,transparent 0 1px,#00000012 1px 2px),
+      repeating-linear-gradient(90deg,transparent 0 1px,#ffffff05 1px 2px),
+      linear-gradient(90deg,#0008,transparent 24%,transparent 65%,#0007);
+    border-top:1px solid #a58b5b; border-bottom:1px solid #a58b5b;
+    box-shadow:inset 1px 0 #0009,inset 3px 0 #c4a16b38,inset -1px 0 #000b,inset -3px 0 #c4a16b24;
+    color:#e2c398; display:flex; align-items:center; justify-content:space-around;
+    padding:30px 0; writing-mode:vertical-rl; font:7px/1.4 Georgia,serif;
+    letter-spacing:.8px; text-shadow:0 1px 1px #0008;
+  }
+  .book-spine::before,.book-spine::after {
+    content:""; position:absolute; left:4px; right:4px; height:4px;
+    border-top:1px solid #bd9d65; border-bottom:1px solid #bd9d65; box-shadow:0 1px 1px #0005;
+  }
+  .book-spine::before { top:13px; }
+  .book-spine::after { bottom:13px; }
+  .book-spine b { font-size:7px; }
+  .book-paper { position:absolute; inset:7px 7px 7px 0; border-radius:0 3px 3px 0; background:#f3e9d5; }
+  .book-fore-edge,.book-top-edge,.book-bottom-edge { position:absolute; backface-visibility:hidden; background:repeating-linear-gradient(90deg,#bdac8d 0 .5px,#f3e9d5 .5px 2px,#d8c9ae 2px 2.5px,#fff6e5 2.5px 3.5px); }
+  .book-fore-edge { left:calc(100% - 7px); top:7px; bottom:7px; width:16px; transform-origin:left; transform:translateZ(0) rotateY(90deg); box-shadow:inset 0 0 3px #87745255; }
+  .book-top-edge,.book-bottom-edge { left:4px; right:7px; height:16px; background:repeating-linear-gradient(0deg,#bdac8d 0 .5px,#f3e9d5 .5px 2px,#d8c9ae 2px 2.5px,#fff6e5 2.5px 3.5px); }
+  .book-top-edge { top:7px; transform-origin:top; transform:rotateX(-90deg); }
+  .book-bottom-edge { bottom:7px; transform-origin:bottom; transform:rotateX(90deg); }
+  .book-headband { position:absolute; left:8px; top:3px; width:20px; height:5px; border-radius:3px; background:repeating-linear-gradient(90deg,#d1b078 0 2px,#243448 2px 4px); transform:translateZ(-3px); }
+  .book-ribbon {
+    position:absolute; top:calc(100% - 18px); left:18%; width:12px; height:24px;
+    transform:translateZ(-7px) rotateZ(-8deg); transform-style:preserve-3d;
+  }
+  .ribbon-section { position:absolute; width:100%; height:100%; transform-style:preserve-3d; transform-origin:50% 0; }
+  .ribbon-fold { top:100%; height:17px; transform:rotateX(-28deg); }
+  .ribbon-tip { top:100%; height:13px; transform:rotateX(16deg); }
+  .ribbon-face {
+    position:absolute; inset:0; backface-visibility:hidden; background-color:#8d3037;
+    background-image:repeating-linear-gradient(0deg,transparent 0 .7px,#e6b4a51c .7px 1px),
+      repeating-linear-gradient(90deg,transparent 0 1px,#330e1929 1px 1.5px),
+      linear-gradient(90deg,#541a27,#ae5051 25%,#963a42 65%,#66222e);
+    box-shadow:inset 1px 0 #d48d7466,inset -1px 0 #441723;
+  }
+  .ribbon-face::after { content:""; position:absolute; inset:0 2px; border-left:1px dashed #e0a58566; border-right:1px dashed #e0a58566; }
+  .ribbon-front { transform:translateZ(.6px); }
+  .ribbon-back { transform:translateZ(-.6px) rotateY(180deg); }
+  .ribbon-edge { position:absolute; top:0; height:100%; width:1.2px; background:#5b202b; transform-origin:left; }
+  .ribbon-left { left:0; transform:translateZ(-.6px) rotateY(-90deg); }
+  .ribbon-right { right:-1.2px; transform:translateZ(.6px) rotateY(90deg); }
+  .ribbon-hem { position:absolute; bottom:0; width:100%; height:1.2px; background:#c17b6a; transform-origin:bottom; transform:translateZ(.6px) rotateX(90deg); }
+  .ribbon-tip .ribbon-face { border-bottom:1px solid #c17b6a; }
+  .book-cover { position:absolute; inset:0; border-radius:4px 7px 7px 4px; background:var(--binding); border:1px solid #d6b67d66; box-shadow:0 0 0 1px var(--binding),0 1px 2px #0006; }
+  .book-cover::before { content:""; position:absolute; z-index:2; inset:0; border-radius:inherit; pointer-events:none; background:linear-gradient(90deg,#0008,transparent 2%,#ffffff23 3%,#0003 4%,transparent 6%,transparent 96%,#fff2 99%,#0006); box-shadow:inset 0 1px 1px #f3d5a873,inset 0 -2px 2px #0009; }
+  .book-cover::after { content:""; position:absolute; z-index:3; left:5.3%; top:1%; bottom:1%; width:3px; border-radius:50%; background:linear-gradient(90deg,#0006,#fff2,transparent); pointer-events:none; }
   .story-kicker { color:var(--muted); font:10px/1.6 var(--mono); letter-spacing:.09em; margin-bottom:20px; }
   .book-story h2 { font:400 clamp(36px,3.8vw,54px)/1.1 var(--body); letter-spacing:-.055em; }
   .book-story h2 em { display:block; color:var(--accent); font-family:Georgia,serif; font-weight:400; letter-spacing:-.045em; margin-top:8px; }
@@ -114,8 +170,6 @@ import BookJourneyPage from "./BookJourneyPage.astro";
     .book-layout { gap:30px; }
     .book-exhibit { padding-inline:20px; }
     .book-object { width:84%; }
-    .forward-title { font-size:22px; }
-    .cover-subtitle { font-size:12px; }
     .book-story h2 { font-size:38px; }
   }
   @media(max-width:760px) {
@@ -125,13 +179,6 @@ import BookJourneyPage from "./BookJourneyPage.astro";
     .book-layout { grid-template-columns:1fr; gap:32px; }
     .book-exhibit { padding:22px 24px 18px; }
     .book-object { width:min(76%,280px); max-width:78%; margin-block:24px 36px; --spread-scale:.72; }
-    .cover-title strong { font-size:102px; }
-    .cover-title { font-size:10px; }
-    .cover-rule { margin:16px 0 10px; }
-    .cover-edition { font-size:7px; }
-    .cover-author { font-size:8px; }
-    .forward-title { font-size:23px; }
-    .forward-symbol { font-size:68px; }
     .book-story h2 { font-size:clamp(32px,7vw,44px); }
     .story-kicker { margin-bottom:14px; }
     .book-intro { margin-top:20px; font-size:17px; }
@@ -139,40 +186,41 @@ import BookJourneyPage from "./BookJourneyPage.astro";
     .book-options { margin-block:24px; }
   }
 
-  .book-paper { transform:translateZ(-3px); }
-  .book-ribbon { transform:translateZ(-2px); }
+  .book-paper { transform:translateZ(-1px); }
   .book-lid, .book-leaf { position:absolute; inset:0; transform-origin:0 50%; transform-style:preserve-3d; }
   .book-lid { transform:translateZ(4px); }
   .book-leaf { transform:translateZ(2px); }
   .book-cover { backface-visibility:hidden; transform:translateZ(1px); }
   .page-face { position:absolute; inset:0; overflow:hidden; display:flex; flex-direction:column; padding:10% 9% 8% 12%; border-radius:2px 5px 5px 2px; color:#302b25; background:linear-gradient(90deg,#cfc3ac,#f6efdf 9%,#fff8e9 70%,#eee3ce); border:1px solid #d6c8ad; backface-visibility:hidden; }
-  .book-inner { transform:translateZ(0); }
+  .book-inner { inset:7px 7px 7px 0; transform:translateZ(0); }
+  .book-leaf { inset:7px 7px 7px 0; }
   .leaf-front { transform:translateZ(.5px); }
   .leaf-back, .inside-cover { transform:rotateY(180deg) translateZ(.5px); background:linear-gradient(270deg,#cfc3ac,#f6efdf 9%,#fff8e9 70%,#eee3ce); }
-  .inside-cover { border:7px solid #262326; border-right:9px solid #a5232c; }
+  .inside-cover { border:6px solid var(--binding); border-right:3px solid var(--binding); }
   .book-exhibit.is-animated .book-object { animation:book-reframe var(--book-duration) ease-in-out infinite both; }
   .book-exhibit.is-animated .book-lid { animation:book-open var(--book-duration) cubic-bezier(.45,0,.25,1) infinite both; }
   .book-exhibit.is-animated .book-leaf { animation:book-turn var(--book-duration) cubic-bezier(.45,0,.25,1) infinite both; }
   .book-exhibit[data-running="false"] :global(*) { animation-play-state:paused !important; }
+  /* Read the story first; close the boards before rotating to the back. */
   @keyframes book-reframe {
-    0%,12%,96%,100% { transform:translateX(0) rotateY(-13deg) rotateZ(-6deg) scale(1); }
-    25%,82% { transform:translateX(calc(var(--spread-scale) * 50%)) rotateY(-5deg) rotateZ(-1deg) scale(var(--spread-scale)); }
+    0%,9% { transform:translateX(0) rotateY(-20deg) rotateZ(-6deg) scale(1); }
+    18%,57% { transform:translateX(calc(var(--spread-scale) * 50%)) rotateY(-5deg) rotateZ(-1deg) scale(var(--spread-scale)); }
+    65% { transform:translateX(0) rotateY(-20deg) rotateZ(-6deg) scale(1); }
+    75%,92% { transform:translateX(0) rotateY(170deg) rotateZ(3deg) scale(.98); }
+    100% { transform:translateX(0) rotateY(340deg) rotateZ(-6deg) scale(1); }
   }
   @keyframes book-open {
-    0%,14%,96%,100% { transform:translateZ(4px) rotateY(0deg); }
-    27%,82% { transform:translateZ(4px) rotateY(-173deg); }
+    0%,10%,65%,100% { transform:translateZ(4px) rotateY(0deg); }
+    19%,57% { transform:translateZ(0) rotateY(-180deg); }
   }
   @keyframes book-turn {
-    0%,43%,84%,100% { transform:translateZ(2px) rotateY(0deg); }
-    55%,71% { transform:translateZ(2px) rotateY(-170deg); }
+    0%,30%,57%,100% { transform:translateZ(2px) rotateY(0deg); }
+    39%,49% { transform:translateZ(2px) rotateY(-180deg); }
   }
   .principles-copy { display:none; }
   .book-premiere:has(input[value="forward"]:checked) .memoir-copy { display:none; }
   .book-premiere:has(input[value="forward"]:checked) .principles-copy { display:inline; }
-  .book-premiere:has(input[value="forward"]:checked) .book-object { --book-duration:22s; }
-  .book-premiere:has(input[value="forward"]:checked) .book-cover { border-left-color:#c79850; }
-  .book-premiere:has(input[value="forward"]:checked) .forward-title em,
-  .book-premiere:has(input[value="forward"]:checked) .forward-symbol { color:#e8b867; }
+  .book-premiere:has(input[value="forward"]:checked) .book-object { --book-duration:36s; --binding:#173b33; }
 </style>
 
 <script>

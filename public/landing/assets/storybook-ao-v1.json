@@ -11,87 +11,101 @@
   "keyWidth": 1.5,
   "cell": 0.018,
   "epsilon": 0.0018,
-  "sampled": 78753,
-  "cacheHits": 348225,
-  "totalVertices": 426978,
-  "triangles": 142326,
-  "bytes": 854132,
+  "sampled": 79636,
+  "cacheHits": 353222,
+  "totalVertices": 432858,
+  "triangles": 144286,
+  "bytes": 865924,
   "minAO": 1,
   "maxAO": 255,
-  "averageAO": 129.94,
+  "averageAO": 127.12,
   "minKey": 0,
   "maxKey": 255,
-  "averageKey": 59.91,
+  "averageKey": 57.92,
   "meshes": [
     {
       "index": 0,
       "name": "Mesh",
       "vertices": 7302,
-      "offset": 176,
+      "offset": 208,
       "hash": 1099952981
     },
     {
       "index": 1,
       "name": "Mesh",
       "vertices": 6312,
-      "offset": 14780,
+      "offset": 14812,
       "hash": 2227698999
     },
     {
       "index": 2,
       "name": "Mesh",
       "vertices": 143586,
-      "offset": 27404,
+      "offset": 27436,
       "hash": 1737300398
     },
     {
       "index": 3,
       "name": "Mesh",
       "vertices": 7416,
-      "offset": 314576,
+      "offset": 314608,
       "hash": 871712444
     },
     {
       "index": 4,
       "name": "Mesh",
       "vertices": 234078,
-      "offset": 329408,
+      "offset": 329440,
       "hash": 2530627763
     },
     {
       "index": 5,
       "name": "Mesh",
       "vertices": 1800,
-      "offset": 797564,
+      "offset": 797596,
       "hash": 3779487025
     },
     {
       "index": 6,
       "name": "Mesh",
       "vertices": 1944,
-      "offset": 801164,
+      "offset": 801196,
       "hash": 1038109484
     },
     {
       "index": 7,
       "name": "Mesh",
       "vertices": 600,
-      "offset": 805052,
+      "offset": 805084,
       "hash": 4067258519
     },
     {
       "index": 8,
       "name": "Mesh",
       "vertices": 180,
-      "offset": 806252,
+      "offset": 806284,
       "hash": 924378989
     },
     {
       "index": 9,
       "name": "Mesh",
       "vertices": 23760,
-      "offset": 806612,
-      "hash": 206709685
+      "offset": 806644,
+      "hash": 582403193
+    },
+    {
+      "index": 10,
+      "name": "Mesh",
+      "vertices": 2640,
+      "offset": 854164,
+      "hash": 968063731
+    },
+    {
+      "index": 11,
+      "name": "Mesh",
+      "vertices": 3240,
+      "offset": 859444,
+      "hash": 2663093909
     }
   ]
 }

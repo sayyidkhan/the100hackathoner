@@ -7,8 +7,8 @@ import { Image, getImage } from "astro:assets";
 import workbenchLight from "../../public/landing/assets/hackathon-workbench.png";
 import workbenchDark from "../../public/landing/assets/hackathon-workbench-dark-v1.png";
 import stageImage from "../../public/landing/assets/hackathon-stage.png";
-import bookLight from "../../public/landing/assets/storybook-concept-v3.jpg";
-import bookDark from "../../public/landing/assets/storybook-dark-v1.jpg";
+import bookLight from "../../public/landing/assets/storybook-road-light-v3.png";
+import bookDark from "../../public/landing/assets/storybook-road-dark-v3.png";
 import crowLight from "../../public/landing/assets/crow-sharingan-light-v3.png";
 import crowDark from "../../public/landing/assets/crow-sharingan-dark-v3.png";
 import borneoLight from "../../public/landing/assets/borneo-concept-v3.jpg";
@@ -22,7 +22,7 @@ const latest = projects[0];
 const awards = projects.filter(project => project.award).length;
 const byNumber = new Map(projects.map(project => [project.number, project]));
 const artworks = [
-  { number: 81, light: bookLight, dark: bookDark, alt: "Concept artwork: a red open book with a folded-paper landscape, house, and cobalt path" },
+  { number: 81, light: bookLight, dark: bookDark, alt: "Concept artwork: Bob draws a friend, resists peer pressure and follows a blue road home across a paper storybook" },
   { number: 80, light: crowLight, dark: crowDark, alt: "Concept artwork: a black origami crow flying above a miniature ivory city" },
   { number: 79, light: borneoLight, dark: borneoDark, alt: "Concept artwork: a timber longhouse surrounded by folded-paper forest and a cobalt river" },
 ];

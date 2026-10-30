@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-28",
+  "updated": "2026-10-30",
   "scope": "Research linked project repositories first, then create light/dark concept artwork and matching procedural 3D on detail pages. Work sequentially; flag missing context.",
   "method": "Built-in image_gen for raster artwork; Three.js procedural geometry for interactive interpretations.",
   "projects": [
@@ -26,7 +26,11 @@
         "public/landing/assets/storybook-paper-v1.jpg",
         "public/landing/assets/storybook-ao-v1.bin"
       ],
-      "bake": "node scripts/bake-storybook-ao.mjs --rays=48 --distance=0.9"
+      "bake": "node scripts/bake-storybook-ao.mjs --rays=48 --distance=0.9",
+      "journey": "Added Bob in a red coat with pencil and satchel. A 48-second seekable journey follows a grounded blue road: walk, draw a friend, ignore an off-path group beckoning him with a Come with us speech bubble, draw a phone for directions, draw/open a doorway through a paper barrier, arrive home, hold, fade and restart. Dynamic actors use independent materials. The later road revision regenerated the environment AO bake.",
+      "journeyArtwork": "Updated light and dark artwork with Bob drawing a supportive friend, peers beckoning from off the blue route, a phone sketch and a warmly lit home. Built-in image generation, preserving the red book and paper landscape. Sources: public/landing/assets/storybook-journey-light-v2.png and storybook-journey-dark-v2.png; prompts: outputs/storybook-journey/artwork-prompt.md. Updated homepage and project artwork with responsive image variants.",
+      "roadRevision": "Blue road replaces the ribbon in both artwork themes and 3D. Constant 0.30-wide matte road conforms to terrain, with pale shoulders, white edge lines and dashed centreline. Rebuilt 48-ray AO and 16-ray key-light bake; all 12 mesh hashes verified. Artwork: storybook-road-light-v3.png and storybook-road-dark-v3.png; prompts in outputs/storybook-journey/road-artwork-prompts.md.",
+      "journeyVerification": "Four deterministic tests: stationary drawing, monotonic route progress, sketch completion before door creation, creation before opening and traversal, arrival before fade, reset/seek safety, close camera framing, and environment geometry hash equivalence. Production build and browser checks. Added larger characters and sketches, a smooth action-following camera, zoom controls, and roomier captions."
     },
     {
       "number": 80,
@@ -387,9 +391,9 @@
         "public/landing/assets/projects/062-ask-buzo-dark-v1.png"
       ],
       "model": "public/landing/artifacts/ask-buzo.js",
-      "detail": "Rebuilt only the 3D to match the approved illustration: café awning/chairs/cups, arched theatre with curtains and instruments, rooftop lounge with stairs/string lights/crescent, backup venue, river and two bridges, city blocks/trees, readable clock and ticket. Existing artwork unchanged.",
+      "detail": "Rebuilt only the 3D to match the approved illustration: caf\u00e9 awning/chairs/cups, arched theatre with curtains and instruments, rooftop lounge with stairs/string lights/crescent, backup venue, river and two bridges, city blocks/trees, readable clock and ticket. Existing artwork unchanged.",
       "animation": "Moving itinerary markers, conversational dots and a rotating clock hand use the gallery clock; pause/reset/reduced motion remain supported.",
-      "lighting": "Ten warm practical lights illuminate the café, theatre, rooftop string lights, windows and backup venue in dark mode."
+      "lighting": "Ten warm practical lights illuminate the caf\u00e9, theatre, rooftop string lights, windows and backup venue in dark mode."
     },
     {
       "number": 61,
@@ -900,7 +904,7 @@
       ],
       "model": "public/landing/artifacts/instareadr.js",
       "research": {
-        "finding": "Original 13-slide pitch and speaker notes reviewed in docs/instareadr-exhibit.json. Original concept: ingest whitepapers into 5–10 visual learning cards; quiz and rewards proposed. Current ten-section or explainer-video exhibit follows the later user direction."
+        "finding": "Original 13-slide pitch and speaker notes reviewed in docs/instareadr-exhibit.json. Original concept: ingest whitepapers into 5\u201310 visual learning cards; quiz and rewards proposed. Current ten-section or explainer-video exhibit follows the later user direction."
       }
     },
     {
@@ -921,7 +925,7 @@
       "status": "implemented",
       "sourceReviewDate": "2026-10-28",
       "research": {
-        "finding": "Original Drive folder located. All 18 slides and available speaker notes read. Slides 3–4 describe Angel/Devil task, reward and punishment roles. Most other slides retain unrelated mailbox-project content; do not attribute those features or statistics to The Punisher. Event album contains no application UI.",
+        "finding": "Original Drive folder located. All 18 slides and available speaker notes read. Slides 3\u20134 describe Angel/Devil task, reward and punishment roles. Most other slides retain unrelated mailbox-project content; do not attribute those features or statistics to The Punisher. Event album contains no application UI.",
         "folder": "https://drive.google.com/drive/u/0/folders/17n2LxsLBPqBxfVhc1Av3XgtK3JOxkRod",
         "usableSlides": [
           3,
