@@ -406,12 +406,12 @@ const panelIndex = (id: string) =>
           {panel.id === "places" && (
             <div class="places">
               <div>
-                <p class="plot-note">Top venues</p>
-                <BarRanking items={venues} labelWidth="minmax(0, 210px)" />
-              </div>
-              <div>
                 <p class="plot-note">By country, region or remote</p>
                 <BarRanking items={places} accent="gold" labelWidth="minmax(0, 110px)" />
+              </div>
+              <div>
+                <p class="plot-note">Top venues</p>
+                <BarRanking items={venues} labelWidth="minmax(0, 210px)" />
               </div>
             </div>
           )}
@@ -999,7 +999,7 @@ const panelIndex = (id: string) =>
   .split .solo {
     width: calc(var(--share) * 100%);
     background: var(--ink);
-    color: rgba(255, 255, 255, 0.88);
+    color: var(--on-ink);
   }
 
   .split .team {
@@ -1014,7 +1014,7 @@ const panelIndex = (id: string) =>
 
   .places {
     display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
     gap: 40px;
   }
 

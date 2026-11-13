@@ -21,10 +21,18 @@ const visibleItems = limit ? items.slice(0, limit) : items;
 const highlights = new Map(await Promise.all(visibleItems.map(async (item) => {
   const art = projectArt[item.number];
   if (!art) return [item.number, null] as const;
-  const [light, dark] = await Promise.all([art.light, art.dark].map((src) =>
-    getImage({ src, width: 480, format: "webp", quality: 80 })
-  ));
-  return [item.number, { light: light.src, dark: dark.src, alt: art.alt }] as const;
+  const [light, dark, previewLight, previewDark] = await Promise.all([
+    ...[art.light, art.dark].map((src) =>
+      getImage({ src, width: 480, format: "webp", quality: 80 })
+    ),
+    ...[art.light, art.dark].map((src) =>
+      getImage({ src, width: 1200, format: "webp", quality: 85 })
+    ),
+  ]);
+  return [item.number, {
+    light: light.src, dark: dark.src,
+    previewLight: previewLight.src, previewDark: previewDark.src, alt: art.alt,
+  }] as const;
 })));
 
 interface Row {
@@ -120,7 +128,12 @@ function gapBefore(index: number) {
                       {row.dateLabel ?? "Date not recorded"}
                     </time>
                     {row.duration && <span class="span">{row.duration}</span>}
-                    {highlights.get(row.item.number) && <span class="highlight">
+                    {highlights.get(row.item.number) && <span
+                      class="highlight"
+                      data-preview-light={highlights.get(row.item.number)!.previewLight}
+                      data-preview-dark={highlights.get(row.item.number)!.previewDark}
+                      data-preview-title={`#${String(row.item.number).padStart(3, "0")} · ${row.item.title}`}
+                    >
                       <img class="highlight-light" src={highlights.get(row.item.number)!.light} alt={highlights.get(row.item.number)!.alt} width="480" height="320" loading="lazy" decoding="async" />
                       <img class="highlight-dark" src={highlights.get(row.item.number)!.dark} alt={highlights.get(row.item.number)!.alt} width="480" height="320" loading="lazy" decoding="async" />
                     </span>}
@@ -167,7 +180,72 @@ function gapBefore(index: number) {
       );
     })
   }
+  <figure class="image-preview" popover="manual" aria-label="Enlarged project artwork">
+    <img alt="" decoding="async" />
+    <figcaption></figcaption>
+  </figure>
 </div>
+
+<script>
+  for (const timeline of document.querySelectorAll<HTMLElement>(".timeline")) {
+    const preview = timeline.querySelector<HTMLElement>(".image-preview")!;
+    const image = preview.querySelector<HTMLImageElement>("img")!;
+    const caption = preview.querySelector<HTMLElement>("figcaption")!;
+    const hover = matchMedia("(hover: hover) and (pointer: fine)");
+    let hideTimer: ReturnType<typeof setTimeout>;
+
+    function close() {
+      clearTimeout(hideTimer);
+      preview.hidePopover();
+    }
+
+    function scheduleClose() {
+      clearTimeout(hideTimer);
+      hideTimer = setTimeout(close, 140);
+    }
+
+    function show(thumbnail: HTMLElement) {
+      clearTimeout(hideTimer);
+      const dark = document.documentElement.dataset.theme === "dark";
+      image.src = (dark ? thumbnail.dataset.previewDark : thumbnail.dataset.previewLight)!;
+      image.alt = thumbnail.querySelector("img")?.alt ?? "";
+      caption.textContent = thumbnail.dataset.previewTitle ?? "";
+      const anchor = thumbnail.getBoundingClientRect();
+      const margin = 16;
+      const sideSpace = Math.max(innerWidth - anchor.right, anchor.left) - margin * 2;
+      preview.style.maxWidth = `${Math.max(280, sideSpace)}px`;
+      preview.showPopover();
+
+      const popup = preview.getBoundingClientRect();
+      const left = anchor.right + margin + popup.width <= innerWidth - margin
+        ? anchor.right + margin
+        : anchor.left - popup.width - margin;
+      preview.style.left = `${Math.max(margin, Math.min(left, innerWidth - popup.width - margin))}px`;
+      preview.style.top = `${Math.max(margin, Math.min(anchor.top + anchor.height / 2 - popup.height / 2, innerHeight - popup.height - margin))}px`;
+    }
+
+    for (const thumbnail of timeline.querySelectorAll<HTMLElement>(".highlight")) {
+      thumbnail.addEventListener("pointerenter", () => {
+        if (hover.matches) show(thumbnail);
+      });
+      thumbnail.addEventListener("pointerleave", scheduleClose);
+      const row = thumbnail.closest<HTMLAnchorElement>(".row")!;
+      row.addEventListener("focus", () => {
+        if (row.matches(":focus-visible")) show(thumbnail);
+      });
+      row.addEventListener("blur", scheduleClose);
+    }
+
+    preview.addEventListener("pointerenter", () => clearTimeout(hideTimer));
+    preview.addEventListener("pointerleave", scheduleClose);
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") close();
+    });
+    document.addEventListener("scroll", close, { capture: true, passive: true });
+    window.addEventListener("resize", close);
+    window.addEventListener("blur", close);
+  }
+</script>
 
 <style>
   .timeline {
@@ -376,11 +454,40 @@ function gapBefore(index: number) {
     text-transform: uppercase;
   }
 
-  .highlight { display: block; width: 100%; max-width: 144px; margin-top: 9px; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-paper); }
+  .highlight { display: block; width: 100%; max-width: 144px; margin-top: 9px; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: var(--bg-paper); cursor: zoom-in; }
   .highlight img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
   .highlight .highlight-dark { display: none; }
   :global([data-theme='dark']) .highlight .highlight-light { display: none; }
   :global([data-theme='dark']) .highlight .highlight-dark { display: block; }
+
+  .image-preview {
+    position: fixed;
+    inset: auto;
+    width: min(600px, calc(100vw - 32px), calc((100dvh - 100px) * 1.5));
+    margin: 0;
+    padding: 8px;
+    border: 1px solid var(--line-strong);
+    border-radius: 14px;
+    background: var(--raised);
+    color: var(--ink);
+    box-shadow: 0 20px 70px #0005, 0 4px 16px #0003;
+  }
+
+  .image-preview img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: contain;
+    border-radius: 8px;
+    background: var(--soft);
+  }
+
+  .image-preview figcaption {
+    padding: 10px 8px 4px;
+    font-size: .82rem;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
 
   /* Middle body ------------------------------------------------------- */
 

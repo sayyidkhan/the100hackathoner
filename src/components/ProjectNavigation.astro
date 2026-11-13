@@ -1,12 +1,15 @@
 ---
-import type { Hackathon } from '../lib/hackathons';
+import { getHackathons, type Hackathon } from '../lib/hackathons';
 
 interface Props {
+  current: Hackathon;
   previous?: Hackathon;
   next?: Hackathon;
   position: 'top' | 'bottom';
 }
-const { previous, next, position } = Astro.props;
+const { current, previous, next, position } = Astro.props;
+const projects = [...getHackathons()].sort((a, b) => a.number - b.number);
+const projectNumbers = projects.map((project) => project.number);
 const neighbors = [
   { project: previous, direction: 'previous', label: 'Previous', arrow: '←', boundary: 'First project' },
   { project: next, direction: 'next', label: 'Next', arrow: '→', boundary: 'Latest project' },
@@ -15,15 +18,43 @@ const neighbors = [
 
 <nav class:list={['project-navigation', position]} aria-label={`Project navigation (${position})`}>
   {neighbors.map(({ project, direction, label, arrow, boundary }) => (
+    <>
+    {position === 'top' && direction === 'next' && (
+      <form class="project-jump" data-project-jump data-project-numbers={projectNumbers.join(',')}>
+        <label class="jump-field jump-keyboard">
+          <span aria-hidden="true">#</span>
+          <input type="number" name="number" aria-label="Hackathon number"
+            aria-describedby={`project-jump-hint-${position}`}
+            title="Enter a hackathon number and press Enter"
+            value={String(current.number).padStart(3, '0')}
+            min={Math.min(...projectNumbers)} max={Math.max(...projectNumbers)}
+            step="1" inputmode="numeric" enterkeyhint="go" required />
+        </label>
+        <label class="jump-field jump-picker">
+          <span class="picker-prefix" aria-hidden="true">#</span>
+          <span aria-hidden="true">{String(current.number).padStart(3, '0')}</span>
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m4 6 4 4 4-4" /></svg>
+          <select aria-label="Choose hackathon">
+            {projects.map((project) => (
+              <option value={project.number} selected={project.number === current.number}>
+                {String(project.number).padStart(3, '0')} · {project.title}
+              </option>
+            ))}
+          </select>
+        </label>
+        <span class="jump-hint" id={`project-jump-hint-${position}`}>Enter to jump</span>
+      </form>
+    )}
+    {
     project ? (
       <a class={direction} href={`/hackathons/${project.number}/`} rel={direction === 'previous' ? 'prev' : 'next'} data-project-link
         aria-label={`${label} project: #${String(project.number).padStart(3, '0')} ${project.title}`}
         title={project.title}>
         {position === 'top' ? (
           <span class="compact-label">
-            {direction === 'previous' && <span aria-hidden="true">{arrow}</span>}
+            {direction === 'previous' && <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m10 4-4 4 4 4" /></svg>}
             {direction === 'previous' ? 'Prev' : 'Next'}
-            {direction === 'next' && <span aria-hidden="true">{arrow}</span>}
+            {direction === 'next' && <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m6 4 4 4-4 4" /></svg>}
           </span>
         ) : (
           <>
@@ -40,24 +71,70 @@ const neighbors = [
       <span class:list={['boundary', direction]}>
         {position === 'top' ? (
           <span class="compact-label" aria-label={boundary}>
-            {direction === 'previous' && <span aria-hidden="true">←</span>}
+            {direction === 'previous' && <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m10 4-4 4 4 4" /></svg>}
             {direction === 'previous' ? 'Prev' : 'Next'}
-            {direction === 'next' && <span aria-hidden="true">→</span>}
+            {direction === 'next' && <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m6 4 4 4-4 4" /></svg>}
           </span>
         ) : <span class="direction">{boundary}</span>}
       </span>
     )
+    }
+    </>
   ))}
 </nav>
+
+<script>
+  for (const form of document.querySelectorAll<HTMLFormElement>('[data-project-jump]')) {
+    const input = form.querySelector<HTMLInputElement>('input')!;
+    const picker = form.querySelector<HTMLSelectElement>('select')!;
+    const available = new Set(form.dataset.projectNumbers!.split(',').map(Number));
+    input.addEventListener('input', () => input.setCustomValidity(''));
+    picker.addEventListener('change', () => {
+      input.value = picker.value;
+      input.setCustomValidity('');
+      form.requestSubmit();
+    });
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const number = input.valueAsNumber;
+      if (!available.has(number)) {
+        input.setCustomValidity('That hackathon has not been logged yet. Choose an existing number.');
+        input.reportValidity();
+        return;
+      }
+      const destination = new URL(`/hackathons/${number}/`, location.origin);
+      if (new URLSearchParams(location.search).get('from') === 'landing') {
+        destination.searchParams.set('from', 'landing');
+      }
+      location.assign(destination.href);
+    });
+  }
+</script>
 
 <style>
   a { color: var(--ink); text-decoration: none; min-width: 0; }
   a:hover { color: var(--red); }
   a:focus-visible { outline: 2px solid var(--red); outline-offset: 5px; border-radius: 2px; }
-  .top { display: flex; align-items: center; gap: 20px; flex-shrink: 0; }
-  .top > :last-child { border-left: 1px solid var(--line); padding-left: 20px; }
-  .compact-label { display: inline-flex; align-items: center; gap: 9px; min-height: 44px; font-size: .8rem; }
-  .compact-label > span { font-size: 1.1rem; }
+  .top { display: inline-flex; align-items: center; flex-shrink: 0; }
+  .top > a, .top > .boundary { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 14px; }
+  .top > a:hover .compact-label { text-decoration: underline; text-underline-offset: 4px; }
+  .top > a:focus-visible { outline-offset: 0; }
+  .project-jump { position: relative; display: flex; align-items: center; margin: 0; padding: 0 8px; }
+  .project-jump::before, .project-jump::after { position: absolute; top: 12px; bottom: 12px; width: 1px; background: var(--line); content: ''; }
+  .project-jump::before { left: 0; }
+  .project-jump::after { right: 0; }
+  .jump-field { display: inline-flex; align-items: center; gap: 2px; padding: 0 6px; border-radius: 2px; color: var(--faint); font: .8rem var(--mono); }
+  .jump-field:focus-within { outline: 2px solid var(--red); outline-offset: -2px; }
+  .jump-field input { width: 3.5ch; min-height: 44px; padding: 0; border: 0; outline: none; background: transparent; color: var(--ink); font: inherit; font-variant-numeric: tabular-nums; text-align: center; appearance: textfield; }
+  .jump-field input::-webkit-inner-spin-button, .jump-field input::-webkit-outer-spin-button { margin: 0; appearance: none; }
+  .jump-picker { position: relative; display: none; justify-content: center; gap: 4px; min-width: 66px; min-height: 44px; color: var(--ink); }
+  .picker-prefix { color: var(--faint); }
+  .jump-picker svg { width: 12px; height: 12px; stroke: var(--muted); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .jump-picker select { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+  .jump-hint { position: absolute; top: calc(100% + 12px); left: 50%; transform: translateX(-50%); color: var(--muted); font-size: .68rem; line-height: 1.4; white-space: nowrap; visibility: hidden; pointer-events: none; }
+  .project-jump:focus-within .jump-hint { visibility: visible; }
+  .compact-label { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; font-size: .8rem; }
+  .compact-label svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
   .boundary { color: var(--faint); }
   .top .boundary { opacity: .5; }
   .bottom { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px; margin-top: 72px; padding-top: 28px; border-top: 1px solid var(--line); }
@@ -70,12 +147,21 @@ const neighbors = [
   .bottom .next { text-align: right; }
   .next .destination { justify-content: flex-end; }
   @media (max-width: 640px) {
-    .top { gap: 12px; }
-    .top > :last-child { padding-left: 12px; }
+    .top > a, .top > .boundary { padding-inline: 10px; }
     .compact-label { gap: 6px; font-size: .75rem; }
     .bottom { gap: 24px; margin-top: 56px; }
     .destination { gap: 8px; }
     .direction { font-size: .59rem; }
     .arrow { font-size: 1.15rem; }
+  }
+  @media (max-width: 400px) {
+    .top > a, .top > .boundary { padding-inline: 6px; }
+    .project-jump { padding-inline: 4px; }
+    .jump-field { padding-inline: 2px; }
+    .compact-label { gap: 4px; }
+  }
+  @media (hover: none) and (pointer: coarse) {
+    .jump-keyboard, .jump-hint { display: none; }
+    .jump-picker { display: inline-flex; }
   }
 </style>

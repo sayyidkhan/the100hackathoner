@@ -387,9 +387,13 @@ export function buildThemeCategoryStats(items: Hackathon[]): ThemeCategoryStat[]
     .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
 }
 
-/** Group remote aliases consistently with the participation-mode summary. */
+/** Qualify venues by country and group remote aliases consistently. */
 export function getVenueLabel(item: Hackathon): string | null {
-  return isRemoteParticipation(item.location) ? "Remote" : item.location?.trim() || null;
+  if (isRemoteParticipation(item.location)) return "Remote";
+  const location = item.location?.trim();
+  if (!location) return null;
+  const country = item.country?.trim();
+  return country ? `${country} · ${location}` : location;
 }
 
 export function buildVenueStats(items: Hackathon[], limit = 8): Ranked[] {

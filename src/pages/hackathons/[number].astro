@@ -53,7 +53,7 @@ const socialPlatforms = [
   <article class="record container">
     <div class="record-toolbar">
       <a class="back" id="record-back" href="/hackathons/">Back to journey</a>
-      <ProjectNavigation previous={previous} next={next} position="top" />
+      <ProjectNavigation current={hackathon} previous={previous} next={next} position="top" />
     </div>
     <p class="meta">Hackathon #{String(hackathon.number).padStart(3, "0")}</p>
     <h1>{hackathon.title}</h1>
@@ -126,7 +126,7 @@ const socialPlatforms = [
         </section>
       )
     }
-    <ProjectNavigation previous={previous} next={next} position="bottom" />
+    <ProjectNavigation current={hackathon} previous={previous} next={next} position="bottom" />
   </article>
 </PageShell>
 
@@ -154,6 +154,7 @@ const socialPlatforms = [
 
   .record-toolbar {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
